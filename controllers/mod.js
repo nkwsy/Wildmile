@@ -21,7 +21,7 @@ exports.getMod = (req, res) => {
 
 exports.postMod = (req, res, next) => {
 
-var plantLocations = req.body.individualPlants;
+var plantLocations = req.body.individualPlants || '{}';
 ip = JSON.parse(plantLocations)
 var plant1 = req.body.plant1;
 var plant2 = req.body.plant2;
