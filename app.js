@@ -147,20 +147,25 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 
 app.route('/plants')
-  .get(plantController.getPlants)
+  .get(plantController.getPlants);
 
 app.route('/plantsadmin')
   .all(passportConfig.isAuthenticated)
   .get(plantController.getPlantsAdmin)
-  .post(plantController.postPlantsAdmin)
+  .post(plantController.postPlantsAdmin);
 
-app.route('/module')
+app.route('/modmap')
+  .all(passportConfig.isAuthenticated)
+  .get(modController.getModMap)
+  .post(modController.postMod);
+
+app.route('/module/:x&:y')
   .all(passportConfig.isAuthenticated)
   .get(modController.getMod)
-  .post(modController.postMod)
+  .post(modController.postMod);
 
-app.post('/module/delete/:id',passportConfig.isAuthenticated, modController.postDeleteMod)
-app.post('/module/update',passportConfig.isAuthenticated, modController.postUpdateMod)
+app.post('/module/delete/:id', passportConfig.isAuthenticated, modController.postDeleteMod);
+app.post('/module/update', passportConfig.isAuthenticated, modController.postUpdateMod);
 /**
  * API examples routes.
  */

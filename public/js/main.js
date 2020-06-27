@@ -1,7 +1,6 @@
 /* eslint-env jquery, browser */
 
 $(document).ready(() => {
-
   //$('#plants').tablesorter();
   plantMatrix = [];
 
@@ -117,7 +116,7 @@ $(document).ready(() => {
   }
   var array = 30
 
-  function drawMod(shape, modId) {
+  function drawMod(shape, modId) { 
     var draw = SVG().addTo('#circle_1').size(900, 300)
     console.log(shape);
     if (shape == 'Rtriangle') {
@@ -131,9 +130,9 @@ $(document).ready(() => {
       })
     }
     if (shape == 'rectangle') {
-      var rect = draw.rect(900, 300).attr({
+      let rect = draw.rect(900, 300).attr({
         fill: 'green'
-      })
+      });
     }
     // var rect = draw.rect(900, 300).attr({ fill: 'green' })
     // var triangle = draw.polygon('0,0 900,300 300,0').fill('green').stroke({ width: 1 })
@@ -375,8 +374,8 @@ $(document).ready(() => {
         rect.click(function () {
           document.getElementById("x").value = this.data('key')["x"];
           document.getElementById("y").value = this.data('key')["y"];
-          $("#newmod").modal()
-          console.log(t);
+          modpage = 'module/'+this.data('key')["x"]+'&'+this.data('key')["y"];
+          window.location.href = modpage;
           drawMod(t["shape"], t["id"])
           this.fill({
             color: color
