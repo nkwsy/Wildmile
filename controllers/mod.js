@@ -7,7 +7,7 @@ const PlantObservation = require('../models/PlantObservation.js');
 
 const Mod = require('../models/Mod.js');
 
-exports.getMod = (req, res) => {
+exports.getModMap = (req, res) => {
   Plant.find((err, plant) => {
   Mod.find((err, docs) => {
     IndividualPlant.find((err, individualPlant) =>{
@@ -18,6 +18,42 @@ exports.getMod = (req, res) => {
 
 };
 
+exports.getMod = (req, res, next) => {
+  x = req.params.x
+  y = req.params.y
+  Plant
+    .find()
+    .exec((err, plant) => {
+      Mod
+        .findOne({ x:x,y:y })
+        .exec((err, module) => {
+          if (err) { return next(err); }
+          if (!module) {
+            req.flash('info', { msg: 'Creating New Module' });
+            return res.render('module', { plants: plant, x:x,y:y });
+          }
+          IndividualPlant
+            .find({ module: module._id })
+            .exec((err, plantedplants) => {
+              if (err) { return next(err); }
+              if (!plantedplants) {
+                req.flash('info', { msg: 'Editing Empty Module' });
+                return res.render('module', { plants: plant, x:x,y:y });
+              }
+              req.flash('info', { msg: 'Editing Module' });
+              console.log(plantedplants);
+              return res.render('module', { plants: plant, x:x, y:y, plantedPlants: plantedplants });
+            })
+        });
+    });
+};
+//   Plant.find((err, plant) => {
+//   Mod.find({ email: req.body.email },  (err, docs) => {
+//     IndividualPlant.find((err, individualPlant) =>{
+//     res.render('module', { mods: docs , plants: plant, plantedPlants: individualPlant, x:x,y:y });
+//   });
+//   });
+// });
 
 exports.postMod = (req, res, next) => {
 
