@@ -164,7 +164,7 @@ app.route('/module/:x&:y')
   .get(modController.getMod)
   .post(modController.postMod);
 
-app.post('/module/delete/:id', passportConfig.isAuthenticated, modController.postDeleteMod);
+app.delete('/module/delete/:id', passportConfig.isAuthenticated, modController.postDeleteMod);
 app.post('/module/update', passportConfig.isAuthenticated, modController.postUpdateMod);
 /**
  * API examples routes.

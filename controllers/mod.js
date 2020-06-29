@@ -19,18 +19,18 @@ exports.getModMap = (req, res) => {
 };
 
 exports.getMod = (req, res, next) => {
-  x = req.params.x
-  y = req.params.y
+  let x = req.params.x
+  let y = req.params.y
   Plant
     .find()
     .exec((err, plant) => {
       Mod
-        .findOne({ x:x,y:y })
+        .findOne({ x, y })
         .exec((err, module) => {
           if (err) { return next(err); }
           if (!module) {
             req.flash('info', { msg: 'Creating New Module' });
-            return res.render('module', { plants: plant, x:x,y:y });
+            return res.render('module', { exists: false, mod: {model: '', shape: '', orientation: '', notes: ''}, plants: plant, x, y });
           }
           IndividualPlant
             .find({ module: module._id })
@@ -38,11 +38,11 @@ exports.getMod = (req, res, next) => {
               if (err) { return next(err); }
               if (!plantedplants) {
                 req.flash('info', { msg: 'Editing Empty Module' });
-                return res.render('module', { plants: plant, x:x,y:y });
+                return res.render('module', { plants: plant, x, y });
               }
               req.flash('info', { msg: 'Editing Module' });
               console.log(plantedplants);
-              return res.render('module', { plants: plant, x:x, y:y, plantedPlants: plantedplants });
+              return res.render('module', { exists: true, mod: module, plants: plant, x, y, plantedPlants: plantedplants });
             })
         });
     });
@@ -134,7 +134,7 @@ exports.postDeleteMod = (req, res, next) => {
   Mod.deleteOne({ _id: req.params.id }, (err) => {
     if (err) { return next(err); }
     req.flash('info', { msg: 'Module Removed.' });
-    res.redirect('/module');
+    res.redirect('/modmap');
   });
 };
 
