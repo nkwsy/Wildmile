@@ -4,7 +4,7 @@ block content
   .page-header
     h3 New Module
     h5#exampleModalLongTitle.modal-title Module Control
-    button.close(type='button' data-dismiss='modal' aria-label='Close')
+    button.close(type='button' onclick='history.back()' aria-label='Close')
       span(aria-hidden='true') &times;
     form(id='mod-form', method='POST')
         input(type='hidden', name='_csrf', value=_csrf)
