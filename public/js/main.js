@@ -116,7 +116,7 @@ $(document).ready(() => {
   }
   var array = 30
 
-  function drawMod(shape, modId) { 
+  function drawMod(shape, modId) {
     var draw = SVG().addTo('#circle_1').size(900, 300)
     console.log(shape);
     if (shape == 'Rtriangle') {
@@ -518,68 +518,47 @@ $(document).ready(() => {
   // }
   // });
   // });
-  function selector1() {
-    var draw = SVG().addTo('#selector1').size(40, 80)
-    var selecter1 = draw.circle(40, 40).attr({
-      fill: 'orange',
+  let selectors = []
+
+  function makeSelector(index, selectorColor) {
+    var draw = SVG().addTo(`#selector${index}`).size(40, 80)
+    var circle = draw.circle(40, 40).attr({
+      fill: selectorColor,
       cx: 20,
       cy: 20
     })
-    selecter1.on('click', function (e) {
-      clicker(selecter1, '1');
-      console.log(e);
-    })
-  }
-
-  function selector2() {
-    var draw = SVG().addTo('#selector2').size(40, 80)
-    var selecter2 = draw.circle(40, 40).attr({
-      fill: 'red',
-      cx: 20,
-      cy: 20
-    })
-    selecter2.on('click', function (e) {
-      clicker(selecter2, '2');
-      console.log(e);
+    circle.on('click', function () {
+      clearSelected()
+      select(selectors[index])
     })
 
+    selectors[index] = {
+      circle,
+      color: selectorColor,
+      selected: false,
+    }
+
+    function select(s) {
+      s.selected = true
+      s.circle.stroke({
+        color: 'black',
+        opacity: 0.6,
+        width: 2,
+      })
+
+      color = s.color
+    }
+
+    function clearSelected() {
+      selectors.forEach(s => {
+        s.selected = false
+        s.circle.stroke({
+          width: 0,
+        })
+      });
+    }
   }
 
-  function selector3() {
-    var draw = SVG().addTo('#selector3').size(40, 80)
-    var selecter3 = draw.circle(40, 40).attr({
-      fill: 'yellow',
-      cx: 20,
-      cy: 20
-    })
-    selecter3.on('click', function (e) {
-      clicker(selecter3, '3');
-    })
-  }
-
-  function selector4() {
-    var draw = SVG().addTo('#selector3').size(40, 80)
-    var selecter4 = draw.circle(40, 40).attr({
-      fill: 'yellow',
-      cx: 20,
-      cy: 20
-    })
-    selecter4.on('click', function (e) {
-      clicker(selecter3, '4');
-    })
-  }
-
-  function selector5() {
-    var draw = SVG().addTo('#selector3').size(40, 80)
-    var selecter5 = draw.circle(40, 40).attr({
-      fill: 'yellow',
-      cx: 20,
-      cy: 20
-    })
-    selecter5.on('click', function (e) {
-      clicker(selecter3, '5');
-    })
-  }
   // var click = function() {
   // selecter2.stroke({ color: 'black', opacity: 0.6, width: 2 })
   // color = 'orange'
@@ -618,9 +597,12 @@ $(document).ready(() => {
   //draw_circle();
   //draw_map();
 
-  selector1();
-  selector2();
-  selector3();
+  makeSelector(1, 'orange')
+  makeSelector(2, 'red')
+  makeSelector(3, 'yellow')
+  makeSelector(4, 'green')
+  makeSelector(5, 'blue')
+
   window.onload = function () {
     // map.on('load', function() {
     // //modMap();

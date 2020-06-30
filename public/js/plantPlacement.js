@@ -1,4 +1,3 @@
-
 function checkPlants(modId, x, y) {
   let article = document.querySelector('#modMap');
   console.log(article.dataset);
@@ -62,11 +61,11 @@ function drawMod(shape, modId) {
       //console.log(i, circle.node);
       circle.click(function () {
         this.fill({
-          color: color,
+          color,
         })
         var a = this.data('key')
         plantMatrix.push({
-          color: color,
+          color,
           location: a
         });
         //plantMatrix.push([color, a]);
