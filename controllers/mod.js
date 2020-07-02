@@ -110,8 +110,8 @@ mod.save((err, newmod) => {
       if (err) { return next(err); }
       });
     }
-  req.flash('success', { msg: 'Module added',plantLocations, plant1,plant2,plant3 });
-    res.redirect('/module');
+    req.flash('success', { msg: 'Module added',plantLocations, plant1,plant2,plant3 });
+    res.redirect('/module/' + mod.x + '&' + mod.y);
 
 });
 
