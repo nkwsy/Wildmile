@@ -140,7 +140,7 @@ exports.postDeleteMod = (req, res, next) => {
 
 exports.postUpdateMod = (req, res, next) => {
 
-  Mod.findById(req.body.edit, (err, user) => {
+  Mod.findById(req.body.id, (err, mod) => {
     if (err) { return next(err); }
     mod.x = req.body.x || '';
     mod.y = req.body.y || '';
@@ -154,7 +154,7 @@ exports.postUpdateMod = (req, res, next) => {
         return next(err);
       }
       req.flash('success', { msg: 'updated.' });
-      res.redirect('/module');
+      res.redirect('/module/' + mod.x + '&' + mod.y);
     });
   });
 };
