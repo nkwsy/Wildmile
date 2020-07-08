@@ -49,24 +49,25 @@ function checkPlants(x, y) {
 }
 
   function drawMod(shape) {
+    let moduleColor = '#7FD674';
     let article = document.querySelector('#circle_1');
     //  let data = JSON.parse(article.dataset.plantedPlants)
       console.log(article.dataset.plantedplants);
     var draw = SVG().addTo('#circle_1').size(900, 300)
     console.log(shape);
     if (shape == 'Rtriangle') {
-      var triangle = draw.polygon('0,0 900,1300 900,0').fill('green').stroke({
+      var triangle = draw.polygon('0,0 900,1300 900,0').fill(moduleColor).stroke({
         width: 1
       })
     }
     if (shape == 'Ltriangle') {
-      var triangle = draw.polygon('0,0 900,300 900,0').fill('green').stroke({
+      var triangle = draw.polygon('0,0 900,300 900,0').fill(moduleColor).stroke({
         width: 1
       })
     }
     if (shape == 'rectangle') {
       let rect = draw.rect(900, 300).attr({
-        fill: 'green'
+        fill: moduleColor
       });
     }
     // var rect = draw.rect(900, 300).attr({ fill: 'green' })
