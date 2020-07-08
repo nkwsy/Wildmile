@@ -30,7 +30,7 @@ exports.getMod = (req, res, next) => {
           if (err) { return next(err); }
           if (!module) {
             req.flash('info', { msg: 'Creating New Module' });
-            return res.render('module', { exists: false, mod: {model: '', shape: '', orientation: '', notes: ''}, plants: plant, x, y });
+            return res.render('module', { exists: false, mod: { model: '', shape: '', orientation: '', notes: ''}, plants: plant, x, y });
           }
           IndividualPlant
             .find({ module: module._id })
@@ -41,7 +41,7 @@ exports.getMod = (req, res, next) => {
                 return res.render('module', { plants: plant, x, y });
               }
               req.flash('info', { msg: 'Editing Module' });
-              console.log(plantedplants);
+              console.log('plantedPlants', plantedplants);
               return res.render('module', { exists: true, mod: module, plants: plant, x, y, plantedPlants: plantedplants });
             })
         });
@@ -83,27 +83,27 @@ mod.save((err, newmod) => {
   if (err) { return next(err); }
     for ( x in ip) {
     data = ip[x]
-    if (data.color == 'orange') {
+    if (data.selection == 1) {
       p = plant1
     }
-    if (data.color == 'red') {
+    if (data.selection == 2) {
       p = plant2
     }
-    if (data.color == 'yellow') {
+    if (data.selection == 3) {
       p=plant3
     }
-    if (data.color == 'yellow') {
+    if (data.selection == 4) {
       p=plant4
     }
-    if (data.color == 'yellow') {
+    if (data.selection == 5) {
       p=plant5
     }
     console.log(ip[x]);
 
     const plantPlacement = new IndividualPlant({
       plant: p,
-      x: data.location.n,
-      y: data.location.i,
+      x: data.location.x,
+      y: data.location.y,
       module: newmod.id,
     })
     plantPlacement.save((err) => {
