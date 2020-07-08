@@ -23,17 +23,13 @@ function defineUniquePlants() {
 
 function updateSelector(selectorName,plantId) {
   $(selectorName).val(plantId);
-
 }
 function checkPlants(x, y) {
   for (var k = 0; k < len; k++) {
     if (data[k] ) {
         if (data[k].y == y && data[k].x == x) {
-//console.log(data[i]["y"]);
           val = data[k].plant;
           console.log(selectors);
-          // document.querySelector('#selector1 [value="' + val + '"]').selected = true;
-          // $('#plant1 option:contains(', val, ')').prop({selected: true});
           a = uniquePlants.indexOf(data[k].plant.toString());
           // uniquePlants[a]='used';
           a += 1;
@@ -45,7 +41,6 @@ function checkPlants(x, y) {
       }
     }
     return false;
-
 }
 
   function drawMod(shape) {
@@ -70,24 +65,19 @@ function checkPlants(x, y) {
         fill: moduleColor
       });
     }
-    // var rect = draw.rect(900, 300).attr({ fill: 'green' })
-    // var triangle = draw.polygon('0,0 900,300 300,0').fill('green').stroke({ width: 1 })
-    //
 
     var fillcolor = ['yellow', 'red', 'blue']
     var fillcolor = ['#7FD674', '#A9E079', '#BAC977', '#E0DB79', '#D6C874'];
     pselect = [];
   for (var n = 0; n < 10; n++) {
     for (var i = 0; i < 4; i++) {
-        // array[i]
         console.log('ii',n,i);
-        plant = checkPlants(n, i);
-        // console.log(p);
+        SelectorNum = checkPlants(n, i);
         var circle = draw.circle(40, 40).attr({ fill: 'grey' , opacity: 0.3, cy: i*75 + 30, cx: n*90+30}).data('key', {n,i})
-        if (plant) {
+        if (SelectorNum) {
           // if (pselect.length < 1) {
             var circle = draw.circle(40, 40).attr({
-              fill: selectors[plant].color,
+              fill: selectors[SelectorNum].color,
               opacity: 0.9,
               cy: i * 75 + 30,
               cx: n * 90 + 30
@@ -95,20 +85,7 @@ function checkPlants(x, y) {
               x,
               y
             })
-            pselect.push(plant["plant"])
-            // $('#plant1').val("plant");
-          // }
-        //   // if (pselect.includes(plant["plant"])) {
-        //   //   var circle = draw.circle(40, 40).attr({
-        //   //     fill: 'blue',
-        //   //     opacity: 0.3,
-        //   //     cy: i * 75 + 30,
-        //   //     cx: n * 90 + 30
-        //   //   }).data('key', {
-        //   //     x,
-        //   //     y
-        //   //   })
-        //   // }
+            pselect.push(SelectorNum["plant"])
         } else {
       var circle = draw.circle(40, 40).attr({
             fill: 'grey',
@@ -120,8 +97,6 @@ function checkPlants(x, y) {
             y: i
           })
        }
-        //var circle = circleColor(n,i);
-        //console.log(i, circle.node);
         circle.click(function () {
           this.fill({
             color: color,
@@ -185,40 +160,29 @@ function checkPlants(x, y) {
     }
   }
 
-  // var click = function() {
-  // selecter2.stroke({ color: 'black', opacity: 0.6, width: 2 })
-  // color = 'orange'
-  // }
-  function clicker(ss, sel) {
 
-    // selecter1.stroke({ color: 'black', opacity: 0.6, width: 0 })
+  function clicker(ss, sel) {
     ss.stroke({
       color: 'black',
       opacity: 0.6,
       width: 2
     })
     color = ss.attr('fill')
-
   }
 
 
   $(document).ready(function() {
-  makeSelector(1, 'orange');
-  makeSelector(2, 'red');
-  makeSelector(3, 'yellow');
-  makeSelector(4, 'green');
-  makeSelector(5, 'blue');
-  console.log('test');
-
-  // let article = document.querySelector('#circle_1');
-  // console.log(article.dataset);
-  defineUniquePlants();
-  drawMod('rectangle');
-console.log(uniquePlants);
-  function individualPlants() {
-  document.getElementById("individualPlants").value = plantMatrix;
-  console.log(plantMatrix, 'pm');
-  return plantMatrix
-
+    makeSelector(1, 'orange');
+    makeSelector(2, 'red');
+    makeSelector(3, 'yellow');
+    makeSelector(4, 'green');
+    makeSelector(5, 'blue');
+    defineUniquePlants();
+    drawMod('rectangle');
+    console.log(uniquePlants);
+    function individualPlants() {
+    document.getElementById("individualPlants").value = plantMatrix;
+    console.log(plantMatrix, 'pm');
+    return plantMatrix
 }
 });
