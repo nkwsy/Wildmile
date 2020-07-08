@@ -11,7 +11,6 @@ function checkIfModExists(data, x, y) {
     if (data[i]) {
       console.log('data',data[i]);
       if (data[i]["y"] == y && data[i]["x"] == x) {
-        //console.log(data[i]["y"]);
         return data[i]
       }
     }
@@ -144,10 +143,6 @@ function modMap() {
       var g = i * 20
       var h = n * 60
 
-      // text.move(x: g, y: h).font({ fill: '#f06', family: 'Inconsolata' });
-
-
-
       rect.click(function () {
         document.getElementById("x").value = this.data('key')["x"];
         document.getElementById("y").value = this.data('key')["y"];
@@ -159,11 +154,6 @@ function modMap() {
         })
         var a = this.data('key')["n"]
         console.log(a);
-        // plantMatrix.push({color: color, location:a });
-        //plantMatrix.push([color, a]);
-
-
-
       })
     }
     var local = x
@@ -176,168 +166,7 @@ function modMap() {
   }
 
 };
-// function modMap() {
-//   console.log('test');
-//   let draw = SVG().addTo('#modMap').size(400, 3800);
-//   // let article = document.querySelector('#modMap');
-//   let allMods = JSON.parse(article.dataset.mods);
-//   let color = '#189968';
-//
-//   console.log('allmods', data);
-//
-//   console.log(data[0].x);
-//     var len = data.length;
-//
-//     for (i = 0; i < len; i++) {
-//       if (data[i] && data[i].hasOwnProperty("x")) {
-//         console.log(data[i].y);
-//         if (data[i].y == y && data[i]["x"] == x) {
-//           return data[i]
-//         };
-//       }
-//       return false;
-// }
-//
-//
-//   for (let n = 0; n < 30; n++) {
-//     for (let i = 0; i < 10; i++) {
-//       // array[i]
-//       let x = 200 - n
-//       let y = i
-//       //getValueByKey("x", data)
-//       // if (article[0].["x"] == x) {
-//       //      console.log(x,'found');
-//       //  }
-//       t = checkIfModExists(allMods, x, i)
-//       console.log(t);
-//       if (t) {
-//         var defaultColor = color
-//         var op = 1
-//         var id = t["_id"]
-//         // if(document.querySelector('#map')){
-//         //   AddModToMap(x,i,id,'R3');
-//         // };
-//
-//         if (t["shape"] == "R3") {
-//           let rect = draw.rect(20, 60).attr({
-//             fill: defaultColor,
-//             opacity: op,
-//             x: i * 20,
-//             y: n * 60
-//           }).data('key', {
-//             x,
-//             y
-//           }).stroke({
-//             color: '#5ECCA2',
-//             width: 1
-//           });
-//         }
-//         if (t.shape == "T3") {
-//           if (t["orientation"] == "Ascend") {
-//             let rect = draw.polygon('0,0 60,20 60,0').attr({
-//               fill: defaultColor,
-//               opacity: op,
-//               x: i * 20,
-//               y: n * 60
-//             }).data('key', {
-//               x,
-//               y
-//             }).stroke({
-//               color: '#5ECCA2',
-//               width: 1
-//             })
-//
-//           }
-//           if (t["orientation"] == "Decend") {
-//             let rect = draw.polygon('0,0 60,20 60,0').attr({
-//               fill: defaultColor,
-//               opacity: op,
-//               x: i * 20,
-//               y: n * 60
-//             }).data('key', {
-//               x,
-//               y
-//             }).stroke({
-//               color: '#5ECCA2',
-//               width: 1
-//             });
-//           }
-//           let rect = draw.rect(20, 60).attr({
-//             fill: defaultColor,
-//             opacity: op,
-//             x: i * 20,
-//             y: n * 60
-//           }).data('key', {
-//             x,
-//             y
-//           }).stroke({
-//             color: '#5ECCA2',
-//             width: 1
-//           })
-//
-//         }
-//         if (t["shape"] == "R3") {
-//           let rect = draw.rect(20, 60).attr({
-//             fill: defaultColor,
-//             opacity: op,
-//             x: i * 20,
-//             y: n * 60
-//           }).data('key', {
-//             x,
-//             y
-//           }).stroke({
-//             color: '#5ECCA2',
-//             width: 1
-//           })
-//         }
-//       } else {
-//         defaultColor = 'white'
-//         op = 1
-//         let rect = draw.rect(20, 60).attr({
-//           fill: defaultColor,
-//           opacity: op,
-//           x: i * 20,
-//           y: n * 60
-//         }).data('key', {
-//           x,
-//           y
-//         }).stroke({
-//           color: '#5ECCA2',
-//           width: 1
-//         })
-//
-//       }
-//
-//       let g = i * 20
-//       let h = n * 60
-//
-//       // text.move(x: g, y: h).font({ fill: '#f06', family: 'Inconsolata' });
-//       rect.click(function () {
-//         document.getElementById("x").value = this.data('key')["x"];
-//         document.getElementById("y").value = this.data('key')["y"];
-//         modpage = 'module/'+this.data('key')["x"]+'&'+this.data('key')["y"];
-//         window.location.href = modpage;
-//         //drawMod(t["shape"], t["id"])
-//         this.fill({
-//           color: color
-//         })
-//         var a = this.data('key')["n"]
-//         console.log(a);
-//         // plantMatrix.push({color: color, location:a });
-//         //plantMatrix.push([color, a]);
-//         let local = x
-//         console.log(local);
-//         let text = draw.text(local.toString()).attr({
-//           opacity: op,
-//           x: i * 20 - 6,
-//       y: n * 60 + 12
-//     }).rotate(90);
-//       })
-//   }}
-// }
 
 window.onload = function () {
-  // map.on('load', function() {
   modMap();
-  // });
 };
