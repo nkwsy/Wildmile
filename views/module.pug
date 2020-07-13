@@ -51,7 +51,7 @@ block content
           textarea.form-control(rows='3' id='notes' name='notes') !{mod.notes}
         input(type='hidden' name='individualPlants' id='individualPlants' )
         .row
-          #circle_1.col-lg-1
+          #circle_1.col-lg-1(data-plantedPlants=plantedPlants)
         .row
           .form-group.col-sm
             #selector1(data-selction='1')
@@ -173,5 +173,5 @@ block content
           i.fas.fa-plus.fa-sm
           | Submit
      
-        append partials/scripts 
-          script(src='/js/plantPlacement.js')
+  append partials/scripts 
+    script(src='/js/plantPlacement.js')
