@@ -1,6 +1,3 @@
-/**
- * GET /module
-*/
 const Plant = require('../models/Plant.js');
 const IndividualPlant = require('../models/IndividualPlant.js');
 const PlantObservation = require('../models/PlantObservation.js');
