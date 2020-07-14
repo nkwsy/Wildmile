@@ -98,7 +98,7 @@ function checkPlants(x, y) {
             y: i
           })
        }
-        circle.click(function () {
+        circle.click(function (e) {
           if (!selectedColor) {
             return;
           }
@@ -112,7 +112,16 @@ function checkPlants(x, y) {
 
           console.log('existingSelection: ', existingSelection);
 
-          if (!existingSelection) {
+          if (e.metaKey) {
+            plantMatrix = plantMatrix.filter(
+              plant => !(plant.location.x === clickedLocation.x && plant.location.y === clickedLocation.y)
+            );
+
+            this.fill({
+              color: 'grey',
+              opacity: 1
+            });
+         } else if (!existingSelection) {
             plantMatrix.push({
               selection: selectionNumber,
               location: clickedLocation
