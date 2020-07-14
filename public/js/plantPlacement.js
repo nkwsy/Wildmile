@@ -110,14 +110,32 @@ function checkPlants(x, y) {
           var a = this.data('key')
           var b = this.data('selectionNumber')
           console.log(this.data());
-          plantMatrix.push({
-          selection: selectionNumber,
-          location: a
-          });
-          //plantMatrix.push([color, a]);
+
+          const existingSelectionIndex = plantMatrix.findIndex(
+            ({location}) => location.x === a.x && location.y === a.y
+          );
+          const existingSelection = plantMatrix[existingSelectionIndex];
+
+          console.log('existingSelection: ', existingSelection);
+
+          if (!existingSelection) {
+            plantMatrix.push({
+              selection: selectionNumber,
+              location: a
+            });
+          } else if (existingSelection.selectionNumber !== selectionNumber) {
+            plantMatrix[existingSelectionIndex] = {
+              selection: selectionNumber,
+              location: a
+            };
+          } else {
+            return;
+          }
+
+          document.getElementById("individualPlants").value = JSON.stringify(plantMatrix);
+
           console.log(selectedColor, this.data('key'));
-        console.log(JSON.stringify(plantMatrix));
-        document.getElementById("individualPlants").value = JSON.stringify(plantMatrix);
+          console.log(JSON.stringify(plantMatrix));
         })
       }
     }
