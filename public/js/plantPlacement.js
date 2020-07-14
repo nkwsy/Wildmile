@@ -3,6 +3,7 @@ let selectors = [];
 let plantMatrix = [];
 let uniquePlants = [];
 let data = {};
+let selectedColor, selectionNumber;
 
 let article = document.querySelector('#circle_1');
 
@@ -97,22 +98,62 @@ function checkPlants(x, y) {
             y: i
           })
        }
-        circle.click(function () {
-          this.fill({
-            color: color,
-            opacity: 1
-          })
-          var a = this.data('key')
-          var b = this.data('selectionNumber')
-          console.log(this.data());
-          plantMatrix.push({
-          selection: selectionNumber,
-          location: a
-          });
-          //plantMatrix.push([color, a]);
-          console.log(color, this.data('key'));
-        console.log(JSON.stringify(plantMatrix));
-        document.getElementById("individualPlants").value = JSON.stringify(plantMatrix);
+        circle.click(function (e) {
+          if (!selectedColor) {
+            return;
+          }
+
+          const clickedLocation = this.data('key')
+
+          const existingSelectionIndex = plantMatrix.findIndex(
+            plant => plant.location.x === clickedLocation.x && plant.location.y === clickedLocation.y
+          );
+          const existingSelection = plantMatrix[existingSelectionIndex];
+
+          console.log('existingSelection: ', existingSelection);
+
+          if (e.metaKey) {
+            plantMatrix = plantMatrix.filter(
+              plant => !(plant.location.x === clickedLocation.x && plant.location.y === clickedLocation.y)
+            );
+
+            this.fill({
+              color: 'grey',
+              opacity: 1
+            });
+         } else if (!existingSelection) {
+            plantMatrix.push({
+              selection: selectionNumber,
+              location: clickedLocation
+            });
+
+            this.fill({
+              color: selectedColor,
+              opacity: 1
+            });
+          } else if (existingSelection.selection !== selectionNumber) {
+            plantMatrix[existingSelectionIndex] = {
+              selection: selectionNumber,
+              location: clickedLocation
+            };
+
+            this.fill({
+              color: selectedColor,
+              opacity: 1
+            });
+          } else {
+            plantMatrix.splice(existingSelectionIndex, 1);
+
+            this.fill({
+              color: 'grey',
+              opacity: 1
+            });
+          }
+
+          document.getElementById("individualPlants").value = JSON.stringify(plantMatrix);
+
+          console.log(selectedColor, this.data('key'));
+          console.log(JSON.stringify(plantMatrix));
         })
       }
     }
@@ -146,7 +187,7 @@ function checkPlants(x, y) {
         width: 2,
       })
 
-      color = s.color
+      selectedColor = s.color
       selectionNumber = s.selectionNumber
     }
 
@@ -167,7 +208,7 @@ function checkPlants(x, y) {
       opacity: 0.6,
       width: 2
     })
-    color = ss.attr('fill')
+    selectedColor = ss.attr('fill')
   }
 
 
