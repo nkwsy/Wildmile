@@ -103,16 +103,10 @@ function checkPlants(x, y) {
             return;
           }
 
-          this.fill({
-            color: selectedColor,
-            opacity: 1
-          })
-          var a = this.data('key')
-          var b = this.data('selectionNumber')
-          console.log(this.data());
+          const clickedLocation = this.data('key')
 
           const existingSelectionIndex = plantMatrix.findIndex(
-            ({location}) => location.x === a.x && location.y === a.y
+            plant => plant.location.x === clickedLocation.x && plant.location.y === clickedLocation.y
           );
           const existingSelection = plantMatrix[existingSelectionIndex];
 
@@ -121,15 +115,30 @@ function checkPlants(x, y) {
           if (!existingSelection) {
             plantMatrix.push({
               selection: selectionNumber,
-              location: a
+              location: clickedLocation
             });
-          } else if (existingSelection.selectionNumber !== selectionNumber) {
+
+            this.fill({
+              color: selectedColor,
+              opacity: 1
+            });
+          } else if (existingSelection.selection !== selectionNumber) {
             plantMatrix[existingSelectionIndex] = {
               selection: selectionNumber,
-              location: a
+              location: clickedLocation
             };
+
+            this.fill({
+              color: selectedColor,
+              opacity: 1
+            });
           } else {
-            return;
+            plantMatrix.splice(existingSelectionIndex, 1);
+
+            this.fill({
+              color: 'grey',
+              opacity: 1
+            });
           }
 
           document.getElementById("individualPlants").value = JSON.stringify(plantMatrix);
