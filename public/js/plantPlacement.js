@@ -3,6 +3,7 @@ let selectors = [];
 let plantMatrix = [];
 let uniquePlants = [];
 let data = {};
+let selectedColor, selectionNumber;
 
 let article = document.querySelector('#circle_1');
 
@@ -98,8 +99,12 @@ function checkPlants(x, y) {
           })
        }
         circle.click(function () {
+          if (!selectedColor) {
+            return;
+          }
+
           this.fill({
-            color: color,
+            color: selectedColor,
             opacity: 1
           })
           var a = this.data('key')
@@ -110,7 +115,7 @@ function checkPlants(x, y) {
           location: a
           });
           //plantMatrix.push([color, a]);
-          console.log(color, this.data('key'));
+          console.log(selectedColor, this.data('key'));
         console.log(JSON.stringify(plantMatrix));
         document.getElementById("individualPlants").value = JSON.stringify(plantMatrix);
         })
@@ -146,7 +151,7 @@ function checkPlants(x, y) {
         width: 2,
       })
 
-      color = s.color
+      selectedColor = s.color
       selectionNumber = s.selectionNumber
     }
 
@@ -167,7 +172,7 @@ function checkPlants(x, y) {
       opacity: 0.6,
       width: 2
     })
-    color = ss.attr('fill')
+    selectedColor = ss.attr('fill')
   }
 
 
