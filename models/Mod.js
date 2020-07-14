@@ -16,6 +16,7 @@ const ModSchema = new mongoose.Schema({
   shape: String,
   notes: String,
   flag: Boolean,
+  flipped: Boolean,
   decommisioned: Boolean,
   sponsor: { type: Schema.Types.ObjectId, ref: 'User' }
 

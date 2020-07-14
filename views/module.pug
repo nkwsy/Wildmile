@@ -47,6 +47,12 @@ block content
               option Flat
               option RH
               option LH
+          .form-group.col-sm
+            label(for='flipped') Flipped
+            select.form-control(id='flipped' name='flipped')
+              option !{mod.flipped}
+              option false
+              option true
         .form-group
           label(for='notes' ) Notes
           textarea.form-control(rows='3' id='notes' name='notes') !{mod.notes}
@@ -95,6 +101,7 @@ block content
                 i.fas.fa-trash-alt
               .pb-2.mt-2.mb-4.border-bottom
         if exists === false
+          input(type='hidden', name='_csrf', value=_csrf)
           button.btn.btn-success(type='submit', formmethod='POST', style='display: inline-block;')
             i.fas.fa-plus.fa-sm
             | Submit
