@@ -27,7 +27,7 @@ exports.getMod = (req, res, next) => {
           if (err) { return next(err); }
           if (!module) {
             req.flash('info', { msg: 'Creating New Module' });
-            return res.render('module', { exists: false, mod: { model: '', shape: '', orientation: '', notes: '', flipped: false}, plants: plant, x, y });
+            return res.render('module', { exists: false, mod: { model: '', shape: '', orientation: '', notes: '', flipped: false}, plants: plant, x, y, tag: '' });
           }
           IndividualPlant
             .find({ module: module._id })
@@ -73,7 +73,8 @@ const mod = new Mod({
   shape: req.body.shape,
   orientation: req.body.orientation,
   flipped: req.body.flipped,
-  notes: req.body.notes
+  notes: req.body.notes,
+  tag: req.body.tag
 });
 
 
@@ -146,6 +147,7 @@ exports.postUpdateMod = (req, res, next) => {
     mod.shape = req.body.shape || '';
     mod.notes = req.body.notes || '';
     mod.flipped = req.body.flipped || '';
+    mod.tag = req.body.tag || '';
 
     mod.save((err) => {
       if (err) {
