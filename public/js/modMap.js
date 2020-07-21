@@ -57,18 +57,25 @@ function modMap() {
           })
         }
         if (mod['shape'] === 'T3') {
-          const topLeft = `${i*20},${n * 60}`;
-          const topRight = `${(i+1)*20},${n * 60}`;
-          const bottomLeft = `${(i)*20},${(n+1) * 60}`;
-          const bottomRight = `${(i+1)*20},${(n+1) * 60}`;
+          const {flipped} = mod;
+          const topLeft = `${i * 20},${n * 60}`;
+          const topRight = `${(i+1) * 20},${n * 60}`;
+          const bottomLeft = `${(i) * 20},${(n+1) * 60}`;
+          const bottomRight = `${(i+1) * 20},${(n+1) * 60}`;
 
           let coordinates;
 
           if (mod['orientation'] === 'RH') {
-            coordinates = `${topLeft} ${topRight} ${bottomLeft}`;
+            coordinates = [topRight, bottomLeft];
+
+            coordinates.push(flipped ? bottomRight : topLeft);
           } else if (mod['orientation'] === 'LH') {
-            coordinates = `${topLeft} ${bottomLeft} ${bottomRight}`;
+            coordinates = [topLeft, bottomRight];
+
+            coordinates.push(flipped ? topRight : bottomLeft);
           }
+
+          coordinates = coordinates.join(' ');
 
           shape = draw.polygon(coordinates).attr({
             fill: defaultColor,
