@@ -4,7 +4,7 @@ let article = document.querySelector('#modMap');
 console.log(article.dataset);
 let data = JSON.parse(article.dataset.mods)
 
-function checkIfModExists(data, x, y) {
+function getMod(data, x, y) {
   var i, len = data.length;
 
   for (i = 0; i < len; i++) {
@@ -30,20 +30,20 @@ function modMap() {
   var wide = 30;
   for (var n = 0; n < 30; n++) {
     for (var i = 0; i < 10; i++) {
-      let rect;
+      let shape;
       color = '#189968'
       var x = 200 - n
       var y = i
 
-      t = checkIfModExists(allMods, x, i)
+      const mod = getMod(allMods, x, i)
 
-      if (t) {
+      if (mod) {
         var defaultColor = color
         var op = 1
-        var id = t['_id']
+        var id = mod['_id']
 
-        if (t['shape'] === 'R3') {
-          rect = draw.rect(20, 60).attr({
+        if (mod['shape'] === 'R3') {
+          shape = draw.rect(20, 60).attr({
             fill: defaultColor,
             opacity: op,
             x: i * 20,
@@ -56,44 +56,37 @@ function modMap() {
             width: 1
           })
         }
-        if (t['shape'] === 'T3') {
+        if (mod['shape'] === 'T3') {
           const topLeft = `${i*20},${n * 60}`;
           const topRight = `${(i+1)*20},${n * 60}`;
           const bottomLeft = `${(i)*20},${(n+1) * 60}`;
           const bottomRight = `${(i+1)*20},${(n+1) * 60}`;
 
-          if (t['orientation'] === 'RH') {
-            rect = draw.polygon(`${topLeft} ${topRight} ${bottomLeft}`).attr({
-              fill: defaultColor,
-              opacity: op,
-              x: i * 20,
-              y: n * 60
-            }).data('key', {
-              x,
-              y
-            }).stroke({
-              color: '#5ECCA2',
-              width: 1
-            })
-          } else if (t['orientation'] === 'LH') {
-            rect = draw.polygon(`${topLeft} ${bottomLeft} ${bottomRight}`).attr({
-              fill: defaultColor,
-              opacity: op,
-              x: i * 20,
-              y: n * 60
-            }).data('key', {
-              x,
-              y
-            }).stroke({
-              color: '#5ECCA2',
-              width: 1
-            })
+          let coordinates;
+
+          if (mod['orientation'] === 'RH') {
+            coordinates = `${topLeft} ${topRight} ${bottomLeft}`;
+          } else if (mod['orientation'] === 'LH') {
+            coordinates = `${topLeft} ${bottomLeft} ${bottomRight}`;
           }
+
+          shape = draw.polygon(coordinates).attr({
+            fill: defaultColor,
+            opacity: op,
+            x: i * 20,
+            y: n * 60
+          }).data('key', {
+            x,
+            y
+          }).stroke({
+            color: '#5ECCA2',
+            width: 1
+          });
         }
       } else {
         defaultColor = 'white'
         op = 1
-        rect = draw.rect(20, 60).attr({
+        shape = draw.rect(20, 60).attr({
           fill: defaultColor,
           opacity: op,
           x: i * 20,
@@ -110,12 +103,12 @@ function modMap() {
       var g = i * 20
       var h = n * 60
 
-      rect.click(function () {
+      shape.click(function () {
         document.getElementById("x").value = this.data('key')["x"];
         document.getElementById("y").value = this.data('key')["y"];
         modpage = 'module/'+this.data('key')["x"]+'&'+this.data('key')["y"];
         window.location.href = modpage;
-        drawMod(t["shape"], t["id"])
+        drawMod(mod["shape"], mod["id"])
         this.fill({
           color: color
         })
