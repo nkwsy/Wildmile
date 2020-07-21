@@ -21,28 +21,30 @@ exports.getMod = (req, res, next) => {
   Plant
     .find()
     .exec((err, plant) => {
-      Mod
-        .findOne({ x, y })
-        .exec((err, module) => {
-          if (err) { return next(err); }
-          if (!module) {
-            req.flash('info', { msg: 'Creating New Module' });
-            return res.render('module', { exists: false, mod: { model: '', shape: '', orientation: '', notes: '', flipped: false}, plants: plant, x, y, tag: '' });
-          }
-          IndividualPlant
-            .find({ module: module._id })
-            .exec((err, plantedplants) => {
-              if (err) { return next(err); }
-              if (!plantedplants) {
-                req.flash('info', { msg: 'Editing Empty Module' });
-                return res.render('module', { plants: plant, x, y });
-              }
-              req.flash('info', { msg: 'Editing Module' });
-              console.log('plantedPlants', plantedplants);
-              return res.render('module', { exists: true, mod: module, plants: plant, x, y, plantedPlants: plantedplants });
-            })
-        });
-    });
+      Mod.find((err, docs) => {
+        Mod
+          .findOne({ x, y })
+          .exec((err, module) => {
+            if (err) { return next(err); }
+            if (!module) {
+              req.flash('info', { msg: 'Creating New Module' });
+              return res.render('module', { mods: docs, exists: false, mod: { model: '', shape: '', orientation: '', notes: '', flipped: false}, plants: plant, x, y, tag: '' });
+            }
+            IndividualPlant
+              .find({ module: module._id })
+              .exec((err, plantedplants) => {
+                if (err) { return next(err); }
+                if (!plantedplants) {
+                  req.flash('info', { msg: 'Editing Empty Module' });
+                  return res.render('module', { plants: plant, x, y });
+                }
+                req.flash('info', { msg: 'Editing Module' });
+                console.log('plantedPlants', plantedplants);
+                return res.render('module', { mods: docs, exists: true, mod: module, plants: plant, x, y, plantedPlants: plantedplants });
+              })
+          });
+      });
+    })
 };
 //   Plant.find((err, plant) => {
 //   Mod.find({ email: req.body.email },  (err, docs) => {
