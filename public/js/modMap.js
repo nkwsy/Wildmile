@@ -4,12 +4,11 @@ let article = document.querySelector('#modMap');
 console.log(article.dataset);
 let data = JSON.parse(article.dataset.mods)
 
-function checkIfModExists(data, x, y) {
+function getMod(data, x, y) {
   var i, len = data.length;
 
   for (i = 0; i < len; i++) {
     if (data[i]) {
-      console.log('data',data[i]);
       if (data[i]["y"] == y && data[i]["x"] == x) {
         return data[i]
       }
@@ -25,32 +24,26 @@ function modMap() {
   console.log(article.dataset);
   var allMods = JSON.parse(article.dataset.mods);
   var defaultColor = 'grey'
-  console.log(allMods[0]["x"]);
+  console.log('allMods: ', allMods);
 
   //var rect = draw.rect(60, 20).attr({ fill: '#189968' }).stroke({ color: '#5ECCA2',  width: 2 })
   var wide = 30;
-  for (var n = 0; n < 30; n++) {
-    for (var i = 0; i < 10; i++) {
-      // array[i]
+  for (var n = 0; n < 45; n++) {
+    for (var i = 0; i < 16; i++) {
+      let shape;
       color = '#189968'
       var x = 200 - n
       var y = i
-      //getValueByKey("x", data)
-      // if (article[0].["x"] == x) {
-      //      console.log(x,'found');
-      //  }
-      t = checkIfModExists(allMods, x, i)
-      //console.log(t);
-      if (t) {
+
+      const mod = getMod(allMods, x, i)
+
+      if (mod) {
         var defaultColor = color
         var op = 1
-        var id = t["_id"]
-        // if(document.querySelector('#map')){
-        //   AddModToMap(x,i,id,'R3');
-        // };
+        var id = mod['_id']
 
-        if (t["shape"] == "R3") {
-          var rect = draw.rect(20, 60).attr({
+        if (mod['shape'] === 'R3') {
+          shape = draw.rect(20, 60).attr({
             fill: defaultColor,
             opacity: op,
             x: i * 20,
@@ -63,38 +56,34 @@ function modMap() {
             width: 1
           })
         }
-        if (t["shape"] == "T3") {
-          if (t["orientation"] == "Ascend") {
-            var rect = draw.polygon('0,0 60,20 60,0').attr({
-              fill: defaultColor,
-              opacity: op,
-              x: i * 20,
-              y: n * 60
-            }).data('key', {
-              x,
-              y
-            }).stroke({
-              color: '#5ECCA2',
-              width: 1
-            })
+        if (mod['shape'] === 'T3') {
+          const {flipped} = mod;
+          const topLeft = `${i * 20},${n * 60}`;
+          const topRight = `${(i+1) * 20},${n * 60}`;
+          const bottomLeft = `${(i) * 20},${(n+1) * 60}`;
+          const bottomRight = `${(i+1) * 20},${(n+1) * 60}`;
 
-          }
-          if (t["orientation"] == "Decend") {
-            var rect = draw.polygon('0,0 60,20 60,0').attr({
-              fill: defaultColor,
-              opacity: op,
-              x: i * 20,
-              y: n * 60
-            }).data('key', {
-              x,
-              y
-            }).stroke({
-              color: '#5ECCA2',
-              width: 1
-            })
+          let coordinates;
 
+          if (mod['orientation'] === 'RH') {
+            coordinates = [topRight, bottomLeft];
+
+            coordinates.push(flipped ? bottomRight : topLeft);
+          } else if (mod['orientation'] === 'LH') {
+            coordinates = [topLeft, bottomRight];
+
+            coordinates.push(flipped ? topRight : bottomLeft);
+          } else if (mod['orientation'] === 'flat') {
+            // triangles can't be flat... we should either not let this
+            // happen or we should yell at the user more
+            coordinates = [topRight, bottomLeft, topLeft];
+
+            defaultColor = '#C73316';
           }
-          var rect = draw.rect(20, 60).attr({
+
+          coordinates = coordinates.join(' ');
+
+          shape = draw.polygon(coordinates).attr({
             fill: defaultColor,
             opacity: op,
             x: i * 20,
@@ -105,27 +94,12 @@ function modMap() {
           }).stroke({
             color: '#5ECCA2',
             width: 1
-          })
-
-        }
-        if (t["shape"] == "R3") {
-          var rect = draw.rect(20, 60).attr({
-            fill: defaultColor,
-            opacity: op,
-            x: i * 20,
-            y: n * 60
-          }).data('key', {
-            x,
-            y
-          }).stroke({
-            color: '#5ECCA2',
-            width: 1
-          })
+          });
         }
       } else {
         defaultColor = 'white'
         op = 1
-        var rect = draw.rect(20, 60).attr({
+        shape = draw.rect(20, 60).attr({
           fill: defaultColor,
           opacity: op,
           x: i * 20,
@@ -137,18 +111,17 @@ function modMap() {
           color: '#5ECCA2',
           width: 1
         })
-
       }
 
       var g = i * 20
       var h = n * 60
 
-      rect.click(function () {
+      shape.click(function () {
         document.getElementById("x").value = this.data('key')["x"];
         document.getElementById("y").value = this.data('key')["y"];
         modpage = 'module/'+this.data('key')["x"]+'&'+this.data('key')["y"];
         window.location.href = modpage;
-        drawMod(t["shape"], t["id"])
+        drawMod(mod["shape"], mod["id"])
         this.fill({
           color: color
         })
@@ -156,8 +129,7 @@ function modMap() {
         console.log(a);
       })
     }
-    var local = x
-    console.log(local);
+    var local = x;
     var text = draw.text(local.toString()).attr({
       opacity: op,
       x: i * 20 - 6,
