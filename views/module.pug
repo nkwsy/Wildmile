@@ -13,14 +13,53 @@ block content
         .row.col-sm
           input(type='hidden', name='id', value=mod._id)
           .form-group.col-sm
-            label(for='x') Module X coordinate (along the seawall)
+            label(for='x') Module X coordinate
             input.form-control(type='number' id='x' name='x' value=x)
           .form-group.col-sm
-            label(for='y') Module Y coordinate (distance from the seawall)
+            label(for='y') Module Y coordinate
             input.form-control(type='number' id='y' name='y' value=y)
           .form-group.col-sm
             label(for='locationCode') Side of Seawall
-            input.form-control( placeholder='E' id='locationCode' name='locationCode')
+            select.form-control( id='locationCode' name='locationCode' required)
+              if mod.locationCode != ''
+                option !{mod.locationCode}
+              option E
+              option W
+        .row.col-sm
+          .form-group.col-sm
+            label(for='model') Model
+            select.form-control(id='model' name='model' required)
+              if mod.model != ''
+                option !{mod.model}
+              option 3-d
+              option 4-d
+              option 5-d
+              option fwm dock 20 footer
+              option fwm dock 24 footer
+          .form-group.col-sm
+            label(for='shape') Shape and size
+            select.form-control(id='shape' name='shape' required)
+              if mod.shape != ''
+                option !{mod.shape}
+              option R3
+              option R2.3
+              option T3
+              option T2.3
+          .form-group.col-sm
+            label(for='orientation') Angled Orientation
+            select.form-control(id='orientation' name='orientation')
+              if mod.orientation != ''
+                option !{mod.orientation}
+              option Flat
+              option RH
+              option LH
+          .form-group.col-sm
+            label(for='flipped') Flipped
+            select.form-control(id='flipped' name='flipped')
+              if mod.flipped != ''
+                option !{mod.flipped}
+              option false
+              option true
           .form-group.col-sm
             label(for='tag') Tag
             input.form-control(list='tags' id='tag' name='tag' value=mod.tag)
@@ -32,37 +71,6 @@ block content
                   - list.push(mod.tag)
               each tag in list
                 option= tag
-        .row.col-sm
-          .form-group.col-sm
-            label(for='model') Model
-            select.form-control(id='model' name='model' required)
-              option !{mod.model}
-              option 3-d
-              option 4-d
-              option 5-d
-              option fwm dock 20 footer
-              option fwm dock 24 footer
-          .form-group.col-sm
-            label(for='shape') Shape and size
-            select.form-control(id='shape' name='shape' required)
-              option !{mod.shape}
-              option R3
-              option R2.3
-              option T3
-              option T2.3
-          .form-group.col-sm
-            label(for='orientation') Angled Orientation
-            select.form-control(id='orientation' name='orientation')
-              option !{mod.orientation}
-              option Flat
-              option RH
-              option LH
-          .form-group.col-sm
-            label(for='flipped') Flipped
-            select.form-control(id='flipped' name='flipped')
-              option !{mod.flipped}
-              option false
-              option true
         .form-group
           label(for='notes' ) Notes
           textarea.form-control(rows='3' id='notes' name='notes') !{mod.notes}
