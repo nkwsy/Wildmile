@@ -28,8 +28,8 @@ function modMap() {
 
   //var rect = draw.rect(60, 20).attr({ fill: '#189968' }).stroke({ color: '#5ECCA2',  width: 2 })
   var wide = 30;
-  for (var n = 0; n < 30; n++) {
-    for (var i = 0; i < 10; i++) {
+  for (var n = 0; n < 45; n++) {
+    for (var i = 0; i < 16; i++) {
       let shape;
       color = '#189968'
       var x = 200 - n
