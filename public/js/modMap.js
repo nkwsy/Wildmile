@@ -73,6 +73,12 @@ function modMap() {
             coordinates = [topLeft, bottomRight];
 
             coordinates.push(flipped ? topRight : bottomLeft);
+          } else if (mod['orientation'] === 'flat') {
+            // triangles can't be flat... we should either not let this
+            // happen or we should yell at the user more
+            coordinates = [topRight, bottomLeft, topLeft];
+
+            defaultColor = '#C73316';
           }
 
           coordinates = coordinates.join(' ');
