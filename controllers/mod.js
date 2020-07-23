@@ -149,6 +149,7 @@ function removeOldPlants(modId) {
     locationCode = req.body.locationCode || '';
     mod.model = req.body.model || '';
     mod.shape = req.body.shape || '';
+    orientation: req.body.orientation,
     mod.notes = req.body.notes || '';
     mod.flipped = req.body.flipped || '';
     mod.tag = req.body.tag || '';
