@@ -36,13 +36,12 @@ function modMap() {
       var y = i
 
       const mod = getMod(allMods, x, i)
-
       if (mod) {
         var defaultColor = color
         var op = 1
         var id = mod['_id']
 
-        if (mod['shape'] === 'R3') {
+        if (mod['shape'] === 'R3' || mod['shape'] === "R2.3" ) {
           shape = draw.rect(20, 60).attr({
             fill: defaultColor,
             opacity: op,
@@ -56,7 +55,7 @@ function modMap() {
             width: 1
           })
         }
-        if (mod['shape'] === 'T3') {
+        if (mod['shape'] === 'T3' || mod['shape'] === "T2.3") {
           const {flipped} = mod;
           const topLeft = `${i * 20},${n * 60}`;
           const topRight = `${(i+1) * 20},${n * 60}`;
