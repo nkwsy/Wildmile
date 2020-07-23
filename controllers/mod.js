@@ -88,16 +88,16 @@ mod.save((err, newmod) => {
     if (data.selection == 1) {
       p = plant1
     }
-    if (data.selection == 2) {
+    else if (data.selection == 2) {
       p = plant2
     }
-    if (data.selection == 3) {
+    else if (data.selection == 3) {
       p=plant3
     }
-    if (data.selection == 4) {
+    else if (data.selection == 4) {
       p=plant4
     }
-    if (data.selection == 5) {
+    else if (data.selection == 5) {
       p=plant5
     }
     console.log(ip[x]);
@@ -161,16 +161,16 @@ function removeOldPlants(modId) {
         if (data.selection == 1) {
           p = plant1
         }
-        if (data.selection == 2) {
+        else if (data.selection == 2) {
           p = plant2
         }
-        if (data.selection == 3) {
+        else if (data.selection == 3) {
           p=plant3
         }
-        if (data.selection == 4) {
+        else if (data.selection == 4) {
           p=plant4
         }
-        if (data.selection == 5) {
+        else if (data.selection == 5) {
           p=plant5
         }
         console.log(ip[x]);
