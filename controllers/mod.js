@@ -28,7 +28,7 @@ exports.getMod = (req, res, next) => {
             if (err) { return next(err); }
             if (!module) {
               req.flash('info', { msg: 'Creating New Module' });
-              return res.render('module', { mods: docs, exists: false, mod: { model: '', shape: '', orientation: '', notes: '', flipped: false}, plants: plant, x, y, tag: '' });
+              return res.render('module', { mods: docs, exists: false, mod: { model: '', shape: '', orientation: '', notes: '', flipped: false, locationCode: ''}, plants: plant, x, y, tag: '' });
             }
             IndividualPlant
               .find({ module: module._id })
@@ -56,13 +56,13 @@ exports.getMod = (req, res, next) => {
 
 exports.postMod = (req, res, next) => {
 
-var plantLocations = req.body.individualPlants || '{}';
+let plantLocations = req.body.individualPlants || '{}';
 ip = JSON.parse(plantLocations)
-var plant1 = req.body.plant1;
-var plant2 = req.body.plant2;
-var plant3 = req.body.plant3;
-var plant4 = req.body.plant4;
-var plant5 = req.body.plant5;
+let plant1 = req.body.plant1;
+let plant2 = req.body.plant2;
+let plant3 = req.body.plant3;
+let plant4 = req.body.plant4;
+let plant5 = req.body.plant5;
 
 console.log(req.body, 'etuhe', Object.values(ip), plant1,plant2,plant3)
 
@@ -71,6 +71,7 @@ console.log(req.body, 'etuhe', Object.values(ip), plant1,plant2,plant3)
 const mod = new Mod({
   x: req.body.x,
   y: req.body.y,
+  locationCode: req.body.locationCode,
   model: req.body.model,
   shape: req.body.shape,
   orientation: req.body.orientation,
@@ -82,21 +83,21 @@ const mod = new Mod({
 
 mod.save((err, newmod) => {
   if (err) { return next(err); }
-    for ( x in ip) {
+    for (x in ip) {
     data = ip[x]
     if (data.selection == 1) {
       p = plant1
     }
-    if (data.selection == 2) {
+    else if (data.selection == 2) {
       p = plant2
     }
-    if (data.selection == 3) {
+    else if (data.selection == 3) {
       p=plant3
     }
-    if (data.selection == 4) {
+    else if (data.selection == 4) {
       p=plant4
     }
-    if (data.selection == 5) {
+    else if (data.selection == 5) {
       p=plant5
     }
     console.log(ip[x]);
@@ -115,20 +116,6 @@ mod.save((err, newmod) => {
     res.redirect('/module/' + mod.x + '&' + mod.y);
 
 });
-
-
-
-// Mod.find({ x: req.body.x, y: req.body.y  }, (err, existingUser) => {
-//   if (err) { return next(err); }
-//   if (existingUser) {
-//     req.flash('errors', { msg: 'Module Already Exists... Please edit instead' });
-//     return res.redirect('/module');
-//   }
-//   mod.save((err) => {
-//     if (err) { return next(err); }
-//       res.redirect('/module');
-//   });
-// });
 };
 
 exports.postDeleteMod = (req, res, next) => {
@@ -139,12 +126,27 @@ exports.postDeleteMod = (req, res, next) => {
   });
 };
 
-exports.postUpdateMod = (req, res, next) => {
+function removeOldPlants(modId) {
+    IndividualPlant.deleteMany({  module: modId}, (err) => {
+      if (err) { return }
+      return
+    });
+}
+
+  exports.postUpdateMod = (req, res, next) => {
+  let plantLocations = req.body.individualPlants || '{}';
+  ip = JSON.parse(plantLocations)
+  let plant1 = req.body.plant1;
+  let plant2 = req.body.plant2;
+  let plant3 = req.body.plant3;
+  let plant4 = req.body.plant4;
+  let plant5 = req.body.plant5;
 
   Mod.findById(req.body.id, (err, mod) => {
     if (err) { return next(err); }
     mod.x = req.body.x || '';
     mod.y = req.body.y || '';
+    locationCode = req.body.locationCode || '';
     mod.model = req.body.model || '';
     mod.shape = req.body.shape || '';
     mod.notes = req.body.notes || '';
@@ -152,10 +154,38 @@ exports.postUpdateMod = (req, res, next) => {
     mod.tag = req.body.tag || '';
 
     mod.save((err) => {
-      if (err) {
-        if (err) {}
-        return next(err);
-      }
+      if (err) { return next(err);}
+      removeOldPlants(mod.id);
+        for (x in ip) {
+        data = ip[x]
+        if (data.selection == 1) {
+          p = plant1
+        }
+        else if (data.selection == 2) {
+          p = plant2
+        }
+        else if (data.selection == 3) {
+          p=plant3
+        }
+        else if (data.selection == 4) {
+          p=plant4
+        }
+        else if (data.selection == 5) {
+          p=plant5
+        }
+        console.log(ip[x]);
+
+        const plantPlacement = new IndividualPlant({
+          plant: p,
+          x: data.location.x,
+          y: data.location.y,
+          module: mod.id,
+        })
+        console.log('teuhtteute',mod.id, data.location.x,data.location.y);
+        plantPlacement.save((err) => {
+          if (err) { return next(err); }
+          });
+        }
       req.flash('success', { msg: 'updated.' });
       res.redirect('/module/' + mod.x + '&' + mod.y);
     });
