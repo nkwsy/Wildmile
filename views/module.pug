@@ -1,5 +1,5 @@
 extends layout
-block content 
+block content
   .page-header
   #header
     if exists === true
@@ -123,6 +123,6 @@ block content
           button.btn.btn-success(type='submit', formmethod='POST', style='display: inline-block;')
             i.fas.fa-plus.fa-sm
             | Submit
-     
-  append partials/scripts 
+
+  append partials/scripts
     script(src='/js/plantPlacement.js')
