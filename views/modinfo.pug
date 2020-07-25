@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  append partials/header 
+    link(rel='stylesheet', href='https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css')
+  .page-header
+    h3 Plants in Modules
+  input(type='hidden', name='mod', data-mod=mod value=mod)
+  input(type='hidden', name='plantedPlants',data-plantedPlants=plantedPlants, value=plantedPlants)
+  input(type='hidden', id='plants', data-plants=plants, value=plants)
+  .container
+    #toolbar
+      .form-inline(role='form')
+        .form-group
+          span Module Tags: 
+          input.form-control.w70(name='tags')
+        //- .form-group
+        //-   span Plant Tags: 
+        //-   input.form-control.w70(name='plantTags')
+        //- .form-group
+        //-   input.form-control(name='search' type='text' placeholder='Search')
+        button#ok.btn.btn-primary(type='submit') OK
+    table#table(
+      data-toggle="table" 
+      data-url='/api/getInfo' 
+      data-toolbar='#toolbar' 
+      data-search="true" 
+      data-show-search-button="true" 
+      data-show-refresh="true"
+      data-query-params="queryParams" )
+      thead
+        tr
+          th(data-field="plantName" data-sortable="true") Scientific Name
+          th(data-field="commonName" scope='col' data-sortable="true") Common Name
+          th(data-field="count" scope='col' data-sortable="true") Count            
+    script(src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js")
+    script(src="https://unpkg.com/bootstrap-table@1.17.1/dist/extensions/toolbar/bootstrap-table-toolbar.min.js")
+    script(src="/js/modInfo.js")
+        
