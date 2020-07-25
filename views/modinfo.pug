@@ -21,13 +21,14 @@ block content
         //-   input.form-control(name='search' type='text' placeholder='Search')
         button#ok.btn.btn-primary(type='submit') OK
     table#table(
+      data-show-export="true"
       data-toggle="table" 
-      data-url='/api/getInfo' 
-      data-toolbar='#toolbar' 
-      data-search="true" 
-      data-show-search-button="true" 
+      data-url='/api/getInfo'
+      data-click-to-select="true" 
+      data-toolbar="#toolbar"
       data-show-refresh="true"
-      data-query-params="queryParams" )
+      data-query-params="queryParams"
+      )
       thead
         tr
           th(data-field="plantName" data-sortable="true") Scientific Name
@@ -35,5 +36,9 @@ block content
           th(data-field="count" scope='col' data-sortable="true") Count            
     script(src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js")
     script(src="https://unpkg.com/bootstrap-table@1.17.1/dist/extensions/toolbar/bootstrap-table-toolbar.min.js")
+    script(src="https://unpkg.com/bootstrap-table@1.17.1/dist/extensions/export/bootstrap-table-export.js")
+    script(src='https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js')
+    script(src='https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF/jspdf.min.js')
+    script(src='https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js')
     script(src="/js/modInfo.js")
         

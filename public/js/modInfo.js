@@ -1,7 +1,12 @@
 // Modinfo.js
+
 const $table = $('#table');
 const $button = $('#button');
 
+style.
+  #toolbar {
+  margin: 0;
+  }
 function ajaxGet(){
   $.ajax({
     type : "GET",
@@ -59,3 +64,12 @@ function queryParams() {
 function responseHandler(res) {
   return res.rows
 }
+
+$(function() {
+   $('#toolbar').find('select').change(function () {
+     $table.bootstrapTable('destroy').bootstrapTable({
+       exportDataType: $(this).val(),
+       exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+     })
+   }).trigger('change')
+ })
