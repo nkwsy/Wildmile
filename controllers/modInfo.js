@@ -47,7 +47,7 @@ exports.findModInfo = (req, res, next) => {
       });
     })
 };
-//5f053deec74c463ee1d67760 {$in : tags}
+
 exports.updateModInfo = (req, res, next) => {
 let tag = req.query.tags;
 if (!tag) {
@@ -73,62 +73,33 @@ if (!tag) {
       console.log('tagmods',tagMods);
       IndividualPlant
         .aggregate([
-  {
-  $match : { 'module': { $in: tagMods}}
-},
-		{"$group" : {_id:"$plant", count:{$sum:1}}},
-    {
-     $lookup: {
-         from: 'plants',
-         localField: '_id',
-         foreignField: "_id",
-         as: "plants"
-     },
- },
- {
-  $project : {
-    _id:1,
-    count:1,
-    plantName : '$plants.scientificName',
-    commonName : '$plants.commonName',
-    module : '$module._id'
-  }
-}
- // { "$unwind": { "path" : "$_id" } },
-]).exec((err, data) => {
-    if (err) { return next(err);}
-    //console.log(JSON.stringify(data));
-    console.log('usedMods', usedMods);
-    return res.send(data);
-   });
-});
-};
-
-exports.updateModInfo1 = (req, res, next) => {
-  // let x = req.params.x
-  // let y = req.params.y
-            IndividualPlant
-              .find()
-              // .distinct('plant')
-              // .group({
-              //   key:{'plant'},
-              //   reduce:function(cur,result){result.count+=1},
-              //   initial:{count:0}
-              // })
-              // .aggregate(aggregatorOpts)
-              .exec((err, plantedplants) => {
-                if (err)
-                console.log('plantedPlants', plantedplants);
-                return res.send( {plantedPlants: plantedplants });
-});
-};
-
-exports.updateModInfo2 = (req, res, next) => {
-  Plant.find((err, plant) => {
-    Mod.find((err, docs) => {
-      IndividualPlant.find((err, individualPlant) =>{
-        res.send( {mods: docs , plants: plant, plantedPlants: individualPlant});
-      });
+          {
+            $match : { 'module': { $in: tagMods}}
+          },
+          { $group: {_id: "$plant", count:{$sum:1}}},
+          {
+            $lookup: {
+              from: 'plants',
+              localField: '_id',
+              foreignField: '_id',
+              as: 'plants'
+            },
+          },
+          {
+            $project: {
+              _id: 1,
+              count: 1,
+              plantName: '$plants.scientificName',
+              commonName: '$plants.commonName',
+              module: '$module._id'
+            }
+          }
+          // { "$unwind": { "path" : "$_id" } },
+        ]).exec((err, data) => {
+          if (err) { return next(err);}
+          //console.log(JSON.stringify(data));
+          console.log('usedMods', usedMods);
+          return res.send(data);
+        });
     });
-  });
 };
