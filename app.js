@@ -37,6 +37,7 @@ const contactController = require('./controllers/contact');
 
 const plantController = require('./controllers/plant');
 const modController = require('./controllers/mod');
+const modInfoController = require('./controllers/modInfo');
 
 /**
  * API keys and Passport configuration.
@@ -163,6 +164,14 @@ app.route('/module/:x&:y')
   .all(passportConfig.isAuthenticated)
   .get(modController.getMod)
   .post(modController.postMod);
+
+app.route('/modInfo')
+  .all(passportConfig.isAuthenticated)
+  .get(modInfoController.getModinfo)
+  .post(modInfoController.findModInfo);
+
+app.route('/api/getInfo')
+  .get(modInfoController.updateModInfo);
 
 app.post('/module/delete/:id', passportConfig.isAuthenticated, modController.postDeleteMod);
 app.post('/module/update', passportConfig.isAuthenticated, modController.postUpdateMod);
