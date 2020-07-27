@@ -3,46 +3,6 @@
 const $table = $('#table');
 const $button = $('#button');
 
-style.
-  #toolbar {
-  margin: 0;
-  }
-function ajaxGet(){
-  $.ajax({
-    type : "GET",
-    url : "api/getInfo",
-    async: false,
-    success: function(data){
-
-      console.log("Success: ", data.plantedPlants);
-      items = data
-      return items.plantedPlants
-    },
-  error : function(e) {
-    console.log("ERROR: ", e);
-  }
-  });
-  return items.plantedPlants
-}
-
-function ajaxRefresh(params = '') {
-  $.ajax({
-    type : "GET",
-    url : "api/getInfo",
-    async: false,
-    ajaxSuccess: function(data){
-      console.log("Success: ", data.plantedPlants);
-      items = data
-      return items.plantedPlants;
-    },
-  error : function(e) {
-    console.log("ERROR: ", e);
-  }
-});
-  return items.plantedPlants;
-
-}
-
 var $ok = $('#ok')
 
 $(function() {
