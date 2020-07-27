@@ -37,7 +37,7 @@
     "express-validator": "^5.3.1",
     "fbgraph": "^1.4.4",
     "instagram-node": "^0.5.8",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "lastfm": "^0.9.3",
     "lob": "^6.0.3",
     "lusca": "^1.6.1",
