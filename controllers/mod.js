@@ -127,9 +127,10 @@ exports.postDeleteMod = (req, res, next) => {
 };
 
 function removeOldPlants(modId) {
-    IndividualPlant.deleteMany({  module: modId}, (err) => {
+    IndividualPlant.deleteMany({  module: modId}, (err, result) => {
       if (err) { return }
-      return
+      console.log('deleting individualPlants before update: ', result);
+      return result;
     });
 }
 
