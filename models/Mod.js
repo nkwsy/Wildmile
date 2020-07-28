@@ -17,7 +17,7 @@ const ModSchema = new mongoose.Schema({
   notes: String,
   flag: Boolean,
   flipped: Boolean,
-  tag: String,
+  tags: Array,
   decommisioned: Boolean,
   sponsor: { type: Schema.Types.ObjectId, ref: 'User' }
 
