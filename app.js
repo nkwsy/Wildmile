@@ -173,6 +173,9 @@ app.route('/modInfo')
 app.route('/api/getInfo')
   .get(modInfoController.updateModInfo);
 
+app.route('/api/getModTags')
+  .get(modInfoController.getModTags);
+
 app.post('/module/delete/:id', passportConfig.isAuthenticated, modController.postDeleteMod);
 app.post('/module/update', passportConfig.isAuthenticated, modController.postUpdateMod);
 /**
