@@ -126,12 +126,11 @@ exports.postDeleteMod = (req, res, next) => {
   });
 };
 
-exports.postClearModPlants = (req, res, next) => {
-  let modId = req.body.id;
+function removeOldPlants(modId) {
     IndividualPlant.deleteMany({  module: modId}, (err, result) => {
       if (err) { return }
       console.log('deleting individualPlants before update: ', result);
-      return next();
+      return result;
     });
 }
 
@@ -158,6 +157,7 @@ exports.postClearModPlants = (req, res, next) => {
 
     mod.save((err) => {
       if (err) { return next(err);}
+      removeOldPlants(mod.id);
         for (x in ip) {
         data = ip[x]
         if (data.selection == 1) {
