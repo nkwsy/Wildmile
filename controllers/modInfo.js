@@ -51,7 +51,7 @@ exports.findModInfo = (req, res, next) => {
 exports.updateModInfo = (req, res, next) => {
 let tag = req.query.tags;
 if (!tag) {
-  console.log('No tags selected in search');
+    console.log('No tags selected in search');
 }
   Mod
     .find({tag })
@@ -97,9 +97,19 @@ if (!tag) {
           // { "$unwind": { "path" : "$_id" } },
         ]).exec((err, data) => {
           if (err) { return next(err);}
-          //console.log(JSON.stringify(data));
           console.log('usedMods', usedMods);
           return res.send(data);
         });
+    });
+};
+
+exports.getModTags = (req, res, next) => {
+  Mod
+    .aggregate([
+      { $group: {_id: "$tags"}}
+    ]).exec((err, data) => {
+      if (err) { return next(err);}
+      console.log('all Mod Tags', data);
+      return res.send(data);
     });
 };
