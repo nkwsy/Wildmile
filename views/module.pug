@@ -39,27 +39,21 @@ block content
           .form-group.col-sm
             label(for='shape') Shape and size
             select.form-control(id='shape' name='shape' required)
-              if mod.shape != ''
-                option !{mod.shape}
-              option R3
-              option R2.3
-              option T3
-              option T2.3
+              option(selected=mod.shape === 'R3') R3
+              option(selected=mod.shape === 'R2.3') R2.3
+              option(selected=mod.shape === 'T3') T3
+              option(selected=mod.shape === 'T2.3') T2.3
           .form-group.col-sm
             label(for='orientation') Angled Orientation
             select.form-control(id='orientation' name='orientation')
-              if mod.orientation != ''
-                option !{mod.orientation}
-              option flat
-              option RH
-              option LH
+              option(selected=mod.orientation === 'flat') flat
+              option(selected=mod.orientation === 'RH') RH
+              option(selected=mod.orientation === 'LH') LH
           .form-group.col-sm
             label(for='flipped') Flipped
             select.form-control(id='flipped' name='flipped')
-              if mod.flipped != ''
-                option !{mod.flipped}
-              option false
-              option true
+              option(selected=!mod.flipped) false
+              option(selected=mod.flipped) true
           .form-group.col-sm
             label(for='tag') Tag
             input.form-control(list='tags' id='tag' name='tag' value=mod.tag)
