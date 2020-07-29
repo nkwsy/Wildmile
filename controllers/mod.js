@@ -133,6 +133,7 @@ exports.postClearModPlants = (req, res, next) => {
     console.log('deleting individualPlants before update: ', result);
     return next();
   });
+
 }
 
   exports.postUpdateMod = (req, res, next) => {
@@ -158,6 +159,7 @@ exports.postClearModPlants = (req, res, next) => {
 
     mod.save((err) => {
       if (err) { return next(err);}
+      removeOldPlants(mod.id);
         for (x in ip) {
         data = ip[x]
         if (data.selection == 1) {
