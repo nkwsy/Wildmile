@@ -1,5 +1,5 @@
 extends layout
-block content 
+block content
   .page-header
   #header
     if exists === true
@@ -13,19 +13,24 @@ block content
         .row.col-sm
           input(type='hidden', name='id', value=mod._id)
           .form-group.col-sm
-            label(for='x') Module X coordinate (along the seawall)
+            label(for='x') Module X coordinate
             input.form-control(type='number' id='x' name='x' value=x)
           .form-group.col-sm
-            label(for='y') Module Y coordinate (distance from the seawall)
+            label(for='y') Module Y coordinate
             input.form-control(type='number' id='y' name='y' value=y)
           .form-group.col-sm
             label(for='locationCode') Side of Seawall
-            input.form-control( placeholder='E' id='locationCode' name='locationCode')
+            select.form-control( id='locationCode' name='locationCode' required)
+              if mod.locationCode != ''
+                option !{mod.locationCode}
+              option E
+              option W
         .row.col-sm
           .form-group.col-sm
             label(for='model') Model
             select.form-control(id='model' name='model' required)
-              option !{mod.model}
+              if mod.model != ''
+                option !{mod.model}
               option 3-d
               option 4-d
               option 5-d
@@ -34,24 +39,32 @@ block content
           .form-group.col-sm
             label(for='shape') Shape and size
             select.form-control(id='shape' name='shape' required)
-              option !{mod.shape}
-              option R3
-              option R2.3
-              option T3
-              option T2.3
+              option(selected=mod.shape === 'R3') R3
+              option(selected=mod.shape === 'R2.3') R2.3
+              option(selected=mod.shape === 'T3') T3
+              option(selected=mod.shape === 'T2.3') T2.3
           .form-group.col-sm
             label(for='orientation') Angled Orientation
             select.form-control(id='orientation' name='orientation')
-              option !{mod.orientation}
-              option Flat
-              option RH
-              option LH
+              option(selected=mod.orientation === 'flat') flat
+              option(selected=mod.orientation === 'RH') RH
+              option(selected=mod.orientation === 'LH') LH
           .form-group.col-sm
             label(for='flipped') Flipped
             select.form-control(id='flipped' name='flipped')
-              option !{mod.flipped}
-              option false
-              option true
+              option(selected=!mod.flipped) false
+              option(selected=mod.flipped) true
+          .form-group.col-sm
+            label(for='tag') Tag
+            input.form-control(list='tags' id='tag' name='tag' value=mod.tag)
+            datalist(id='tags')
+              - let list = []
+              each mod in mods
+                each tag in list
+                  if (mod.tag !== tag)
+                  - list.push(mod.tag)
+              each tag in list
+                option= tag
         .form-group
           label(for='notes' ) Notes
           textarea.form-control(rows='3' id='notes' name='notes') !{mod.notes}
@@ -116,5 +129,6 @@ block content
   script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js')
   script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js')
   append partials/scripts 
+  append partials/scripts
     script(src='/js/plantPlacement.js')
   

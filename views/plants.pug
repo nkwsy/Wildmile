@@ -1,6 +1,8 @@
 extends layout
 
 block content
+
+
   .page-header
     h3 All Books
 
@@ -11,8 +13,28 @@ block content
         th(scope='col') Common Name
         th(scope='col') Image
     tbody
+    x = 0;
+    script.
+      x = 0
     for plant in plants
+      
       tr
-        th(scope='row')= plant.scientificName
+        th(id=plant._id scope='row')= plant.scientificName
           td= plant.commonName
           td= plant
+        script.
+          function hashCode(str) {
+            let hash = 0;
+            for (var i = 0; i < str.length; i++) {
+              hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            return hash;
+          }
+          function pickColor(str) {
+            return `hsl(${hashCode(str) % 550}, 80%, 80%)`;
+          }
+           g = '!{plant._id}';
+           var element = document.getElementById(g);
+           l = '!{plant.scientificName}'
+           console.log(l.replace(/ .*/,''))
+           element.style.backgroundColor = pickColor(l.replace(/ .*/,''));
