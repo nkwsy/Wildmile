@@ -159,7 +159,6 @@ exports.postClearModPlants = (req, res, next) => {
 
     mod.save((err) => {
       if (err) { return next(err);}
-      removeOldPlants(mod.id);
         for (x in ip) {
         data = ip[x]
         if (data.selection == 1) {
