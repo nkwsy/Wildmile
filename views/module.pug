@@ -55,16 +55,11 @@ block content
               option(selected=!mod.flipped) false
               option(selected=mod.flipped) true
           .form-group.col-sm
-            label(for='tag') Tag
-            input.form-control(list='tags' id='tag' name='tag' value=mod.tag)
-            datalist(id='tags')
-              - let list = []
-              each mod in mods
-                each tag in list
-                  if (mod.tag !== tag)
-                  - list.push(mod.tag)
-              each tag in list
-                option= tag
+              label(for='tags') Tags
+              select.form-control(multiple data-role="tagsinput" id='tags' class='typeahead' name='tags' value=mod.tags)
+                - let list = mod.tags
+                each item in list
+                  option(value=item)=  item
         .form-group
           label(for='notes' ) Notes
           textarea.form-control(rows='3' id='notes' name='notes') !{mod.notes}
@@ -102,12 +97,7 @@ block content
                 option(selected='') Choose...
                 for plant in plants
                   option(value=plant._id)=plant.scientificName
-        .form-group.col-sm
-            label(for='tags') Tags
-            select.form-control(multiple data-role="tagsinput" id='tags' class='typeahead' name='tags' value=mod.tags)
-              - let list = mod.tags
-              each item in list
-                option(value=item)=  item
+
         if exists === true
           button.btn.btn-success(type='submit', formaction='/module/update', formmethod='POST', style='display: inline-block;')
             i.fas.fa-plus.fa-sm
@@ -124,8 +114,6 @@ block content
             i.fas.fa-plus.fa-sm
             | Submit
   script(src="/js/moduleTypeahead.js")
-  script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js")
-  script(src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js')
   script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js')
   script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js')
   append partials/scripts 
