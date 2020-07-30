@@ -39,7 +39,6 @@ exports.getMod = (req, res, next) => {
                   return res.render('module', { plants: plant, x, y });
                 }
                 req.flash('info', { msg: 'Editing Module' });
-                console.log('plantedPlants', plantedplants);
                 return res.render('module', { mods: docs, exists: true, mod: module, plants: plant, x, y, plantedPlants: plantedplants });
               })
           });
@@ -64,22 +63,17 @@ let plant3 = req.body.plant3;
 let plant4 = req.body.plant4;
 let plant5 = req.body.plant5;
 
-console.log(req.body, 'etuhe', Object.values(ip), plant1,plant2,plant3)
-
-
-
 const mod = new Mod({
-  x: req.body.x,
-  y: req.body.y,
-  locationCode: req.body.locationCode,
-  model: req.body.model,
-  shape: req.body.shape,
-  orientation: req.body.orientation,
-  flipped: req.body.flipped,
-  notes: req.body.notes,
-  tags: req.body.tags
-});
-
+    x: req.body.x,
+    y: req.body.y,
+    locationCode: req.body.locationCode,
+    model: req.body.model,
+    shape: req.body.shape,
+    orientation: req.body.orientation,
+    flipped: req.body.flipped,
+    notes: req.body.notes,
+    tags: req.body.tags
+  });
 
 mod.save((err, newmod) => {
   if (err) { return next(err); }
@@ -144,15 +138,16 @@ exports.postClearModPlants = (req, res, next) => {
   let plant3 = req.body.plant3;
   let plant4 = req.body.plant4;
   let plant5 = req.body.plant5;
+  console.log(req.body);
 
   Mod.findById(req.body.id, (err, mod) => {
     if (err) { return next(err); }
     mod.x = req.body.x || '';
     mod.y = req.body.y || '';
-    locationCode = req.body.locationCode || '';
     mod.model = req.body.model || '';
+    mod.locationCode = req.body.locationCode || '';
     mod.shape = req.body.shape || '';
-    orientation: req.body.orientation,
+    mod.orientation = req.body.orientation || '';
     mod.notes = req.body.notes || '';
     mod.flipped = req.body.flipped || '';
     mod.tags = req.body.tags || [];
@@ -176,7 +171,7 @@ exports.postClearModPlants = (req, res, next) => {
         else if (data.selection == 5) {
           p=plant5
         }
-        console.log(ip[x]);
+        // console.log(ip[x]);
 
         const plantPlacement = new IndividualPlant({
           plant: p,
@@ -184,7 +179,7 @@ exports.postClearModPlants = (req, res, next) => {
           y: data.location.y,
           module: mod.id,
         })
-        console.log('teuhtteute',mod.id, data.location.x,data.location.y);
+        //console.log('teuhtteute',mod.id, data.location.x,data.location.y);
         plantPlacement.save((err) => {
           if (err) { return next(err); }
           });
