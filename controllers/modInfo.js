@@ -48,6 +48,17 @@ exports.findModInfo = (req, res, next) => {
     })
 };
 
+exports.getModTags = (req, res, next) => {
+  Mod
+    .aggregate([
+      { $group: {_id: "$tags"}}
+    ]).exec((err, data) => {
+      if (err) { return next(err);}
+      console.log('all Mod Tags', data);
+      return res.send(data);
+    });
+};
+
 exports.updateModInfo = (req, res, next) => {
 let tag = req.query.tags;
 if (!tag) {
