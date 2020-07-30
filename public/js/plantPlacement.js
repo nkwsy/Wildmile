@@ -44,26 +44,46 @@ function checkPlants(x, y) {
   return false;
 }
 
-function drawMod(shape) {
-  const moduleColor = '#7FD674';
+function drawMod() {
+  $('#circle_1').empty();
+
+  const shape = $('#shape').val();
+  const orientation = $('#orientation').val();
+  const flipped = $('#flipped').val() === 'true';
+
   const article = document.querySelector('#circle_1');
+  let moduleColor = '#7FD674';
   //  let data = JSON.parse(article.dataset.plantedPlants)
   console.log(article.dataset.plantedplants);
   const draw = SVG().addTo('#circle_1').size(900, 300);
-  console.log(shape);
-  if (shape == 'Rtriangle') {
-    var triangle = draw.polygon('0,0 900,1300 900,0').fill(moduleColor).stroke({
-      width: 1
+
+  if (['T3', 'T2.3'].includes(shape)) {
+    const topLeft = '0,0';
+    const topRight = '900,0';
+    const bottomLeft = '0,300';
+    const bottomRight = '900, 300';
+    let coordinates;
+
+    if (orientation === 'RH') {
+      coordinates = [topLeft, bottomRight];
+
+      coordinates.push(flipped ? topRight : bottomLeft);
+    } else if (orientation === 'LH') {
+      coordinates = [bottomLeft, topRight];
+
+      coordinates.push(flipped ? topLeft : bottomRight);
+    } else {
+      coordinates = [topRight, topLeft, bottomRight, bottomLeft];
+
+      moduleColor = '#C73316';
+    }
+
+    draw.polygon(coordinates.join(' ')).fill(moduleColor).stroke({
+      width: 1,
     });
-  }
-  if (shape == 'Ltriangle') {
-    var triangle = draw.polygon('0,0 900,300 900,0').fill(moduleColor).stroke({
-      width: 1
-    });
-  }
-  if (shape == 'rectangle') {
-    const rect = draw.rect(900, 300).attr({
-      fill: moduleColor
+  } else {
+    draw.rect(900, 300).attr({
+      fill: moduleColor,
     });
   }
 
@@ -217,7 +237,10 @@ $(document).ready(() => {
   makeSelector(4, 'green');
   makeSelector(5, 'blue');
   defineUniquePlants();
-  drawMod('rectangle');
+
+  drawMod();
+  $('#mod-form select').change(drawMod);
+
   console.log(uniquePlants);
   function individualPlants() {
     document.getElementById('individualPlants').value = plantMatrix;

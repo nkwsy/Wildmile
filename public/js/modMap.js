@@ -80,9 +80,7 @@ function modMap() {
             defaultColor = '#C73316';
           }
 
-          coordinates = coordinates.join(' ');
-
-          shape = draw.polygon(coordinates).attr({
+          shape = draw.polygon(coordinates.join(' ')).attr({
             fill: defaultColor,
             opacity: op,
             x: i * 20,
