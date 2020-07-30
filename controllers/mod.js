@@ -28,7 +28,7 @@ exports.getMod = (req, res, next) => {
             if (err) { return next(err); }
             if (!module) {
               req.flash('info', { msg: 'Creating New Module' });
-              return res.render('module', { mods: docs, exists: false, mod: { model: '', shape: '', orientation: '', notes: '', flipped: false, locationCode: ''}, plants: plant, x, y, tag: '' });
+              return res.render('module', { mods: docs, exists: false, mod: {tags: [], model: '', shape: '', orientation: '', notes: '', flipped: false}, plants: plant, x, y, tag: [] });
             }
             IndividualPlant
               .find({ module: module._id })
@@ -77,7 +77,7 @@ const mod = new Mod({
   orientation: req.body.orientation,
   flipped: req.body.flipped,
   notes: req.body.notes,
-  tag: req.body.tag
+  tags: req.body.tags
 });
 
 
@@ -155,7 +155,7 @@ exports.postClearModPlants = (req, res, next) => {
     orientation: req.body.orientation,
     mod.notes = req.body.notes || '';
     mod.flipped = req.body.flipped || '';
-    mod.tag = req.body.tag || '';
+    mod.tags = req.body.tags || [];
 
     mod.save((err) => {
       if (err) { return next(err);}
