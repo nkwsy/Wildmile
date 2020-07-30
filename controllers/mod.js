@@ -138,7 +138,6 @@ exports.postClearModPlants = (req, res, next) => {
   let plant3 = req.body.plant3;
   let plant4 = req.body.plant4;
   let plant5 = req.body.plant5;
-  console.log(req.body);
 
   Mod.findById(req.body.id, (err, mod) => {
     if (err) { return next(err); }
