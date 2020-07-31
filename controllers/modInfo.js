@@ -65,7 +65,7 @@ if (!tag) {
   console.log('No tags selected in search');
 }
   Mod
-    .find({tag })
+    .find({tags:tag })
     .distinct('_id')
     .exec((err, usedMods) => {
       if (err) { return next(err); }
