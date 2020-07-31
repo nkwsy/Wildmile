@@ -17,7 +17,14 @@ function getMod(data, x, y) {
 
   return false;
 }
-
+function findColor(model) {
+  if (model === '5-d') {
+    return '#D68D5E' ;
+  }
+  else {
+    return '#189968';
+  }
+}
 function modMap() {
   var draw = SVG().addTo('#modMap').size(400, 3800)
   var article = document.querySelector('#modMap');
@@ -37,7 +44,7 @@ function modMap() {
 
       const mod = getMod(allMods, x, i)
       if (mod) {
-        var defaultColor = color
+        var defaultColor = findColor(mod['model'])
         var op = 1
         var id = mod['_id']
 
