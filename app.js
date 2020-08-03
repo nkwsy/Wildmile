@@ -176,7 +176,7 @@ app.route('/api/getModTags')
   .get(modInfoController.getModTags);
 
 app.post('/module/delete/:id', passportConfig.isAuthenticated, modController.postDeleteMod);
-app.post('/module/update', passportConfig.isAuthenticated, modController.postUpdateMod);
+app.post('/module/update', passportConfig.isAuthenticated,modController.postClearModPlants, modController.postUpdateMod);
 /**
  * API examples routes.
  */
