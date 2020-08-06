@@ -22,7 +22,8 @@ const plant = new Plant({
   scientificName: req.body.scientificName,
   commonName: req.body.commonName,
   notes: req.body.notes,
-  botanicPhoto: req.body.botanicPhoto
+  botanicPhoto: req.body.botanicPhoto,
+  tags: req.body.tags
 });
 
 Plant.findOne({ scientificName: req.body.scientificName }, (err, existingUser) => {

@@ -16,6 +16,12 @@ block content
       .col-md-7
         input.form-control(type='commonName', name='commonName', id='commonName', placeholder='Peters anum')
     .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='tags') Tags
+      .col-md-7
+        select.form-control(multiple data-role="tagsinput" id='tags' class='typeahead' name='tags')
+          option 1
+          option 2
+    .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='notes') Notes
       .col-md-7
         input.form-control(type='textarea', name='notes', id='notes',rows='3')
@@ -42,3 +48,4 @@ block content
         tr
           th(scope='row')=plant.scientificName
             td= plant.commonName
+  append partials/scripts

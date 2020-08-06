@@ -11,6 +11,7 @@ block content
       tr
         th(scope='col') Scientific Name
         th(scope='col') Common Name
+        th(scope='col') Tags
         th(scope='col') Image
     tbody
     x = 0;
@@ -21,6 +22,7 @@ block content
       tr
         th(id=plant._id scope='row')= plant.scientificName
           td= plant.commonName
+          td= plant.tags
           td= plant
         script.
           function hashCode(str) {
