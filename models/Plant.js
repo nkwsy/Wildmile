@@ -12,7 +12,8 @@ const plantSchema = new mongoose.Schema({
   photos: Array,
   photoLeaf: String,
   botanicPhoto: String,
-  weed: Boolean
+  weed: Boolean,
+  tags: Array
 
 }, { timestamps: true });
 
