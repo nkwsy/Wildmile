@@ -183,7 +183,7 @@ async function getP(x,y) {
   return pnum
 };
 
-async function eliminateBrackets(brackets, orientation, flipped){
+function eliminateBrackets(brackets, orientation, flipped){
 if (orientation === 'RH' && flipped === false) {
   brackets.tr = false; brackets.rt = false; brackets.rb = false;
 }
@@ -196,12 +196,14 @@ else if (orientation === 'RH' && flipped === true) {
 else if (orientation === 'LH' && flipped === true) {
   brackets.rt = false; brackets.rb = false; brackets.br = false;
 }
+
 };
 
 async function bracketFinder(x, y, orientation, flipped) {
   const allMods = await allModInfo();
   let brackets  = {lt:false,tl:false,tr:false,rt:false,rb:false,br:false,bl:false,lb:false};
   bracketCount = 0
+  console.log('bracket finder: ',orientation, flipped,x,y);
   const modsToCheck = {  left : x + 1, right : x - 1, top : y + 1, bottom : y - 1};
   for (var i = 0; i < allMods.length; i++) {
     cmod = allMods[i];
@@ -258,10 +260,9 @@ async function bracketFinder(x, y, orientation, flipped) {
       }
     }
 };
+   eliminateBrackets(brackets, orientation, flipped);
 
-console.log('brackets: ',x,y,brackets);
-  const finishedBrackets = await eliminateBrackets(brackets, orientation, flipped);
-  return finishedBrackets
+  return brackets
 }
 
 async function generateBrackets(moduleBrackets) {
@@ -333,17 +334,215 @@ async function drawModShape(shape,orientation,flipped) {
     }
   }
 }
+function returnAllModsInGroup(allMods, group,subGroup,subGroups) {
+allGroupMods =[]
+let groupInfo = '';
+for (var i = 0; i < allMods.length; i++) {
+  //groupInfo = returnGroup(tags, group,subGroup);
+ if (allMods[i].tags.includes(group)) {
+   groupInfo = returnGroup(allMods[i].tags, [group],subGroups);
+   modGroupInfo = {model: allMods[i].model, orientation: allMods[i].orientation, flipped: allMods[i].flipped, shape: allMods[i].shape, x: allMods[i].x, y: allMods[i].y,groupInfo: groupInfo};
+   allGroupMods.push(modGroupInfo);
 
+     // if (allMods[i].tags.includes(subGroup)) {
+     //   coordinates = [allMods[i].x, allMods[i].y];
+     //   console.log('coordinates',coordinates);
+     //   subGroups.push(coordinates);
+     // }
+   // }
+
+   // console.log('includes', allMods[i].x);
+ };
+ // console.log(allGroupMods);
+}
+console.log('All group mods',allGroupMods.length);
+ return allGroupMods;
+
+};
+
+
+
+ function returnGroup(tags, groups='none',subGroups='none') {
+let group = 'Z';
+let sub= 'Z';
+  for (var i = 0; i < groups.length; i++) {
+    if (tags.includes(groups[i])) {
+      group = groups[i];
+      for (var g = 0; g < subGroups.length; g++) {
+        if (tags.includes(subGroups[g])) {
+          sub = subGroups[g];
+          console.log('subs',subGroups[g]);
+        }
+      };
+    };
+  };
+
+  let groupMatrix = {group: group ,subgroup: sub};
+  console.log(groupMatrix);
+
+  return groupMatrix;
+
+}
+function difference(a, b) {
+  return Math.abs(a - b);
+}
+
+function moduleCoordinates(shape, orientation, flipped, width, height, homeX, homeY, options='S') {
+console.log('moduleCoordinates',shape, orientation, flipped, width, height, homeX, homeY);
+  if (['T3', 'T2.3'].includes(shape)) {
+    const xTl = homeX;
+    const yTl = homeY;
+    const xTr = homeX + width;
+    const yTr = homeY;
+    const xBl = homeX;
+    const yBl = homeY + height;
+    const xBr = homeX + width;
+    const yBr = homeY + height;
+    let coordinates;
+    // doc.setLineWidth();
+
+    if (orientation === 'RH') {
+      if (flipped === true) {
+        console.log('flippped',xTl, yTl, xTr, yTr, xBr, yBr);
+        doc.triangle(xTl, yTl, xTr, yTr, xBr, yBr, options);
+      }
+      else {
+        doc.triangle(xTl, yTl, xBl, yBl, xBr, yBr, options);
+      }
+    } else if (orientation === 'LH') {
+      if (flipped === true) {
+        doc.triangle(xTr, yTr, xBl, yBl, xTl, yTl, options);
+      }
+      else {
+        doc.triangle(xTr, yTr, xBr, yBr, xBl, yBl, options);
+      }
+    }
+  }
+  if (orientation === 'flat') {
+   console.log('oeuttuhoeh',homeX, homeY, width, height);
+   doc.rect(homeX, homeY, width, height, style = options);
+ }
+}
+
+function groupRender(thisMod,AllModsInGroup,mod) {
+  thisSubGroup = []
+  thisGroup = []
+  let largestSubX=-1;
+  let largestSubY=-1;
+  let largestX=-1;
+  let largestY=-1;
+  for (var i = 0; i < AllModsInGroup.length; i++) {
+    if (thisMod.group === AllModsInGroup[i].groupInfo.group) {
+      thisGroup.push(AllModsInGroup[i]);
+      if (AllModsInGroup[i].x > largestSubX) {
+         largestX = AllModsInGroup[i].x;
+      }
+      if (AllModsInGroup[i].y> largestSubY) {
+        console.log('true');
+        largestY = AllModsInGroup[i].y;
+      }
+      // get mod subgroup
+      if (thisMod.subgroup === AllModsInGroup[i].groupInfo.subgroup) {
+        thisSubGroup.push(AllModsInGroup[i]);
+        if (AllModsInGroup[i].x > largestSubX) {
+           largestSubX = AllModsInGroup[i].x;
+        }
+        if (AllModsInGroup[i].y> largestSubY) {
+          console.log('true');
+          largestSubY = AllModsInGroup[i].y;
+        }
+      }
+      // console.log();
+}
+  }
+  console.log('thisSub',thisSubGroup,largestSubY);
+  // starting position of selection
+  startX=18;
+  startY=230;
+  rectSizeX=30;
+  rectSizeY=10;
+
+  let subgroup
+  for (var i = 0; i < thisSubGroup.length; i++) {
+    x= thisSubGroup[i].x;
+    y= thisSubGroup[i].y;
+    xMultiple = difference(x, largestSubX);
+    yMultiple = difference(y, largestSubY);
+    console.log('yMult',yMultiple,difference(y, largestSubY));
+    modStartX = (xMultiple * rectSizeX) + startX;
+    modStartY = (yMultiple * rectSizeY) + startY;
+    console.log('modStartX',x,modStartY);
+
+    if (mod.x == x && mod.y == y) {
+      fill = 'FD';
+      doc.setFillColor('#D3D3D3');
+    }
+    else {
+      fill = 'S'
+      doc.setFillColor('#ffffff');
+
+    }
+    console.log('allinfo', thisSubGroup[i].shape, thisSubGroup[i].orientation, thisSubGroup[i].flipped, rectSizeX, rectSizeY, modStartX, modStartY, fill);
+    moduleCoordinates(thisSubGroup[i].shape, thisSubGroup[i].orientation, thisSubGroup[i].flipped, rectSizeX, rectSizeY, modStartX, modStartY, fill)
+    doc.text(`${x},${y}`,modStartX+(rectSizeX/2), modStartY+(rectSizeY/2),{align: 'center', baseline: 'middle'})
+  }
+  for (var n = 0; n < thisGroup.length; n++) {
+    thisGroup[n];
+    startX=132;
+    startY=232;
+    rectSizeX=6;
+    rectSizeY=2;
+    x= thisGroup[n].x;
+    y= thisGroup[n].y;
+    xMultiple = difference(x, largestX);
+    yMultiple = difference(y, largestY);
+    console.log('yMult',yMultiple,difference(y, largestSubY));
+    modStartX = (xMultiple * rectSizeX) + startX;
+    modStartY = (yMultiple * rectSizeY) + startY;
+    console.log('modStartX',x,modStartY);
+    console.log('teuthueothaoehtnutoe',thisSubGroup[0].groupInfo.subgroup);
+    if (thisSubGroup[0].groupInfo.subgroup == thisGroup[n].groupInfo.subgroup) {
+      fill = 'FD';
+      doc.setFillColor('#b9b9b9');
+    }
+    else {
+      fill = 'S'
+      doc.setFillColor('#ffffff');
+
+    }
+    moduleCoordinates(thisGroup[n].shape, thisGroup[n].orientation, thisGroup[n].flipped, rectSizeX, rectSizeY, modStartX, modStartY, fill)
+    //doc.text(`${x},${y}`,modStartX+(rectSizeX/2), modStartY+(rectSizeY/2),{align: 'center', baseline: 'middle'})
+
+  }
+  //doc.text(`Group: ${thisSubGroup[0].groupInfo.group}`,modStartX, 228,{align: 'center'})
+
+}
+
+function generateGroups(mod,allMods) {
+  groups = ['B','C','D','E','F','G'];
+  subGroups = ['1','2','3','4','5','6','7','8','9'];
+  thisModGroup = returnGroup(mod.tags, groups, subGroups);
+  console.log('thismod',thisModGroup);
+  AllModsInGroup = returnAllModsInGroup(allMods, thisModGroup.group,thisModGroup.subgroup,subGroups)
+  //returnAllGroups(allMods, groups,subGroups)
+  groupText = `Group: ${thisModGroup.group}${thisModGroup.subgroup}`
+  doc.setFontSize(22);
+  doc.text(groupText, 18, 228); //{baseline:'top', maxWidth: 64}
+  groupRender(thisModGroup, AllModsInGroup,mod)
+
+}
 async function gettingModule(tag) {
-
+  const allMods = await allModInfo();
   const minfo = await modInfo(tag);
   for (var i = 0; i < minfo.length; i++) {
     const plantTable = await gettingPlants(minfo[i].x,minfo[i].y);
     await generatePlants(minfo[i].x,minfo[i].y);
-    const moduleBrackets = await bracketFinder(minfo[i].x,minfo[i].y);
+    const moduleBrackets = await bracketFinder(minfo[i].x,minfo[i].y, minfo[i].orientation, minfo[i].flipped);
     await generateBrackets(moduleBrackets);
+    generateGroups(minfo[i],allMods);
     doc.setTextColor('#ffffff')
     // xy rectangle
+    doc.setFillColor('#000000');
     doc.rect(10, 10, 24, 50, style = 'F');
     doc.rect(10, 10, 65, 50);
     doc.setFontSize(60);
@@ -361,14 +560,27 @@ async function gettingModule(tag) {
     doc.text(modModel, 15, 70);
     // draw module Shape
     await drawModShape(minfo[i].shape, minfo[i].orientation, minfo[i].flipped);
+    //Home Corners
+    let x1 = 24
+    let y1 = 100
+    let x2 = x1 + 156
+    let y2 = y1 + 52
+    let osx = 156; // offset X
+    let osy = 52; // offset Y
+    doc.setFontSize(9)
+    doc.text(' Blue>\nHome \nCorner ',18,152,{align: 'right'})
+    doc.text('< Yellow\n Home\n Corner',190,100,{align: 'left'})
 
     //text box
-    doc.text('Notes',118,174, {baseline: 'bottom'})
-    doc.setLineWidth(2);
-    doc.rect(118,174, 65, 40);
     doc.setLineWidth(0);
+    doc.setFontSize(22);
+    doc.text('Notes',118,174, {baseline: 'bottom'})
+    doc.rect(118,174, 65, 40);
+    doc.setLineWidth(2);
     doc.setFontSize(14);
-    doc.text(minfo[i].notes, 120,176, {baseline:'top', maxWidth: 64})
+    notes = `${minfo[i].notes}                                                ${minfo[i].tags} \n Flipped= ${minfo[i].flipped} `
+    doc.text(notes, 120,176, {baseline:'top', maxWidth: 64})
+
     // 1// 1console.log('minfo',minfo);
     minfo[i]
   //adds new page to document
@@ -446,8 +658,10 @@ async function generatePlants(x,y) {
   return
 }
 async function getPdf() {
-  await gettingModule('c1');
-
+  await gettingModule('c2');
+  // var img = new doc.Image()
+  // img.src = '/public/wmsmsm.png'
+  // pdf.addImage(img, 'png', 12, 180, 12, 220)
   doc.save("a4.pdf"); // will save the file
 }
 async function test() {
