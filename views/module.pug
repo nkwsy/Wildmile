@@ -53,7 +53,7 @@ block content
               option(selected=mod.flipped) true
           .form-group.col-sm
               label(for='tags') Tags
-              select.form-control(multiple data-role="tagsinput" id='tags' class='typeahead' name='tags' value=mod.tags)
+              select.form-control(multiple data-role="tagsinput" id='tags' class='bootstrap-tagsinput' name='tags' value=mod.tags)
                 - let list = mod.tags
                 each item in list
                   option(value=item)=  item

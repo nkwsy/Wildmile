@@ -149,6 +149,8 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
 app.route('/plants')
   .get(plantController.getPlants);
 
+app.post('/plants/delete/:id', plantController.postDeletePlant);
+
 app.route('/plantsadmin')
   .all(passportConfig.isAuthenticated)
   .get(plantController.getPlantsAdmin)
@@ -176,7 +178,7 @@ app.route('/api/getModTags')
   .get(modInfoController.getModTags);
 
 app.post('/module/delete/:id', passportConfig.isAuthenticated, modController.postDeleteMod);
-app.post('/module/update', passportConfig.isAuthenticated,modController.postClearModPlants, modController.postUpdateMod);
+app.post('/module/update', passportConfig.isAuthenticated, modController.postClearModPlants, modController.postUpdateMod);
 /**
  * API examples routes.
  */

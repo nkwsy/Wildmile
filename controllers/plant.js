@@ -1,6 +1,6 @@
 /**
  * GET /plants
- * List all books.
+ * List all plants.
  */
 const Plant = require('../models/Plant.js');
 
@@ -38,4 +38,13 @@ Plant.findOne({ scientificName: req.body.scientificName }, (err, existingUser) =
       res.redirect('/plantsadmin');
   });
 });
+};
+
+exports.postDeletePlant = (req, res, next) => {
+  console.log('deleting');
+  Plant.deleteOne({ _id: req.params.id }, (err) => {
+    if (err) { return next(err); }
+    req.flash('info', { msg: 'Plant Removed.' });
+    res.redirect('/plants');
+  });
 };
