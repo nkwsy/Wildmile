@@ -434,10 +434,10 @@ function groupRender(thisMod,AllModsInGroup,mod) {
   for (var i = 0; i < AllModsInGroup.length; i++) {
     if (thisMod.group === AllModsInGroup[i].groupInfo.group) {
       thisGroup.push(AllModsInGroup[i]);
-      if (AllModsInGroup[i].x > largestSubX) {
+      if (AllModsInGroup[i].x > largestX) {
          largestX = AllModsInGroup[i].x;
       }
-      if (AllModsInGroup[i].y> largestSubY) {
+      if (AllModsInGroup[i].y> largestY) {
         console.log('true');
         largestY = AllModsInGroup[i].y;
       }
@@ -453,14 +453,14 @@ function groupRender(thisMod,AllModsInGroup,mod) {
         }
       }
       // console.log();
-}
+};
   }
   console.log('thisSub',thisSubGroup,largestSubY);
   // starting position of selection
   startX=18;
-  startY=230;
+  startY=178;
   rectSizeX=30;
-  rectSizeY=10;
+  rectSizeY=10
 
   let subgroup
   for (var i = 0; i < thisSubGroup.length; i++) {
@@ -484,23 +484,22 @@ function groupRender(thisMod,AllModsInGroup,mod) {
     }
     console.log('allinfo', thisSubGroup[i].shape, thisSubGroup[i].orientation, thisSubGroup[i].flipped, rectSizeX, rectSizeY, modStartX, modStartY, fill);
     moduleCoordinates(thisSubGroup[i].shape, thisSubGroup[i].orientation, thisSubGroup[i].flipped, rectSizeX, rectSizeY, modStartX, modStartY, fill)
-    doc.text(`${x},${y}`,modStartX+(rectSizeX/2), modStartY+(rectSizeY/2),{align: 'center', baseline: 'middle'})
+    doc.text(`${x},${y}`,modStartX+(rectSizeX/2), modStartY+(rectSizeY/2),{align: 'center', baseline: 'middle'});
   }
   for (var n = 0; n < thisGroup.length; n++) {
     thisGroup[n];
-    startX=132;
+    startX=28;
     startY=232;
-    rectSizeX=6;
-    rectSizeY=2;
+    rectSizeX=12;
+    rectSizeY=4;
     x= thisGroup[n].x;
     y= thisGroup[n].y;
-    xMultiple = difference(x, largestX);
-    yMultiple = difference(y, largestY);
+    xGroupMultiple = difference(x, largestX);
+    yGroupMultiple = difference(y, largestY);
     console.log('yMult',yMultiple,difference(y, largestSubY));
-    modStartX = (xMultiple * rectSizeX) + startX;
-    modStartY = (yMultiple * rectSizeY) + startY;
-    console.log('modStartX',x,modStartY);
-    console.log('teuthueothaoehtnutoe',thisSubGroup[0].groupInfo.subgroup);
+    modStartX = (xGroupMultiple * rectSizeX) + startX;
+    modStartY = (yGroupMultiple * rectSizeY) + startY;
+    console.log('modStartX',x,y);
     if (thisSubGroup[0].groupInfo.subgroup == thisGroup[n].groupInfo.subgroup) {
       fill = 'FD';
       doc.setFillColor('#b9b9b9');
@@ -510,27 +509,68 @@ function groupRender(thisMod,AllModsInGroup,mod) {
       doc.setFillColor('#ffffff');
 
     }
+    doc.setFontSize(6)
     moduleCoordinates(thisGroup[n].shape, thisGroup[n].orientation, thisGroup[n].flipped, rectSizeX, rectSizeY, modStartX, modStartY, fill)
-    //doc.text(`${x},${y}`,modStartX+(rectSizeX/2), modStartY+(rectSizeY/2),{align: 'center', baseline: 'middle'})
+    doc.text(`${x},${y}`,modStartX+(rectSizeX/2), modStartY+(rectSizeY/2),{align: 'center', baseline: 'middle'});
 
   }
-  //doc.text(`Group: ${thisSubGroup[0].groupInfo.group}`,modStartX, 228,{align: 'center'})
+  // doc.text(`Group: ${thisSubGroup[0].groupInfo.group}`,modStartX, 228,{align: 'center'});
 
 }
 
 function generateGroups(mod,allMods) {
-  groups = ['B','C','D','E','F','G'];
-  subGroups = ['1','2','3','4','5','6','7','8','9'];
+  groups = ['A','B','C','D','E','F','G','H','I','J','K'];
+  subGroups = ['1','2','3','4','5','6','7','8','9','10','11'];
   thisModGroup = returnGroup(mod.tags, groups, subGroups);
   console.log('thismod',thisModGroup);
   AllModsInGroup = returnAllModsInGroup(allMods, thisModGroup.group,thisModGroup.subgroup,subGroups)
   //returnAllGroups(allMods, groups,subGroups)
-  groupText = `Group: ${thisModGroup.group}${thisModGroup.subgroup}`
+  groupText = `Group: ${thisModGroup.group}${thisModGroup.subgroup}`;
+  groupNum = `Group: ${thisModGroup.group}`;
   doc.setFontSize(22);
-  doc.text(groupText, 18, 228); //{baseline:'top', maxWidth: 64}
-  groupRender(thisModGroup, AllModsInGroup,mod)
-
+  doc.text(groupText, 18, 176); //{baseline:'top', maxWidth: 64}
+  doc.text(groupNum,18,226)
+  groupRender(thisModGroup, AllModsInGroup,mod);
 }
+function generateShapeInfo(shape, orientation, model) {
+  console.log(shape, orientation, model);
+  let color;
+  if (model === '5-d') {
+    if (shape === 'R3') {
+      color = 'Brown';
+    }
+     if (shape === 'T3') {
+      if (orientation === 'RH') {
+        color = 'Yellow';
+      } else {
+        color = 'Purple';
+      }
+  }
+}
+  if (model === '3-d') {
+    if (shape === 'R2.3') {
+      color = 'Lime Green';
+    } else if (shape === 'R3') {
+      color = 'Green';
+    }
+    else if (shape === 'T3') {
+      if (orientation === 'RH') {
+        color = 'Blue';
+      } else {
+        color = 'Pink';
+      }
+    }
+     if (shape === 'T2.3') {
+      if (orientation === 'RH') {
+        color = 'Yellow';
+      } else {
+        color = 'Orange';
+      }
+  }
+  }
+  return color;
+ }
+
 async function gettingModule(tag) {
   const allMods = await allModInfo();
   const minfo = await modInfo(tag);
@@ -550,13 +590,16 @@ async function gettingModule(tag) {
     // Mod number
     doc.setTextColor('#000000')
     doc.text(minfo[i].x + '\n' + minfo[i].y, 35, 30);
+    shapeColor = generateShapeInfo(minfo[i].shape, minfo[i].orientation, minfo[i].model);
+    console.log('tuehoutnoehtnuoeht',shapeColor);
+
     //table
     doc.table(84, 10, plantTable, headers, {
       autoSize: true
     });
     // Mod model info
     doc.setFontSize(22);
-    modModel = `${minfo[i].shape} ${minfo[i].model} ${minfo[i].orientation}`
+    modModel = `${minfo[i].shape} ${minfo[i].model} ${minfo[i].orientation} (${shapeColor})`
     doc.text(modModel, 15, 70);
     // draw module Shape
     await drawModShape(minfo[i].shape, minfo[i].orientation, minfo[i].flipped);
@@ -568,7 +611,7 @@ async function gettingModule(tag) {
     let osx = 156; // offset X
     let osy = 52; // offset Y
     doc.setFontSize(9)
-    doc.text(' Blue>\nHome \nCorner ',18,152,{align: 'right'})
+    doc.text(' 00Blue>\nHome \nCorner ',18,150,{align: 'right'})
     doc.text('< Yellow\n Home\n Corner',190,100,{align: 'left'})
 
     //text box
@@ -578,11 +621,10 @@ async function gettingModule(tag) {
     doc.rect(118,174, 65, 40);
     doc.setLineWidth(2);
     doc.setFontSize(14);
-    notes = `${minfo[i].notes}                                                ${minfo[i].tags} \n Flipped= ${minfo[i].flipped} `
-    doc.text(notes, 120,176, {baseline:'top', maxWidth: 64})
+    notes = `${minfo[i].notes}                                                ${minfo[i].tags} \n Flipped= ${minfo[i].flipped} `;
+    doc.text(notes, 120,176, {baseline:'top', maxWidth: 64});
 
     // 1// 1console.log('minfo',minfo);
-    minfo[i]
   //adds new page to document
   doc.addPage();
 }
@@ -592,7 +634,8 @@ async function gettingPlants(x,y) {
   const ppp = await getP(x,y)
   let plantLength = ppp.length;
   for (var i = 0; i < ppp.length; i++) {
-    x = {id:i.toString(),
+    id = i+1;
+    x = {id:id.toString(),
     scientific_name:ppp[i].plantName[0],
     num:ppp[i].count.toString(),
     notes:' '}
@@ -649,20 +692,25 @@ async function generatePlants(x,y) {
       radius = 5;
       x = leftMargin + radius+ (plantPlacement.x *15)
       y = topMargin + radius + (plantPlacement.y *12);
-      doc.setFont('Helvetica','Bold')
+      doc.setFont('Helvetica','Bold');
       doc.setFontSize(20)
-      doc.text(i.toString(),x,y,{align: 'center', baseline: 'middle'});
-      doc.circle(x, y, 5,);
+      id = i+1;
+      doc.setTextColor('#ffffff');
+      doc.setFillColor('#333333')
+      doc.circle(x, y, 5,style='F');
+      doc.text(id.toString(),x,y,{align: 'center', baseline: 'middle'});
+
     }
+
   }
+  doc.setFillColor('#000000')
+  doc.setTextColor('#000000')
   return
 }
 async function getPdf() {
-  await gettingModule('c2');
-  // var img = new doc.Image()
-  // img.src = '/public/wmsmsm.png'
-  // pdf.addImage(img, 'png', 12, 180, 12, 220)
+  await gettingModule('K');
   doc.save("a4.pdf"); // will save the file
+
 }
 async function test() {
   // 1console.log(await generateData);
