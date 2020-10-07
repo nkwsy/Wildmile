@@ -38,6 +38,7 @@ const contactController = require('./controllers/contact');
 const plantController = require('./controllers/plant');
 const modController = require('./controllers/mod');
 const modInfoController = require('./controllers/modInfo');
+const pdfController = require('./controllers/pdfGen');
 
 /**
  * API keys and Passport configuration.
@@ -170,6 +171,10 @@ app.route('/modInfo')
   .all(passportConfig.isAuthenticated)
   .get(modInfoController.getModinfo)
   .post(modInfoController.findModInfo);
+
+app.route('/pdf')
+  .all(passportConfig.isAuthenticated)
+  .get(pdfController.getPdf);
 
 app.route('/api/getInfo')
   .get(modInfoController.updateModInfo);
