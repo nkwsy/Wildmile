@@ -1,0 +1,52 @@
+extends ../layout
+
+block content
+  h3 New Trash Log
+  form(id='newTrashLog', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .row.col-sm
+      .form-group.col-sm
+        label(for='site') Site
+        input.form-control(type='textarea' id='site' name='site' value='wildmile' required)
+      .form-group.col-sm
+        label(for='numOfParticipants') Number of Participants
+        input.form-control.input-number(type='text', name='numOfParticipants', min='1', max='20')
+      .form-group.col-sm
+        input#unattributed.form-check-input(type='checkbox', value='')
+        label.form-check-label(for='unattributed') Unattributed
+    .row.col-sm
+      .form-group.col-sm
+        label(for='date') Date
+        input.form-control(type='date' id='date' name='date' required)
+      .form-group.col-sm
+        label(for='timeStart') Time Start
+        input.form-control(type='time' id='timeStart' name='timeStart' required)
+      .form-group.col-sm
+        label(for='timeEnd') Time End
+        input.form-control(type='time' id='timeEnd' name='timeEnd' required)
+    .row.col-sm
+      .form-group.col-sm
+        label(for='notes') Notes
+        textarea.form-control( rows='2' id='notes' name='notes')
+    .row.col-lg
+      .form-group.col-sm
+        button.btn.btn-success(type='submit')
+          i.fas.fa-plus.fa-sm
+          | Submit
+  .pb-2.mt-2.mb-4.border-bottom
+  //- table#trash.table-sm.table-striped
+  //-   thead
+  //-     tr
+  //-       th(scope='col') Date
+  //-       th(scope='col') Creator
+  //-       th(scope='col') Participants
+  //-       th(scope='col') Edit
+  //- 
+  //-   tbody
+  //-   for trashLog in trashLogs
+  //-     tr
+  //-       th(scope='row') 1
+  //-         td= trashLog.timeStart
+  //-         td= trashLog.creator
+  //-         td= trashLog.numOfParticipants
+  //-         td= trashLog

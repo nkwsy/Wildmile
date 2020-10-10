@@ -39,6 +39,7 @@ const plantController = require('./controllers/plant');
 const modController = require('./controllers/mod');
 const modInfoController = require('./controllers/modInfo');
 const pdfController = require('./controllers/pdfGen');
+const trashController = require('./controllers/trash');
 
 /**
  * API keys and Passport configuration.
@@ -184,6 +185,26 @@ app.route('/api/getModTags')
 
 app.post('/module/delete/:id', passportConfig.isAuthenticated, modController.postDeleteMod);
 app.post('/module/update', passportConfig.isAuthenticated, modController.postClearModPlants, modController.postUpdateMod);
+
+app.route('/trash')
+  .all(passportConfig.isAuthenticated)
+  .get(trashController.getTrash);
+
+app.route('/trash/trashLogs')
+  .all(passportConfig.isAuthenticated)
+  .get(trashController.getTrashLogs)
+  .post(trashController.postNewTrashLog);
+
+app.route('/trash/trashLog/:logId')
+  .all(passportConfig.isAuthenticated)
+  .get(trashController.getTrashLog)
+  .post(trashController.postTrashLog);
+
+app.route('/trash/trashItems')
+  .all(passportConfig.isAuthenticated)
+  .get(trashController.getTrashItems)
+  .post(trashController.postTrashItem);
+
 /**
  * API examples routes.
  */
