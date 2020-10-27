@@ -23,6 +23,7 @@
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.5.0",
+    "bootstrap-icons": "^1.0.0",
     "bootstrap-multiselect": "^0.9.15",
     "bootstrap-tagsinput": "^0.7.1",
     "chalk": "^2.4.2",

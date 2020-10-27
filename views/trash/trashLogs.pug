@@ -12,7 +12,7 @@ block content
         label(for='numOfParticipants') Number of Participants
         input.form-control.input-number(type='text', name='numOfParticipants', min='1', max='20')
       .form-group.col-sm
-        input#unattributed.form-check-input(type='checkbox', value='')
+        input#unattributed.form-check-input(type='checkbox', value='True')
         label.form-check-label(for='unattributed') Unattributed
     .row.col-sm
       .form-group.col-sm
@@ -34,19 +34,33 @@ block content
           i.fas.fa-plus.fa-sm
           | Submit
   .pb-2.mt-2.mb-4.border-bottom
-  //- table#trash.table-sm.table-striped
-  //-   thead
-  //-     tr
-  //-       th(scope='col') Date
-  //-       th(scope='col') Creator
-  //-       th(scope='col') Participants
-  //-       th(scope='col') Edit
-  //- 
-  //-   tbody
-  //-   for trashLog in trashLogs
-  //-     tr
-  //-       th(scope='row') 1
-  //-         td= trashLog.timeStart
-  //-         td= trashLog.creator
-  //-         td= trashLog.numOfParticipants
-  //-         td= trashLog
+
+  table#table(
+    data-toggle="table" 
+    data-click-to-select="true" 
+    data-toolbar="#toolbar"
+    data-query-params="queryParams"
+    )
+    thead
+      tr
+        th(data-field="Date" data-sortable="true" data-width="75") Date
+        th(data-field="Time" scope='col' data-sortable="true" data-width="75") Time
+        th(data-field="Participants" scope='col' data-sortable="true" data-width="100") Participants
+        th(data-field="notes" scope='col' data-width="100") Notes
+        th(scope='col' data-width="10") Edit
+
+    for trashLog in trashLogs
+        tr
+          td= trashLog.timeStart.toDateString()
+          td= trashLog.timeStart.toLocaleTimeString('en-US')
+          td= trashLog.numOfParticipants
+          td= trashLog.notes
+          td
+            a(class='btn.btn-sm' type='button' href=`/trash/trashLog/${trashLog._id}`)
+              i.fa.fa-edit.fa-sm
+            a(class='btn.btn-sm btn-outline-danger' type='button' href=`/trash/trashLog/delete/${trashLog._id}`)
+              i.fa.fa-trash.fa-sm
+  script(src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js")
+  script(src="https://unpkg.com/bootstrap-table@1.17.1/dist/extensions/toolbar/bootstrap-table-toolbar.min.js")
+  script(src='https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF/jspdf.min.js')
+  script(src='https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js')

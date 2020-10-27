@@ -47,13 +47,15 @@ const TrashLog = mongoose.model('TrashLog', trashLogSchema);
 const trashItemSchema = new mongoose.Schema({
   name: String,
   material: String,
-  catagory: String,
+  catagory: {type: String, index:true },
   description: String,
   photo: String,
   averageWeight: Number,
   floats: Boolean,
   creator: { type: Schema.Types.ObjectId, ref: 'User' }
 }, { timestamps: true });
+
+trashItemSchema.index({ name: 1, type: -1 });
 
 const TrashItem = mongoose.model('TrashItem', trashItemSchema);
 // module.exports = TrashItem;
@@ -89,3 +91,4 @@ module.exports = {
 //   Material
 //   Quantity
 //
+// // TODO: Add system for live tracking / trash removal

@@ -6,15 +6,42 @@ const {TrashItem} = require('../models/Trash.js');
 const {TrashLog} = require('../models/Trash.js');
 const {IndividualTrashItem} = require('../models/Trash.js');
 
+function trashItemSplit(logId, itemId, quantity, aggrigateWeight, creator, options = []) {
+allItems = [];
+for (var i = 0; i < itemId.length; i++) {
+for (var n = 0; n < quantity[i]; n++) {
+  //Find if there is an individual weight, create formula for that
+  weight = (aggrigateWeight[i] / quantity[i]);
+let newItem = {
+  itemId: itemId[i],
+  logId: logId,
+  // quantity: Number,
+  // notes: options.notes[n] || '',
+  // location: options.itemId[i].location[n] || '',
+  // photo: String,
+  weight: weight,
+  // waterlogged: Boolean,
+  // aggrigateWeight: Number,
+  // tags: Array,
+  creator: creator
+
+}
+allItems.push(newItem)
+
+}
+}
+return allItems;
+ }
 exports.getTrash = (req, res) => {
-    res.render('trash');
+    res.render('trash/trash');
 };
 
 exports.getTrashLog = (req, res) => {
   TrashLog
     .findOne({ logId: req.params.logId })
     .exec((err, docs) => {
-      TrashItem.find({logId:req.params.logId})
+      TrashItem
+      .find()
       // .populate('itemId')
       .exec((err, items) => {
         res.render('trash/trashLog', { trashLogs: docs || '', trashItems: items });
@@ -22,24 +49,22 @@ exports.getTrashLog = (req, res) => {
     });
   }
 
-  exports.postTrashLog = (req, res, next) => {
-
-  const trashLog = new TrashLog({
-    site: req.body.site,
-    timeStart: req.body.timeStart,
-    timeEnd: req.body.timeEnd,
-    creator: req.user.id,
-    unattributed: Boolean || false,
-    // participants: req.body.participants || [''],
-    numOfParticipants: req.body.numOfParticipants,
-    notes: req.body.notes || '',
-
-  });
-  trashLog.save(function(err,currentLog) {
-     console.log('new Trash Log: ',currentLog._id);
-     return res.redirect(`/trash/trashLog/${currentLog._id}`);
-  });
-  }
+exports.postTrashLog = (req, res, next) => {
+  let startTime = req.body.date + ' ' + req.body.timeStart;
+  let endTime = req.body.date + ' ' + req.body.timeEnd
+  let allTrashItems = trashItemSplit(req.params.logId, req.body.itemId, req.body.quantity, req.body.aggrigateWeight, req.user.id);
+  console.log(allTrashItems);
+  IndividualTrashItem.insertMany(allTrashItems, onInsert);
+  function onInsert(err, docs) {
+    if (err) {
+      console.log(err);
+      } else {
+      console.info('%d potatoes were successfully stored.', docs.length);
+      req.flash('info', { msg: 'Trash has been logged' });
+        return res.redirect('/trash');
+        }
+      }
+    }
 
 exports.getTrashLogs = (req, res) => {
   TrashLog.find((err, docs) => {
@@ -48,14 +73,15 @@ exports.getTrashLogs = (req, res) => {
 };
 
 exports.postNewTrashLog = (req, res, next) => {
-
+let startTime = req.body.date + ' ' + req.body.timeStart;
+let endTime = req.body.date + ' ' + req.body.timeEnd;
 const trashLog = new TrashLog({
   site: req.body.site,
-  timeStart: req.body.timeStart,
-  timeEnd: req.body.timeEnd,
+  timeStart: startTime,
+  timeEnd: endTime,
   creator: req.user.id,
-  unattributed: Boolean || false,
-  participants: req.body.participants || [''],
+  unattributed: req.body.unattributed || false,
+  // participants: req.body.participants || [''],
   numOfParticipants: req.body.numOfParticipants,
   notes: req.body.notes || ''
 
@@ -84,6 +110,6 @@ const trashItem = new TrashItem({
 });
   trashItem.save((err) => {
     if (err) { return next(err); }
-      res.redirect('trash/trashItems');
+      res.redirect('/trash/trashItems');
   });
 };
