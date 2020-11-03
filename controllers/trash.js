@@ -12,6 +12,9 @@ for (var i = 0; i < itemId.length; i++) {
 for (var n = 0; n < quantity[i]; n++) {
   //Find if there is an individual weight, create formula for that
   weight = (aggrigateWeight[i] / quantity[i]);
+  if (weight == 0) {
+    weight = undefined;
+  }
 let newItem = {
   itemId: itemId[i],
   logId: logId,
@@ -40,10 +43,12 @@ exports.getTrashLog = (req, res) => {
   TrashLog
     .findOne({ logId: req.params.logId })
     .exec((err, docs) => {
+      if (err) { console.log(err); }
       TrashItem
       .find()
       // .populate('itemId')
       .exec((err, items) => {
+
         res.render('trash/trashLog', { trashLogs: docs || '', trashItems: items });
       });
     });
@@ -65,6 +70,18 @@ exports.postTrashLog = (req, res, next) => {
         }
       }
     }
+
+exports.postDeleteTrashLog = (req, res, next) => {
+  console.log(req.params.logId);
+  TrashLog.delete({ _id: req.params.logId }, (err) => {
+    if (err) { console.log(err);return next(err); }
+    IndividualTrashItem.delete({ logId: req.params.logId }, (err) => {
+    req.flash('info', { msg: 'Module Removed.' });
+    res.redirect('/trash');
+  });
+  });
+};
+
 
 exports.getTrashLogs = (req, res) => {
   TrashLog.find((err, docs) => {

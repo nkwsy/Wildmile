@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoose_delete = require('mongoose-delete');
 
 const { Schema } = mongoose;
 
@@ -37,9 +38,10 @@ const trashLogSchema = new mongoose.Schema({
   participants: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   unattributed: Boolean,
   area: polygonSchema,
-  notes: String
+  notes: String,
 }, { timestamps: true });
 
+trashLogSchema.plugin(mongoose_delete, { overrideMethods: true });
 
 const TrashLog = mongoose.model('TrashLog', trashLogSchema);
 // module.exports = TrashLog;
@@ -52,10 +54,11 @@ const trashItemSchema = new mongoose.Schema({
   photo: String,
   averageWeight: Number,
   floats: Boolean,
-  creator: { type: Schema.Types.ObjectId, ref: 'User' }
+  creator: { type: Schema.Types.ObjectId, ref: 'User' },
 }, { timestamps: true });
 
 trashItemSchema.index({ name: 1, type: -1 });
+trashItemSchema.plugin(mongoose_delete, { overrideMethods: true });
 
 const TrashItem = mongoose.model('TrashItem', trashItemSchema);
 // module.exports = TrashItem;
@@ -71,11 +74,12 @@ const individualTrashItemSchema = new mongoose.Schema({
   waterlogged: Boolean,
   aggrigateWeight: Number,
   tags: Array,
-  creator: { type: Schema.Types.ObjectId, ref: 'User' }
-
+  creator: { type: Schema.Types.ObjectId, ref: 'User' },
 }, { timestamps: true });
 
+individualTrashItemSchema.plugin(mongoose_delete, { overrideMethods: true });
 const IndividualTrashItem = mongoose.model('IndividualTrashItem', individualTrashItemSchema);
+
 module.exports = {
   TrashItem,
   TrashLog,

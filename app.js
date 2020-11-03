@@ -156,17 +156,17 @@ app.post('/plants/delete/:id', plantController.postDeletePlant);
 app.route('/plantsadmin')
   .all(passportConfig.isAuthenticated)
   .get(plantController.getPlantsAdmin)
-  .post(plantController.postPlantsAdmin);
+  .post(passportConfig.isAdmin, plantController.postPlantsAdmin);
 
 app.route('/modmap')
   .all(passportConfig.isAuthenticated)
   .get(modController.getModMap)
-  .post(modController.postMod);
+  .post(passportConfig.isAdmin, modController.postMod);
 
 app.route('/module/:x&:y')
   .all(passportConfig.isAuthenticated)
   .get(modController.getMod)
-  .post(modController.postMod);
+  .post(passportConfig.isAdmin, modController.postMod);
 
 app.route('/modInfo')
   .all(passportConfig.isAuthenticated)
@@ -183,8 +183,8 @@ app.route('/api/getInfo')
 app.route('/api/getModTags')
   .get(modInfoController.getModTags);
 
-app.post('/module/delete/:id', passportConfig.isAuthenticated, modController.postDeleteMod);
-app.post('/module/update', passportConfig.isAuthenticated, modController.postClearModPlants, modController.postUpdateMod);
+app.post('/module/delete/:id', passportConfig.isAuthenticated, passportConfig.isAdmin, modController.postDeleteMod);
+app.post('/module/update', passportConfig.isAuthenticated, passportConfig.isAdmin, modController.postClearModPlants, modController.postUpdateMod);
 
 app.route('/trash')
   .all(passportConfig.isAuthenticated)
@@ -199,6 +199,10 @@ app.route('/trash/trashLog/:logId')
   .all(passportConfig.isAuthenticated)
   .get(trashController.getTrashLog)
   .post(trashController.postTrashLog);
+
+app.route('/trash/trashLog/delete/:logId')
+  .all(passportConfig.isAuthenticated)
+  .get(trashController.postDeleteTrashLog);
 
 app.route('/trash/trashItems')
   .all(passportConfig.isAuthenticated)

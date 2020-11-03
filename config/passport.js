@@ -597,6 +597,20 @@ exports.isAuthenticated = (req, res, next) => {
 };
 
 /**
+ * Check if user is Admin.
+ */
+exports.isAdmin = (req, res, next) => {
+  if (req.isAuthenticated()) {
+      User.findById(req.user.id, (err, user) => {
+        if (user.admin === true) {
+            return next();
+          } else {
+            res.redirect('/login');
+          }
+      });
+  }
+};
+/**
  * Authorization Required middleware.
  */
 exports.isAuthorized = (req, res, next) => {
