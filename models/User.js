@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
   steam: String,
   tokens: Array,
   admin: Boolean,
+  ranger: Boolean,
 
 
   profile: {
