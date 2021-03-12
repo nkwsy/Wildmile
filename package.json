@@ -41,7 +41,7 @@
     "fbgraph": "^1.4.4",
     "instagram-node": "^0.5.8",
     "jquery": "^3.5.0",
-    "jspdf": "^2.0.0",
+    "jspdf": "^2.3.1",
     "jspdf-autotable": "^3.5.6",
     "lastfm": "^0.9.3",
     "lob": "^6.0.3",
