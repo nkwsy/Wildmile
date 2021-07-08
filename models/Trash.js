@@ -39,6 +39,7 @@ const trashLogSchema = new mongoose.Schema({
   unattributed: Boolean,
   area: polygonSchema,
   notes: String,
+  weight: Number,
 }, { timestamps: true });
 
 trashLogSchema.plugin(mongoose_delete, { overrideMethods: true });
@@ -49,7 +50,7 @@ const TrashLog = mongoose.model('TrashLog', trashLogSchema);
 const trashItemSchema = new mongoose.Schema({
   name: String,
   material: String,
-  catagory: {type: String, index:true },
+  catagory: { type: String, index: true },
   description: String,
   photo: String,
   averageWeight: Number,
@@ -74,11 +75,20 @@ const individualTrashItemSchema = new mongoose.Schema({
   waterlogged: Boolean,
   aggrigateWeight: Number,
   tags: Array,
+  generic: { type: Boolean, default: true },
   creator: { type: Schema.Types.ObjectId, ref: 'User' },
 }, { timestamps: true });
 
 individualTrashItemSchema.plugin(mongoose_delete, { overrideMethods: true });
 const IndividualTrashItem = mongoose.model('IndividualTrashItem', individualTrashItemSchema);
+
+trashLogSchema.virtual('items', {
+  ref: 'IndividualTrashItem', // The model to use
+  localField: '_id', // Find people where `localField`
+  foreignField: 'logId', // is equal to `foreignField`
+  justOne: false,
+  options: { sort: { itemId: -1 } }
+});
 
 module.exports = {
   TrashItem,

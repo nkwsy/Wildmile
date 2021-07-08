@@ -2,10 +2,11 @@
  * GET /trash
  * List all trash.
  */
+const mongoose = require('mongoose');
+
 const { TrashItem } = require('../models/Trash.js');
 const { TrashLog } = require('../models/Trash.js');
 const { IndividualTrashItem } = require('../models/Trash.js');
-
 function trashItemSplit(logId, itemId, quantity, aggrigateWeight, creator, options = []) {
   allItems = [];
   for (let i = 0; i < itemId.length; i++) {
@@ -55,11 +56,35 @@ exports.getTrashLog = (req, res) => {
     });
 };
 
+exports.getTrashLogAPI = (req, res) => {
+  TrashLog
+    .findOne({ _id: req.params.logId })
+    .exec((err, docs) => {
+      if (err) { console.log(err); }
+      TrashItem
+        .find()
+      // .populate('itemId')
+        .exec((err, items) => {
+          IndividualTrashItem
+            .find({ logId: req.params.logId })
+            .exec((err, individualItems) =>
+              res.render('trash/trashLog', { trashLogs: docs || '', trashItems: items, individualItems }));
+        });
+    });
+};
+exports.postClearLogItems = (req, res, next) => {
+  let logId = req.params.logId;
+  IndividualTrashItem.deleteMany({  logId: logId}, (err, result) => {
+    if (err) { return }
+    console.log('deleting individualTrashItems before update: ', result);
+    return next();
+  });
+}
 exports.postTrashLog = (req, res, next) => {
   const startTime = `${req.body.date} ${req.body.timeStart}`;
   const endTime = `${req.body.date} ${req.body.timeEnd}`;
   const allTrashItems = trashItemSplit(req.params.logId, req.body.itemId, req.body.quantity, req.body.aggrigateWeight, req.user.id);
-  console.log(allTrashItems);
+  console.log('all trash items', allTrashItems, req.params.logId);
   IndividualTrashItem.insertMany(allTrashItems, onInsert);
   function onInsert(err, docs) {
     if (err) {
@@ -67,7 +92,7 @@ exports.postTrashLog = (req, res, next) => {
     } else {
       console.info('%d potatoes were successfully stored.', docs.length);
       req.flash('info', { msg: 'Trash has been logged' });
-      return res.redirect('/trash');
+      return res.redirect('/trash/trashLogs');
     }
   }
 };
@@ -140,4 +165,70 @@ exports.getTrashInfo = (req, res) => {
       });
     });
   });
+};
+
+exports.getTrashLogInfo = (req, res, next) => {
+  IndividualTrashItem
+    .aggregate([
+      { $group: { _id: '$tags' } }
+    ]).exec((err, data) => {
+      if (err) { return next(err); }
+      console.log('all Mod Tags', data);
+      return res.send(data);
+    });
+};
+
+exports.updateModInfo = (req, res, next) => {
+  const tag = req.query.tags;
+  if (!tag) {
+    console.log('No tags selected in search');
+  }
+  Mod
+    .find({ tags: tag })
+    .distinct('_id')
+    .exec((err, usedMods) => {
+      if (err) { return next(err); }
+      let tagMods = new Array();
+      console.log(tagMods);
+      const search = '_id';
+      for (let i = 0; i < usedMods.length; i++) {
+        if (usedMods[i]) {
+          const search = 'module';
+          tagMods.push(mongoose.Types.ObjectId(usedMods[i]));
+        } else {
+          tagMods = {};
+        }
+      }
+      console.log('tagmods', tagMods);
+      IndividualTrashItem
+        .aggregate([
+          {
+            $match: { logId: { $in: logId } }
+          },
+          { $group: { _id: '$itemId', count: { $sum: 1 } } },
+          {
+            $lookup: {
+              from: 'plants',
+              localField: '_id',
+              foreignField: '_id',
+              as: 'plants'
+            },
+          },
+          {
+            $project: {
+              _id: 1,
+              count: 1,
+              plantName: '$plants.scientificName',
+              commonName: '$plants.commonName',
+              module: '$module._id'
+            }
+          }
+          // { "$unwind": { "path" : "$_id" } },
+        ]).exec((err, data) => {
+          if (err) { return next(err); }
+          // console.log(JSON.stringify(data));
+          console.log('TrashLogged', usedMods);
+          return res.send(data);
+        });
+    });
 };

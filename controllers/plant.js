@@ -4,6 +4,10 @@
  */
 const Plant = require('../models/Plant.js');
 
+exports.getPlantHome = (req, res) => {
+    res.render('plantHome');
+};
+
 exports.getPlants = (req, res) => {
   Plant.find((err, docs) => {
     res.render('plants', { plants: docs });

@@ -362,9 +362,9 @@ console.log('All group mods',allGroupMods.length);
 
 
 
- function returnGroup(tags, groups='none',subGroups='none') {
+function returnGroup(tags, groups='none',subGroups='none') {
 let group = 'Z';
-let sub= 'Z';
+let sub = 'Z';
   for (var i = 0; i < groups.length; i++) {
     if (tags.includes(groups[i])) {
       group = groups[i];
@@ -519,7 +519,8 @@ function groupRender(thisMod,AllModsInGroup,mod) {
 }
 
 function generateGroups(mod,allMods) {
-  groups = ['A','B','C','D','E','F','G','H','I','J','K'];
+  // groups = ['A','B','C','D','E','F','G','H','I','J','K','M','N','O','P'];
+  groups = ['M','N','O','P'];
   subGroups = ['1','2','3','4','5','6','7','8','9','10','11'];
   thisModGroup = returnGroup(mod.tags, groups, subGroups);
   console.log('thismod',thisModGroup);
@@ -708,7 +709,7 @@ async function generatePlants(x,y) {
   return
 }
 async function getPdf() {
-  await gettingModule('K');
+  await gettingModule('a');
   doc.save("a4.pdf"); // will save the file
 
 }
