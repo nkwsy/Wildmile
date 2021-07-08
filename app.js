@@ -153,6 +153,10 @@ app.route('/plants')
 
 app.post('/plants/delete/:id', plantController.postDeletePlant);
 
+app.route('/plantHome')
+  .get(plantController.getPlantHome)
+  .post(passportConfig.isAdmin, plantController.postPlantsAdmin);
+
 app.route('/plantsadmin')
   .all(passportConfig.isAuthenticated)
   .get(plantController.getPlantsAdmin)
@@ -198,7 +202,10 @@ app.route('/trash/trashLogs')
 app.route('/trash/trashLog/:logId')
   .all(passportConfig.isAuthenticated)
   .get(trashController.getTrashLog)
-  .post(trashController.postTrashLog);
+  .post(trashController.postClearLogItems, trashController.postTrashLog);
+
+app.route('/api/getTrashLogInfo/:logId')
+  .get(trashController.getTrashLogInfo);
 
 app.route('/trash/trashLog/delete/:logId')
   .all(passportConfig.isAuthenticated)
@@ -208,6 +215,11 @@ app.route('/trash/trashItems')
   .all(passportConfig.isAuthenticated)
   .get(trashController.getTrashItems)
   .post(trashController.postTrashItem);
+
+app.route('/trash/trashInfo')
+  .all(passportConfig.isAuthenticated)
+  .get(trashController.getTrashInfo);
+  // .post(trashController.findTrashInfo);
 
 /**
  * API examples routes.
