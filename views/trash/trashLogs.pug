@@ -7,7 +7,14 @@ block content
     .row.col-sm
       .form-group.col-sm
         label(for='site') Site
-        input.form-control(type='textarea' id='site' name='site' value='wildmile' required)
+        select.form-control(type='text' id='site' name='site' value='wildmile' required)
+            option General Wild Mile
+            option South West
+            option North West
+            option South East
+            option North East
+            option Turning Basin
+            option Boardwalk
       .form-group.col-sm
         label(for='numOfParticipants') Number of Participants
         input.form-control.input-number(type='text', name='numOfParticipants', min='1', max='20')
@@ -26,6 +33,33 @@ block content
         input.form-control(type='time' id='timeEnd' name='timeEnd' required)
     .row.col-sm
       .form-group.col-sm
+        label(for='trashiness') Trash Condition (1-12)
+        input.form-control(type='number' id='trashiness' name='trashiness')
+      .form-group.col-sm
+        label(for='temp') Temp (F)
+        input.form-control(type='number' id='temp' name='temp')
+      .form-group.col-sm
+        label(for='wind') Wind Speed
+        select.form-control(type='number' id='wind' name='wind')
+            option(value=0) None
+            option(value=1) Barely Perceptible
+            option(value=2) Felt on face, leaves rustle
+            option(value=3) Leaves in constant motion
+            option(value=4) Branches moving, debris pushed around
+            option(value=5) Trees sway, noticeable waves
+      .form-group.col-sm
+        label(for='cloud') Cloud Cover (1-5)
+        select.form-control(type='text' id='cloud' name='cloud'  data-toggle="tooltip" title="Disabled tooltip")
+            option(value=0) Clear
+            option(value=1) Partly Cloudy
+            option(value=2) Cloudy
+            option(value=3) Fog
+            option(value=4) Light Rain
+            option(value=5) Snow
+            option(value=6) Sleet
+            option(value=7) Showers
+    .row.col-sm
+      .form-group.col-sm
         label(for='notes') Notes
         textarea.form-control( rows='2' id='notes' name='notes')
     .row.col-lg
@@ -33,12 +67,12 @@ block content
         button.btn.btn-success(type='submit')
           i.fas.fa-plus.fa-sm
           | Submit
+
   .pb-2.mt-2.mb-4.border-bottom
 
   table#table(
     data-toggle="table" 
     data-click-to-select="true" 
-    data-toolbar="#toolbar"
     data-query-params="queryParams"
     )
     thead

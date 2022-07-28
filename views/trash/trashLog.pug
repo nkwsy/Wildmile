@@ -17,17 +17,15 @@ block content
           )
           thead
             tr
-              th(data-field="catagory" scope='col' data-sortable="true" data-width="100") Catagory
-              th(data-field="description" scope='col' data-sortable="true" data-width="300") Description
-              th(data-field="material" scope='col' data-sortable="true" data-width="100") Material
-              th(scope='col' data-width="400") Count
-              th(scope='col' data-width="50") Total Weight (g)
-              th(scope='col' data-width="50") Advanced
+              th(scope='col' data-width="50") Count
+              th(data-field="catagory" scope='col' data-sortable="true") Catagory
+              th(data-field="description" scope='col' data-sortable="true" ) Description
+              th(data-field="material" scope='col' data-sortable="true") Material
+              //th(scope='col' data-width="50") Total Weight (g)
+              //th(scope='col' data-width="50") Advanced
           for trashItem in trashItems
               tr
-                td= trashItem.catagory
-                td= trashItem.description
-                td= trashItem.material
+
                 td 
                   .form-group.col-sm
                   .center
@@ -39,6 +37,9 @@ block content
                       //- span.input-group-btn
                       //-   button#plus-btn.btn.btn-success.btn-number(type='button',  field='quantity')
                       //-     i.bi-plus
+                td= trashItem.catagory
+                td= trashItem.description
+                td= trashItem.material
                   //- .container.mt-5
                   //-   .row
                   //-     .col-sm-4
@@ -54,13 +55,13 @@ block content
                   //-     .col-sm-4
 
                     //- input#quantity(type='number', name='quantity', min='0', max='50')
-                td 
-                  .form-group.col-sm.center
-                    input#aggrigateWeight(type='number', name='aggrigateWeight', min='0', max'10000', size="4")
-                td
-                  button.btn.btn-sm(type='button')
-                    i.fa.fa-chevron-down.fa-sm
-                  input#itemId(type='hidden' name='itemId' value=`${trashItem._id}`)
+                //td
+                //  .form-group.col-sm.center
+                //    input#aggrigateWeight(type='number', name='aggrigateWeight', min='0', max'10000', size="4")
+                //td
+                //  button.btn.btn-sm(type='button')
+                //    i.fa.fa-chevron-down.fa-sm
+                //  input#itemId(type='hidden' name='itemId' value=`${trashItem._id}`)
         .row.col-lg
           .form-group.col-sm
             button.btn.btn-success(type='submit')
