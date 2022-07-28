@@ -123,6 +123,10 @@ exports.postNewTrashLog = (req, res, next) => {
     timeStart: startTime,
     timeEnd: endTime,
     creator: req.user.id,
+    trashiness: req.body.trashiness,
+    temp: req.body.temp,
+    wind: req.body.wind,
+    cloud: req.body.cloud
     unattributed: req.body.unattributed || false,
     // participants: req.body.participants || [''],
     numOfParticipants: req.body.numOfParticipants,

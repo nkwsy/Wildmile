@@ -40,6 +40,12 @@ const trashLogSchema = new mongoose.Schema({
   area: polygonSchema,
   notes: String,
   weight: Number,
+  trashiness: Number,
+  temp: Number,
+  wind: Number,
+  cloud: Number
+
+  //weather: String, TODO find API to calculate
 }, { timestamps: true });
 
 trashLogSchema.plugin(mongoose_delete, { overrideMethods: true });
