@@ -7,15 +7,16 @@ const mongoose = require('mongoose');
 const { TrashItem } = require('../models/Trash.js');
 const { TrashLog } = require('../models/Trash.js');
 const { IndividualTrashItem } = require('../models/Trash.js');
-function trashItemSplit(logId, itemId, quantity, aggrigateWeight, creator, options = []) {
+//Deteted aggrigateWeight
+function trashItemSplit(logId, itemId, quantity, creator, options = []) {
   allItems = [];
   for (let i = 0; i < itemId.length; i++) {
     for (let n = 0; n < quantity[i]; n++) {
       // Find if there is an individual weight, create formula for that
-      weight = (aggrigateWeight[i] / quantity[i]);
-      if (weight == 0) {
-        weight = undefined;
-      }
+//      weight = (aggrigateWeight[i] / quantity[i]);
+//      if (weight == 0) {
+//        weight = undefined;
+//      }
       const newItem = {
         itemId: itemId[i],
         logId,
@@ -23,7 +24,7 @@ function trashItemSplit(logId, itemId, quantity, aggrigateWeight, creator, optio
         // notes: options.notes[n] || '',
         // location: options.itemId[i].location[n] || '',
         // photo: String,
-        weight,
+//        weight,
         // waterlogged: Boolean,
         // aggrigateWeight: Number,
         // tags: Array,
@@ -83,7 +84,8 @@ exports.postClearLogItems = (req, res, next) => {
 exports.postTrashLog = (req, res, next) => {
   const startTime = `${req.body.date} ${req.body.timeStart}`;
   const endTime = `${req.body.date} ${req.body.timeEnd}`;
-  const allTrashItems = trashItemSplit(req.params.logId, req.body.itemId, req.body.quantity, req.body.aggrigateWeight, req.user.id);
+//  const allTrashItems = trashItemSplit(req.params.logId, req.body.itemId, req.body.quantity, req.body.aggrigateWeight, req.user.id);
+  const allTrashItems = trashItemSplit(req.params.logId, req.body.itemId, req.body.quantity, req.user.id);
   console.log('all trash items', allTrashItems, req.params.logId);
   IndividualTrashItem.insertMany(allTrashItems, onInsert);
   function onInsert(err, docs) {
