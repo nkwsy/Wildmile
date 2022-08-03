@@ -40,6 +40,7 @@ block content
                 td= trashItem.catagory
                 td= trashItem.description
                 td= trashItem.material
+                input#itemId(type='hidden' name='itemId' value=`${trashItem._id}`)
                   //- .container.mt-5
                   //-   .row
                   //-     .col-sm-4
@@ -53,7 +54,6 @@ block content
                   //-           button#plus-btn.btn.btn-dark.btn-sm
                   //-             i.fa.fa-plus
                   //-     .col-sm-4
-
                     //- input#quantity(type='number', name='quantity', min='0', max='50')
                 //td
                 //  .form-group.col-sm.center
@@ -61,7 +61,6 @@ block content
                 //td
                 //  button.btn.btn-sm(type='button')
                 //    i.fa.fa-chevron-down.fa-sm
-                input#itemId(type='hidden' name='itemId' value=`${trashItem._id}`)
         .row.col-lg
           .form-group.col-sm
             button.btn.btn-success(type='submit')
