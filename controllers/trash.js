@@ -10,9 +10,10 @@ const { IndividualTrashItem } = require('../models/Trash.js');
 //Deteted aggrigateWeight
 function trashItemSplit(logId, itemId, quantity, creator, options = []) {
   allItems = [];
+  console.log(logId, itemId, quantity, creator)
   for (let i = 0; i < itemId.length; i++) {
     for (let n = 0; n < quantity[i]; n++) {
-      // Find if there is an individual weight, create formula for that
+//       Find if there is an individual weight, create formula for that
 //      weight = (aggrigateWeight[i] / quantity[i]);
 //      if (weight == 0) {
 //        weight = undefined;
