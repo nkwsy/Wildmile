@@ -34,7 +34,7 @@ block content
                       //-   button#minus-btn.btn.btn-danger.btn-number(type='button',  field='quantity')
                       //-     i.bi-dash
                       input#quantity(type='number', value= '', name='quantity', min='0', max='100',size="10", class= trashItem.id, autocomplete="off", pattern="\d*")
-                      input(type='hidden' name='itemId' value=`${trashItem._id}`)
+                      input#itemId(type='hidden' name='itemId' value=`${trashItem._id}`)
                       //- span.input-group-btn
                       //-   button#plus-btn.btn.btn-success.btn-number(type='button',  field='quantity')
                       //-     i.bi-plus
@@ -63,7 +63,7 @@ block content
                 //    i.fa.fa-chevron-down.fa-sm
         .row.col-lg
           .form-group.col-sm
-            button.btn.btn-success(type='submit')
+            button.btn.btn-success(type='submit', href='/trash')
               i.fas.fa-plus.fa-sm
               | Submit
               

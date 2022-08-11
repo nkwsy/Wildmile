@@ -86,6 +86,7 @@ exports.postTrashLog = (req, res, next) => {
   const startTime = `${req.body.date} ${req.body.timeStart}`;
   const endTime = `${req.body.date} ${req.body.timeEnd}`;
 //  const allTrashItems = trashItemSplit(req.params.logId, req.body.itemId, req.body.quantity, req.body.aggrigateWeight, req.user.id);
+  console.log(req.params.logId, req.body.itemId, req.body.quantity, req.user.id)
   const allTrashItems = trashItemSplit(req.params.logId, req.body.itemId, req.body.quantity, req.user.id);
   console.log('all trash items', allTrashItems, req.params.logId);
   IndividualTrashItem.insertMany(allTrashItems, onInsert);
