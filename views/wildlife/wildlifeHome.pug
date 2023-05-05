@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+  h1 Trash time
+  p.lead Collecting and sharing data about the Wildmile project.
+  hr
+  .row
+    .col-md-6
+      h2 Trash Log
+      p Add New TrashLog
+      p
+        a.btn.btn-raised(href='/trash/trashlogs', role='button') View details »
+    .col-md-6
+      h2 Trash items
+      p Add new trash items to catalog
+      p
+        a.btn.btn-raised(href='/trash/trashItems', role='button') View details »
+    .col-md-6
+      h2 Stats
+      p See trash log stats and download info
+      p
+        a.btn.btn-raised(href='https://charts.mongodb.com/charts-wildmile-vhbxl/public/dashboards/60357db7-442d-4ae5-8aeb-65eed32e4e7f', role='button') View details »
+    .col-md-6
+      h2 Useless button
+      p Use this page to do nothing
+      p
+        a.btn.btn-raised(href='/trash', role='button') View details »

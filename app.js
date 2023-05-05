@@ -80,7 +80,7 @@ function requireHTTPS(req, res, next) {
   }
   next();
 }
-app.use(requireHTTPS);
+// app.use(requireHTTPS);
 //
 app.use(expressStatusMonitor());
 app.use(compression());
