@@ -46,7 +46,7 @@
     "lastfm": "^0.9.3",
     "lob": "^6.0.3",
     "lusca": "^1.6.1",
-    "mongoose": "^5.9.7",
+    "mongoose": "^6.2.8",
     "mongoose-delete": "^0.5.2",
     "mongoose-softdelete": "^1.2.0",
     "morgan": "^1.9.1",
@@ -84,7 +84,7 @@
     "eslint-plugin-import": "^2.15.0",
     "mocha": "^5.2.0",
     "nyc": "^13.1.0",
-    "sinon": "^7.2.3",
+    "sinon": "^13.0.1",
     "sinon-mongoose": "^2.2.1",
     "supertest": "^3.4.2"
   },
