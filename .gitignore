@@ -18,6 +18,7 @@ tmp
 
 #Build
 public/css/main.css
+scss/main.css
 .nyc_output/*
 
 #Libraries from npm packages
