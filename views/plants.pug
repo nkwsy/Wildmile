@@ -30,7 +30,8 @@ block content
                 input(type='hidden', name='_csrf', value=_csrf)
                 button.btn.btn-outline-danger(class='plantDeleteButton', type='submit', formaction='/plants/delete/'+ plant._id, formmethod='POST', onclick="confirm('Are you sure you want to delete this plant?');" )
                   i.fas.fa-trash-alt
-          td= plant
+          td
+            img(src=plant.botanicPhoto, style='width: 100px; height: 100px;')
           
         script.
           function hashCode(str) {

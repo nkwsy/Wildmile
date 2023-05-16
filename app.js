@@ -158,7 +158,7 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
 app.route('/plants')
   .get(plantController.getPlants);
 
-app.post('/plants/delete/:id', plantController.postDeletePlant);
+app.post('/plants/delete/:id', passportConfig.isAuthenticated, plantController.postDeletePlant);
 
 app.route('/plantHome')
   .get(plantController.getPlantHome)
@@ -170,7 +170,6 @@ app.route('/plantsadmin')
   .post(passportConfig.isAdmin, plantController.postPlantsAdmin);
 
 app.route('/modmap')
-  .all(passportConfig.isAuthenticated)
   .get(modController.getModMap)
   .post(passportConfig.isAdmin, modController.postMod);
 
