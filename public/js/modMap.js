@@ -57,7 +57,7 @@ function individualPlantMap(draw, individualPlant) {
     x: (modY * 20) + (15 - (plantY * 5)),
     y: (modX * 60) + (plantX * 6)
   })
-  shape.data('key', { 'plant': individualPlant['plant']['scientificName'], 'x': plantX, 'y': plantY, 'modX': modX, 'modY': modY })
+  shape.data('key', { 'plant': individualPlant['plant']['scientificName'], 'x': plantX, 'y': plantY, 'modX': modX, 'modY': modY, 'botanicPhoto': individualPlant['plant']['botanicPhoto']})
         shape.mouseenter(function () {
         this.stroke({
           color: '#5ECCA2'
@@ -65,6 +65,7 @@ function individualPlantMap(draw, individualPlant) {
         let infoBox = document.getElementById('infoText');
         let data = this.data('key');
         infoBox.innerText = data['plant'] + ' ' + data['x'] + ' ' + data['y'];
+        infoBox.innerHTML = `<p>${data['plant']}</p><p>${data['x']}</p><img>${data['botanicPhoto']}</img>`
         // infoBox.innerText = data;
       })
       shape.mouseout(function () {

@@ -14,7 +14,7 @@ exports.getModMap = (req, res) => {
     .exec((err, docs) => {
     IndividualPlant
       .find()
-      .populate({path:'plant', select:'scientificName commonName' })
+      .populate({path:'plant', select:'scientificName commonName _id botanicPhoto' })
       .populate({path:'module', select:'x y'})
       .exec((err, individualPlant) =>{
     res.render('modules', { mods: docs , plants: plant, plantedPlants: individualPlant });
