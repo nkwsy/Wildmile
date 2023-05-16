@@ -1,6 +1,16 @@
 .fixed-element {
     position: fixed !important;
-    top: 80px;
-    right: 20px;
+    top: 10%;
+    right: 5%;
     z-index: 2000
 }
+
+#drawing, #zoomGlass {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#zoomGlass {
+  pointer-events: none; 
+} 

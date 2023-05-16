@@ -114,7 +114,10 @@ exports.postDeleteTrashLog = (req, res, next) => {
 
 
 exports.getTrashLogs = (req, res) => {
-  TrashLog.find((err, docs) => {
+  TrashLog
+  .find()
+  .sort({ timeStart: -1 })
+  .exec((err, docs) => {
     res.render('trash/trashLogs', { trashLogs: docs });
   });
 };

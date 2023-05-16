@@ -28,6 +28,21 @@ function findColor(model) {
     return '#189968';
   }
 }
+
+// selected plant
+let selected = null; // A global variable that starts as null
+
+// Use it in a function
+function selectItem(scientificName) {
+  if (selected === scientificName) {
+    selected = null;
+  }
+  else {
+      selected = scientificName;
+
+}
+}
+
 // search by scientific name
 function hashCode(str) {
   let hash = 0;
@@ -57,24 +72,48 @@ function individualPlantMap(draw, individualPlant) {
     x: (modY * 20) + (15 - (plantY * 5)),
     y: (modX * 60) + (plantX * 6)
   })
-  shape.data('key', { 'plant': individualPlant['plant']['scientificName'], 'x': plantX, 'y': plantY, 'modX': modX, 'modY': modY, 'botanicPhoto': individualPlant['plant']['botanicPhoto']})
-        shape.mouseenter(function () {
+  shape.data('key', { 'scientificName': individualPlant['plant']['scientificName'], 'commonName':individualPlant['plant']['commonName'], 'x': plantX, 'y': plantY, 'modX': modX, 'modY': modY, 'botanicPhoto': individualPlant['plant']['botanicPhoto']})
+  shape.mouseenter(function () {
         this.stroke({
+          opacity:1,
+          width: 1,
           color: '#5ECCA2'
         })
-        let infoBox = document.getElementById('infoText');
-        let data = this.data('key');
-        infoBox.innerText = data['plant'] + ' ' + data['x'] + ' ' + data['y'];
-        infoBox.innerHTML = `<p>${data['plant']}</p><p>${data['x']}</p><img>${data['botanicPhoto']}</img>`
-        // infoBox.innerText = data;
-      })
+      let data = this.data('key');
+      let infoPlant = document.getElementById('infoPlant');
+      let infoText = document.getElementById('infoText');
+      let infoImage = document.getElementById('infoImage');
+      if (selected === null) {
+        // selectItem(data['scientificName']);
+      infoPlant.innerHTML = individualPlant['plant']['scientificName'];
+      infoText.innerHTML = individualPlant['plant']['commonName'];
+      infoImage.src = data['botanicPhoto'];
+      }
+    })
       shape.mouseout(function () {
+        if (selected === null || selected !== this.data('key')['scientificName']) {
         this.stroke({
-          opacity:0.01
+          opacity:0.00
           // color: ''
         })
         // infoBox.innerText = data;
+      }
       })
+shape.click(function () {
+    draw.children().forEach(function(x) {
+        let xData = x.data('key');  // Declare xData with 'let' or 'const'
+        if (xData && xData['scientificName'] && xData['scientificName'] === this.data('key')['scientificName']) {
+          selectItem(this.data('key')['scientificName']);
+            x.stroke({ opacity:1, width: 4, color: '#5ECCA2' });
+        } else {
+            if (xData && xData['scientificName']) {
+                x.stroke({ opacity:0.00, width: 2, color: '#ffffff' });
+            }
+        }
+    }.bind(this));
+});
+
+
   }
 
 function drawPlants(draw) {
@@ -184,7 +223,7 @@ var article = document.querySelector('#modMap');
       var g = i * 20
       var h = n * 60
 
-      shape.click(function () {
+      shape.dblclick(function () {
         // document.getElementById("x").value = this.data('key')["x"];
         // document.getElementById("y").value = this.data('key')["y"];
         modpage = 'module/'+this.data('key')["x"]+'&'+this.data('key')["y"];
@@ -196,6 +235,7 @@ var article = document.querySelector('#modMap');
         var a = this.data('key')["n"]
         console.log(a);
       })
+
 
     }
     var local = x;
@@ -210,8 +250,72 @@ var article = document.querySelector('#modMap');
 
 window.onload = function () {
   // draw = SVG().addTo('#modMap').size(400, 3800)
-  const draw = SVG().addTo('#modMap').size(400, 3800)
+  const draw = SVG().addTo('#modMap').size(800, 3800)
+  let zoomLevel = 1;
+  const zoomStep = 0.2; // Change this to make the zoom in/out more or less aggressive
+
+  // Get the SVG.js draw object's width and height
+  const initialWidth = draw.width();
+  const initialHeight = draw.height();
+
+  document.querySelector('#zoomIn').addEventListener('click', function() {
+    zoomLevel -= zoomStep;
+    draw.viewbox(0, 0, initialWidth * zoomLevel, initialHeight * zoomLevel);
+  });
+
+  document.querySelector('#zoomOut').addEventListener('click', function() {
+    zoomLevel += zoomStep;
+    draw.viewbox(0, 0, initialWidth * zoomLevel, initialHeight * zoomLevel);
+  });
+
+  
 
   modMap(draw);
   drawPlants(draw);
-};
+
+
+function selectPlant(scientificName, commonName, botanicPhoto) {
+  if (selected === scientificName) {
+    selected = null;
+  }
+  else {
+    let infoPlant = document.getElementById('infoPlant');
+    let infoText = document.getElementById('infoText');
+    let infoImage = document.getElementById('infoImage');
+    if (selected !== scientificName) {
+        selected = scientificName;
+        // selectItem(data['scientificName']);
+      infoPlant.innerHTML = scientificName
+      infoText.innerHTML = commonName;
+      infoImage.src = botanicPhoto;
+      console.log(scientificName, commonName, botanicPhoto);
+      draw.children().forEach(function (c) {
+        let xData = c.data('key');  // Declare xData with 'let' or 'const'
+        if (xData && xData['scientificName'] && c.data('key')['scientificName'] === scientificName) {
+          c.stroke({ opacity:1, width: 4, color: 'red' });
+        }
+        else {
+                      if (xData && xData['scientificName']) {
+          c.stroke({opacity:0.0, color: '#D68D5E' });
+          // c.fill({ color: pickColor(c.data('key')['scientificName']) });
+        }
+      }
+      });
+  };
+}
+}
+  window.selectPlant = selectPlant;
+
+  //   const zoomDraw = draw.clone().scale(2).addTo('#zoomGlass');
+
+  // const clip = draw.circle(100);  // Create a clip path
+  // zoomDraw.clipper(clip);  // Apply the clip path to the zoomed view
+
+  // draw.on('mousemove', function(e) {
+  //   const x = e.clientX - draw.node.getBoundingClientRect().left;
+  //   const y = e.clientY - draw.node.getBoundingClientRect().top;
+  //   zoomDraw.move(x - 100, y - 100);  
+  //   clip.move(x - 100, y - 100);
+  // });
+
+}
