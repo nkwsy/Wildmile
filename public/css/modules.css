@@ -1,0 +1,6 @@
+.fixed-element {
+    position: fixed !important;
+    top: 80px;
+    right: 20px;
+    z-index: 2000
+}

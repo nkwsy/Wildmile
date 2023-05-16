@@ -5,9 +5,18 @@ const PlantObservation = require('../models/PlantObservation.js');
 const Mod = require('../models/Mod.js');
 
 exports.getModMap = (req, res) => {
-  Plant.find((err, plant) => {
-  Mod.find((err, docs) => {
-    IndividualPlant.find((err, individualPlant) =>{
+  Plant
+    .find()
+    .sort({ scientificName: 1 })
+    .exec((err, plant) => {
+  Mod
+    .find()
+    .exec((err, docs) => {
+    IndividualPlant
+      .find()
+      .populate({path:'plant', select:'scientificName commonName' })
+      .populate({path:'module', select:'x y'})
+      .exec((err, individualPlant) =>{
     res.render('modules', { mods: docs , plants: plant, plantedPlants: individualPlant });
   });
   });
@@ -20,6 +29,7 @@ exports.getMod = (req, res, next) => {
   let y = req.params.y
   Plant
     .find()
+    .sort({ scientificName: 1 })
     .exec((err, plant) => {
       Mod.find((err, docs) => {
         Mod
