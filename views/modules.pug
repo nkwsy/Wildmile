@@ -33,7 +33,7 @@ block content
   #drawing
   .media
     .col-lg
-    #modMap.container(data-mods=mods data-plantedPlants= plantedPlants)
+    #modMap.container(data-mods=mods data-plantedPlants= plantedPlants data-plants=plants)
     //- #collapseExample.colapse
     //-   .col-lg
     #plantTable.hidden
@@ -50,7 +50,7 @@ block content
             x = 0
           for plant in plants
             
-            tr(onclick=`selectPlant('${plant.scientificName}', '${plant.commonName}', '${plant.botanicPhoto}')`)
+            tr(onclick=`selectPlant('${plant.scientificName}')`)
               th(id=plant._id scope='row')= plant.scientificName
                 td= plant.commonName
                 //- td= plant.tags

@@ -4,8 +4,8 @@ let article = document.querySelector('#modMap');
 console.log(article.dataset);
 let data = JSON.parse(article.dataset.mods)
 
-function b(scale= 1) {
-  items = {modX: 20, modY: 60, plantX: 5, plantY: 6}
+function b(scale = 1) {
+  items = { modX: 20, modY: 60, plantX: 5, plantY: 6 }
 }
 function getMod(data, x, y) {
   var i, len = data.length;
@@ -22,7 +22,7 @@ function getMod(data, x, y) {
 }
 function findColor(model) {
   if (model === '5-d') {
-    return '#D68D5E' ;
+    return '#D68D5E';
   }
   else {
     return '#189968';
@@ -38,11 +38,33 @@ function selectItem(scientificName) {
     selected = null;
   }
   else {
-      selected = scientificName;
+    selected = scientificName;
 
+  }
 }
+function fetchPlant(scientificName) {
+  var plants = JSON.parse(article.dataset.plants);
+  return plants.find(
+    function (plants) { return plants.scientificName == scientificName }
+  );
 }
 
+// populates plant info to the right side of the page
+function showPlantInfo(scientificName) {
+  let infoPlant = document.getElementById('infoPlant');
+  let infoText = document.getElementById('infoText');
+  let infoImage = document.getElementById('infoImage');
+  if (selected !== scientificName) {
+    selected = scientificName;
+    let plant = fetchPlant(scientificName)
+    console.log(plant)
+    // selectItem(data['scientificName']);
+
+    infoPlant.innerHTML = plant.scientificName
+    infoText.innerHTML = plant.commonName || plant.common_name;
+    infoImage.src = plant.botanicPhoto || plant.image_url;
+  }
+}
 // search by scientific name
 function hashCode(str) {
   let hash = 0;
@@ -52,7 +74,7 @@ function hashCode(str) {
   return hash;
 }
 function pickColor(str) {
-  str = str.replace(/ .*/,'')
+  str = str.replace(/ .*/, '')
   return `hsl(${hashCode(str) % 550}, 80%, 80%)`;
 }
 function individualPlantMap(draw, individualPlant) {
@@ -72,49 +94,40 @@ function individualPlantMap(draw, individualPlant) {
     x: (modY * 20) + (15 - (plantY * 5)),
     y: (modX * 60) + (plantX * 6)
   })
-  shape.data('key', { 'scientificName': individualPlant['plant']['scientificName'], 'commonName':individualPlant['plant']['commonName'], 'x': plantX, 'y': plantY, 'modX': modX, 'modY': modY, 'botanicPhoto': individualPlant['plant']['botanicPhoto']})
+  shape.data('key', { 'scientificName': individualPlant['plant']['scientificName'], 'commonName': individualPlant['plant']['commonName'], 'x': plantX, 'y': plantY, 'modX': modX, 'modY': modY, 'botanicPhoto': individualPlant['plant']['botanicPhoto'] })
   shape.mouseenter(function () {
-        this.stroke({
-          opacity:1,
-          width: 1,
-          color: '#5ECCA2'
-        })
-      let data = this.data('key');
-      let infoPlant = document.getElementById('infoPlant');
-      let infoText = document.getElementById('infoText');
-      let infoImage = document.getElementById('infoImage');
-      if (selected === null) {
-        // selectItem(data['scientificName']);
-      infoPlant.innerHTML = individualPlant['plant']['scientificName'];
-      infoText.innerHTML = individualPlant['plant']['commonName'];
-      infoImage.src = data['botanicPhoto'];
-      }
+    this.stroke({
+      opacity: 1,
+      width: 1,
+      color: '#5ECCA2'
     })
-      shape.mouseout(function () {
-        if (selected === null || selected !== this.data('key')['scientificName']) {
-        this.stroke({
-          opacity:0.00
-          // color: ''
-        })
-        // infoBox.innerText = data;
-      }
-      })
-shape.click(function () {
-    draw.children().forEach(function(x) {
-        let xData = x.data('key');  // Declare xData with 'let' or 'const'
-        if (xData && xData['scientificName'] && xData['scientificName'] === this.data('key')['scientificName']) {
-          selectItem(this.data('key')['scientificName']);
-            x.stroke({ opacity:1, width: 4, color: '#5ECCA2' });
-        } else {
-            if (xData && xData['scientificName']) {
-                x.stroke({ opacity:0.00, width: 2, color: '#ffffff' });
-            }
+    this.front();
+    let data = this.data('key');
+    showPlantInfo(data['scientificName']);
+  })
+  shape.mouseout(function () {
+    if (selected === null || selected !== this.data('key')['scientificName']) {
+      this.stroke({ opacity: 0.00, width: 2, color: '#ffffff' });
+      // infoBox.innerText = data;
+    }
+  })
+  shape.click(function () {
+    draw.children().forEach(function (x) {
+      let xData = x.data('key');  // Declare xData with 'let' or 'const'
+      if (xData && xData['scientificName'] && xData['scientificName'] === this.data('key')['scientificName']) {
+        selectItem(this.data('key')['scientificName']);
+        x.stroke({ opacity: 1, width: 2, color: 'red' });
+        x.front();
+      } else {
+        if (xData && xData['scientificName']) {
+          x.stroke({ opacity: 0.00, width: 2, color: '#ffffff' });
         }
+      }
     }.bind(this));
-});
+  });
 
 
-  }
+}
 
 function drawPlants(draw) {
   var article = document.querySelector('#modMap');
@@ -127,7 +140,7 @@ function drawPlants(draw) {
 };
 
 function modMap(draw) {
-var article = document.querySelector('#modMap');
+  var article = document.querySelector('#modMap');
   var allMods = JSON.parse(article.dataset.mods);
   // var allPlants = JSON.parse(article.dataset.plantedPlants);
   var defaultColor = 'grey'
@@ -148,7 +161,7 @@ var article = document.querySelector('#modMap');
         var op = 0.01
         var id = mod['_id']
 
-        if (mod['shape'] === 'R3' || mod['shape'] === "R2.3" ) {
+        if (mod['shape'] === 'R3' || mod['shape'] === "R2.3") {
           shape = draw.rect(20, 60).attr({
             fill: defaultColor,
             opacity: op,
@@ -164,11 +177,11 @@ var article = document.querySelector('#modMap');
           })
         }
         if (mod['shape'] === 'T3' || mod['shape'] === "T2.3") {
-          const {flipped} = mod;
+          const { flipped } = mod;
           const topLeft = `${i * 20},${n * 60}`;
-          const topRight = `${(i+1) * 20},${n * 60}`;
-          const bottomLeft = `${(i) * 20},${(n+1) * 60}`;
-          const bottomRight = `${(i+1) * 20},${(n+1) * 60}`;
+          const topRight = `${(i + 1) * 20},${n * 60}`;
+          const bottomLeft = `${(i) * 20},${(n + 1) * 60}`;
+          const bottomRight = `${(i + 1) * 20},${(n + 1) * 60}`;
 
           let coordinates;
 
@@ -226,7 +239,7 @@ var article = document.querySelector('#modMap');
       shape.dblclick(function () {
         // document.getElementById("x").value = this.data('key')["x"];
         // document.getElementById("y").value = this.data('key')["y"];
-        modpage = 'module/'+this.data('key')["x"]+'&'+this.data('key')["y"];
+        modpage = 'module/' + this.data('key')["x"] + '&' + this.data('key')["y"];
         window.location.href = modpage;
         drawMod(mod["shape"], mod["id"])
         this.fill({
@@ -258,54 +271,46 @@ window.onload = function () {
   const initialWidth = draw.width();
   const initialHeight = draw.height();
 
-  document.querySelector('#zoomIn').addEventListener('click', function() {
+  document.querySelector('#zoomIn').addEventListener('click', function () {
     zoomLevel -= zoomStep;
     draw.viewbox(0, 0, initialWidth * zoomLevel, initialHeight * zoomLevel);
   });
 
-  document.querySelector('#zoomOut').addEventListener('click', function() {
+  document.querySelector('#zoomOut').addEventListener('click', function () {
     zoomLevel += zoomStep;
     draw.viewbox(0, 0, initialWidth * zoomLevel, initialHeight * zoomLevel);
   });
 
-  
+
 
   modMap(draw);
   drawPlants(draw);
 
 
-function selectPlant(scientificName, commonName, botanicPhoto) {
-  if (selected === scientificName) {
-    selected = null;
-  }
-  else {
-    let infoPlant = document.getElementById('infoPlant');
-    let infoText = document.getElementById('infoText');
-    let infoImage = document.getElementById('infoImage');
-    if (selected !== scientificName) {
-        selected = scientificName;
-        // selectItem(data['scientificName']);
-      infoPlant.innerHTML = scientificName
-      infoText.innerHTML = commonName;
-      infoImage.src = botanicPhoto;
-      console.log(scientificName, commonName, botanicPhoto);
+  function selectPlant(scientificName) {
+    if (selected === scientificName) {
+      selected = null;
+    }
+    else {
+      showPlantInfo(scientificName)
       draw.children().forEach(function (c) {
         let xData = c.data('key');  // Declare xData with 'let' or 'const'
         if (xData && xData['scientificName'] && c.data('key')['scientificName'] === scientificName) {
-          c.stroke({ opacity:1, width: 4, color: 'red' });
+          c.stroke({ opacity: 1, width: 2, color: 'red' });
+          c.front();
         }
         else {
-                      if (xData && xData['scientificName']) {
-          c.stroke({opacity:0.0, color: '#D68D5E' });
-          // c.fill({ color: pickColor(c.data('key')['scientificName']) });
+          if (xData && xData['scientificName']) {
+            c.stroke({ opacity: 0.0, color: '#D68D5E' });
+            // c.fill({ color: pickColor(c.data('key')['scientificName']) });
+          }
         }
-      }
       });
+    };
   };
-}
-}
-  window.selectPlant = selectPlant;
 
+  window.selectPlant = selectPlant;
+};
   //   const zoomDraw = draw.clone().scale(2).addTo('#zoomGlass');
 
   // const clip = draw.circle(100);  // Create a clip path
@@ -314,8 +319,8 @@ function selectPlant(scientificName, commonName, botanicPhoto) {
   // draw.on('mousemove', function(e) {
   //   const x = e.clientX - draw.node.getBoundingClientRect().left;
   //   const y = e.clientY - draw.node.getBoundingClientRect().top;
-  //   zoomDraw.move(x - 100, y - 100);  
+  //   zoomDraw.move(x - 100, y - 100);
   //   clip.move(x - 100, y - 100);
   // });
 
-}
+
