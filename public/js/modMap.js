@@ -59,9 +59,16 @@ function showPlantInfo(scientificName) {
     let plant = fetchPlant(scientificName)
     console.log(plant)
     // selectItem(data['scientificName']);
-
-    infoPlant.innerHTML = plant.scientificName
+    let commonName = plant.commonName || ''
+    let familyCommonName = plant.familyCommonName || ''
+    let family = `plant.family - plant.familyCommonName`
+    let genus =  plant.genus
+    let synonyms = `Synonyms: ${plant.synonyms}`
+    // let plantInfoHtml = `<strong>Family:</strong> ${plant.family} (${plant.familyCommonName})<br><strong>Genus:</strong> ${plant.genus}<br><strong>Synonyms:</strong> ${plant.synonyms}`
+    let plantInfoHtml = `${commonName} <br><strong>Family:</strong> ${plant.family} <br><strong>Genus:</strong> ${plant.genus}`
+    infoPlant.innerHTML = `${plant.scientificName}` ;
     infoText.innerHTML = plant.commonName || plant.common_name;
+    infoText.innerHTML = plantInfoHtml
     infoImage.src = plant.botanicPhoto || plant.image_url;
   }
 }
