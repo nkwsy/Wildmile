@@ -14,6 +14,11 @@ const paypal = require('paypal-rest-sdk');
 const lob = require('lob')(process.env.LOB_KEY);
 const ig = require('instagram-node').instagram();
 const axios = require('axios');
+const aws = require('aws-sdk');
+const { S3Client, AbortMultipartUploadCommand } = require("@aws-sdk/client-s3");
+const multer = require('multer')
+const multerS3 = require('multer-s3')
+const s3Config = new S3Client()
 
 /**
  * GET /api
@@ -583,6 +588,27 @@ exports.getLob = (req, res, next) => {
   });
 };
 
+/**
+ * AWS API credentials.
+ */
+exports.aws = {
+  accessKeyId: process.env.AWS_KEY,
+  secretAccessKey: process.env.AWS_SECRET,
+  region: 'us-east-1',
+  bucket: process.env.AWS_BUCKET_NAME
+};
+
+exports.multerS3Config = multerS3({
+    s3: s3Config,
+    bucket: process.env.AWS_BUCKET_NAME,
+    metadata: function (req, file, cb) {
+        cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+        console.log(file)
+        cb(null, new Date().toISOString() + '-' + file.originalname)
+    }
+});
 /**
  * GET /api/upload
  * File Upload API example.

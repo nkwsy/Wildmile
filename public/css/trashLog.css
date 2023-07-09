@@ -32,6 +32,9 @@
     border-radius: 50%;
     background-clip: padding-box;
 }
+#number {
+  width: 3em;
+}
 div {
     text-align: center;
 }

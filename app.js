@@ -19,7 +19,7 @@ const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
 
-const upload = multer({ dest: path.join(__dirname, 'uploads') });
+
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -50,6 +50,14 @@ const passportConfig = require('./config/passport');
  */
 const app = express();
 
+// const upload = multer({ dest: path.join(__dirname, 'uploads') });
+const upload = multer({
+  storage: apiController.multerS3Config,
+  fileFilter: apiController.fileFilter,
+  limits: {
+      fileSize: 1024 * 1024 * 5 // we are allowing only 5 MB files
+  }
+})
 /**
  * Connect to MongoDB.
  */

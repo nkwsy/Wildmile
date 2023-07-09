@@ -7,7 +7,7 @@ block content
     input(type='hidden', name='_csrf', value=_csrf)
     input(type='hidden', name='logId', value= trashLogs._id)
     .row.col-sm
-      .form-group.col-sm
+      .form-group.col-md
         table#table(
           data-toggle="table" 
           data-click-to-select="true" 
@@ -17,7 +17,7 @@ block content
           )
           thead
             tr
-              th(scope='col' data-width="50") Count
+              th(scope='col' ) Count
               th(data-field="catagory" scope='col' data-sortable="true") Catagory
               th(data-field="description" scope='col' data-sortable="true" ) Description
               th(data-field="material" scope='col' data-sortable="true") Material
@@ -25,18 +25,23 @@ block content
               //th(scope='col' data-width="50") Advanced
           for trashItem in trashItems
               tr
-
                 td 
-                  .form-group.col-sm
-                  .center
-                    .input-group.col-sm
-                      //- span.input-group-btn
-                      //-   button#minus-btn.btn.btn-danger.btn-number(type='button',  field='quantity')
-                      //-     i.bi-dash
-                      input#quantity(type='number', value= '', name='quantity', min='0', max='100',size="10", class= trashItem.id, autocomplete="off", pattern="\d*")
-                      //- span.input-group-btn
-                      //-   button#plus-btn.btn.btn-success.btn-number(type='button',  field='quantity')
-                      //-     i.bi-plus
+                  .form-group.col-md
+                   .input-group.mb-3
+                      button#minus-btn.btn.btn-danger.btn-sm.btn-number(type='button',  field='quantity')
+                        i.bi-dash
+                      input#quantity(type='number', value= '', name='quantity', min='0', max='100',size="5", class= trashItem.id, autocomplete="off", pattern="\d*")
+                      //- button#plus-btn.btn.btn-success.btn-number(type='button',  field='quantity')
+                      //-   i.bi-plus
+                  //- .center
+                  //-   .input-group.col-sm
+                  //-     span.input-group-btn
+                  //-       button#minus-btn.btn.btn-danger.btn-number(type='button',  field='quantity')
+                  //-         i.bi-dash
+                  //-     input#quantity(type='number', value= '', name='quantity', min='0', max='100',size="10", class= trashItem.id, autocomplete="off", pattern="\d*")
+                  //-     //- span.input-group-btn
+                  //-     //-   button#plus-btn.btn.btn-success.btn-number(type='button',  field='quantity')
+                  //-     //-     i.bi-plus
                       input#itemId(type='hidden' name='itemId' value=`${trashItem._id}`)
                 td= trashItem.catagory
                 td= trashItem.description
@@ -49,7 +54,7 @@ block content
                   //-         .input-group-prepend
                   //-           button#minus-btn.btn.btn-dark.btn-sm
                   //-             i.fa.fa-minus
-                  //-         input#qty_input.form-control.form-control-sm(type='number', value='1', min='1')
+                  //-         input#quantity.form-control.form-control-sm(type='number', value='1', min='1',size="10")
                   //-         .input-group-prepend
                   //-           button#plus-btn.btn.btn-dark.btn-sm
                   //-             i.fa.fa-plus
