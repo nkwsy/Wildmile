@@ -1,6 +1,18 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const geoSchema = new mongoose.Schema({
+  type: {
+    type: String,
+    enum: ['Point'], // 'location.type' must be 'Point'
+    required: true
+  },
+  coordinates: {
+    type: [Number],
+    required: true
+  }
+});
+
 const ModSchema = new mongoose.Schema({
   name: String,
   dateInstalled: Date,
@@ -8,7 +20,7 @@ const ModSchema = new mongoose.Schema({
   x: Number,
   y: Number,
   locationCode:String,
-  location: {type: "String", coordinates: []},
+  location: geoSchema,
   section: String,
   installGroup: Number,
   model: String,
@@ -31,7 +43,7 @@ const ProjectSchema = new mongoose.Schema({
   installed: Boolean,
   x: Number,
   y: Number,
-  location: {type: "String", coordinates: []},
+  location: geoSchema,
   section: String,
   orientation: String,
   shape: String,
@@ -52,7 +64,10 @@ const SectionSchema = new mongoose.Schema({
   installed: Boolean,
   x: Number,
   y: Number,
-  location: {type: "Point", coordinates:[]},
+  notes: String,
+  tags: Array,
+  location: geoSchema,
+  bearing: {type:"Number"},
   project_id: {type: Schema.Types.ObjectId, ref: 'Project'}
 })
 

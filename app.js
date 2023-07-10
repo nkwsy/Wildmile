@@ -203,9 +203,21 @@ app.route('/projects/new')
 
 app.route('/projects/edit/:id')  
   .all(passportConfig.isAuthenticated, passportConfig.isAdmin)
-  .get(modController.getEditProject)
-  .post(passportConfig.isAuthenticated, modController.postEditProject)
+  .get(modController.getUpdateProject)
+  .post(passportConfig.isAuthenticated, modController.postUpdateProject)
   .delete(passportConfig.isAuthenticated, modController.deleteProject);
+
+app.route('/projects/:project_id/sections/new')
+  .all(passportConfig.isAuthenticated, passportConfig.isAdmin)
+  .get(modController.getNewSection)
+  .post(passportConfig.isAuthenticated, modController.postNewSection)
+
+app.route('/projects/:project_id/sections/edit/:id')  
+  .all(passportConfig.isAuthenticated, passportConfig.isAdmin)
+  .get(modController.getUpdateSection)
+  .post(passportConfig.isAuthenticated, modController.postUpdateSection)
+  .delete(passportConfig.isAuthenticated, modController.deleteSection);
+
 
 app.route('/trash')
   .all(passportConfig.isAuthenticated)

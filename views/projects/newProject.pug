@@ -4,9 +4,9 @@ block content
   h3 New Project
   form(id='newProject', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
-  .row.col-sm
+    .row.col-sm
       .form-group.col-sm
-        label(for='name') Notes
+        label(for='name') Name
         textarea.form-control( rows='1' id='name' name='name')
     .row.col-sm
       .form-group.col-sm

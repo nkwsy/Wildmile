@@ -4,12 +4,23 @@ const PlantObservation = require('../models/PlantObservation.js');
 
 const Mod = require('../models/Mod.js');
 
-exports.getNewProjects = (req, res) => {
+// Project
+exports.getProject = (req, res) => {
+  let project = req.params.project;
+
+  Mod.Project
+    .findById({ project })
+    .exec((err, docs) => {
+      if (err) { return next(err); }
+      res.render('project', { project: project });
+    });
+};
+exports.getNewProject = (req, res) => {
   Mod.Project
     .find()
     .exec((err, docs) => {
       if (err) { return next(err); }
-      res.render('newProjects', { projects: projects });
+      res.render('projects/newProject', { projects: docs });
     });
 };
 
@@ -25,10 +36,24 @@ exports.postNewProject = (req, res, next) => {
   });
 };
 
-exports.editProject = (req, res, next) => {
+exports.getUpdateProject = (req, res) => {
   let project = req.params.project;
+
   Mod.Project
-    .findByIdAndUpdate({ project, req.body.name, req.body.notes })
+    .findById({ project })
+    .exec((err, docs) => {
+      if (err) { return next(err); }
+      res.render('newProject', { project: project });
+    });
+};
+exports.postUpdateProject = (req, res, next) => {
+  let project = req.params.project;
+  let update = {
+    name: req.body.name,
+    notes: req.body.notes
+  };
+  Mod.Project
+    .findByIdAndUpdate( project, update, { new: true} )
     .exec((err, docs) => {
       if (err) { return next(err); }
       res.render('project', { project: project });
@@ -45,17 +70,63 @@ exports.deleteProject = (req, res, next) => {
     });
 };
 
-
-exports.getProject = (req, res) => {
-  let project = req.params.project;
-
-  Mod.Project
-    .findById({ project })
+// Section
+exports.getNewSection = (req, res) => {
+  Mod.Section
+    .find()
     .exec((err, docs) => {
       if (err) { return next(err); }
-      res.render('project', { project: project });
+      res.render('newProjects', { projects: projects });
     });
 };
+
+exports.postNewSection = (req, res, next) => {
+  req.params.project_id
+  const section = new Mod.Section({
+    name: req.body.name,
+    notes: req.body.notes
+  });
+  section.save((err) => {
+    if (err) { return next(err); }
+    req.flash('success', { msg: 'section added.' });
+    res.redirect('/sections');
+  });
+};
+
+exports.getUpdateSection = (req, res) => {
+  Mod.Section
+    .find()
+    .exec((err, docs) => {
+      if (err) { return next(err); }
+      res.render('newProjects', { projects: projects });
+    });
+};
+
+
+exports.postUpdateSection = (req, res, next) => {
+  let section = req.params.section;
+    let update = {
+    name: req.body.name,
+    notes: req.body.notes
+  };
+  Mod.Section
+    .findByIdAndUpdate( section, update, { new: true} )
+    .exec((err, docs) => {
+      if (err) { return next(err); }
+      res.render('section', { project: project });
+    });
+};
+
+exports.deleteSection = (req, res, next) => {
+  let section = req.params.Section;
+  Mod.Section
+    .findByIdAndDelete({ section })
+    .exec((err, docs) => {
+      if (err) { return next(err); }
+      res.redirect('/sections');
+    });
+};
+
 
 exports.getModMap = (req, res) => {
   Plant
