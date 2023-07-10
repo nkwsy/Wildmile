@@ -196,6 +196,17 @@ app.route('/api/getModTags')
 app.post('/module/delete/:id', passportConfig.isAuthenticated, passportConfig.isAdmin, modController.postDeleteMod);
 app.post('/module/update', passportConfig.isAuthenticated, passportConfig.isAdmin, modController.postClearModPlants, modController.postUpdateMod);
 
+app.route('/projects/new')
+  .all(passportConfig.isAuthenticated, passportConfig.isAdmin)
+  .get(modController.getNewProject)
+  .post(passportConfig.isAuthenticated, modController.postNewProject)
+
+app.route('/projects/edit/:id')  
+  .all(passportConfig.isAuthenticated, passportConfig.isAdmin)
+  .get(modController.getEditProject)
+  .post(passportConfig.isAuthenticated, modController.postEditProject)
+  .delete(passportConfig.isAuthenticated, modController.deleteProject);
+
 app.route('/trash')
   .all(passportConfig.isAuthenticated)
   .get(trashController.getTrash);

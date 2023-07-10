@@ -4,6 +4,59 @@ const PlantObservation = require('../models/PlantObservation.js');
 
 const Mod = require('../models/Mod.js');
 
+exports.getNewProjects = (req, res) => {
+  Mod.Project
+    .find()
+    .exec((err, docs) => {
+      if (err) { return next(err); }
+      res.render('newProjects', { projects: projects });
+    });
+};
+
+exports.postNewProject = (req, res, next) => {
+  const project = new Mod.Project({
+    name: req.body.name,
+    notes: req.body.notes
+  });
+  project.save((err) => {
+    if (err) { return next(err); }
+    req.flash('success', { msg: 'Project added.' });
+    res.redirect('/projects');
+  });
+};
+
+exports.editProject = (req, res, next) => {
+  let project = req.params.project;
+  Mod.Project
+    .findByIdAndUpdate({ project, req.body.name, req.body.notes })
+    .exec((err, docs) => {
+      if (err) { return next(err); }
+      res.render('project', { project: project });
+    });
+};
+
+exports.deleteProject = (req, res, next) => {
+  let project = req.params.project;
+  Mod.Project
+    .findByIdAndDelete({ project })
+    .exec((err, docs) => {
+      if (err) { return next(err); }
+      res.redirect('/projects');
+    });
+};
+
+
+exports.getProject = (req, res) => {
+  let project = req.params.project;
+
+  Mod.Project
+    .findById({ project })
+    .exec((err, docs) => {
+      if (err) { return next(err); }
+      res.render('project', { project: project });
+    });
+};
+
 exports.getModMap = (req, res) => {
   Plant
     .find()
@@ -31,8 +84,8 @@ exports.getMod = (req, res, next) => {
     .find()
     .sort({ scientificName: 1 })
     .exec((err, plant) => {
-      Mod.find((err, docs) => {
-        Mod
+      Mod.Mod.find((err, docs) => {
+        Mod.Mod
           .findOne({ x, y })
           .exec((err, module) => {
             if (err) { return next(err); }
