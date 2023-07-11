@@ -196,27 +196,29 @@ app.route('/api/getModTags')
 app.post('/module/delete/:id', passportConfig.isAuthenticated, passportConfig.isAdmin, modController.postDeleteMod);
 app.post('/module/update', passportConfig.isAuthenticated, passportConfig.isAdmin, modController.postClearModPlants, modController.postUpdateMod);
 
+app.route('/projects')
+  .get(modController.getProjects)
 app.route('/projects/new')
-  .all(passportConfig.isAuthenticated, passportConfig.isAdmin)
+  .all(passportConfig.isAuthenticated)
   .get(modController.getNewProject)
-  .post(passportConfig.isAuthenticated, modController.postNewProject)
+  .post(passportConfig.isAuthenticated, passportConfig.isAdmin, modController.postNewProject)
 
 app.route('/projects/edit/:id')  
-  .all(passportConfig.isAuthenticated, passportConfig.isAdmin)
+  .all(passportConfig.isAuthenticated)
   .get(modController.getUpdateProject)
   .post(passportConfig.isAuthenticated, modController.postUpdateProject)
-  .delete(passportConfig.isAuthenticated, modController.deleteProject);
+  .delete(passportConfig.isAuthenticated, passportConfig.isAdmin, modController.deleteProject);
 
-app.route('/projects/:project_id/sections/new')
+  app.route('/projects/:project_id/sections/new')
   .all(passportConfig.isAuthenticated, passportConfig.isAdmin)
   .get(modController.getNewSection)
-  .post(passportConfig.isAuthenticated, modController.postNewSection)
+  .post(passportConfig.isAuthenticated, passportConfig.isAdmin, modController.postNewSection)
 
 app.route('/projects/:project_id/sections/edit/:id')  
-  .all(passportConfig.isAuthenticated, passportConfig.isAdmin)
+  .all(passportConfig.isAuthenticated)
   .get(modController.getUpdateSection)
-  .post(passportConfig.isAuthenticated, modController.postUpdateSection)
-  .delete(passportConfig.isAuthenticated, modController.deleteSection);
+  .post(passportConfig.isAuthenticated, passportConfig.isAdmin, modController.postUpdateSection)
+  .delete(passportConfig.isAuthenticated, passportConfig.isAdmin, modController.deleteSection);
 
 
 app.route('/trash')

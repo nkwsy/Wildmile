@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const mongoose_delete = require('mongoose-delete');
+
 const Schema = mongoose.Schema;
 
 const geoSchema = new mongoose.Schema({
@@ -35,6 +37,7 @@ const ModSchema = new mongoose.Schema({
 
 });
 
+ModSchema.plugin(mongoose_delete, { overrideMethods: true });
 const Mod = mongoose.model('Mod', ModSchema);
 
 const ProjectSchema = new mongoose.Schema({
@@ -56,10 +59,12 @@ const ProjectSchema = new mongoose.Schema({
 
 },{ timestamps: true });
 
+ProjectSchema.plugin(mongoose_delete, { overrideMethods: true });
 const Project = mongoose.model('Project', ProjectSchema)
 
 const SectionSchema = new mongoose.Schema({
   name: String,
+  code: String,
   dateInstalled: Date,
   installed: Boolean,
   x: Number,
@@ -71,7 +76,9 @@ const SectionSchema = new mongoose.Schema({
   project_id: {type: Schema.Types.ObjectId, ref: 'Project'}
 })
 
+SectionSchema.plugin(mongoose_delete, { overrideMethods: true });
 const Section = mongoose.model('Section', SectionSchema)
+
 module.exports = {
   Mod,
   Project,

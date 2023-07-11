@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+  h1 Projects 
+  p.lead All the projects 
+  hr
+  .row
+    for project in projects
+      .col-md-6
+        h2= project.name
+        p= project.notes
+        p
+          a.btn.btn-primary(href=`/projects/edit/${project.id}`, role='button')  
+            i.fa.fa-clipboard-list
+            | Edit

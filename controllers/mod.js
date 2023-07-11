@@ -4,15 +4,27 @@ const PlantObservation = require('../models/PlantObservation.js');
 
 const Mod = require('../models/Mod.js');
 
-// Project
-exports.getProject = (req, res) => {
+// Projects
+exports.getProjects = (req, res, next) => {
   let project = req.params.project;
 
+  Mod.Project
+    .find()
+    .exec((err, docs) => {
+      if (err) { return next(err); }
+      console.log(docs)
+      res.render('projects/projects', { projects: docs });
+    });
+};
+// Project
+exports.getProject = (req, res, next) => {
+  let project = req.params.id;
+  console.log(project)
   Mod.Project
     .findById({ project })
     .exec((err, docs) => {
       if (err) { return next(err); }
-      res.render('project', { project: project });
+      res.render('project', { project: docs });
     });
 };
 exports.getNewProject = (req, res) => {
@@ -36,14 +48,14 @@ exports.postNewProject = (req, res, next) => {
   });
 };
 
-exports.getUpdateProject = (req, res) => {
-  let project = req.params.project;
-
+exports.getUpdateProject = (req, res, next) => {
+  let projectId = req.params.id;
+  console.log(projectId);
   Mod.Project
-    .findById({ project })
+    .findById(projectId)
     .exec((err, docs) => {
       if (err) { return next(err); }
-      res.render('newProject', { project: project });
+      res.render('projects/newProject', { project: docs });
     });
 };
 exports.postUpdateProject = (req, res, next) => {
@@ -56,7 +68,7 @@ exports.postUpdateProject = (req, res, next) => {
     .findByIdAndUpdate( project, update, { new: true} )
     .exec((err, docs) => {
       if (err) { return next(err); }
-      res.render('project', { project: project });
+      res.render('project', { project: docs });
     });
 };
 

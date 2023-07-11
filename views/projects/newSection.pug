@@ -1,24 +1,30 @@
 extends ../layout
 
 block content
-  h3 New Section 
+  h3 section ? 'Edit Section' : 'New Section'
   form(id='newSection', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     .row.col-sm
       .form-group.col-sm
         label(for='name') Name
-        textarea.form-control( rows='1' id='name' name='name')
+        textarea.form-control( rows='1' id='name' name='name' value=section?.name)
       .form-group.col-sm 
         label(for='code') Section Code
-        textarea.form-control( rows='1' id='code' name='code')
+        textarea.form-control( rows='1' id='code' name='code' value=section?.)
     .row.col-sm
       .form-group.col-sm
         label(for='dateInstalled') Date
-        input.form-control(type='date' id='dateInstalled' name='dateInstalled')
+        input.form-control(type='date' id='dateInstalled' name='dateInstalled' value=section?dateInstalled)
+      .form-group.col-sm
+        label(for='x') Section Width
+        input.form-control(type='number' id='x' name='x' value=section?.x)
+      .form-group.col-sm
+        label(for='y') Section Length
+        input.form-control(type='number' id='y' name='y' value=section?.y)
     .row.col-sm
       .form-group.col-sm
         label(for='notes') Notes
-        textarea.form-control( rows='2' id='notes' name='notes')
+        textarea.form-control( rows='2' id='notes' name='notes' value=section?.notes)
     .row.col-lg
       .form-group.col-sm
         button.btn.btn-success(type='submit')
