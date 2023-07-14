@@ -196,25 +196,31 @@ app.route('/api/getModTags')
 app.post('/module/delete/:id', passportConfig.isAuthenticated, passportConfig.isAdmin, modController.postDeleteMod);
 app.post('/module/update', passportConfig.isAuthenticated, passportConfig.isAdmin, modController.postClearModPlants, modController.postUpdateMod);
 
+// Project Routes
 app.route('/projects')
+  .get(modController.getProjects)
+
+// TODO: update to have view only project home page
+
+app.route('/projects/:projectId')
   .get(modController.getProjects)
 app.route('/projects/new')
   .all(passportConfig.isAuthenticated)
   .get(modController.getNewProject)
   .post(passportConfig.isAuthenticated, passportConfig.isAdmin, modController.postNewProject)
 
-app.route('/projects/edit/:id')  
+app.route('/projects/edit/:projectId')  
   .all(passportConfig.isAuthenticated)
   .get(modController.getUpdateProject)
   .post(passportConfig.isAuthenticated, modController.postUpdateProject)
   .delete(passportConfig.isAuthenticated, passportConfig.isAdmin, modController.deleteProject);
 
-  app.route('/projects/:project_id/sections/new')
+  app.route('/projects/:projectId/sections/new')
   .all(passportConfig.isAuthenticated, passportConfig.isAdmin)
   .get(modController.getNewSection)
   .post(passportConfig.isAuthenticated, passportConfig.isAdmin, modController.postNewSection)
 
-app.route('/projects/:project_id/sections/edit/:id')  
+app.route('/projects/:projectId/sections/edit/:sectionId')  
   .all(passportConfig.isAuthenticated)
   .get(modController.getUpdateSection)
   .post(passportConfig.isAuthenticated, passportConfig.isAdmin, modController.postUpdateSection)

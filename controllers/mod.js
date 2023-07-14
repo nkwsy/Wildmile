@@ -2,13 +2,14 @@ const Plant = require('../models/Plant.js');
 const IndividualPlant = require('../models/IndividualPlant.js');
 const PlantObservation = require('../models/PlantObservation.js');
 
-const Mod = require('../models/Mod.js');
-
+const {Mod} = require('../models/Mod.js');
+const {Project} = require('../models/Mod.js');
+const {Section} = require('../models/Mod.js');
 // Projects
 exports.getProjects = (req, res, next) => {
   let project = req.params.project;
 
-  Mod.Project
+  Project
     .find()
     .exec((err, docs) => {
       if (err) { return next(err); }
@@ -18,9 +19,9 @@ exports.getProjects = (req, res, next) => {
 };
 // Project
 exports.getProject = (req, res, next) => {
-  let project = req.params.id;
+  let project = req.params.projectId;
   console.log(project)
-  Mod.Project
+  Project
     .findById({ project })
     .exec((err, docs) => {
       if (err) { return next(err); }
@@ -28,7 +29,7 @@ exports.getProject = (req, res, next) => {
     });
 };
 exports.getNewProject = (req, res) => {
-  Mod.Project
+  Project
     .find()
     .exec((err, docs) => {
       if (err) { return next(err); }
@@ -37,7 +38,7 @@ exports.getNewProject = (req, res) => {
 };
 
 exports.postNewProject = (req, res, next) => {
-  const project = new Mod.Project({
+  const project = new Project({
     name: req.body.name,
     notes: req.body.notes
   });
@@ -49,9 +50,9 @@ exports.postNewProject = (req, res, next) => {
 };
 
 exports.getUpdateProject = (req, res, next) => {
-  let projectId = req.params.id;
+  let projectId = req.params.projectId;
   console.log(projectId);
-  Mod.Project
+  Project
     .findById(projectId)
     .exec((err, docs) => {
       if (err) { return next(err); }
@@ -59,22 +60,23 @@ exports.getUpdateProject = (req, res, next) => {
     });
 };
 exports.postUpdateProject = (req, res, next) => {
-  let project = req.params.project;
+  let project = req.params.projectId;
   let update = {
     name: req.body.name,
     notes: req.body.notes
   };
-  Mod.Project
+  console.log(project)
+  Project
     .findByIdAndUpdate( project, update, { new: true} )
     .exec((err, docs) => {
       if (err) { return next(err); }
-      res.render('project', { project: docs });
+      res.redirect('/projects');
     });
 };
 
 exports.deleteProject = (req, res, next) => {
-  let project = req.params.project;
-  Mod.Project
+  let project = req.params.projectId;
+  Project
     .findByIdAndDelete({ project })
     .exec((err, docs) => {
       if (err) { return next(err); }
@@ -84,30 +86,32 @@ exports.deleteProject = (req, res, next) => {
 
 // Section
 exports.getNewSection = (req, res) => {
-  Mod.Section
+  Section
     .find()
     .exec((err, docs) => {
       if (err) { return next(err); }
-      res.render('newProjects', { projects: projects });
+      res.render('projects/newSection', { section: docs });
     });
 };
 
 exports.postNewSection = (req, res, next) => {
-  req.params.project_id
-  const section = new Mod.Section({
+  projectId = req.params.projectId
+  const section = new Section({
     name: req.body.name,
-    notes: req.body.notes
+    notes: req.body.notes,
+    projectId: projectId
   });
   section.save((err) => {
     if (err) { return next(err); }
     req.flash('success', { msg: 'section added.' });
-    res.redirect('/sections');
+    res.redirect(`/projects/${projectId}`);
   });
 };
 
 exports.getUpdateSection = (req, res) => {
-  Mod.Section
-    .find()
+  sectionId = req.params.sectionId
+  Section
+    .findById(sectionId)
     .exec((err, docs) => {
       if (err) { return next(err); }
       res.render('newProjects', { projects: projects });
@@ -121,7 +125,7 @@ exports.postUpdateSection = (req, res, next) => {
     name: req.body.name,
     notes: req.body.notes
   };
-  Mod.Section
+  Section
     .findByIdAndUpdate( section, update, { new: true} )
     .exec((err, docs) => {
       if (err) { return next(err); }
@@ -131,7 +135,7 @@ exports.postUpdateSection = (req, res, next) => {
 
 exports.deleteSection = (req, res, next) => {
   let section = req.params.Section;
-  Mod.Section
+  Section
     .findByIdAndDelete({ section })
     .exec((err, docs) => {
       if (err) { return next(err); }

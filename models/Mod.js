@@ -73,7 +73,7 @@ const SectionSchema = new mongoose.Schema({
   tags: Array,
   location: geoSchema,
   bearing: {type:"Number"},
-  project_id: {type: Schema.Types.ObjectId, ref: 'Project'}
+  projectId: {type: Schema.Types.ObjectId, ref: 'Project'}
 })
 
 SectionSchema.plugin(mongoose_delete, { overrideMethods: true });
