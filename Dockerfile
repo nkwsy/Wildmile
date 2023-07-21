@@ -1,15 +1,11 @@
-FROM node:8-slim
+FROM node:16-slim
 
-WORKDIR /starter
-ENV NODE_ENV development
+WORKDIR /usr/app
 
-COPY package.json /starter/package.json
+COPY package.json .
 
 RUN npm install --production
 
-COPY .env.example /starter/.env.example
-COPY . /starter
+COPY . .
 
 CMD ["npm","start"]
-
-EXPOSE 8080
