@@ -1,0 +1,48 @@
+
+#drawing
+.media
+.col-lg
+#sectionMap.container(data-mods=mods data-plantedPlants= plantedPlants data-plants=plants)
+//- #collapseExample.colapse
+//-   .col-lg
+#plantTable.hidden
+    table#plants.table-sm.table-striped.table-bordered.table-hover(style='hidden')
+        thead
+        tr
+            th(scope='col') Scientific Name
+            th(scope='col') Common Name
+            //- th(scope='col') Tags
+            //- th(scope='col') Image
+        tbody
+        x = 0;
+        script.
+        x = 0
+        for plant in plants
+        
+        tr(onclick=`selectPlant('${plant.scientificName}')`)
+            th(id=plant._id scope='row')= plant.scientificName
+            td= plant.commonName
+            //- td= plant.tags
+            //- td
+            //-   img(src=plant.botanicPhoto, class="thubmnail", style=' width: 100px; height: 100px;display: None')
+            
+            script.
+            function hashCode(str) {
+                let hash = 0;
+                for (var i = 0; i < str.length; i++) {
+                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+                }
+                return hash;
+            }
+            function pickColor(str) {
+                return `hsl(${hashCode(str) % 550}, 80%, 80%)`;
+            }
+            g = '!{plant._id}';
+            var element = document.getElementById(g);
+            l = '!{plant.scientificName}'
+            console.log(l.replace(/ .*/,''))
+            element.style.backgroundColor = pickColor(l.replace(/ .*/,''));
+            //-  element.style.backgroundColor = pickColor(l);
+
+append partials/scripts
+    script(src='/js/sectionMap.js')

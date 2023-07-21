@@ -7,26 +7,40 @@ block content
     .row.col-sm
       .form-group.col-sm
         label(for='name') Name
-        textarea.form-control( rows='1' id='name' name='name' ) #{section && section.name ? section.name : ''}
+        text.form-control( rows='1' id='name' name='name' ) #{section && section.name ? section.name : ''}
       .form-group.col-sm 
         label(for='code') Section Code
-        textarea.form-control( rows='1' id='code' name='code' ) #{section && section.code ? section.code : ''}
+        text.form-control( rows='1' id='code' name='code' ) #{section && section.code ? section.code : ''}
     .row.col-sm
       .form-group.col-sm
         label(for='dateInstalled') Date
-        input.form-control(type='date' id='dateInstalled' name='dateInstalled' value=section.dateInstalled)
+        if section && section.dateInstalled
+          input.form-control(type='date' id='dateInstalled' name='dateInstalled' value=section.dateInstalled)
+        else
+          input.form-control(type='date' id='dateInstalled' name='dateInstalled')
       .form-group.col-sm
         label(for='x') Section Width
-        input.form-control(type='number' id='x' name='x' value=section.x)
+        if section && section.x
+          input.form-control(type='number' id='x' name='x' value=section.x)
+        else
+          input.form-control(type='number' id='x' name='x')
       .form-group.col-sm
         label(for='y') Section Length
-        input.form-control(type='number' id='y' name='y' value=section.y)
+        if section && section.y
+          input.form-control(type='number' id='y' name='y' value=section.y)
+        else
+          input.form-control(type='number' id='y' name='y')
     .row.col-sm
       .form-group.col-sm
         label(for='notes') Notes
-        textarea.form-control( rows='2' id='notes' name='notes' value=section.notes)
+        if section && section.notes
+          textarea.form-control( rows='2' id='notes' name='notes') #{section.notes}
+        else
+          textarea.form-control( rows='2' id='notes' name='notes')
     .row.col-lg
       .form-group.col-sm
         button.btn.btn-success(type='submit')
           i.fas.fa-plus.fa-sm
           | Submit
+  include ./sectionMap.pug
+  

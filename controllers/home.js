@@ -7,7 +7,7 @@
  const IndividualPlant = require('../models/IndividualPlant.js');
  const PlantObservation = require('../models/PlantObservation.js');
 
- const Mod = require('../models/Mod.js');
+ const {Mod} = require('../models/Mod.js');
 
 exports.index = (req, res) => {
   Plant.find((err, plant) => {

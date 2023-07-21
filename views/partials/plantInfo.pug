@@ -1,0 +1,27 @@
+.page-header
+link(rel='stylesheet', href='/css/modules.css')
+link(rel='stylesheet', href='/css/plants.css')
+
+h3 Modules
+
+//- button.btn.btn-primary(type='button' data-toggle='modal' data-target='#newmod')
+//-   | New Module
+//- button.btn.btn-primary(type='button' data-toggle='modal' data-target='#newmod' onclick='clearPlants()')
+//-   | View Plants
+button#zoomIn.btn.btn-secondary
+    i.fas.fa-search-plus
+button#zoomOut.btn.btn-secondary
+    i.fas.fa-search-minus
+.pb-2.mt-2.mb-4.border-bottom
+
+//#map(style='opacity: 0.95;')
+nav.navbar.sticky-top.bg-light.fixed-element
+.container-fluid
+    a.navbar-brand(href='#') Sticky top
+#infoCard(style='position: relative;')
+.card.fixed-element
+    #infoPlant.h5.card-header Featured
+    .card-body(id="cardBody")
+    p#infoText.card-text 
+    img(src="", alt="", id="infoImage", class="thubmnail", style=' width: 100px; height: 100px;')
+#zoomGlass

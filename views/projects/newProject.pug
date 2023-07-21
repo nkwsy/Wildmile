@@ -26,3 +26,6 @@ block content
             a.btn.btn-primary(href=` /projects/${project.id}/sections/new`, role='button')  
               i.fa.fa-plus
               | New Section
+      if sections
+        each section in sections 
+          include ./sectionCard.pug

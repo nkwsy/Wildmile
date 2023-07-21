@@ -19,13 +19,16 @@ exports.getProjects = (req, res, next) => {
 };
 // Project
 exports.getProject = (req, res, next) => {
-  let project = req.params.projectId;
+  let projectId = req.params.projectId;
   console.log(project)
-  Project
-    .findById({ project })
-    .exec((err, docs) => {
+  Project.findById(projectId)
+    .exec((err, project) => {
       if (err) { return next(err); }
-      res.render('project', { project: docs });
+      Section.find({ projectId: projectId })
+        .exec((err, sections) => {
+          if (err) { return next(err); }
+          res.render('project', { project: project, sections: sections });
+        });
     });
 };
 exports.getNewProject = (req, res) => {
@@ -51,12 +54,15 @@ exports.postNewProject = (req, res, next) => {
 
 exports.getUpdateProject = (req, res, next) => {
   let projectId = req.params.projectId;
-  console.log(projectId);
-  Project
-    .findById(projectId)
-    .exec((err, docs) => {
+  console.log(projectId)
+  Project.findById(projectId)
+    .exec((err, project) => {
       if (err) { return next(err); }
-      res.render('projects/newProject', { project: docs });
+      Section.find({ projectId: projectId })
+        .exec((err, sections) => {
+          if (err) { return next(err); }
+          res.render('projects/newProject', { project: project, sections: sections });
+        });
     });
 };
 exports.postUpdateProject = (req, res, next) => {
@@ -110,26 +116,33 @@ exports.postNewSection = (req, res, next) => {
 
 exports.getUpdateSection = (req, res) => {
   sectionId = req.params.sectionId
+  projectId = req.params.projectId
   Section
     .findById(sectionId)
     .exec((err, docs) => {
       if (err) { return next(err); }
-      res.render('newProjects', { projects: projects });
+      res.render('projects/newSection', { section: docs, projectId: projectId, sectionId: sectionId });
     });
 };
 
 
 exports.postUpdateSection = (req, res, next) => {
-  let section = req.params.section;
-    let update = {
+  let projectId = req.params.projectId;
+  let section = req.params.sectionId;
+  let update = {
+    projectId: projectId,
     name: req.body.name,
-    notes: req.body.notes
+    notes: req.body.notes || '',
+    dateInstalled: req.body.dateInstalled || '',
+    x: req.body.x || '',
+    y: req.body.y || ''
   };
+  console.log(update)
   Section
-    .findByIdAndUpdate( section, update, { new: true} )
+    .findByIdAndUpdate( sectionId, update, { new: true} )
     .exec((err, docs) => {
       if (err) { return next(err); }
-      res.render('section', { project: project });
+      res.redirect(`/projects/${projectId}`);
     });
 };
 
