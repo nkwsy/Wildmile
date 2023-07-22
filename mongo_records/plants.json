@@ -1,0 +1,5340 @@
+[{
+  "_id": {
+    "$oid": "5ee81f2dc4bd4800179384bd"
+  },
+  "photos": [],
+  "scientificName": "Carex muskingumensis",
+  "commonName": "Palm sedge",
+  "notes": "the leaf formation is unlike any other sedge.  Grows similarly to the palm form.",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/se/carex-muskingumensis-2.jpg",
+  "createdAt": {
+    "$date": "2020-06-16T01:23:57.097Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-16T01:23:57.097Z"
+  },
+  "__v": 0,
+  "author": "Schwein.",
+  "bibliography": "Ann. Lyceum Nat. Hist. New York 1: 66 (1824)",
+  "common_name": "Muskingum sedge",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 94382,
+  "image_url": "https://bs.plantnet.org/image/o/7526e257719517dd9ea0032043ac7f2e5eb1dcdb",
+  "links": {
+    "self": "/api/v1/species/carex-muskingumensis",
+    "plant": "/api/v1/plants/carex-muskingumensis",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex muskingumensis",
+  "slug": "carex-muskingumensis",
+  "status": "accepted",
+  "synonyms": [
+    "Vignea muskingumensis",
+    "Carex scoparia var. muskingumensis",
+    "Carex scoparia",
+    "Thysanocarex muskingumensis"
+  ],
+  "year": 1824
+},
+{
+  "_id": {
+    "$oid": "5eeebcfeddd0760017032dcc"
+  },
+  "photos": [],
+  "scientificName": "Saururus cernuus",
+  "commonName": "Lizard's Tail",
+  "notes": "",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/wetland/photos/lizard_tail1.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:50:54.869Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:50:54.869Z"
+  },
+  "__v": 0,
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 341 (1753)",
+  "common_name": "Lizard's-tail",
+  "family": "Saururaceae",
+  "family_common_name": null,
+  "genus": "Saururus",
+  "genus_id": 6694,
+  "id": 130715,
+  "image_url": "https://bs.plantnet.org/image/o/99c40ec2a28a9e0159eec8bd4d7bb56f158d6815",
+  "links": {
+    "self": "/api/v1/species/saururus-cernuus",
+    "plant": "/api/v1/plants/saururus-cernuus",
+    "genus": "/api/v1/genus/saururus"
+  },
+  "rank": "species",
+  "scientific_name": "Saururus cernuus",
+  "slug": "saururus-cernuus",
+  "status": "accepted",
+  "synonyms": [
+    "Mattuschkia aquatica",
+    "Saururus cernuus f. submersus",
+    "Neobiondia silvestrii"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78c1"
+  },
+  "scientificName": "Caltha palustris ",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/se/schoenoplectus-acutus-stand.jpg",
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 558 (1753)",
+  "common_name": "Cowflock",
+  "family": "Ranunculaceae",
+  "family_common_name": null,
+  "genus": "Caltha",
+  "genus_id": 8019,
+  "id": 156000,
+  "image_url": "https://bs.plantnet.org/image/o/d17b1b3c76658c895d661d598251b10784411763",
+  "links": {
+    "self": "/api/v1/species/caltha-palustris",
+    "plant": "/api/v1/plants/caltha-palustris",
+    "genus": "/api/v1/genus/caltha"
+  },
+  "rank": "species",
+  "scientific_name": "Caltha palustris",
+  "slug": "caltha-palustris",
+  "status": "accepted",
+  "synonyms": [
+    "Caltha palustris var. typica",
+    "Trollius palustris",
+    "Populago palustris"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78dc"
+  },
+  "scientificName": "Sporobolus heterolepis",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/grasses/photos/gray_sedge1.jpg",
+  "author": "(A.Gray) A.Gray",
+  "bibliography": "Manual: 576 (1848)",
+  "common_name": "Prairie dropseed",
+  "family": "Poaceae",
+  "family_common_name": null,
+  "genus": "Sporobolus",
+  "genus_id": 11406,
+  "id": 235516,
+  "image_url": "https://bs.plantnet.org/image/o/a57bd578825818f034fad7034d0e1e08b29a75cc",
+  "links": {
+    "self": "/api/v1/species/sporobolus-heterolepis",
+    "plant": "/api/v1/plants/sporobolus-heterolepis",
+    "genus": "/api/v1/genus/sporobolus"
+  },
+  "rank": "species",
+  "scientific_name": "Sporobolus heterolepis",
+  "slug": "sporobolus-heterolepis",
+  "status": "accepted",
+  "synonyms": [
+    "Vilfa heterolepis",
+    "Agrostis heterolepis"
+  ],
+  "year": 1848
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78dd"
+  },
+  "scientificName": "Symphyotrichum novea anglais",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/prairie/photox/quinine3.jpg"
+},
+{
+  "_id": {
+    "$oid": "5eeeb8ddddd0760017032dbd"
+  },
+  "photos": [],
+  "scientificName": "Doellingeria umbellata",
+  "commonName": "Flat-Topped Aster",
+  "notes": "",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/wetland/photos/fltp_aster1.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:33:17.523Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:33:17.523Z"
+  },
+  "__v": 0,
+  "author": "(Mill.) Nees",
+  "bibliography": "Gen. Sp. Aster.: 178 (1832)",
+  "common_name": "Umbellate aster",
+  "family": "Asteraceae",
+  "family_common_name": "Aster family",
+  "genus": "Doellingeria",
+  "genus_id": 1116,
+  "id": 26024,
+  "image_url": "https://bs.plantnet.org/image/o/35954ff6b17f8b6de62c081da9e44c4925bb62e2",
+  "links": {
+    "self": "/api/v1/species/doellingeria-umbellata",
+    "plant": "/api/v1/plants/doellingeria-umbellata",
+    "genus": "/api/v1/genus/doellingeria"
+  },
+  "rank": "species",
+  "scientific_name": "Doellingeria umbellata",
+  "slug": "doellingeria-umbellata",
+  "status": "accepted",
+  "synonyms": [
+    "Aster umbellatus"
+  ],
+  "year": 1832
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78e1"
+  },
+  "scientificName": "Veronicastrum Virgicum",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/wetland/photos/bl_vervain1.jpg"
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78d1"
+  },
+  "scientificName": "Hibiscus moscheutos AKA palustris",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/wetland/photos/pickerelwd1.jpg",
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 693 (1753)",
+  "common_name": "Mallow-rose",
+  "family": "Malvaceae",
+  "family_common_name": null,
+  "genus": "Hibiscus",
+  "genus_id": 7038,
+  "id": 280885,
+  "image_url": "https://bs.plantnet.org/image/o/798144ec54a16cca309cb407e56bad2cfff29c8b",
+  "links": {
+    "self": "/api/v1/species/hibiscus-moscheutos",
+    "plant": "/api/v1/plants/hibiscus-moscheutos",
+    "genus": "/api/v1/genus/hibiscus"
+  },
+  "rank": "species",
+  "scientific_name": "Hibiscus moscheutos",
+  "slug": "hibiscus-moscheutos",
+  "status": "accepted",
+  "synonyms": [],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5ee81ab7c4bd4800179384b3"
+  },
+  "photos": [],
+  "scientificName": "Carex aquatilis",
+  "commonName": "Water Sedge",
+  "notes": "Looks similar to Carex stricta but it is not a clump former like stricta",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/pd3/carex-aquatilis-070716-5.jpg",
+  "createdAt": {
+    "$date": "2020-06-16T01:04:55.823Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-16T01:04:55.823Z"
+  },
+  "__v": 0,
+  "author": "Wahlenb.",
+  "bibliography": "Kongl. Vetensk. Acad. Nya Handl. 24: 165 (1803)",
+  "common_name": "Leafy tussock sedge",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 93217,
+  "image_url": "https://bs.plantnet.org/image/o/a909b104c2445a734a38e1e9f04b665009c0d5bd",
+  "links": {
+    "self": "/api/v1/species/carex-aquatilis",
+    "plant": "/api/v1/plants/carex-aquatilis",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex aquatilis",
+  "slug": "carex-aquatilis",
+  "status": "accepted",
+  "synonyms": [
+    "Carex aquatilis var. pulchella",
+    "Neskiza aquatilis",
+    "Carex aquatilis var. genuina",
+    "Vignea aquatilis"
+  ],
+  "year": 1803
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78e2"
+  },
+  "scientificName": "",
+  "botanicPhoto": null,
+  "author": "Lam.",
+  "bibliography": "Encycl. 1: 723 (1785)",
+  "common_name": "Evergreen oak",
+  "family": "Fagaceae",
+  "family_common_name": null,
+  "genus": "Quercus",
+  "genus_id": 3519,
+  "id": 77116,
+  "image_url": "https://d2seqvvyy3b8p2.cloudfront.net/40ab8e7cdddbe3e78a581b84efa4e893.jpg",
+  "links": {
+    "self": "/api/v1/species/quercus-rotundifolia",
+    "plant": "/api/v1/plants/quercus-rotundifolia",
+    "genus": "/api/v1/genus/quercus"
+  },
+  "rank": "species",
+  "scientific_name": "Quercus rotundifolia",
+  "slug": "quercus-rotundifolia",
+  "status": "accepted",
+  "synonyms": [
+    "Quercus ilex var. oleoides",
+    "Quercus ilex subvar. rotundifolia",
+    "Quercus ilex f. macrophylla",
+    "Quercus ilex f. oleoides",
+    "Quercus ilex var. calicina",
+    "Quercus ilex subsp. rotundifolia",
+    "Quercus lyauteyi",
+    "Quercus ballota var. rotundifolia",
+    "Quercus ilex f. brevicupulata",
+    "Quercus ilex subvar. major",
+    "Quercus ilex var. pendula",
+    "Quercus rotundifolia f. dolichocalyx",
+    "Quercus calicina",
+    "Quercus rotundifolia f. pilosella",
+    "Quercus rotundifolia f. macrocarpa",
+    "Quercus ilex var. rotundifolia",
+    "Quercus sugaro",
+    "Quercus ilex subvar. pendula",
+    "Quercus ilex f. pendula",
+    "Quercus ilex f. ballota",
+    "Quercus ilex f. rotundifolia",
+    "Quercus ilex subvar. minor",
+    "Quercus ballota",
+    "Quercus ilex var. ballota",
+    "Quercus ilex f. calicina",
+    "Quercus ilex var. microcarpa",
+    "Quercus rotundifolia f. calicina",
+    "Quercus ilex f. macrocarpa",
+    "Quercus rotundifolia f. brevicupulata",
+    "Quercus rotundifolia var. macrocarpa",
+    "Quercus ilex var. brevicupulata",
+    "Quercus ilex subsp. ballota",
+    "Quercus ilex var. dolichocalyx",
+    "Quercus rotundifolia var. pilosella",
+    "Quercus rotundifolia var. brevicupulata",
+    "Quercus rotundifolia subsp. maghrebiana"
+  ],
+  "year": 1785
+},
+{
+  "_id": {
+    "$oid": "5eeec018ddd0760017032dd2"
+  },
+  "photos": [],
+  "scientificName": "Spiraea alba",
+  "commonName": "Meadowsweet",
+  "notes": "",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/pd/spiraea-alba-13.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T02:04:08.887Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T02:04:08.887Z"
+  },
+  "__v": 0,
+  "author": "Du Roi",
+  "bibliography": "Harbk. Baumz. 2: 430 (1772)",
+  "common_name": "Meadowsweet",
+  "family": "Rosaceae",
+  "family_common_name": "Rose family",
+  "genus": "Spiraea",
+  "genus_id": 12151,
+  "id": 262423,
+  "image_url": "https://bs.plantnet.org/image/o/0a8b6b500f5e396b272527310a9ac8367c8bdee5",
+  "links": {
+    "self": "/api/v1/species/spiraea-alba",
+    "plant": "/api/v1/plants/spiraea-alba",
+    "genus": "/api/v1/genus/spiraea"
+  },
+  "rank": "species",
+  "scientific_name": "Spiraea alba",
+  "slug": "spiraea-alba",
+  "status": "accepted",
+  "synonyms": [],
+  "year": 1772
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78d2"
+  },
+  "scientificName": "iris virginica shrevei",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/wetland/photos/marsh_mg1.jpg"
+},
+{
+  "_id": {
+    "$oid": "5f6685cc1af54d00179a9f79"
+  },
+  "photos": [],
+  "tags": [
+    "1",
+    "2"
+  ],
+  "scientificName": "Quercus bicolor",
+  "commonName": "Swamp white oak",
+  "notes": "Large tree",
+  "botanicPhoto": "",
+  "createdAt": {
+    "$date": "2020-09-19T22:27:24.040Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-19T22:27:24.040Z"
+  },
+  "__v": 0,
+  "author": "Willd.",
+  "bibliography": "Neue Schriften Ges. Naturf. Freunde Berlin 3: 396 (1801)",
+  "common_name": "Swamp white oak",
+  "family": "Fagaceae",
+  "family_common_name": null,
+  "genus": "Quercus",
+  "genus_id": 3519,
+  "id": 76571,
+  "image_url": "https://bs.plantnet.org/image/o/32c5b977afc70e3fa559b3641e96640bc5cedc30",
+  "links": {
+    "self": "/api/v1/species/quercus-bicolor",
+    "plant": "/api/v1/plants/quercus-bicolor",
+    "genus": "/api/v1/genus/quercus"
+  },
+  "rank": "species",
+  "scientific_name": "Quercus bicolor",
+  "slug": "quercus-bicolor",
+  "status": "accepted",
+  "synonyms": [
+    "Quercus paludosa",
+    "Quercus prinus var. platanoides",
+    "Quercus pannosa",
+    "Quercus bicolor var. platanoides",
+    "Quercus platanoides",
+    "Quercus bicolor var. mollis",
+    "Quercus discolor var. bicolor",
+    "Quercus prinus var. bicolor",
+    "Quercus alba var. palustris",
+    "Quercus bicolor var. angustifolia",
+    "Quercus prinus var. tomentosa",
+    "Quercus bicolor var. cuneiformis",
+    "Quercus filiformis",
+    "Quercus prinus var. discolor",
+    "Quercus mollis"
+  ],
+  "year": 1801
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78df"
+  },
+  "scientificName": "Verbena hastata",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/prairie/photox/ne_aster1.jpg",
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 20 (1753)",
+  "common_name": "American blue vervain",
+  "family": "Verbenaceae",
+  "family_common_name": null,
+  "genus": "Verbena",
+  "genus_id": 4072,
+  "id": 89348,
+  "image_url": "https://bs.plantnet.org/image/o/ff65cccc01fbee7f16042cfb163f88f302006f93",
+  "links": {
+    "self": "/api/v1/species/verbena-hastata",
+    "plant": "/api/v1/plants/verbena-hastata",
+    "genus": "/api/v1/genus/verbena"
+  },
+  "rank": "species",
+  "scientific_name": "Verbena hastata",
+  "slug": "verbena-hastata",
+  "status": "accepted",
+  "synonyms": [
+    "Verbena hastata f. albiflora",
+    "Verbena pinnatifida",
+    "Verbena hastata f. caerulea",
+    "Verbena hastata var. oblongifolia",
+    "Verbena hastata var. paniculata",
+    "Verbena paniculata var. pinnatifida",
+    "Verbena paniculata",
+    "Verbena hastata var. pinnatifida",
+    "Verbena hastata var. rosea",
+    "Verbena hastata f. rosea",
+    "Verbena hastata var. scabra"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5ee821c9c4bd4800179384c1"
+  },
+  "photos": [],
+  "scientificName": "Carex trichocarpa",
+  "commonName": "Hairy Fruited Sedge",
+  "notes": "Spreads like lacustris and emoryi but the sheath is a concave U-shape that has a red tinge as an outline",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/grasses/photos/hf_sedge5.jpg",
+  "createdAt": {
+    "$date": "2020-06-16T01:35:05.378Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-16T01:35:05.378Z"
+  },
+  "__v": 0,
+  "author": "Muhl. ex Willd.",
+  "bibliography": "Sp. Pl., ed. 4, 4: 302 (1805)",
+  "common_name": "Hairyfruit sedge",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 95078,
+  "image_url": "https://bs.plantnet.org/image/o/0fb19750f0078c0f3f09ce8a6e2d163992a5a482",
+  "links": {
+    "self": "/api/v1/species/carex-trichocarpa",
+    "plant": "/api/v1/plants/carex-trichocarpa",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex trichocarpa",
+  "slug": "carex-trichocarpa",
+  "status": "accepted",
+  "synonyms": [],
+  "year": 1805
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78d6"
+  },
+  "scientificName": "Lysimachia ciliata sub L quadrifolia",
+  "botanicPhoto": "''",
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 147 (1753)",
+  "common_name": "Fringed loosestrife",
+  "family": "Primulaceae",
+  "family_common_name": null,
+  "genus": "Lysimachia",
+  "genus_id": 5950,
+  "id": 116333,
+  "image_url": "https://bs.plantnet.org/image/o/beae62a577b6bed351ef50418577f84dca944242",
+  "links": {
+    "self": "/api/v1/species/lysimachia-ciliata",
+    "plant": "/api/v1/plants/lysimachia-ciliata",
+    "genus": "/api/v1/genus/lysimachia"
+  },
+  "rank": "species",
+  "scientific_name": "Lysimachia ciliata",
+  "slug": "lysimachia-ciliata",
+  "status": "accepted",
+  "synonyms": [
+    "Nummularia ciliata",
+    "Steironema ciliatum var. heterophyllum",
+    "Steironema ciliatum",
+    "Steironema pumilum var. longipedicellatum",
+    "Lysimachia membranacea",
+    "Steironema ciliatum var. occidentale",
+    "Steironema pumilum",
+    "Steironema ciliatum f. elongatum",
+    "Steironema membranaceum",
+    "Steironema longipedicellatum",
+    "Lysimachia greeneana",
+    "Lysimachia longipedicellata"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5f6685901af54d00179a9f78"
+  },
+  "photos": [],
+  "tags": [
+    "1",
+    "2"
+  ],
+  "scientificName": "Amelanchier arborea",
+  "commonName": "",
+  "notes": "Small tree",
+  "botanicPhoto": "",
+  "createdAt": {
+    "$date": "2020-09-19T22:26:24.638Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-19T22:26:24.638Z"
+  },
+  "__v": 0,
+  "author": "(F.Michx.) Fernald",
+  "bibliography": "Rhodora 43: 563 (1941)",
+  "common_name": "Allegheny serviceberry",
+  "family": "Rosaceae",
+  "family_common_name": "Rose family",
+  "genus": "Amelanchier",
+  "genus_id": 12181,
+  "id": 265306,
+  "image_url": "https://bs.plantnet.org/image/o/d5383c714ba388e2ab3a4ef902001c1fcfc7e309",
+  "links": {
+    "self": "/api/v1/species/amelanchier-arborea",
+    "plant": "/api/v1/plants/amelanchier-arborea",
+    "genus": "/api/v1/genus/amelanchier"
+  },
+  "rank": "species",
+  "scientific_name": "Amelanchier arborea",
+  "slug": "amelanchier-arborea",
+  "status": "accepted",
+  "synonyms": [
+    "Aronia botryapium",
+    "Mespilus canadensis",
+    "Amelanchier botryapium",
+    "Amelanchier austromontana",
+    "Amelanchier intermedia",
+    "Amelanchier canadensis",
+    "Malus microcarpa",
+    "Pyrus botryapium",
+    "Pyrus wangenheimiana",
+    "Mespilus arborea",
+    "Amelanchier canadensis var. tomentula",
+    "Amelanchier ovalis var. subcordata",
+    "Aronia cordata",
+    "Aronia nivea",
+    "Amelanchier alabamensis",
+    "Amelanchier canadensis subvar. tomentula",
+    "Amelanchier arborea var. alabamensis",
+    "Amelanchier canadensis f. nuda",
+    "Aronia arborea",
+    "Amelanchier arborea var. austromontana",
+    "Mespilus canadensis var. cordata",
+    "Amelanchier arborea f. nuda",
+    "Amelancus canadensis",
+    "Amelanchier wangenheimiana",
+    "Aronia subcordata"
+  ],
+  "year": 1941
+},
+{
+  "_id": {
+    "$oid": "5eeebc02ddd0760017032dc9"
+  },
+  "photos": [],
+  "scientificName": "nymphaea odorata",
+  "commonName": "American White Waterlily",
+  "notes": "",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/pd/nymphaea-odorata-001.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:46:42.418Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:46:42.418Z"
+  },
+  "__v": 0,
+  "author": "Aiton",
+  "bibliography": "Hort. Kew. 2: 227 (1789)",
+  "common_name": "Fragrant water-lily",
+  "family": "Nymphaeaceae",
+  "family_common_name": null,
+  "genus": "Nymphaea",
+  "genus_id": 4873,
+  "id": 285023,
+  "image_url": "https://bs.plantnet.org/image/o/354cc80bef8038c1745ad915559a4c577213b023",
+  "links": {
+    "self": "/api/v1/species/nymphaea-odorata",
+    "plant": "/api/v1/plants/nymphaea-odorata",
+    "genus": "/api/v1/genus/nymphaea"
+  },
+  "rank": "species",
+  "scientific_name": "Nymphaea odorata",
+  "slug": "nymphaea-odorata",
+  "status": "accepted",
+  "synonyms": [
+    "Castalia odorata",
+    "Leuconymphaea odorata"
+  ],
+  "year": 1789
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78cc"
+  },
+  "scientificName": "Decodon verticillatus ",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/pd3/carex-comosa-063016-2.jpg",
+  "author": "(L.) Elliott",
+  "bibliography": "Sketch Bot. S. Carolina 1: 543 (1821)",
+  "common_name": "Swamp-loosestrife",
+  "family": "Lythraceae",
+  "family_common_name": null,
+  "genus": "Decodon",
+  "genus_id": 8648,
+  "id": 171370,
+  "image_url": "https://bs.plantnet.org/image/o/9ae0487b127cc283ad24e630c2c8ee8d9aaf23d7",
+  "links": {
+    "self": "/api/v1/species/decodon-verticillatus",
+    "plant": "/api/v1/plants/decodon-verticillatus",
+    "genus": "/api/v1/genus/decodon"
+  },
+  "rank": "species",
+  "scientific_name": "Decodon verticillatus",
+  "slug": "decodon-verticillatus",
+  "status": "accepted",
+  "synonyms": [
+    "Decodon verticillatus var. pubescens",
+    "Decodon verticillatus var. laevigatus",
+    "Nesaea verticillata",
+    "Decodon aquaticus",
+    "Lythrum verticillatum"
+  ],
+  "year": 1821
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78c5"
+  },
+  "scientificName": "Carex stipata",
+  "botanicPhoto": "http://www.bakerenvironmentalnursery.com/wp-content/uploads/2015/04/Brown_fox__sedge_.jpg",
+  "author": "Muhl. ex Willd.",
+  "bibliography": "Sp. Pl., ed. 4, 4: 233 (1805)",
+  "common_name": "Awlfruit sedge",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 94940,
+  "image_url": "https://bs.plantnet.org/image/o/e16786363b1119469cab0100f27f7fd0aa44660d",
+  "links": {
+    "self": "/api/v1/species/carex-stipata",
+    "plant": "/api/v1/plants/carex-stipata",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex stipata",
+  "slug": "carex-stipata",
+  "status": "accepted",
+  "synonyms": [
+    "Vignea stipata",
+    "Loncoperis stipata"
+  ],
+  "year": 1805
+},
+{
+  "_id": {
+    "$oid": "5ee81b54c4bd4800179384b4"
+  },
+  "photos": [],
+  "scientificName": "Carex hystericina",
+  "commonName": "Porcupine Sedge",
+  "notes": "",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/grasses/photos/porc_sedge1.jpg",
+  "createdAt": {
+    "$date": "2020-06-16T01:07:32.955Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-16T01:07:32.955Z"
+  },
+  "__v": 0,
+  "author": "Muhl. ex Willd.",
+  "bibliography": "Sp. Pl., ed. 4, 4: 282 (1805)",
+  "common_name": "Bottlebrush sedge",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 94004,
+  "image_url": "https://bs.plantnet.org/image/o/2d14cacaa08dd6f30e3dd1017a450d8d7b43f91d",
+  "links": {
+    "self": "/api/v1/species/carex-hystericina",
+    "plant": "/api/v1/plants/carex-hystericina",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex hystericina",
+  "slug": "carex-hystericina",
+  "status": "accepted",
+  "synonyms": [
+    "Carex georgiana",
+    "Carex cooleyi",
+    "Carex hystericina var. dudleyi",
+    "Carex erinacea",
+    "Carex hystericina var. angustior",
+    "Carex hystericina var. cooleyi",
+    "Carex hystericina f. dudleyi"
+  ],
+  "year": 1805
+},
+{
+  "_id": {
+    "$oid": "5eeebac2ddd0760017032dc4"
+  },
+  "photos": [],
+  "scientificName": "Juncus torreyi",
+  "commonName": "Torry's Rush",
+  "notes": "",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/pd3/juncus-torreyi-8772-1.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:41:22.642Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:41:22.642Z"
+  },
+  "__v": 0,
+  "author": "Coville",
+  "bibliography": "Bull. Torrey Bot. Club 22: 303 (1895)",
+  "common_name": "Torrey's rush",
+  "family": "Juncaceae",
+  "family_common_name": null,
+  "genus": "Juncus",
+  "genus_id": 6140,
+  "id": 208955,
+  "image_url": "https://bs.plantnet.org/image/o/ee4aa36c2d22d5f11accb06811507d7b6d62dd91",
+  "links": {
+    "self": "/api/v1/species/juncus-torreyi",
+    "plant": "/api/v1/plants/juncus-torreyi",
+    "genus": "/api/v1/genus/juncus"
+  },
+  "rank": "species",
+  "scientific_name": "Juncus torreyi",
+  "slug": "juncus-torreyi",
+  "status": "accepted",
+  "synonyms": [
+    "Juncus torreyi var. paniculatus",
+    "Juncus torreyi var. prolifer",
+    "Juncus torreyi f. brevipes",
+    "Juncus megacephalus",
+    "Juncus torreyi var. globularis",
+    "Juncus torreyi f. longipes",
+    "Juncus nodosus var. megacephalus"
+  ],
+  "year": 1895
+},
+{
+  "_id": {
+    "$oid": "5eeebb05ddd0760017032dc5"
+  },
+  "photos": [],
+  "scientificName": "Juncus effusus",
+  "commonName": "Soft Rush ",
+  "notes": "",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/pd3/juncus-effusus-7221121-3.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:42:29.769Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:42:29.769Z"
+  },
+  "__v": 0,
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 326 (1753)",
+  "common_name": "Soft rush",
+  "family": "Juncaceae",
+  "family_common_name": null,
+  "genus": "Juncus",
+  "genus_id": 6140,
+  "id": 208738,
+  "image_url": "https://d2seqvvyy3b8p2.cloudfront.net/31545c7b5c65236a5d7f28ca040ee058.jpg",
+  "links": {
+    "self": "/api/v1/species/juncus-effusus",
+    "plant": "/api/v1/plants/juncus-effusus",
+    "genus": "/api/v1/genus/juncus"
+  },
+  "rank": "species",
+  "scientific_name": "Juncus effusus",
+  "slug": "juncus-effusus",
+  "status": "accepted",
+  "synonyms": [
+    "Juncus laevis var. effusus",
+    "Juncus effusus var. oblongicarpus",
+    "Juncus communis",
+    "Juncus communis var. effusus",
+    "Juncus conglomeratus var. effusus",
+    "Juncus laevis"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5f2b6c2748f52e0017b3256a"
+  },
+  "photos": [],
+  "scientificName": "Clematis virginiana",
+  "commonName": "",
+  "notes": "",
+  "botanicPhoto": "",
+  "createdAt": {
+    "$date": "2020-08-06T02:34:15.441Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-06T02:34:15.441Z"
+  },
+  "__v": 0,
+  "author": "L.",
+  "bibliography": "Cent. Pl. I: 15 (1755)",
+  "common_name": "Virgin's-bower",
+  "family": "Ranunculaceae",
+  "family_common_name": null,
+  "genus": "Clematis",
+  "genus_id": 6948,
+  "id": 162425,
+  "image_url": "https://bs.plantnet.org/image/o/f59a554199e887937fb3d8ccf74d33c190db5394",
+  "links": {
+    "self": "/api/v1/species/clematis-virginiana",
+    "plant": "/api/v1/plants/clematis-virginiana",
+    "genus": "/api/v1/genus/clematis"
+  },
+  "rank": "species",
+  "scientific_name": "Clematis virginiana",
+  "slug": "clematis-virginiana",
+  "status": "accepted",
+  "synonyms": [
+    "Clematis bracteata",
+    "Clematis fragrans",
+    "Clematis pensylvanica",
+    "Clematis missouriensis",
+    "Clematis cordifolia",
+    "Clematis dioica subsp. virginiana",
+    "Clematis holosericea",
+    "Clematis virginiana var. missouriensis",
+    "Clematis virginiana var. genuina",
+    "Clematis purshii",
+    "Clematis virginiana f. missouriensis",
+    "Clematitis virginiana",
+    "Clematis canadensis",
+    "Clematitis bracteata",
+    "Clematis virginiana var. bracteata",
+    "Clematitis cordifolia"
+  ],
+  "year": 1755
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78c3"
+  },
+  "scientificName": "Carex frankii",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/wetland/photos/sweet_flag1.jpg",
+  "author": "Kunth",
+  "bibliography": "Enum. Pl. 2: 498 (1837)",
+  "common_name": "Frank's sedge",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 93780,
+  "image_url": "https://bs.plantnet.org/image/o/7fdfadbcfdf06e871e790277e675240e9f3bed92",
+  "links": {
+    "self": "/api/v1/species/carex-frankii",
+    "plant": "/api/v1/plants/carex-frankii",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex frankii",
+  "slug": "carex-frankii",
+  "status": "accepted",
+  "synonyms": [
+    "Carex stenolepis f. gracilior",
+    "Carex shortii"
+  ],
+  "year": 1837
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78e0"
+  },
+  "scientificName": "Vernonia gigantea",
+  "botanicPhoto": "https://projects.ncsu.edu/cals/plantbiology/ncsc/rare/images/Lysimachia_quadrifolia_Krings4.jpg",
+  "author": "(Walter) Trel.",
+  "bibliography": "Rep. (Annual) Arkansas Geol. Surv. 1888(4): 189 (1891)",
+  "common_name": "Giant ironweed",
+  "family": "Asteraceae",
+  "family_common_name": "Aster family",
+  "genus": "Vernonia",
+  "genus_id": 92,
+  "id": 152,
+  "image_url": "https://bs.plantnet.org/image/o/770b803213618fe8486f19ea9917f8cf40109fe5",
+  "links": {
+    "self": "/api/v1/species/vernonia-gigantea",
+    "plant": "/api/v1/plants/vernonia-gigantea",
+    "genus": "/api/v1/genus/vernonia"
+  },
+  "rank": "species",
+  "scientific_name": "Vernonia gigantea",
+  "slug": "vernonia-gigantea",
+  "status": "accepted",
+  "synonyms": [
+    {
+      "id": 446,
+      "name": "Vernonia oligantha",
+      "author": "Greene",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.089Z",
+          "id": "urn:lsid:ipni.org:names:264336-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:264336-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 447,
+      "name": "Cacalia gigantea",
+      "author": "Kuntze",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.141Z",
+          "id": "urn:lsid:ipni.org:names:39206-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:39206-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 448,
+      "name": "Vernonia ovalifolia var. purpurea",
+      "author": "Gleason",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.194Z",
+          "id": "urn:lsid:ipni.org:names:264347-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:264347-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 449,
+      "name": "Vernonia altissima var. taeniotricha",
+      "author": "S.F.Blake",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.244Z",
+          "id": "urn:lsid:ipni.org:names:263779-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:263779-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 450,
+      "name": "Vernonia altissima var. pubescens",
+      "author": "Daniels",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.290Z",
+          "id": "urn:lsid:ipni.org:names:263778-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:263778-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 451,
+      "name": "Vernonia altissima var. lilacina",
+      "author": "Clute",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.343Z",
+          "id": "urn:lsid:ipni.org:names:263776-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:263776-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 452,
+      "name": "Vernonia altissima var. laxa",
+      "author": "Gleason",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.373Z",
+          "id": "urn:lsid:ipni.org:names:263775-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:263775-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 453,
+      "name": "Vernonia praealta var. hebecarpa",
+      "author": "DC.",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.413Z",
+          "id": "urn:lsid:ipni.org:names:264408-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:264408-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 454,
+      "name": "Vernonia gigantea var. ovalifolia",
+      "author": "(Torr. & A.Gray) D.B.Ward",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.456Z",
+          "id": "urn:lsid:ipni.org:names:77129760-1",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:77129760-1",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 455,
+      "name": "Vernonia gigantea subsp. pubescens",
+      "author": "E.Morris",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.495Z",
+          "id": "urn:lsid:ipni.org:names:1004873-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:1004873-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 456,
+      "name": "Vernonia gigantea var. praealta",
+      "author": "Daniels",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.549Z",
+          "id": "urn:lsid:ipni.org:names:264083-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:264083-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 457,
+      "name": "Vernonia gigantea subsp. ovalifolia",
+      "author": "(Torr. & A.Gray) Urbatsch",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.601Z",
+          "id": "urn:lsid:ipni.org:names:264082-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:264082-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 458,
+      "name": "Vernonia maxima",
+      "author": "Small",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.635Z",
+          "id": "urn:lsid:ipni.org:names:264253-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:264253-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 459,
+      "name": "Vernonia maxima subsp. pubescens",
+      "author": "E.Morris",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.675Z",
+          "id": "urn:lsid:ipni.org:names:264254-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:264254-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 460,
+      "name": "Chrysocoma praealta",
+      "author": "Desf.",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.704Z",
+          "id": "urn:lsid:ipni.org:names:193988-1",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:193988-1",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 461,
+      "name": "Chrysocoma gigantea",
+      "author": "Walter",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.747Z",
+          "id": "urn:lsid:ipni.org:names:193922-1",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:193922-1",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 462,
+      "name": "Vernonia praealta",
+      "author": "Michx.",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.793Z",
+          "id": "urn:lsid:ipni.org:names:259120-1",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:259120-1",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 463,
+      "name": "Vernonia altissima var. brevipappa",
+      "author": "Gleason",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.830Z",
+          "id": "urn:lsid:ipni.org:names:263774-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:263774-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 464,
+      "name": "Vernonia altissima f. alba",
+      "author": "Moldenke",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.881Z",
+          "id": "urn:lsid:ipni.org:names:263773-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:263773-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    },
+    {
+      "id": 465,
+      "name": "Vernonia ovalifolia",
+      "author": "Torr. & A.Gray",
+      "sources": [
+        {
+          "last_update": "2022-12-06T18:22:01.922Z",
+          "id": "urn:lsid:ipni.org:names:264346-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:264346-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+        }
+      ]
+    }
+  ],
+  "year": 1891,
+  "common_names": {
+    "deu": [
+      "riesen-vernonie",
+      "hohe scheinaster"
+    ],
+    "eng": [
+      "tall ironweed",
+      "giant ironweed"
+    ],
+    "fra": [
+      "vernonie géante"
+    ],
+    "en": [
+      "Giant ironweed"
+    ],
+    "de": [
+      "Hohe Scheinaster"
+    ]
+  },
+  "distribution": {
+    "native": [
+      "Alabama",
+      "Arkansas",
+      "Florida",
+      "Georgia",
+      "Illinois",
+      "Indiana",
+      "Kansas",
+      "Kentucky",
+      "Louisiana",
+      "Maryland",
+      "Michigan",
+      "Mississippi",
+      "Missouri",
+      "Nebraska",
+      "New York",
+      "North Carolina",
+      "Ohio",
+      "Oklahoma",
+      "Ontario",
+      "Pennsylvania",
+      "South Carolina",
+      "Tennessee",
+      "Texas",
+      "Virginia",
+      "West Virginia"
+    ],
+    "introduced": [
+      "India"
+    ]
+  },
+  "distributions": {
+    "native": [
+      {
+        "id": 144,
+        "name": "Alabama",
+        "slug": "ala",
+        "tdwg_code": "ALA",
+        "tdwg_level": 3,
+        "species_count": 4698,
+        "links": {
+          "self": "/api/v1/distributions/ala",
+          "plants": "/api/v1/distributions/ala/plants",
+          "species": "/api/v1/distributions/ala/species"
+        }
+      },
+      {
+        "id": 227,
+        "name": "Arkansas",
+        "slug": "ark",
+        "tdwg_code": "ARK",
+        "tdwg_level": 3,
+        "species_count": 3236,
+        "links": {
+          "self": "/api/v1/distributions/ark",
+          "plants": "/api/v1/distributions/ark/plants",
+          "species": "/api/v1/distributions/ark/species"
+        }
+      },
+      {
+        "id": 85,
+        "name": "Florida",
+        "slug": "fla",
+        "tdwg_code": "FLA",
+        "tdwg_level": 3,
+        "species_count": 4979,
+        "links": {
+          "self": "/api/v1/distributions/fla",
+          "plants": "/api/v1/distributions/fla/plants",
+          "species": "/api/v1/distributions/fla/species"
+        }
+      },
+      {
+        "id": 191,
+        "name": "Georgia",
+        "slug": "geo",
+        "tdwg_code": "GEO",
+        "tdwg_level": 3,
+        "species_count": 4293,
+        "links": {
+          "self": "/api/v1/distributions/geo",
+          "plants": "/api/v1/distributions/geo/plants",
+          "species": "/api/v1/distributions/geo/species"
+        }
+      },
+      {
+        "id": 145,
+        "name": "Illinois",
+        "slug": "ill",
+        "tdwg_code": "ILL",
+        "tdwg_level": 3,
+        "species_count": 4133,
+        "links": {
+          "self": "/api/v1/distributions/ill",
+          "plants": "/api/v1/distributions/ill/plants",
+          "species": "/api/v1/distributions/ill/species"
+        }
+      },
+      {
+        "id": 230,
+        "name": "Indiana",
+        "slug": "ini",
+        "tdwg_code": "INI",
+        "tdwg_level": 3,
+        "species_count": 3071,
+        "links": {
+          "self": "/api/v1/distributions/ini",
+          "plants": "/api/v1/distributions/ini/plants",
+          "species": "/api/v1/distributions/ini/species"
+        }
+      },
+      {
+        "id": 232,
+        "name": "Kansas",
+        "slug": "kan",
+        "tdwg_code": "KAN",
+        "tdwg_level": 3,
+        "species_count": 2684,
+        "links": {
+          "self": "/api/v1/distributions/kan",
+          "plants": "/api/v1/distributions/kan/plants",
+          "species": "/api/v1/distributions/kan/species"
+        }
+      },
+      {
+        "id": 146,
+        "name": "Kentucky",
+        "slug": "kty",
+        "tdwg_code": "KTY",
+        "tdwg_level": 3,
+        "species_count": 3352,
+        "links": {
+          "self": "/api/v1/distributions/kty",
+          "plants": "/api/v1/distributions/kty/plants",
+          "species": "/api/v1/distributions/kty/species"
+        }
+      },
+      {
+        "id": 205,
+        "name": "Louisiana",
+        "slug": "lou",
+        "tdwg_code": "LOU",
+        "tdwg_level": 3,
+        "species_count": 3588,
+        "links": {
+          "self": "/api/v1/distributions/lou",
+          "plants": "/api/v1/distributions/lou/plants",
+          "species": "/api/v1/distributions/lou/species"
+        }
+      },
+      {
+        "id": 233,
+        "name": "Maryland",
+        "slug": "mry",
+        "tdwg_code": "MRY",
+        "tdwg_level": 3,
+        "species_count": 3972,
+        "links": {
+          "self": "/api/v1/distributions/mry",
+          "plants": "/api/v1/distributions/mry/plants",
+          "species": "/api/v1/distributions/mry/species"
+        }
+      },
+      {
+        "id": 234,
+        "name": "Michigan",
+        "slug": "mic",
+        "tdwg_code": "MIC",
+        "tdwg_level": 3,
+        "species_count": 3351,
+        "links": {
+          "self": "/api/v1/distributions/mic",
+          "plants": "/api/v1/distributions/mic/plants",
+          "species": "/api/v1/distributions/mic/species"
+        }
+      },
+      {
+        "id": 206,
+        "name": "Mississippi",
+        "slug": "msi",
+        "tdwg_code": "MSI",
+        "tdwg_level": 3,
+        "species_count": 3275,
+        "links": {
+          "self": "/api/v1/distributions/msi",
+          "plants": "/api/v1/distributions/msi/plants",
+          "species": "/api/v1/distributions/msi/species"
+        }
+      },
+      {
+        "id": 235,
+        "name": "Missouri",
+        "slug": "mso",
+        "tdwg_code": "MSO",
+        "tdwg_level": 3,
+        "species_count": 3353,
+        "links": {
+          "self": "/api/v1/distributions/mso",
+          "plants": "/api/v1/distributions/mso/plants",
+          "species": "/api/v1/distributions/mso/species"
+        }
+      },
+      {
+        "id": 262,
+        "name": "Nebraska",
+        "slug": "neb",
+        "tdwg_code": "NEB",
+        "tdwg_level": 3,
+        "species_count": 2293,
+        "links": {
+          "self": "/api/v1/distributions/neb",
+          "plants": "/api/v1/distributions/neb/plants",
+          "species": "/api/v1/distributions/neb/species"
+        }
+      },
+      {
+        "id": 237,
+        "name": "New York",
+        "slug": "nwy",
+        "tdwg_code": "NWY",
+        "tdwg_level": 3,
+        "species_count": 4781,
+        "links": {
+          "self": "/api/v1/distributions/nwy",
+          "plants": "/api/v1/distributions/nwy/plants",
+          "species": "/api/v1/distributions/nwy/species"
+        }
+      },
+      {
+        "id": 238,
+        "name": "North Carolina",
+        "slug": "nca",
+        "tdwg_code": "NCA",
+        "tdwg_level": 3,
+        "species_count": 4348,
+        "links": {
+          "self": "/api/v1/distributions/nca",
+          "plants": "/api/v1/distributions/nca/plants",
+          "species": "/api/v1/distributions/nca/species"
+        }
+      },
+      {
+        "id": 239,
+        "name": "Ohio",
+        "slug": "ohi",
+        "tdwg_code": "OHI",
+        "tdwg_level": 3,
+        "species_count": 3323,
+        "links": {
+          "self": "/api/v1/distributions/ohi",
+          "plants": "/api/v1/distributions/ohi/plants",
+          "species": "/api/v1/distributions/ohi/species"
+        }
+      },
+      {
+        "id": 225,
+        "name": "Oklahoma",
+        "slug": "okl",
+        "tdwg_code": "OKL",
+        "tdwg_level": 3,
+        "species_count": 3250,
+        "links": {
+          "self": "/api/v1/distributions/okl",
+          "plants": "/api/v1/distributions/okl/plants",
+          "species": "/api/v1/distributions/okl/species"
+        }
+      },
+      {
+        "id": 240,
+        "name": "Ontario",
+        "slug": "ont",
+        "tdwg_code": "ONT",
+        "tdwg_level": 3,
+        "species_count": 3714,
+        "links": {
+          "self": "/api/v1/distributions/ont",
+          "plants": "/api/v1/distributions/ont/plants",
+          "species": "/api/v1/distributions/ont/species"
+        }
+      },
+      {
+        "id": 241,
+        "name": "Pennsylvania",
+        "slug": "pen",
+        "tdwg_code": "PEN",
+        "tdwg_level": 3,
+        "species_count": 3840,
+        "links": {
+          "self": "/api/v1/distributions/pen",
+          "plants": "/api/v1/distributions/pen/plants",
+          "species": "/api/v1/distributions/pen/species"
+        }
+      },
+      {
+        "id": 192,
+        "name": "South Carolina",
+        "slug": "sca",
+        "tdwg_code": "SCA",
+        "tdwg_level": 3,
+        "species_count": 3793,
+        "links": {
+          "self": "/api/v1/distributions/sca",
+          "plants": "/api/v1/distributions/sca/plants",
+          "species": "/api/v1/distributions/sca/species"
+        }
+      },
+      {
+        "id": 149,
+        "name": "Tennessee",
+        "slug": "ten",
+        "tdwg_code": "TEN",
+        "tdwg_level": 3,
+        "species_count": 3656,
+        "links": {
+          "self": "/api/v1/distributions/ten",
+          "plants": "/api/v1/distributions/ten/plants",
+          "species": "/api/v1/distributions/ten/species"
+        }
+      },
+      {
+        "id": 168,
+        "name": "Texas",
+        "slug": "tex",
+        "tdwg_code": "TEX",
+        "tdwg_level": 3,
+        "species_count": 6763,
+        "links": {
+          "self": "/api/v1/distributions/tex",
+          "plants": "/api/v1/distributions/tex/plants",
+          "species": "/api/v1/distributions/tex/species"
+        }
+      },
+      {
+        "id": 224,
+        "name": "Virginia",
+        "slug": "vrg",
+        "tdwg_code": "VRG",
+        "tdwg_level": 3,
+        "species_count": 4010,
+        "links": {
+          "self": "/api/v1/distributions/vrg",
+          "plants": "/api/v1/distributions/vrg/plants",
+          "species": "/api/v1/distributions/vrg/species"
+        }
+      },
+      {
+        "id": 244,
+        "name": "West Virginia",
+        "slug": "wva",
+        "tdwg_code": "WVA",
+        "tdwg_level": 3,
+        "species_count": 2819,
+        "links": {
+          "self": "/api/v1/distributions/wva",
+          "plants": "/api/v1/distributions/wva/plants",
+          "species": "/api/v1/distributions/wva/species"
+        }
+      }
+    ],
+    "introduced": [
+      {
+        "id": 28,
+        "name": "India",
+        "slug": "ind",
+        "tdwg_code": "IND",
+        "tdwg_level": 3,
+        "species_count": 9569,
+        "links": {
+          "self": "/api/v1/distributions/ind",
+          "plants": "/api/v1/distributions/ind/plants",
+          "species": "/api/v1/distributions/ind/species"
+        }
+      }
+    ]
+  },
+  "duration": null,
+  "edible": false,
+  "edible_part": null,
+  "flower": {
+    "color": null,
+    "conspicuous": null
+  },
+  "foliage": {
+    "texture": null,
+    "color": null,
+    "leaf_retention": null
+  },
+  "fruit_or_seed": {
+    "conspicuous": null,
+    "color": null,
+    "shape": null,
+    "seed_persistence": null
+  },
+  "growth": {
+    "description": null,
+    "sowing": null,
+    "days_to_harvest": null,
+    "row_spacing": {
+      "cm": null
+    },
+    "spread": {
+      "cm": null
+    },
+    "ph_maximum": null,
+    "ph_minimum": null,
+    "light": null,
+    "atmospheric_humidity": null,
+    "growth_months": null,
+    "bloom_months": null,
+    "fruit_months": null,
+    "minimum_precipitation": {
+      "mm": null
+    },
+    "maximum_precipitation": {
+      "mm": null
+    },
+    "minimum_root_depth": {
+      "cm": null
+    },
+    "minimum_temperature": {
+      "deg_f": null,
+      "deg_c": null
+    },
+    "maximum_temperature": {
+      "deg_f": null,
+      "deg_c": null
+    },
+    "soil_nutriments": null,
+    "soil_salinity": null,
+    "soil_texture": null,
+    "soil_humidity": null
+  },
+  "images": {
+    "flower": [
+      {
+        "id": 267,
+        "image_url": "https://bs.plantnet.org/image/o/770b803213618fe8486f19ea9917f8cf40109fe5",
+        "copyright": "Taken Aug 29, 2020 by Pedro Gaspar (cc-by-sa)"
+      },
+      {
+        "id": 268,
+        "image_url": "https://bs.plantnet.org/image/o/390a6ebf174887e9b60a064311f89119f99938c1",
+        "copyright": "Taken Aug 29, 2020 by Pedro Gaspar (cc-by-sa)"
+      },
+      {
+        "id": 269,
+        "image_url": "https://bs.plantnet.org/image/o/d6a00495cb089b40c7816e31cb4efd8c9eb038d6",
+        "copyright": "Taken Aug 12, 2021 by martin bakker (cc-by-sa)"
+      },
+      {
+        "id": 270,
+        "image_url": "https://bs.plantnet.org/image/o/fd7f7444198d4d97030d25f2d69c479e5e63b611",
+        "copyright": "Taken Sep 4, 2020 by Jasmine Thompson (cc-by-sa)"
+      },
+      {
+        "id": 271,
+        "image_url": "https://bs.plantnet.org/image/o/e741b89cd28e92f8aa420aff6ea946ba9a6ad00e",
+        "copyright": "Taken Aug 31, 2019 by B. Orli (cc-by-sa)"
+      },
+      {
+        "id": 3175,
+        "image_url": "https://bs.plantnet.org/image/o/d69d15ff44812e87b36f385a4db65335bdf46b8c",
+        "copyright": "Taken Aug 29, 2020 by Pedro Gaspar (cc-by-sa)"
+      }
+    ],
+    "bark": [
+      {
+        "id": 272,
+        "image_url": "https://bs.plantnet.org/image/o/38fcf6f399e50e3e33d251930fbc0dd89c3f15ca",
+        "copyright": "Taken Sep 14, 2002 by EOL − Steven J. Baskauf (cc-by-nc-sa)"
+      },
+      {
+        "id": 273,
+        "image_url": "https://bs.plantnet.org/image/o/3ae77b56c2d3d44e56fc4c7246c67cbdf8ef0168",
+        "copyright": "Taken Jan 1, 1900 by EOL − John Hilty (cc-by-nc)"
+      }
+    ],
+    "leaf": [
+      {
+        "id": 274,
+        "image_url": "https://bs.plantnet.org/image/o/a0ea4fd1954ffeb985af48ec6d2a7f3c0b0b8b2a",
+        "copyright": "Taken Sep 14, 2002 by EOL − Steven J. Baskauf (cc-by-nc-sa)"
+      },
+      {
+        "id": 275,
+        "image_url": "https://bs.plantnet.org/image/o/48cc5929f6ce69309f9462c9a66b33cf55350a59",
+        "copyright": "Taken Jan 1, 1900 by EOL − John Hilty (cc-by-nc)"
+      }
+    ],
+    "": [
+      {
+        "id": 264,
+        "image_url": "https://d2seqvvyy3b8p2.cloudfront.net/70e2ee6082a0f458181a2a02a87386a1.jpg",
+        "copyright": "© copyright of the Board of Trustees of the Royal Botanic Gardens, Kew."
+      },
+      {
+        "id": 265,
+        "image_url": "https://d2seqvvyy3b8p2.cloudfront.net/2195ed463d57abc4c0f0b65f97134a3a.jpg",
+        "copyright": "© copyright of the Board of Trustees of the Royal Botanic Gardens, Kew."
+      },
+      {
+        "id": 266,
+        "image_url": "https://d2seqvvyy3b8p2.cloudfront.net/90f02fd9cb3b4c4f97ad04bb0b83e87b.jpg",
+        "copyright": "© copyright of the Board of Trustees of the Royal Botanic Gardens, Kew."
+      }
+    ]
+  },
+  "observations": "SE. Canada to U.S.A.",
+  "sources": [
+    {
+      "last_update": "2022-12-04T18:33:50.434Z",
+      "id": "wfo-0000000462",
+      "name": "WFO",
+      "url": null,
+      "citation": null
+    },
+    {
+      "last_update": "2022-12-04T18:33:50.471Z",
+      "id": "258416-1",
+      "name": "IPNI",
+      "url": null,
+      "citation": null
+    },
+    {
+      "last_update": "2022-12-04T19:53:54.709Z",
+      "id": "wfo-0000051948",
+      "name": "WFO",
+      "url": null,
+      "citation": null
+    },
+    {
+      "last_update": "2022-12-06T18:22:00.550Z",
+      "id": "7546818",
+      "name": "GBIF",
+      "url": "https://www.gbif.org/species/7546818",
+      "citation": null
+    },
+    {
+      "last_update": "2022-12-06T18:22:00.996Z",
+      "id": "urn:lsid:ipni.org:names:258416-1",
+      "name": "POWO",
+      "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:258416-1",
+      "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-06"
+    },
+    {
+      "last_update": "2022-12-06T18:22:02.978Z",
+      "id": "Vernonia gigantea (Walter) Trel. ex Trel.",
+      "name": "PlantNet",
+      "url": "https://identify.plantnet.org/species/the-plant-list/Vernonia gigantea (Walter) Trel. ex Trel.",
+      "citation": null
+    },
+    {
+      "last_update": "2022-12-06T18:22:03.005Z",
+      "id": "5397391",
+      "name": "GBIF",
+      "url": "https://www.gbif.org/species/5397391",
+      "citation": null
+    }
+  ],
+  "specifications": {
+    "ligneous_type": null,
+    "growth_form": null,
+    "growth_habit": "Forb/herb",
+    "growth_rate": null,
+    "average_height": {
+      "cm": null
+    },
+    "maximum_height": {
+      "cm": null
+    },
+    "nitrogen_fixation": null,
+    "shape_and_orientation": null,
+    "toxicity": null
+  },
+  "vegetable": false
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78d0"
+  },
+  "scientificName": "Filipendula rubra",
+  "botanicPhoto": "''",
+  "author": "(Hill) B.L.Rob.",
+  "bibliography": "Rhodora 8: 204 (1906)",
+  "common_name": "Queen of the prairie",
+  "family": "Rosaceae",
+  "family_common_name": "Rose family",
+  "genus": "Filipendula",
+  "genus_id": 12148,
+  "id": 265648,
+  "image_url": "https://bs.plantnet.org/image/o/09ce46e2907db761d2c0590e6b9861f20bca326b",
+  "links": {
+    "self": "/api/v1/species/filipendula-rubra",
+    "plant": "/api/v1/plants/filipendula-rubra",
+    "genus": "/api/v1/genus/filipendula"
+  },
+  "rank": "species",
+  "scientific_name": "Filipendula rubra",
+  "slug": "filipendula-rubra",
+  "status": "accepted",
+  "synonyms": [
+    {
+      "id": 691521,
+      "name": "Filipendula lobata var. venusta-magnifica",
+      "author": "Bergmans",
+      "sources": [
+        {
+          "last_update": "2022-12-09T06:07:35.328Z",
+          "id": "urn:lsid:ipni.org:names:2948510-4",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:2948510-4",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-09"
+        }
+      ]
+    },
+    {
+      "id": 691522,
+      "name": "Thecanisia angustifolia",
+      "author": "Raf.",
+      "sources": [
+        {
+          "last_update": "2022-12-09T06:07:35.352Z",
+          "id": "urn:lsid:ipni.org:names:742668-1",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:742668-1",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-09"
+        }
+      ]
+    },
+    {
+      "id": 691523,
+      "name": "Spiraea rubra",
+      "author": "(Hill) Britton",
+      "sources": [
+        {
+          "last_update": "2022-12-09T06:07:35.371Z",
+          "id": "urn:lsid:ipni.org:names:242445-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:242445-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-09"
+        }
+      ]
+    },
+    {
+      "id": 691524,
+      "name": "Thecanisia purpurea",
+      "author": "Raf.",
+      "sources": [
+        {
+          "last_update": "2022-12-09T06:07:35.430Z",
+          "id": "urn:lsid:ipni.org:names:742672-1",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:742672-1",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-09"
+        }
+      ]
+    },
+    {
+      "id": 691525,
+      "name": "Ulmaria rubra var. venusta",
+      "author": "Rehder",
+      "sources": [
+        {
+          "last_update": "2022-12-09T06:07:35.448Z",
+          "id": "urn:lsid:ipni.org:names:2994138-4",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:2994138-4",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-09"
+        }
+      ]
+    },
+    {
+      "id": 691526,
+      "name": "Ulmaria rubra var. albicans",
+      "author": "Rehder",
+      "sources": [
+        {
+          "last_update": "2022-12-09T06:07:35.484Z",
+          "id": "urn:lsid:ipni.org:names:2994137-4",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:2994137-4",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-09"
+        }
+      ]
+    },
+    {
+      "id": 691527,
+      "name": "Ulmaria lobata",
+      "author": "Kostel. ex Maxim.",
+      "sources": [
+        {
+          "last_update": "2022-12-09T06:07:35.504Z",
+          "id": "urn:lsid:ipni.org:names:2994115-4",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:2994115-4",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-09"
+        }
+      ]
+    },
+    {
+      "id": 691528,
+      "name": "Thecanisia lobata",
+      "author": "(Gronov. ex Jacq.) Raf.",
+      "sources": [
+        {
+          "last_update": "2022-12-09T06:07:35.537Z",
+          "id": "urn:lsid:ipni.org:names:742670-1",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:742670-1",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-09"
+        }
+      ]
+    },
+    {
+      "id": 691529,
+      "name": "Ulmaria rubra",
+      "author": "Hill",
+      "sources": [
+        {
+          "last_update": "2022-12-09T06:07:35.561Z",
+          "id": "urn:lsid:ipni.org:names:259343-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:259343-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-09"
+        }
+      ]
+    },
+    {
+      "id": 691530,
+      "name": "Spiraea palmata var. tomentosa",
+      "author": "Wenz.",
+      "sources": [
+        {
+          "last_update": "2022-12-09T06:07:35.587Z",
+          "id": "urn:lsid:ipni.org:names:2993533-4",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:2993533-4",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-09"
+        }
+      ]
+    },
+    {
+      "id": 691531,
+      "name": "Filipendula lobata",
+      "author": "(Gronov. ex Jacq.) Maxim.",
+      "sources": [
+        {
+          "last_update": "2022-12-09T06:07:35.612Z",
+          "id": "urn:lsid:ipni.org:names:724930-1",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:724930-1",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-09"
+        }
+      ]
+    },
+    {
+      "id": 691532,
+      "name": "Spiraea palmata var. alba",
+      "author": "Anon.",
+      "sources": [
+        {
+          "last_update": "2022-12-09T06:07:35.640Z",
+          "id": "urn:lsid:ipni.org:names:2993532-4",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:2993532-4",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-09"
+        }
+      ]
+    },
+    {
+      "id": 691533,
+      "name": "Spiraea lobata var. latiloba",
+      "author": "Turcz.",
+      "sources": [
+        {
+          "last_update": "2022-12-09T06:07:35.663Z",
+          "id": "urn:lsid:ipni.org:names:2993351-4",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:2993351-4",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-09"
+        }
+      ]
+    },
+    {
+      "id": 691534,
+      "name": "Spiraea lobata",
+      "author": "Gronov. ex Jacq.",
+      "sources": [
+        {
+          "last_update": "2022-12-09T06:07:35.687Z",
+          "id": "urn:lsid:ipni.org:names:242425-2",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:242425-2",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-09"
+        }
+      ]
+    },
+    {
+      "id": 691535,
+      "name": "Filipendula lobata var. albiflora",
+      "author": "Bergmans",
+      "sources": [
+        {
+          "last_update": "2022-12-09T06:07:35.722Z",
+          "id": "urn:lsid:ipni.org:names:2948509-4",
+          "name": "POWO",
+          "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:2948509-4",
+          "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-09"
+        }
+      ]
+    }
+  ],
+  "year": 1906,
+  "common_names": {
+    "eng": [
+      "queen of the prairie",
+      "queen-of-the-prairie",
+      "red queen-of-the-meadow"
+    ],
+    "deu": [
+      "rotes mädesüß"
+    ],
+    "swe": [
+      "amerikanskt älggräs"
+    ],
+    "ces": [
+      "tužebník"
+    ],
+    "fra": [
+      "filipendule rouge"
+    ],
+    "en": [
+      "Queen of the prairie",
+      "Queen-of-the-Prairie",
+      "Prairie dropwort",
+      "Red queen-of-the-meadow"
+    ],
+    "cs": [
+      "Tužebník"
+    ],
+    "fr": [
+      "Filipendule rouge"
+    ],
+    "de": [
+      "Rotes Mädesüss",
+      "Rotes Mädesüß"
+    ],
+    "sv": [
+      "Amerikanskt älggräs"
+    ]
+  },
+  "distribution": {
+    "native": [
+      "Illinois",
+      "Indiana",
+      "Iowa",
+      "Kentucky",
+      "Maryland",
+      "Michigan",
+      "Minnesota",
+      "Mississippi",
+      "Missouri",
+      "North Carolina",
+      "Ohio",
+      "Pennsylvania",
+      "Vermont",
+      "Virginia",
+      "Wisconsin"
+    ],
+    "introduced": [
+      "New York"
+    ]
+  },
+  "distributions": {
+    "native": [
+      {
+        "id": 145,
+        "name": "Illinois",
+        "slug": "ill",
+        "tdwg_code": "ILL",
+        "tdwg_level": 3,
+        "species_count": 4133,
+        "links": {
+          "self": "/api/v1/distributions/ill",
+          "plants": "/api/v1/distributions/ill/plants",
+          "species": "/api/v1/distributions/ill/species"
+        }
+      },
+      {
+        "id": 230,
+        "name": "Indiana",
+        "slug": "ini",
+        "tdwg_code": "INI",
+        "tdwg_level": 3,
+        "species_count": 3071,
+        "links": {
+          "self": "/api/v1/distributions/ini",
+          "plants": "/api/v1/distributions/ini/plants",
+          "species": "/api/v1/distributions/ini/species"
+        }
+      },
+      {
+        "id": 231,
+        "name": "Iowa",
+        "slug": "iow",
+        "tdwg_code": "IOW",
+        "tdwg_level": 3,
+        "species_count": 2472,
+        "links": {
+          "self": "/api/v1/distributions/iow",
+          "plants": "/api/v1/distributions/iow/plants",
+          "species": "/api/v1/distributions/iow/species"
+        }
+      },
+      {
+        "id": 146,
+        "name": "Kentucky",
+        "slug": "kty",
+        "tdwg_code": "KTY",
+        "tdwg_level": 3,
+        "species_count": 3352,
+        "links": {
+          "self": "/api/v1/distributions/kty",
+          "plants": "/api/v1/distributions/kty/plants",
+          "species": "/api/v1/distributions/kty/species"
+        }
+      },
+      {
+        "id": 233,
+        "name": "Maryland",
+        "slug": "mry",
+        "tdwg_code": "MRY",
+        "tdwg_level": 3,
+        "species_count": 3972,
+        "links": {
+          "self": "/api/v1/distributions/mry",
+          "plants": "/api/v1/distributions/mry/plants",
+          "species": "/api/v1/distributions/mry/species"
+        }
+      },
+      {
+        "id": 234,
+        "name": "Michigan",
+        "slug": "mic",
+        "tdwg_code": "MIC",
+        "tdwg_level": 3,
+        "species_count": 3351,
+        "links": {
+          "self": "/api/v1/distributions/mic",
+          "plants": "/api/v1/distributions/mic/plants",
+          "species": "/api/v1/distributions/mic/species"
+        }
+      },
+      {
+        "id": 257,
+        "name": "Minnesota",
+        "slug": "min",
+        "tdwg_code": "MIN",
+        "tdwg_level": 3,
+        "species_count": 2934,
+        "links": {
+          "self": "/api/v1/distributions/min",
+          "plants": "/api/v1/distributions/min/plants",
+          "species": "/api/v1/distributions/min/species"
+        }
+      },
+      {
+        "id": 206,
+        "name": "Mississippi",
+        "slug": "msi",
+        "tdwg_code": "MSI",
+        "tdwg_level": 3,
+        "species_count": 3275,
+        "links": {
+          "self": "/api/v1/distributions/msi",
+          "plants": "/api/v1/distributions/msi/plants",
+          "species": "/api/v1/distributions/msi/species"
+        }
+      },
+      {
+        "id": 235,
+        "name": "Missouri",
+        "slug": "mso",
+        "tdwg_code": "MSO",
+        "tdwg_level": 3,
+        "species_count": 3353,
+        "links": {
+          "self": "/api/v1/distributions/mso",
+          "plants": "/api/v1/distributions/mso/plants",
+          "species": "/api/v1/distributions/mso/species"
+        }
+      },
+      {
+        "id": 238,
+        "name": "North Carolina",
+        "slug": "nca",
+        "tdwg_code": "NCA",
+        "tdwg_level": 3,
+        "species_count": 4348,
+        "links": {
+          "self": "/api/v1/distributions/nca",
+          "plants": "/api/v1/distributions/nca/plants",
+          "species": "/api/v1/distributions/nca/species"
+        }
+      },
+      {
+        "id": 239,
+        "name": "Ohio",
+        "slug": "ohi",
+        "tdwg_code": "OHI",
+        "tdwg_level": 3,
+        "species_count": 3323,
+        "links": {
+          "self": "/api/v1/distributions/ohi",
+          "plants": "/api/v1/distributions/ohi/plants",
+          "species": "/api/v1/distributions/ohi/species"
+        }
+      },
+      {
+        "id": 241,
+        "name": "Pennsylvania",
+        "slug": "pen",
+        "tdwg_code": "PEN",
+        "tdwg_level": 3,
+        "species_count": 3840,
+        "links": {
+          "self": "/api/v1/distributions/pen",
+          "plants": "/api/v1/distributions/pen/plants",
+          "species": "/api/v1/distributions/pen/species"
+        }
+      },
+      {
+        "id": 243,
+        "name": "Vermont",
+        "slug": "ver",
+        "tdwg_code": "VER",
+        "tdwg_level": 3,
+        "species_count": 2952,
+        "links": {
+          "self": "/api/v1/distributions/ver",
+          "plants": "/api/v1/distributions/ver/plants",
+          "species": "/api/v1/distributions/ver/species"
+        }
+      },
+      {
+        "id": 224,
+        "name": "Virginia",
+        "slug": "vrg",
+        "tdwg_code": "VRG",
+        "tdwg_level": 3,
+        "species_count": 4010,
+        "links": {
+          "self": "/api/v1/distributions/vrg",
+          "plants": "/api/v1/distributions/vrg/plants",
+          "species": "/api/v1/distributions/vrg/species"
+        }
+      },
+      {
+        "id": 258,
+        "name": "Wisconsin",
+        "slug": "wis",
+        "tdwg_code": "WIS",
+        "tdwg_level": 3,
+        "species_count": 3233,
+        "links": {
+          "self": "/api/v1/distributions/wis",
+          "plants": "/api/v1/distributions/wis/plants",
+          "species": "/api/v1/distributions/wis/species"
+        }
+      }
+    ],
+    "introduced": [
+      {
+        "id": 237,
+        "name": "New York",
+        "slug": "nwy",
+        "tdwg_code": "NWY",
+        "tdwg_level": 3,
+        "species_count": 4781,
+        "links": {
+          "self": "/api/v1/distributions/nwy",
+          "plants": "/api/v1/distributions/nwy/plants",
+          "species": "/api/v1/distributions/nwy/species"
+        }
+      }
+    ]
+  },
+  "duration": null,
+  "edible": false,
+  "edible_part": null,
+  "flower": {
+    "color": null,
+    "conspicuous": null
+  },
+  "foliage": {
+    "texture": null,
+    "color": null,
+    "leaf_retention": null
+  },
+  "fruit_or_seed": {
+    "conspicuous": null,
+    "color": null,
+    "shape": null,
+    "seed_persistence": null
+  },
+  "growth": {
+    "description": null,
+    "sowing": null,
+    "days_to_harvest": null,
+    "row_spacing": {
+      "cm": null
+    },
+    "spread": {
+      "cm": null
+    },
+    "ph_maximum": null,
+    "ph_minimum": null,
+    "light": null,
+    "atmospheric_humidity": null,
+    "growth_months": null,
+    "bloom_months": null,
+    "fruit_months": null,
+    "minimum_precipitation": {
+      "mm": null
+    },
+    "maximum_precipitation": {
+      "mm": null
+    },
+    "minimum_root_depth": {
+      "cm": null
+    },
+    "minimum_temperature": {
+      "deg_f": null,
+      "deg_c": null
+    },
+    "maximum_temperature": {
+      "deg_f": null,
+      "deg_c": null
+    },
+    "soil_nutriments": null,
+    "soil_salinity": null,
+    "soil_texture": null,
+    "soil_humidity": null
+  },
+  "images": {
+    "flower": [
+      {
+        "id": 468197,
+        "image_url": "https://bs.plantnet.org/image/o/70e544f0c1bfbaa02d2a65d287c47fa51d1d327a",
+        "copyright": "Taken Jul 25, 2021 by Philip Huckle (cc-by-sa)"
+      },
+      {
+        "id": 468198,
+        "image_url": "https://bs.plantnet.org/image/o/29111bd689a7ff9e765fd1ae53550d01c69ae2ff",
+        "copyright": "Taken Jul 14, 2021 by Ronald van Dam (cc-by-sa)"
+      },
+      {
+        "id": 468199,
+        "image_url": "https://bs.plantnet.org/image/o/0d0ff1eb1945e74738a64c1f9819b3b017d0cc7f",
+        "copyright": "Taken Jun 26, 2022 by Michel Ball (cc-by-sa)"
+      },
+      {
+        "id": 468200,
+        "image_url": "https://bs.plantnet.org/image/o/594c58b8097878bd8150eef16ada7837ead97429",
+        "copyright": "Taken Jul 13, 2020 by nicki olesdotter (cc-by-sa)"
+      },
+      {
+        "id": 468201,
+        "image_url": "https://bs.plantnet.org/image/o/ae291716c9eae1de5ab4498ce0eb77a1da8d133a",
+        "copyright": "Taken Jul 2, 2021 by s marisa (cc-by-sa)"
+      }
+    ],
+    "leaf": [
+      {
+        "id": 468202,
+        "image_url": "https://bs.plantnet.org/image/o/35fe7a5169262900b3265097afce655ff1b78336",
+        "copyright": "Taken Jul 2, 2022 by ellie alvarado (cc-by-sa)"
+      },
+      {
+        "id": 468203,
+        "image_url": "https://bs.plantnet.org/image/o/95ccf13fd904b6abb6a9a55b86be748e4dac33f2",
+        "copyright": "Taken Jul 20, 2022 by francois jobin (cc-by-sa)"
+      },
+      {
+        "id": 468204,
+        "image_url": "https://bs.plantnet.org/image/o/79b9901ffc9c17e27747c64fbe14c6a17de469f4",
+        "copyright": "Taken Jul 12, 2020 by Kerstin Mahler (cc-by-sa)"
+      },
+      {
+        "id": 468205,
+        "image_url": "https://bs.plantnet.org/image/o/787e05dd799cd0e43f46876c407a4cf55fbe6dcf",
+        "copyright": "Taken Jul 27, 2022 by Johan Bergstrom-Allen (cc-by-sa)"
+      },
+      {
+        "id": 468206,
+        "image_url": "https://bs.plantnet.org/image/o/f8adff009c206c5c87669e2e3e528dc3272e253d",
+        "copyright": "Taken Jul 20, 2021 by Giode Tonpino (cc-by-sa)"
+      }
+    ],
+    "habit": [
+      {
+        "id": 468207,
+        "image_url": "https://bs.plantnet.org/image/o/b0e5f1aaa3da88bab23eff1126df1ed9562af703",
+        "copyright": "Taken Jul 11, 2022 by Ha Anna (cc-by-sa)"
+      },
+      {
+        "id": 468208,
+        "image_url": "https://bs.plantnet.org/image/o/0403c704baef14abd119ce1ec3abf7aaaa7d6e53",
+        "copyright": "Taken Oct 11, 2022 by yvon s (cc-by-sa)"
+      },
+      {
+        "id": 468209,
+        "image_url": "https://bs.plantnet.org/image/o/afd9bc4380d172e0e96f5abe8a0d1d79bc45ef58",
+        "copyright": "Taken Jul 18, 2022 by yvon s (cc-by-sa)"
+      },
+      {
+        "id": 468210,
+        "image_url": "https://bs.plantnet.org/image/o/455e2def34fedfb4af684ab2719b9e58cc1f2758",
+        "copyright": "Taken Jun 26, 2022 by yvon s (cc-by-sa)"
+      },
+      {
+        "id": 468211,
+        "image_url": "https://bs.plantnet.org/image/o/09ce46e2907db761d2c0590e6b9861f20bca326b",
+        "copyright": "Taken Jul 20, 2021 by Giode Tonpino (cc-by-sa)"
+      }
+    ],
+    "bark": [
+      {
+        "id": 468212,
+        "image_url": "https://bs.plantnet.org/image/o/136949bbf387c37e3343bb8a6bf52d1976919fa4",
+        "copyright": "Taken Jul 1, 2022 by Werner Rom (cc-by-sa)"
+      },
+      {
+        "id": 468213,
+        "image_url": "https://bs.plantnet.org/image/o/7a833d24c795fad35954e113b27bb9d52a6c7c99",
+        "copyright": "Taken Jul 2, 2021 by Pour Demos (cc-by-sa)"
+      }
+    ],
+    "fruit": [
+      {
+        "id": 468214,
+        "image_url": "https://bs.plantnet.org/image/o/398718d1842b8f54ecb160b17ceeb691860997d0",
+        "copyright": "Taken Sep 7, 2022 by yvon s (cc-by-sa)"
+      },
+      {
+        "id": 468215,
+        "image_url": "https://bs.plantnet.org/image/o/06a73ba3f868e1cdf3e582b23fd36a8678f5c5a8",
+        "copyright": "Taken Sep 7, 2022 by yvon s (cc-by-sa)"
+      },
+      {
+        "id": 468216,
+        "image_url": "https://bs.plantnet.org/image/o/7731ca2c99d0ad46f2bc6e4f2b839e9155fc3ffe",
+        "copyright": "Taken Oct 11, 2022 by yvon s (cc-by-sa)"
+      }
+    ],
+    "": [
+      {
+        "id": 468195,
+        "image_url": "https://storage.googleapis.com/powop-assets/kew_profiles/KPPCONT_031443_fullsize.jpg",
+        "copyright": "© copyright of the Board of Trustees of the Royal Botanic Gardens, Kew."
+      }
+    ]
+  },
+  "observations": "NC. & E. U.S.A.",
+  "sources": [
+    {
+      "last_update": "2022-12-05T16:55:04.251Z",
+      "id": "wfo-0001012765",
+      "name": "WFO",
+      "url": null,
+      "citation": null
+    },
+    {
+      "last_update": "2022-12-05T16:55:04.277Z",
+      "id": "104799-2",
+      "name": "IPNI",
+      "url": null,
+      "citation": null
+    },
+    {
+      "last_update": "2022-12-09T06:07:34.748Z",
+      "id": "2988113",
+      "name": "GBIF",
+      "url": "https://www.gbif.org/species/2988113",
+      "citation": null
+    },
+    {
+      "last_update": "2022-12-09T06:07:35.297Z",
+      "id": "urn:lsid:ipni.org:names:104799-2",
+      "name": "POWO",
+      "url": "http://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:104799-2",
+      "citation": "POWO (2019). Plants of the World Online. Facilitated by the Royal Botanic Gardens, Kew. Published on the Internet; http://www.plantsoftheworldonline.org/ Retrieved 2022-12-09"
+    },
+    {
+      "last_update": "2022-12-09T06:07:36.511Z",
+      "id": "Filipendula rubra (Hill) B.L.Rob.",
+      "name": "PlantNet",
+      "url": "https://identify.plantnet.org/species/the-plant-list/Filipendula rubra (Hill) B.L.Rob.",
+      "citation": null
+    }
+  ],
+  "specifications": {
+    "ligneous_type": null,
+    "growth_form": null,
+    "growth_habit": "Forb/herb",
+    "growth_rate": null,
+    "average_height": {
+      "cm": null
+    },
+    "maximum_height": {
+      "cm": null
+    },
+    "nitrogen_fixation": null,
+    "shape_and_orientation": null,
+    "toxicity": null
+  },
+  "vegetable": false
+},
+{
+  "_id": {
+    "$oid": "5ee81dafc4bd4800179384b9"
+  },
+  "photos": [],
+  "scientificName": "Carex emoryi",
+  "commonName": "Emory's Sedge",
+  "notes": "Spread vegetatively like C.lacustris but inflorescence is smaller, more similar to stricta.",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/pd3/carex-emoryi-0601172-42.jpg",
+  "createdAt": {
+    "$date": "2020-06-16T01:17:35.243Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-16T01:17:35.243Z"
+  },
+  "__v": 0,
+  "author": "Dewey",
+  "bibliography": "W.H.Emory, Rep. U.S. Mex. Bound. 2(1): 230 (1858)",
+  "common_name": "Emory's sedge",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 93690,
+  "image_url": "https://bs.plantnet.org/image/o/943495fb266c59d38d6fdcd12615d593e0fd96ef",
+  "links": {
+    "self": "/api/v1/species/carex-emoryi",
+    "plant": "/api/v1/plants/carex-emoryi",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex emoryi",
+  "slug": "carex-emoryi",
+  "status": "accepted",
+  "synonyms": [
+    "Carex millegrana",
+    "Carex stricta var. elongata",
+    "Carex variabilis var. altior",
+    "Carex variabilis var. elatior",
+    "Carex aquatilis var. altior",
+    "Carex aquatilis subsp. altior",
+    "Carex stricta var. emoryi",
+    "Carex stricta f. emoryi",
+    "Carex virginiana var. elongata"
+  ],
+  "year": 1858
+},
+{
+  "_id": {
+    "$oid": "5ee81cc5c4bd4800179384b7"
+  },
+  "photos": [],
+  "scientificName": "Carex crinita",
+  "commonName": "Fringed Sedge",
+  "notes": "Inflorescence is very unique because how it droops, its length and how narrow it is",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/grasses/photos/frg_sedge1.jpg",
+  "createdAt": {
+    "$date": "2020-06-16T01:13:41.322Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-16T01:13:41.322Z"
+  },
+  "__v": 0,
+  "author": "Lam.",
+  "bibliography": "Encycl. 3: 393 (1792)",
+  "common_name": "Fringed sedge",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 93537,
+  "image_url": "https://bs.plantnet.org/image/o/d4da51f1254c402947966b55f14457d94f916e73",
+  "links": {
+    "self": "/api/v1/species/carex-crinita",
+    "plant": "/api/v1/plants/carex-crinita",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex crinita",
+  "slug": "carex-crinita",
+  "status": "accepted",
+  "synonyms": [
+    "Diemisa crinita",
+    "Neskiza crinita"
+  ],
+  "year": 1792
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78c9"
+  },
+  "scientificName": "Cornus sericea",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/prairie/photox/shootingstar3.jpg",
+  "author": "L.",
+  "bibliography": "Mant. Pl. 2: 199 (1771)",
+  "common_name": "Red-osier dogwood",
+  "family": "Cornaceae",
+  "family_common_name": null,
+  "genus": "Cornus",
+  "genus_id": 4556,
+  "id": 243058,
+  "image_url": "https://bs.plantnet.org/image/o/f8528f4e903edb8db15526303ad72b107ddfcb00",
+  "links": {
+    "self": "/api/v1/species/cornus-sericea",
+    "plant": "/api/v1/plants/cornus-sericea",
+    "genus": "/api/v1/genus/cornus"
+  },
+  "rank": "species",
+  "scientific_name": "Cornus sericea",
+  "slug": "cornus-sericea",
+  "status": "accepted",
+  "synonyms": [
+    "Cornus alba var. coloradensis",
+    "Cornus alba var. elongata",
+    "Cornus sericea f. californica",
+    "Cornus sericea f. baileyi",
+    "Cornus alba var. interior",
+    "Cornus californica var. nevadensis",
+    "Cornus sericea f. stolonifera",
+    "Thelycrania instolonea",
+    "Cornus purshii",
+    "Cornus stolonifera f. angustior",
+    "Cornus stolonifera var. nitida",
+    "Cornus nelsonii",
+    "Cornus stolonifera var. riparia",
+    "Cornus stolonifera f. californica",
+    "Cornus alba subsp. stolonifera",
+    "Cornus stolonifera var. flaviramea",
+    "Swida stolonifera",
+    "Swida californica",
+    "Cornus alba f. azurea",
+    "Cornus stolonifera f. flaviramea",
+    "Cornus instolonea",
+    "Thelycrania interior",
+    "Thelycrania stolonifera",
+    "Cornus stolonifera f. azurea",
+    "Swida sericea",
+    "Cornus stolonifera var. baileyi",
+    "Cornus stolonifera var. californica",
+    "Ossea instolonea",
+    "Cornus stolonifera var. elata",
+    "Cornus alba var. californica",
+    "Cornus alba var. baileyi",
+    "Swida alba var. flaviramea",
+    "Cornus candissima",
+    "Thelycrania baileyi",
+    "Cornus alba var. elata",
+    "Swida instolonea",
+    "Thelycrania californica",
+    "Cornus californica",
+    "Cornus alba var. nitida",
+    "Cornus sericea f. interior",
+    "Cornus alba var. flaviramea",
+    "Cornus stolonifera",
+    "Cornus stolonifera var. angustipetala",
+    "Cornus baileyi",
+    "Cornus sericea var. oblongifolia",
+    "Cornus stolonifera var. interior",
+    "Cornus stolonifera var. splendens",
+    "Cornus stolonifera f. repens",
+    "Cornus sericea subsp. stolonifera",
+    "Cornus alba f. baileyi",
+    "Cornus alba var. splendens",
+    "Ossea interior",
+    "Cornus stolonifera f. dolichocarpa",
+    "Cornus alba var. angustipetala",
+    "Swida alba subsp. stolonifera",
+    "Cornus stolonifera var. elongata",
+    "Cornus stolonifera f. interior",
+    "Thelycrania interna",
+    "Swida stolonifera var. riparia",
+    "Cornus interior",
+    "Thelycrania sericea",
+    "Cornus sericea var. baileyi",
+    "Cornus stolonifera f. baileyi",
+    "Cornus pubescens var. californica",
+    "Cornus stolonifera var. behnschii",
+    "Swida baileyi",
+    "Cornus stolonifera var. coloradensis",
+    "Cornus alba var. behnschii",
+    "Swida interior",
+    "Cornus alba subsp. baileyi"
+  ],
+  "year": 1771
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78c2"
+  },
+  "scientificName": "Carex comosa",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/wetland/photos/lizard_tail3.jpg",
+  "author": "Boott",
+  "bibliography": "Trans. Linn. Soc. London 20: 117 (1846)",
+  "common_name": "Longhair sedge",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 93492,
+  "image_url": "https://bs.plantnet.org/image/o/0c3362858c9c543aaca2ca69b749a4444d566c73",
+  "links": {
+    "self": "/api/v1/species/carex-comosa",
+    "plant": "/api/v1/plants/carex-comosa",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex comosa",
+  "slug": "carex-comosa",
+  "status": "accepted",
+  "synonyms": [
+    "Carex pseudocyperus var. comosa"
+  ],
+  "year": 1846
+},
+{
+  "_id": {
+    "$oid": "5ee82060c4bd4800179384bf"
+  },
+  "photos": [],
+  "scientificName": "Carex scoparia",
+  "commonName": "Pointed Broom Sedge",
+  "notes": "As of 2020 nothing we have planted looks like this sedge",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/se/carex-scoparia-plants.jpg",
+  "createdAt": {
+    "$date": "2020-06-16T01:29:04.592Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-16T01:29:04.592Z"
+  },
+  "__v": 0,
+  "author": "Schkuhr ex Willd.",
+  "bibliography": "Sp. Pl. ed. 4. 4: 230 (1805)",
+  "common_name": null,
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 94847,
+  "image_url": null,
+  "links": {
+    "self": "/api/v1/species/carex-scoparia",
+    "plant": "/api/v1/plants/carex-scoparia",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex scoparia",
+  "slug": "carex-scoparia",
+  "status": "accepted",
+  "synonyms": [
+    "Carex ovalis",
+    "Carex leporina",
+    "Loncoperis scoparia",
+    "Carex scoparia var. moniliformis",
+    "Vignea scoparia",
+    "Carex scoparia f. moniliformis",
+    "Carex scoparia f. condensa",
+    "Carex scoparia var. aggregata",
+    "Carex scoparia var. vera",
+    "Carex lagopodioides var. scoparia",
+    "Carex scoparia f. peracuta",
+    "Carex scoparia f. subturbinata",
+    "Carex tribuloides var. moniliformis",
+    "Carex scoparia f. elatior",
+    "Carex scoparia var. subturbinata",
+    "Carex scoparia var. condensa",
+    "Carex scoparia f. tenerrima"
+  ],
+  "year": 1805
+},
+{
+  "_id": {
+    "$oid": "5eeeb92eddd0760017032dbe"
+  },
+  "photos": [],
+  "scientificName": "Equisetum hyemale ",
+  "commonName": "Scouringrush Horsetail",
+  "notes": "",
+  "botanicPhoto": "http://images.mobot.org/TropicosImages2/PlantRecordImages/prod/large960/00001000/1958_C670-0901021.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:34:38.649Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:34:38.649Z"
+  },
+  "__v": 0,
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 1062 (1753)",
+  "common_name": "Great scouring-rush",
+  "family": "Equisetaceae",
+  "family_common_name": null,
+  "genus": "Equisetum",
+  "genus_id": 9878,
+  "id": 200959,
+  "image_url": "https://bs.plantnet.org/image/o/eefca2d417982963ff809d16d7c56081c96e06c4",
+  "links": {
+    "self": "/api/v1/species/equisetum-hyemale",
+    "plant": "/api/v1/plants/equisetum-hyemale",
+    "genus": "/api/v1/genus/equisetum"
+  },
+  "rank": "species",
+  "scientific_name": "Equisetum hyemale",
+  "slug": "equisetum-hyemale",
+  "status": "accepted",
+  "synonyms": [
+    "Equisetum hyemale var. javanicum",
+    "Equisetum hyemale var. viride",
+    "Equisetum hyemale var. fuscozonatum",
+    "Equisetum alpinum",
+    "Equisetum hyemale f. paleaceum",
+    "Equisetum hyemale subsp. paleaceum",
+    "Equisetum hyemale f. doellii",
+    "Equisetum hyemale var. capillare",
+    "Equisetum hyemale f. viride",
+    "Equisetum hyemale f. attenuatum",
+    "Hippochaete hyemalis",
+    "Equisetum hyemale var. rabenhorstii",
+    "Equisetum hyemale var. fallax",
+    "Equisetum hyemale var. minus",
+    "Equisetum hyemale var. ramigerum",
+    "Equisetum hyemale f. minus",
+    "Equisetum hyemale var. brevivaginatum",
+    "Equisetum hyemale var. simplex",
+    "Equisetum hyemale f. hondae",
+    "Equisetum hyemale var. subramosum",
+    "Equisetum hyemale var. uliginosum",
+    "Equisetum hyemale var. doellii",
+    "Equisetum hyemale var. paleaceum",
+    "Equisetum hyemale var. paucifolium",
+    "Presla hyemalis"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78ce"
+  },
+  "scientificName": "Echinacea pallida",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/prairie/photox/cm_boneset1.jpg",
+  "author": "(Nutt.) Nutt.",
+  "bibliography": "Trans. Amer. Philos. Soc., ser. 2, 7: 354 (1840)",
+  "common_name": "Pale echinacea",
+  "family": "Asteraceae",
+  "family_common_name": "Aster family",
+  "genus": "Echinacea",
+  "genus_id": 844,
+  "id": 5784,
+  "image_url": "https://bs.plantnet.org/image/o/993a521fbe04b19f02c3fd81e393b1642fa5ffc9",
+  "links": {
+    "self": "/api/v1/species/echinacea-pallida",
+    "plant": "/api/v1/plants/echinacea-pallida",
+    "genus": "/api/v1/genus/echinacea"
+  },
+  "rank": "species",
+  "scientific_name": "Echinacea pallida",
+  "slug": "echinacea-pallida",
+  "status": "accepted",
+  "synonyms": [
+    "Brauneria pallida",
+    "Rudbeckia pallida",
+    "Echinacea pallida f. albida"
+  ],
+  "year": 1840
+},
+{
+  "_id": {
+    "$oid": "5ee81df7c4bd4800179384ba"
+  },
+  "photos": [],
+  "scientificName": "Carex lacustris",
+  "commonName": "Lake Sedge",
+  "notes": "Spread vegetatively by rhizome.  Non-clump forming.",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/grasses/photos/lake_sedge1.jpg",
+  "createdAt": {
+    "$date": "2020-06-16T01:18:47.586Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-16T01:18:47.586Z"
+  },
+  "__v": 0,
+  "author": "Willd.",
+  "bibliography": "Sp. Pl., ed. 4, 4: 306 (1805)",
+  "common_name": "Hairy sedge",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 94118,
+  "image_url": "https://bs.plantnet.org/image/o/3a6c29eca57afefdcf1919d31f2f81f94bdccd36",
+  "links": {
+    "self": "/api/v1/species/carex-lacustris",
+    "plant": "/api/v1/plants/carex-lacustris",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex lacustris",
+  "slug": "carex-lacustris",
+  "status": "accepted",
+  "synonyms": [
+    "Anithista riparia",
+    "Carex riparia var. lacustris",
+    "Anithista lacustris"
+  ],
+  "year": 1805
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78c8"
+  },
+  "scientificName": "Cephalanthus occidentalis",
+  "botanicPhoto": "''",
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 95 (1753)",
+  "common_name": "Common buttonbush",
+  "family": "Rubiaceae",
+  "family_common_name": null,
+  "genus": "Cephalanthus",
+  "genus_id": 10562,
+  "id": 220758,
+  "image_url": "https://bs.plantnet.org/image/o/b2d6f20b969339513ebab26409f7b380a1dd919b",
+  "links": {
+    "self": "/api/v1/species/cephalanthus-occidentalis",
+    "plant": "/api/v1/plants/cephalanthus-occidentalis",
+    "genus": "/api/v1/genus/cephalanthus"
+  },
+  "rank": "species",
+  "scientific_name": "Cephalanthus occidentalis",
+  "slug": "cephalanthus-occidentalis",
+  "status": "accepted",
+  "synonyms": [
+    "Cephalanthus angustifolius",
+    "Cephalanthus occidentalis f. lanceolatus",
+    "Cephalanthus oppositifolius",
+    "Cephalanthus pubescens",
+    "Cephalanthus berlandieri",
+    "Cephalanthus occidentalis var. obtusifolius",
+    "Cephalanthus obtusifolius",
+    "Cephalanthus acuminatus",
+    "Cephalanthus occidentalis var. californicus",
+    "Cephalanthus occidentalis var. macrophyllus",
+    "Cephalanthus hansenii",
+    "Cephalanthus occidentalis var. brachypodus",
+    "Cephalanthus occidentalis subsp. californicus",
+    "Cephalanthus occidentalis var. pubescens"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78bf"
+  },
+  "scientificName": "Bromus kalmii",
+  "botanicPhoto": "https://www.wildflower.org/image_archive/640x480/SAW/SAW_03938.JPG",
+  "author": "A.Gray",
+  "bibliography": "Manual: 600 (1848)",
+  "common_name": null,
+  "family": "Poaceae",
+  "family_common_name": null,
+  "genus": "Bromus",
+  "genus_id": 10834,
+  "id": 225976,
+  "image_url": "https://d2seqvvyy3b8p2.cloudfront.net/f991eed3a55a2cbb88f170730823da44.jpg",
+  "links": {
+    "self": "/api/v1/species/bromus-kalmii",
+    "plant": "/api/v1/plants/bromus-kalmii",
+    "genus": "/api/v1/genus/bromus"
+  },
+  "rank": "species",
+  "scientific_name": "Bromus kalmii",
+  "slug": "bromus-kalmii",
+  "status": "accepted",
+  "synonyms": [
+    "Bromus purgans",
+    "Forasaccus purgans",
+    "Bromopsis kalmii",
+    "Zerna purgans",
+    "Bromus steudelii",
+    "Bromus malacanthus",
+    "Bromus ciliatus var. purgans",
+    "Bromus imperialis"
+  ],
+  "year": 1848
+},
+{
+  "_id": {
+    "$oid": "5eeebc49ddd0760017032dca"
+  },
+  "photos": [],
+  "scientificName": "Peltandra virginica ",
+  "commonName": "Arrow Arum",
+  "notes": "",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/wetland/photos/arrow_arum1.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:47:53.609Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:47:53.609Z"
+  },
+  "__v": 0,
+  "author": "(L.) Schott",
+  "bibliography": "H.W.Schott & S.L.Endlicher, Melet. Bot.: 19 (1832)",
+  "common_name": "Green arrow arum",
+  "family": "Araceae",
+  "family_common_name": null,
+  "genus": "Peltandra",
+  "genus_id": 3246,
+  "id": 68446,
+  "image_url": "https://bs.plantnet.org/image/o/e2d76745681ae1161e367b7181a59417299f8ce9",
+  "links": {
+    "self": "/api/v1/species/peltandra-virginica",
+    "plant": "/api/v1/plants/peltandra-virginica",
+    "genus": "/api/v1/genus/peltandra"
+  },
+  "rank": "species",
+  "scientific_name": "Peltandra virginica",
+  "slug": "peltandra-virginica",
+  "status": "accepted",
+  "synonyms": [
+    "Caladium virginicum",
+    "Calla virginica",
+    "Arum virginicum",
+    "Peltandra latifolia",
+    "Peltandra virginica var. heterophylla",
+    "Peltandra virginica f. latifolia",
+    "Peltandra virginica f. rotundata",
+    "Peltandra virginica subsp. luteospadix",
+    "Peltandra virginica f. hastifolia",
+    "Peltandra virginica f. heterophylla",
+    "Lecontia virginica",
+    "Arum walteri",
+    "Peltandra canadensis",
+    "Peltandra angustifolia",
+    "Rensselaeria virginica",
+    "Peltandra virginica f. brachyota",
+    "Peltandra heterophylla",
+    "Peltandra undulata",
+    "Peltandra hastata",
+    "Peltandra tharpii",
+    "Peltandra virginica f. angustifolia",
+    "Peltandra walteri",
+    "Peltandra virginica var. angustifolia",
+    "Peltandra luteospadix",
+    "Caladium undulatum",
+    "Alocasia virginica"
+  ],
+  "year": 1832
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78ca"
+  },
+  "scientificName": "Dalea foliosa",
+  "botanicPhoto": "''",
+  "author": "(A.Gray) Barneby",
+  "bibliography": "Mem. New York Bot. Gard. 27: 245 (1977)",
+  "common_name": null,
+  "family": "Fabaceae",
+  "family_common_name": null,
+  "genus": "Dalea",
+  "genus_id": 1926,
+  "id": 39615,
+  "image_url": null,
+  "links": {
+    "self": "/api/v1/species/dalea-foliosa",
+    "plant": "/api/v1/plants/dalea-foliosa",
+    "genus": "/api/v1/genus/dalea"
+  },
+  "rank": "species",
+  "scientific_name": "Dalea foliosa",
+  "slug": "dalea-foliosa",
+  "status": "accepted",
+  "synonyms": [
+    "Kuhnistera foliosa",
+    "Petalostemon foliosus"
+  ],
+  "year": 1977
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78cf"
+  },
+  "scientificName": "Echinacea purpurea",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/prairie/photox/pale_coneflower5.jpg",
+  "author": "(L.) Moench",
+  "bibliography": "Methodus: 591 (1794)",
+  "common_name": "Eastern purple-coneflower",
+  "family": "Asteraceae",
+  "family_common_name": "Aster family",
+  "genus": "Echinacea",
+  "genus_id": 844,
+  "id": 10383,
+  "image_url": "https://bs.plantnet.org/image/o/f361f698d1c4311acc817de62f65926024f659fd",
+  "links": {
+    "self": "/api/v1/species/echinacea-purpurea",
+    "plant": "/api/v1/plants/echinacea-purpurea",
+    "genus": "/api/v1/genus/echinacea"
+  },
+  "rank": "species",
+  "scientific_name": "Echinacea purpurea",
+  "slug": "echinacea-purpurea",
+  "status": "accepted",
+  "synonyms": [
+    "Helichroa alba",
+    "Helichroa amoena",
+    "Helichroa crocea",
+    "Helichroa elatior",
+    "Helichroa fusca",
+    "Echinacea intermedia",
+    "Helichroa fuscata",
+    "Echinacea purpurea var. arkansana",
+    "Echinacea purpurea f. ligettii",
+    "Rudbeckia hispida",
+    "Helichroa purpurea",
+    "Helichroa uniflora",
+    "Echinacea purpurea var. serotina",
+    "Lepachys purpurea",
+    "Rudbeckia purpurea",
+    "Rudbeckia serotina",
+    "Rudbeckia purpurea var. serotina",
+    "Helichroa linnaeana",
+    "Echinacea serotina",
+    "Brauneria purpurea"
+  ],
+  "year": 1794
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78d7"
+  },
+  "scientificName": "Monarda fistulosa",
+  "botanicPhoto": "''",
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 22 (1753)",
+  "common_name": "Beebalm",
+  "family": "Lamiaceae",
+  "family_common_name": null,
+  "genus": "Monarda",
+  "genus_id": 2955,
+  "id": 62366,
+  "image_url": "https://bs.plantnet.org/image/o/92a30a6130c47b8b7e9d01679d26d72ab2169aef",
+  "links": {
+    "self": "/api/v1/species/monarda-fistulosa",
+    "plant": "/api/v1/plants/monarda-fistulosa",
+    "genus": "/api/v1/genus/monarda"
+  },
+  "rank": "species",
+  "scientific_name": "Monarda fistulosa",
+  "slug": "monarda-fistulosa",
+  "status": "accepted",
+  "synonyms": [
+    "Monarda fistulosa var. typica"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78c0"
+  },
+  "scientificName": "Calamagrostis canadensis",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/wetland/photos/pr_queen1.jpg",
+  "author": "(Michx.) P.Beauv.",
+  "bibliography": "Ess. Agrostogr.: 15, 157 (1812)",
+  "common_name": "Canada bluejoint",
+  "family": "Poaceae",
+  "family_common_name": null,
+  "genus": "Calamagrostis",
+  "genus_id": 10837,
+  "id": 226148,
+  "image_url": "https://bs.plantnet.org/image/o/a70552d7fb3fbb719b5dfb4896b783a41e960700",
+  "links": {
+    "self": "/api/v1/species/calamagrostis-canadensis",
+    "plant": "/api/v1/plants/calamagrostis-canadensis",
+    "genus": "/api/v1/genus/calamagrostis"
+  },
+  "rank": "species",
+  "scientific_name": "Calamagrostis canadensis",
+  "slug": "calamagrostis-canadensis",
+  "status": "accepted",
+  "synonyms": [
+    "Calamagrostis agrostoides",
+    "Calamagrostis canadensis subsp. acuminata",
+    "Calamagrostis canadensis var. macouniana",
+    "Arundo agrostoides",
+    "Calamagrostis canadensis var. imberbis",
+    "Calamagrostis canadensis var. acuminata",
+    "Calamagrostis scribneri var. imberbis",
+    "Calamagrostis oregonensis",
+    "Calamagrostis macouniana",
+    "Deyeuxia lactea",
+    "Deyeuxia canadensis",
+    "Calamagrostis lactea",
+    "Calamagrostis langsdorffii var. acuminata",
+    "Deyeuxia pallida",
+    "Calamagrostis columbiensis",
+    "Calamagrostis langsdorffii var. scribneri",
+    "Calamagrostis langsdorffii var. lactea",
+    "Calamagrostis canadensis var. robusta",
+    "Calamagrostis langsdorfii var. scribneri",
+    "Deyeuxia preslii",
+    "Deyeuxia confinis",
+    "Calamagrostis canadensis var. campestris",
+    "Calamagrostis canadensis var. dubia",
+    "Calamagrostis confinis",
+    "Arundo cinnoides",
+    "Calamagrostis canadensis var. pallida",
+    "Arundo fissa",
+    "Calamagrostis canadensis var. lactea",
+    "Calamagrostis canadensis var. dorei",
+    "Arundo conoides",
+    "Calamagrostis hirtigluma",
+    "Calamagrostis cinnoides",
+    "Calamagrostis blanda",
+    "Calamagrostis alaskana",
+    "Calamagrostis nubila",
+    "Calamagrostis atropurpurea",
+    "Calamagrostis scribneri",
+    "Arundo confinis",
+    "Deyeuxia dubia",
+    "Deyeuxia macouniana",
+    "Calamagrostis langsdorffii var. marylandica",
+    "Calamagrostis sitchensis",
+    "Calamagrostis michauxii",
+    "Calamagrostis neglecta var. confinis",
+    "Calamagrostis scabra",
+    "Calamagrostis canadensis var. scabra",
+    "Calamagrostis langsdorfii var. lactea",
+    "Cinna purshii"
+  ],
+  "year": 1812
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78c4"
+  },
+  "scientificName": "Carex grayi",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/prairie/photox/compass4.jpg",
+  "author": "J.Carey",
+  "bibliography": "Amer. J. Sci. Arts, ser. 2, 4: 22 (1847)",
+  "common_name": "Gray's sedge",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 93862,
+  "image_url": "https://bs.plantnet.org/image/o/fab9e2eb983e2e95f3065e28cfd073243e970625",
+  "links": {
+    "self": "/api/v1/species/carex-grayi",
+    "plant": "/api/v1/plants/carex-grayi",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex grayi",
+  "slug": "carex-grayi",
+  "status": "accepted",
+  "synonyms": [
+    "Carex intumescens var. globularis",
+    "Carex grayi var. rariflora",
+    "Carex grayi var. hispidula",
+    "Carex asa-grayi var. hispidula",
+    "Carex asa-grayi"
+  ],
+  "year": 1847
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78cb"
+  },
+  "scientificName": "Dalea purpurea",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/prairie/photox/rattlesnake2.jpg",
+  "author": "Vent.",
+  "bibliography": "Choix Pl.: t. 40 (1807)",
+  "common_name": "Purple prairie-clover",
+  "family": "Fabaceae",
+  "family_common_name": null,
+  "genus": "Dalea",
+  "genus_id": 1926,
+  "id": 37332,
+  "image_url": "https://bs.plantnet.org/image/o/914af61f8d588c22425f1d5d42024cf61b647428",
+  "links": {
+    "self": "/api/v1/species/dalea-purpurea",
+    "plant": "/api/v1/plants/dalea-purpurea",
+    "genus": "/api/v1/genus/dalea"
+  },
+  "rank": "species",
+  "scientific_name": "Dalea purpurea",
+  "slug": "dalea-purpurea",
+  "status": "accepted",
+  "synonyms": [
+    "Psoralea purpurea",
+    "Kuhnistera purpurea",
+    "Petalostemon purpureus"
+  ],
+  "year": 1807
+},
+{
+  "_id": {
+    "$oid": "5eeebe23ddd0760017032dcf"
+  },
+  "photos": [],
+  "scientificName": "Scirpus cyperinus",
+  "commonName": "Woolgrass",
+  "notes": "",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/se/scirpus-cyperinus.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:55:47.278Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:55:47.278Z"
+  },
+  "__v": 0,
+  "author": "(L.) Kunth",
+  "bibliography": "Enum. Pl. 2: 170 (1837)",
+  "common_name": "Cotton-grass bulrush",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Scirpus",
+  "genus_id": 7473,
+  "id": 143688,
+  "image_url": "https://bs.plantnet.org/image/o/4035492355bd506a7e8b8849bbef9db905014a7c",
+  "links": {
+    "self": "/api/v1/species/scirpus-cyperinus",
+    "plant": "/api/v1/plants/scirpus-cyperinus",
+    "genus": "/api/v1/genus/scirpus"
+  },
+  "rank": "species",
+  "scientific_name": "Scirpus cyperinus",
+  "slug": "scirpus-cyperinus",
+  "status": "accepted",
+  "synonyms": [
+    "Scirpus sylvaticus f. cephaloideus",
+    "Scirpus cyperinus f. andrewsii",
+    "Scirpus thyrsiflorus",
+    "Eriophorum cyperinum var. pelium",
+    "Eriophorum cyperinum f. condensatum",
+    "Eriophorum cyperinum f. grande",
+    "Scirpus atrocinctus f. grandis",
+    "Scirpus atrocinctus var. grandis",
+    "Scirpus rubricosus",
+    "Scirpus cyperinus var. congestus",
+    "Scirpus cyperinus f. cephaloideus",
+    "Scirpus cyperinus var. laxus",
+    "Scirpus cyperinus var. condensatus",
+    "Scirpus cyperinus var. andrewsii",
+    "Scirpus eriophorum",
+    "Scirpus cyperinus var. normalis",
+    "Scirpus cyperinus var. eriophorum",
+    "Scirpus cyperinus f. confertus",
+    "Scirpus cyperinus f. condensatus",
+    "Scirpus cyperinus f. congestus",
+    "Scirpus cyperinus var. pelius",
+    "Scirpus eriophorum var. andrewsii",
+    "Scirpus cyperinus var. rubricosus",
+    "Scirpus rubricosus f. praelongus",
+    "Eriophorum cyperinum",
+    "Eriophorum cyperinum var. atrocinctus",
+    "Eriophorum cyperinum var. laxum",
+    "Eriophorum cyperinum var. eriophorum",
+    "Scirpus atrocinctus",
+    "Scirpus eriophorum f. praelongus",
+    "Scirpus eriophorum var. laxus",
+    "Scirpus eriophorum var. cyperinus",
+    "Scirpus eriophorum var. condensatus",
+    "Trichophorum cyperinum"
+  ],
+  "year": 1837
+},
+{
+  "_id": {
+    "$oid": "5e989ed21608460017989a82"
+  },
+  "photos": [],
+  "scientificName": "test",
+  "commonName": "",
+  "notes": "",
+  "botanicPhoto": "",
+  "createdAt": {
+    "$date": "2020-04-16T18:07:14.158Z"
+  },
+  "updatedAt": {
+    "$date": "2020-04-16T18:07:14.158Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5ee81c23c4bd4800179384b6"
+  },
+  "photos": [],
+  "scientificName": "Carex granularis",
+  "commonName": "Meadow Sedge",
+  "notes": "color is a light blue green, leaf is narrow.  These two characteristics make it unique put together.",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/grasses/photos/meadow_sedge1.jpg",
+  "createdAt": {
+    "$date": "2020-06-16T01:10:59.484Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-16T01:10:59.484Z"
+  },
+  "__v": 0,
+  "author": "Muhl. ex Willd.",
+  "bibliography": "Sp. Pl., ed. 4, 4: 279 (1805)",
+  "common_name": "Limestone meadow sedge",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 93860,
+  "image_url": "https://bs.plantnet.org/image/o/b60e14e3d5fce81eb31c0a2d9259f4f1c0d7a1c6",
+  "links": {
+    "self": "/api/v1/species/carex-granularis",
+    "plant": "/api/v1/plants/carex-granularis",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex granularis",
+  "slug": "carex-granularis",
+  "status": "accepted",
+  "synonyms": [
+    "Carex haleana",
+    "Carex shriveri",
+    "Carex granularis var. haleana",
+    "Deweya granularis",
+    "Carex rectior",
+    "Carex granularis var. shriveri",
+    "Carex granularis var. recta",
+    "Carex chalaros"
+  ],
+  "year": 1805
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78de"
+  },
+  "scientificName": "Symphyotricum puniceum",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/grasses/photos/bj_grass1.jpg"
+},
+{
+  "_id": {
+    "$oid": "5eeeba0bddd0760017032dc1"
+  },
+  "photos": [],
+  "scientificName": "Eutrochium maculatum",
+  "commonName": "Spotted Joe-Pye Weed",
+  "notes": "",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/wetland/photos/sp_joepye1.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:38:19.221Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:38:19.221Z"
+  },
+  "__v": 0,
+  "author": "(L.) E.E.Lamont",
+  "bibliography": "Sida 21(2): 902 (2004)",
+  "common_name": "Eupatoire maculée",
+  "family": "Asteraceae",
+  "family_common_name": "Aster family",
+  "genus": "Eutrochium",
+  "genus_id": 1270,
+  "id": 23134,
+  "image_url": "https://bs.plantnet.org/image/o/06b548a1d0ce4e31aaed90f5ff377cf9426605fd",
+  "links": {
+    "self": "/api/v1/species/eutrochium-maculatum",
+    "plant": "/api/v1/plants/eutrochium-maculatum",
+    "genus": "/api/v1/genus/eutrochium"
+  },
+  "rank": "species",
+  "scientific_name": "Eutrochium maculatum",
+  "slug": "eutrochium-maculatum",
+  "status": "accepted",
+  "synonyms": [
+    "Eupatorium purpureum subsp. maculatum",
+    "Eupatorium purpureum var. maculatum",
+    "Eupatoriadelphus maculatus",
+    "Eupatorium maculatum"
+  ],
+  "year": 2004
+},
+{
+  "_id": {
+    "$oid": "5ee820a4c4bd4800179384c0"
+  },
+  "photos": [],
+  "scientificName": "Carex squarrosa",
+  "commonName": "Squarrose Sedge",
+  "notes": "The spikelet is very unique",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/grasses/photos/sq_sedge2.jpg",
+  "createdAt": {
+    "$date": "2020-06-16T01:30:12.423Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-16T01:30:12.423Z"
+  },
+  "__v": 0,
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 973 (1753)",
+  "common_name": "Squarrose sedge",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 94928,
+  "image_url": "https://bs.plantnet.org/image/o/1b82347e597fc424c0885dff7eb66a4914485777",
+  "links": {
+    "self": "/api/v1/species/carex-squarrosa",
+    "plant": "/api/v1/plants/carex-squarrosa",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex squarrosa",
+  "slug": "carex-squarrosa",
+  "status": "accepted",
+  "synonyms": [
+    "Vignea squarrosa",
+    "Carex typhinoides",
+    "Carex squarrosa f. robusta",
+    "Carex squarrosa var. typhinoides"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5eeeba7addd0760017032dc3"
+  },
+  "photos": [],
+  "scientificName": "Helenium autumnale",
+  "commonName": "Autumn Sneezeweed",
+  "notes": "",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/yellow/helenium-autumnale-sneezeweed-100_3120.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:40:10.133Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:40:10.133Z"
+  },
+  "__v": 0,
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 886 (1753)",
+  "common_name": "Common sneezeweed",
+  "family": "Asteraceae",
+  "family_common_name": "Aster family",
+  "genus": "Helenium",
+  "genus_id": 350,
+  "id": 26951,
+  "image_url": "https://bs.plantnet.org/image/o/7f79327687870b6f3b550eb78ec2c667157e0803",
+  "links": {
+    "self": "/api/v1/species/helenium-autumnale",
+    "plant": "/api/v1/plants/helenium-autumnale",
+    "genus": "/api/v1/genus/helenium"
+  },
+  "rank": "species",
+  "scientific_name": "Helenium autumnale",
+  "slug": "helenium-autumnale",
+  "status": "accepted",
+  "synonyms": [
+    "Helenium grandiflorum",
+    "Helenium altissimum",
+    "Helenium longifolium",
+    "Helenium pumilum",
+    "Helenium autumnale var. pubescens",
+    "Helenium autumnale var. parviflorum",
+    "Helenium autumnale var. tubuliflorum",
+    "Helenium autumnale var. subintegerrimum",
+    "Helenium autumnale var. pumilum",
+    "Helenia autumnalis",
+    "Heleniastrum autumnale",
+    "Helenium canaliculatum",
+    "Helenium latifolium",
+    "Heleniastrum montanum",
+    "Helenium autumnale var. fylesii",
+    "Helenium parviflorum",
+    "Helenium autumnale var. canaliculatum",
+    "Helenium autumnale var. grandiflorum",
+    "Helenium autumnale var. longifolium",
+    "Helenium autumnale rubrum",
+    "Helenium tubuliflorum",
+    "Helenium autumnale var. montanum",
+    "Helenium commutatum",
+    "Helenium macranthum"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5eeebb42ddd0760017032dc6"
+  },
+  "photos": [],
+  "scientificName": "Lobelia cardinalis",
+  "commonName": "Cardinal Flower",
+  "notes": "",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/pd/lobelia-cardinalis-2-09809-1.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:43:30.827Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:43:30.827Z"
+  },
+  "__v": 0,
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 930 (1753)",
+  "common_name": "Scarlet lobelia",
+  "family": "Campanulaceae",
+  "family_common_name": null,
+  "genus": "Lobelia",
+  "genus_id": 10473,
+  "id": 216405,
+  "image_url": "https://bs.plantnet.org/image/o/65f5dcfae8ab837aab788f2771010f65e957d1e1",
+  "links": {
+    "self": "/api/v1/species/lobelia-cardinalis",
+    "plant": "/api/v1/plants/lobelia-cardinalis",
+    "genus": "/api/v1/genus/lobelia"
+  },
+  "rank": "species",
+  "scientific_name": "Lobelia cardinalis",
+  "slug": "lobelia-cardinalis",
+  "status": "accepted",
+  "synonyms": [
+    "Lobelia longifolia",
+    "Lobelia cardinalis var. meridionalis",
+    "Lobelia splendens",
+    "Lobelia graminea var. phyllostachya",
+    "Lobelia porphyrantha",
+    "Lobelia cardinalis var. integerrima",
+    "Lobelia splendens var. ignea",
+    "Lobelia princeps",
+    "Lobelia fulgens f. atrosanguinea",
+    "Lobelia cardinalis f. alba",
+    "Dortmanna longifolia",
+    "Rapuntium coccineum",
+    "Lobelia cordigera var. multiflora",
+    "Lobelia graminea var. intermedia",
+    "Lobelia schiedeana",
+    "Lobelia kerneri",
+    "Rapuntium cardinale",
+    "Lobelia graminea f. kerneri",
+    "Lobelia fulgens var. propinqua",
+    "Lobelia cardinalis var. graminea",
+    "Lobelia cardinalis var. phyllostachya",
+    "Dortmanna phyllostachya",
+    "Rapuntium splendens",
+    "Lobelia cardinalis var. texensis",
+    "Lobelia cardinalis var. hispidula",
+    "Lobelia cordigera var. pyramidalis",
+    "Lobelia cardinalis f. rosea",
+    "Dortmanna cardinalis",
+    "Lobelia cordigera",
+    "Lobelia cardinalis subsp. graminea",
+    "Lobelia punicea var. kerneri",
+    "Rapuntium cordigerum",
+    "Rapuntium gramineum",
+    "Dortmanna cordigera",
+    "Lobelia splendens var. atrosanguinea",
+    "Lobelia cardinalis var. angustifolia",
+    "Lobelia cardinalis var. pseudosplendens",
+    "Lobelia formosa",
+    "Lobelia marryattiae",
+    "Lobelia fulgens f. rosea",
+    "Lobelia cardinalis var. candida",
+    "Lobelia cardinalis f. cordigera",
+    "Lobelia splendens var. fulgens",
+    "Lobelia punicea",
+    "Lobelia fulgens",
+    "Lobelia fulgens var. multiflora",
+    "Lobelia cardinalis var. alba",
+    "Dortmanna engelmanniana",
+    "Lobelia propinqua",
+    "Lobelia cordigera var. marryattiae",
+    "Dortmanna graminea",
+    "Lobelia graminea",
+    "Lobelia coccinea",
+    "Tupa ignescens",
+    "Lobelia cardinalis f. hispidula",
+    "Dortmanna splendens",
+    "Lobelia cardinalis var. multiflora",
+    "Lobelia fulgens var. marryattiae",
+    "Rapuntium fulgens",
+    "Lobelia splendens f. ignea",
+    "Rapuntium longifolium",
+    "Lobelia graminea var. pseudosplendens",
+    "Lobelia phyllostachya",
+    "Dortmanna fulgens",
+    "Lobelia cardinalis var. propinqua",
+    "Lobelia fulgens var. glabriuscula",
+    "Lobelia fulgens f. maculata",
+    "Lobelia cardinalis var. glandulosa",
+    "Lobelia cordigera var. fatalis",
+    "Lobelia fulgens var. pyramidalis",
+    "Lobelia texensis",
+    "Lobelia cardinalis f. splendens"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78bd"
+  },
+  "scientificName": "Aquilegia canadensis",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/grasses/photos/woolgrass1.jpg",
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 533 (1753)",
+  "common_name": "Wild columbine",
+  "family": "Ranunculaceae",
+  "family_common_name": null,
+  "genus": "Aquilegia",
+  "genus_id": 7583,
+  "id": 144831,
+  "image_url": "https://bs.plantnet.org/image/o/0fec035dddbe7de2d07b3579daebff1d3e942a7d",
+  "links": {
+    "self": "/api/v1/species/aquilegia-canadensis",
+    "plant": "/api/v1/plants/aquilegia-canadensis",
+    "genus": "/api/v1/genus/aquilegia"
+  },
+  "rank": "species",
+  "scientific_name": "Aquilegia canadensis",
+  "slug": "aquilegia-canadensis",
+  "status": "accepted",
+  "synonyms": [
+    "Aquilegia canadensis var. phippenii",
+    "Aquilegia variegata",
+    "Aquilegia canadensis var. vera",
+    "Aquilegia canadensis var. flaviflora",
+    "Aquilegia canadensis var. violacea",
+    "Aquilegia canadensis var. hybrida",
+    "Aquilegia flaviflora",
+    "Aquilegia eminens",
+    "Aquilegia canadensis f. phippenii",
+    "Aquilegia canadensis f. ecalcarata",
+    "Aquilegia canadensis var. latiuscula",
+    "Aquilegia canadensis f. gartneri",
+    "Aquilegia canadensis var. coccinea",
+    "Aquilegia canadensis var. longistyla",
+    "Aquilegia canadensis var. australis",
+    "Aquilegia phoenicantha",
+    "Aquilegia canadensis subsp. americana",
+    "Aquilegia canadensis f. albiflora",
+    "Aquilegia coccinea",
+    "Aquilegia canadensis f. flaviflora",
+    "Aquilegia elegans",
+    "Aquilegia latiuscula",
+    "Aquilegia australis",
+    "Aquilegia canadensis var. eminens"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78bc"
+  },
+  "scientificName": "Acorus calamus",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/wetland/photos/gnt_burrd1.jpg",
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 324 (1753)",
+  "common_name": "Calamus",
+  "family": "Acoraceae",
+  "family_common_name": null,
+  "genus": "Acorus",
+  "genus_id": 4331,
+  "id": 94765,
+  "image_url": "https://bs.plantnet.org/image/o/b70e45a7e0c48aaabb87a073e3487cf259e156d1",
+  "links": {
+    "self": "/api/v1/species/acorus-calamus",
+    "plant": "/api/v1/plants/acorus-calamus",
+    "genus": "/api/v1/genus/acorus"
+  },
+  "rank": "species",
+  "scientific_name": "Acorus calamus",
+  "slug": "acorus-calamus",
+  "status": "accepted",
+  "synonyms": [
+    "Calamus aromaticus"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78cd"
+  },
+  "scientificName": "Dodecatheon meadia",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/wetland/photos/sw_aster1.jpg",
+  "author": "(L.) A.R.Mast & Reveal",
+  "bibliography": "Brittonia 59: 81 (2007)",
+  "common_name": null,
+  "family": "Primulaceae",
+  "family_common_name": null,
+  "genus": "Primula",
+  "genus_id": 6631,
+  "id": 349399,
+  "image_url": "https://d2seqvvyy3b8p2.cloudfront.net/415ab9917cf3170b4bad71181ad689fc.jpg",
+  "links": {
+    "self": "/api/v1/species/primula-meadia",
+    "plant": "/api/v1/plants/primula-meadia",
+    "genus": "/api/v1/genus/primula"
+  },
+  "rank": "species",
+  "scientific_name": "Primula meadia",
+  "slug": "primula-meadia",
+  "status": "accepted",
+  "synonyms": [
+    "Meadia dodecathea",
+    "Dodecatheon meadia var. obesum",
+    "Dodecatheon parviflorum",
+    "Dodecatheon meadia",
+    "Dodecatheon flexuosum",
+    "Dodecatheon angustifolium",
+    "Dodecatheon splendidum",
+    "Meadia dodecatheon",
+    "Dodecatheon meadia f. sedens",
+    "Dodecatheon meadia f. album",
+    "Dodecatheon cordatum",
+    "Dodecatheon meadia f. pallidum",
+    "Dodecatheon lutescens",
+    "Dodecatheon pauciflorum var. exquisitum",
+    "Dodecatheon pauciflorum subsp. eupauciflorum",
+    "Dodecatheon californicum",
+    "Meadia crenata",
+    "Dodecatheon brachycarpum",
+    "Dodecatheon serratum",
+    "Dodecatheon obtusum",
+    "Dodecatheon ovatum",
+    "Dodecatheon obovatum",
+    "Dodecatheon longifolium",
+    "Dodecatheon reflexum",
+    "Dodecatheon cuneatum",
+    "Dodecatheon meadia subsp. eumeadia",
+    "Dodecatheon meadia var. genuinum",
+    "Dodecatheon crenatum",
+    "Dodecatheon meadia subsp. hugeri",
+    "Dodecatheon meadia var. integrifolium",
+    "Dodecatheon integrifolium",
+    "Dodecatheon meadia var. stanfieldii",
+    "Dodecatheon meadia var. brachycarpum",
+    "Dodecatheon lemoinei",
+    "Dodecatheon integrifolium var. album",
+    "Dodecatheon hugeri",
+    "Dodecatheon uniflorum",
+    "Dodecatheon meadia subsp. brachycarpum",
+    "Dodecatheon meadia var. album",
+    "Dodecatheon undatum",
+    "Dodecatheon triflorum",
+    "Dodecatheon stanfieldii",
+    "Dodecatheon ellipticum"
+  ],
+  "year": 2007
+},
+{
+  "_id": {
+    "$oid": "5ee81d2dc4bd4800179384b8"
+  },
+  "photos": [],
+  "scientificName": "Carex cristatella ",
+  "commonName": "Crested Sedge",
+  "notes": "Spreads easily",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/se/carex-cristatella.jpg",
+  "createdAt": {
+    "$date": "2020-06-16T01:15:25.268Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-16T01:15:25.268Z"
+  },
+  "__v": 0,
+  "author": "Britton",
+  "bibliography": "N.L.Britton & A.Brown, Ill. Fl. N. U.S. 1: 357 (1896)",
+  "common_name": null,
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 93539,
+  "image_url": null,
+  "links": {
+    "self": "/api/v1/species/carex-cristatella",
+    "plant": "/api/v1/plants/carex-cristatella",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex cristatella",
+  "slug": "carex-cristatella",
+  "status": "accepted",
+  "synonyms": [
+    "Carex cristata f. ellipsoidalis",
+    "Carex lagopodioides var. cristata",
+    "Carex cristatella f. catelliformis",
+    "Carex cristata var. catelliformis",
+    "Carex tribuloides var. cristata",
+    "Carex straminea var. cristata"
+  ],
+  "year": 1896
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78be"
+  },
+  "scientificName": "Asclepias incarnata",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/wetland/photos/sw_rsmallow2.jpg",
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 215 (1753)",
+  "common_name": "Swamp milkweed",
+  "family": "Apocynaceae",
+  "family_common_name": null,
+  "genus": "Asclepias",
+  "genus_id": 7095,
+  "id": 147538,
+  "image_url": "https://bs.plantnet.org/image/o/58fae26476b84d41d4708482a73cae52e45de1c9",
+  "links": {
+    "self": "/api/v1/species/asclepias-incarnata",
+    "plant": "/api/v1/plants/asclepias-incarnata",
+    "genus": "/api/v1/genus/asclepias"
+  },
+  "rank": "species",
+  "scientific_name": "Asclepias incarnata",
+  "slug": "asclepias-incarnata",
+  "status": "accepted",
+  "synonyms": [
+    "Acerates incarnata"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5eeebd6eddd0760017032dcd"
+  },
+  "photos": [],
+  "scientificName": "Schoenoplectus tabernaemontani",
+  "commonName": "Soft Stem Bulrush",
+  "notes": "",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/se/schoenoplectus-tabernaemontani-stand.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:52:46.060Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:52:46.060Z"
+  },
+  "__v": 0,
+  "author": "(C.C.Gmel.) Palla",
+  "bibliography": "Bot. Jahrb. Syst. 10: 299 (1888)",
+  "common_name": "Great bulrush",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Schoenoplectus",
+  "genus_id": 7389,
+  "id": 141921,
+  "image_url": "https://bs.plantnet.org/image/o/d9083870a227551aeb80431e6fe9a718b6d40c3b",
+  "links": {
+    "self": "/api/v1/species/schoenoplectus-tabernaemontani",
+    "plant": "/api/v1/plants/schoenoplectus-tabernaemontani",
+    "genus": "/api/v1/genus/schoenoplectus"
+  },
+  "rank": "species",
+  "scientific_name": "Schoenoplectus tabernaemontani",
+  "slug": "schoenoplectus-tabernaemontani",
+  "status": "accepted",
+  "synonyms": [
+    "Scirpus tabernaemontani",
+    "Scirpus tabernaemontani f. luxurians",
+    "Scirpus lacustris var. validus",
+    "Scirpus lacustris subsp. validus",
+    "Scirpus uliginosus",
+    "Schoenoplectus validus subsp. luxurians",
+    "Scirpus validus var. creber",
+    "Hymenochaeta tabernaemontani",
+    "Scirpus lacustris subsp. creber",
+    "Scirpus siculus",
+    "Scirpus welwitschii",
+    "Scirpus lacustris subsp. tabernaemontani",
+    "Scirpus tabernaemontani var. minor",
+    "Cyperus tabernaemontani",
+    "Schoenoplectus lacustris subsp. glaucus",
+    "Scirpus tabernaemontani var. salinus",
+    "Scirpus lacustris var. creber",
+    "Scirpus tabernaemontani var. uliginosus",
+    "Scirpus tabernaemontani var. major",
+    "Eleogiton tabernaemontani",
+    "Heleophylax tabernaemontani",
+    "Scirpus lacustris f. glaucus",
+    "Schoenoplectus tabernaemontani f. paludosus",
+    "Schoenoplectus lacustris subsp. creber",
+    "Schoenoplectus tabernaemontani f. sub-duvalii",
+    "Scirpus validus f. creber",
+    "Schoenoplectus lacustris f. glaucus",
+    "Schoenoplectus validus subsp. creber",
+    "Scirpus lacustris var. littoreus",
+    "Schoenoplectus validus",
+    "Scirpus lacustris f. pictus",
+    "Scirpus lacustris subsp. digynus",
+    "Scirpus maritimus subsp. tabernaemontani",
+    "Scirpus tabernaemontani var. paludosus",
+    "Scirpus validus var. laeviglumis",
+    "Heleogiton tabernaemontani",
+    "Scirpus lacustris var. luxurians",
+    "Scirpus tabernaemontani f. sub-duvalii",
+    "Scirpus lacustris var. tabernaemontani",
+    "Scirpus lacustris subsp. glaucus",
+    "Schoenoplectus lacustris subsp. tabernaemontani",
+    "Schoenoplectus lacustris subsp. validus"
+  ],
+  "year": 1888
+},
+{
+  "_id": {
+    "$oid": "5eeebbc0ddd0760017032dc8"
+  },
+  "photos": [],
+  "scientificName": "Mimulus ringens",
+  "commonName": "Monkeyflower",
+  "notes": "",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/pd/mimulus-ringens-2097.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:45:36.732Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:45:36.732Z"
+  },
+  "__v": 0,
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 634 (1753)",
+  "common_name": "Allegheny monkey-flower",
+  "family": "Phrymaceae",
+  "family_common_name": null,
+  "genus": "Mimulus",
+  "genus_id": 6117,
+  "id": 298654,
+  "image_url": "https://bs.plantnet.org/image/o/1b6473e99e987654a51ef432fe400d9415e66114",
+  "links": {
+    "self": "/api/v1/species/mimulus-ringens",
+    "plant": "/api/v1/plants/mimulus-ringens",
+    "genus": "/api/v1/genus/mimulus"
+  },
+  "rank": "species",
+  "scientific_name": "Mimulus ringens",
+  "slug": "mimulus-ringens",
+  "status": "accepted",
+  "synonyms": [],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5eeeba45ddd0760017032dc2"
+  },
+  "photos": [],
+  "scientificName": "Glyceria striata",
+  "commonName": "Fowl Manna Grass",
+  "notes": "",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/pd3/glyceria-striata-14-2.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:39:17.959Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:39:17.959Z"
+  },
+  "__v": 0,
+  "author": "(Lam.) Hitchc.",
+  "bibliography": "Proc. Biol. Soc. Washington 41: 157 (1928)",
+  "common_name": "Fowl manna grass",
+  "family": "Poaceae",
+  "family_common_name": null,
+  "genus": "Glyceria",
+  "genus_id": 11020,
+  "id": 229933,
+  "image_url": "https://bs.plantnet.org/image/o/00ec5089636d1902e6b659ff9dd4602b6c81ece4",
+  "links": {
+    "self": "/api/v1/species/glyceria-striata",
+    "plant": "/api/v1/plants/glyceria-striata",
+    "genus": "/api/v1/genus/glyceria"
+  },
+  "rank": "species",
+  "scientific_name": "Glyceria striata",
+  "slug": "glyceria-striata",
+  "status": "accepted",
+  "synonyms": [
+    "Glyceria rigida",
+    "Poa striata",
+    "Poa parviflora",
+    "Panicularia nervata var. viridis",
+    "Catabrosa nervata",
+    "Poa lamarckii",
+    "Poa nervata",
+    "Glyceria striata subsp. stricta",
+    "Panicularia rigida",
+    "Glyceria aquatica subsp. nervata",
+    "Glyceria nervata var. stricta",
+    "Glyceria striata var. mexicana",
+    "Glyceria striata f. stricta",
+    "Glyceria striata var. stricta",
+    "Poa lineata",
+    "Glyceria mexicana",
+    "Glyceria striata subsp. difformis",
+    "Glyceria nervata var. rigida",
+    "Glyceria striata subsp. neogaea",
+    "Panicularia striata",
+    "Glyceria nervata f. stricta",
+    "Glyceria nervata",
+    "Glyceria neogaea",
+    "Panicularia nervata var. stricta",
+    "Panicularia nervata var. parviglumis",
+    "Hydropoa nervata",
+    "Glyceria michauxii",
+    "Panicularia nervata f. major",
+    "Panicularia nervata var. rigida",
+    "Panicularia nervata var. purpurascens",
+    "Panicularia nervata",
+    "Panicularia nervata var. filiformis"
+  ],
+  "year": 1928
+},
+{
+  "_id": {
+    "$oid": "5eeec093ddd0760017032dd4"
+  },
+  "photos": [],
+  "scientificName": "Vernonia fasciculata",
+  "commonName": "Smooth Ironweed",
+  "notes": "",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/pd/vernonia-fasciculata-9358039-2.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T02:06:11.197Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T02:06:11.197Z"
+  },
+  "__v": 0,
+  "author": "Michx.",
+  "bibliography": "Fl. Bor.-Amer. 2: 94 (1803)",
+  "common_name": "Prairie ironweed",
+  "family": "Asteraceae",
+  "family_common_name": "Aster family",
+  "genus": "Vernonia",
+  "genus_id": 92,
+  "id": 26546,
+  "image_url": "https://bs.plantnet.org/image/o/533af2773d18add9fa4c88dde6f16515872e9b86",
+  "links": {
+    "self": "/api/v1/species/vernonia-fasciculata",
+    "plant": "/api/v1/plants/vernonia-fasciculata",
+    "genus": "/api/v1/genus/vernonia"
+  },
+  "rank": "species",
+  "scientific_name": "Vernonia fasciculata",
+  "slug": "vernonia-fasciculata",
+  "status": "accepted",
+  "synonyms": [
+    "Vernonia schweinitzii",
+    "Cacalia fasciculata",
+    "Vernonia corymbosa",
+    "Plectreca corymbosa",
+    "Vernonia fasciculata var. nebraskensis",
+    "Vernonia fasciculata subsp. corymbosa",
+    "Vernonia fasciculata var. corymbosa",
+    "Serratula corymbosa",
+    "Cacalia corymbosa"
+  ],
+  "year": 1803
+},
+{
+  "_id": {
+    "$oid": "5f30844a2dcd060017e64293"
+  },
+  "photos": [],
+  "tags": [
+    "1",
+    "2"
+  ],
+  "scientificName": "carex frankii",
+  "commonName": "",
+  "notes": "",
+  "botanicPhoto": "",
+  "createdAt": {
+    "$date": "2020-08-09T23:18:34.915Z"
+  },
+  "updatedAt": {
+    "$date": "2020-08-09T23:18:34.915Z"
+  },
+  "__v": 0,
+  "author": "Kunth",
+  "bibliography": "Enum. Pl. 2: 498 (1837)",
+  "common_name": "Frank's sedge",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 93780,
+  "image_url": "https://bs.plantnet.org/image/o/7fdfadbcfdf06e871e790277e675240e9f3bed92",
+  "links": {
+    "self": "/api/v1/species/carex-frankii",
+    "plant": "/api/v1/plants/carex-frankii",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex frankii",
+  "slug": "carex-frankii",
+  "status": "accepted",
+  "synonyms": [
+    "Carex stenolepis f. gracilior",
+    "Carex shortii"
+  ],
+  "year": 1837
+},
+{
+  "_id": {
+    "$oid": "5eeebf23ddd0760017032dd0"
+  },
+  "photos": [],
+  "scientificName": "Bolboshoenus fluviatilis",
+  "commonName": "River Bulrush",
+  "notes": "",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/pd3/bolboschoenus-fluviatilis-071516-8.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T02:00:03.381Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T02:00:03.381Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78d5"
+  },
+  "scientificName": "Lobelia siphilitica",
+  "botanicPhoto": "''",
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 931 (1753)",
+  "common_name": "Blue lobelia",
+  "family": "Campanulaceae",
+  "family_common_name": null,
+  "genus": "Lobelia",
+  "genus_id": 10473,
+  "id": 216641,
+  "image_url": "https://bs.plantnet.org/image/o/44cd43930ce5f2b20ca8936d4e87239ff4da46ca",
+  "links": {
+    "self": "/api/v1/species/lobelia-siphilitica",
+    "plant": "/api/v1/plants/lobelia-siphilitica",
+    "genus": "/api/v1/genus/lobelia"
+  },
+  "rank": "species",
+  "scientific_name": "Lobelia siphilitica",
+  "slug": "lobelia-siphilitica",
+  "status": "accepted",
+  "synonyms": [
+    "Lobelia siphilitica var. rosea",
+    "Lobelia antisyphilitica",
+    "Lobelia siphilitica var. densiflora",
+    "Lobelia siphilitica var. grandis",
+    "Lobelia belgica",
+    "Rapuntium siphiliticum",
+    "Rapuntium syphiliticum",
+    "Dortmanna siphilitica",
+    "Lobelia densiflora",
+    "Lobelia siphilitica f. albiflora",
+    "Lobelia siphilitica var. maculata",
+    "Lobelia siphilitica var. ludoviciana",
+    "Lobelia siphilitica f. purpurea",
+    "Lobelia siphilitica var. alba",
+    "Lobelia siphilitica var. minor",
+    "Lobelia bollii",
+    "Lobelia siphilitica var. bollii",
+    "Lobelia siphilitica f. alba",
+    "Lobelia siphilitica f. laevicalyx",
+    "Lobelia siphilitica var. candida",
+    "Lobelia reflexa",
+    "Lobelia siphilitica f. ludoviciana",
+    "Lobelia coelestis"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5eeeb885ddd0760017032dbc"
+  },
+  "photos": [],
+  "scientificName": "Chelone glabra",
+  "commonName": "White Turtlehead",
+  "notes": "",
+  "botanicPhoto": "http://images.mobot.org/PlantRecords1/prod/large960/00073000/73887.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:31:49.236Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:31:49.236Z"
+  },
+  "__v": 0,
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 611 (1753)",
+  "common_name": "Balmony",
+  "family": "Plantaginaceae",
+  "family_common_name": null,
+  "genus": "Chelone",
+  "genus_id": 8236,
+  "id": 159958,
+  "image_url": "https://bs.plantnet.org/image/o/e5a76bbeb4e594f9b912e71fb8d639bf3601f3d6",
+  "links": {
+    "self": "/api/v1/species/chelone-glabra",
+    "plant": "/api/v1/plants/chelone-glabra",
+    "genus": "/api/v1/genus/chelone"
+  },
+  "rank": "species",
+  "scientific_name": "Chelone glabra",
+  "slug": "chelone-glabra",
+  "status": "accepted",
+  "synonyms": [
+    "Chelone glabra var. typica",
+    "Chelone montana var. elatior",
+    "Chelone glabra subsp. ochroleuca",
+    "Chelone glabra var. purpurea",
+    "Chelone glabra subsp. elatior",
+    "Chelone glabra var. ochroleuca",
+    "Chelone glabra f. velutina",
+    "Chelone purpurea",
+    "Chelone glabra var. maculata",
+    "Chelone glabra var. alba",
+    "Chelone glabra subsp. chlorantha",
+    "Chelone glabra var. chlorantha",
+    "Chelone montana",
+    "Chelone chlorantha",
+    "Chelone linifolia",
+    "Chelone glabra subsp. typica",
+    "Chelone glabra var. obliquea",
+    "Chelone glabra var. lanceolata",
+    "Chelone glabra var. elongata",
+    "Chelone glabra subsp. elongata",
+    "Chelone glabra subsp. linifolia",
+    "Chelone glabra subsp. dilatata",
+    "Chlonanthes tomentosa",
+    "Chlonanthes montana",
+    "Chelone glabra f. tomentosa",
+    "Chelone glabra f. rosea",
+    "Chelone glabra var. capitata",
+    "Chlonanthes glabra",
+    "Chelone glabra var. elatior",
+    "Chelone alba",
+    "Dysosmon amoenum",
+    "Chelone glabra var. linifolia",
+    "Chelone glabra var. dilatata"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78c7"
+  },
+  "scientificName": "Carex vulpinoidea",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/grasses/photos/frank_sedge1.jpg",
+  "author": "Michx.",
+  "bibliography": "Fl. Bor.-Amer. 2: 169 (1803)",
+  "common_name": "American fox sedge",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 95171,
+  "image_url": "https://bs.plantnet.org/image/o/aaca7c944ddf3d16d8d7410d71d9be0ad252702d",
+  "links": {
+    "self": "/api/v1/species/carex-vulpinoidea",
+    "plant": "/api/v1/plants/carex-vulpinoidea",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex vulpinoidea",
+  "slug": "carex-vulpinoidea",
+  "status": "accepted",
+  "synonyms": [
+    "Carex moniezii",
+    "Carex multiflora",
+    "Vignea multiflora",
+    "Carex vulpinoidea var. microsperma",
+    "Carex vulpinoidea var. pycnocephala",
+    "Carex multiflora var. microsperma",
+    "Carex muhlenbergii",
+    "Carex scabrior",
+    "Vignea vulpinoidea",
+    "Carex bracteosa",
+    "Carex vulpinoidea var. glomerata",
+    "Vignea setacea",
+    "Carex vulpiniformis",
+    "Carex vaginiformis",
+    "Carex vulpinoidea var. scabrior",
+    "Carex vulpinoidea var. setacea",
+    "Carex vulpinoidea f. segregata",
+    "Carex vulpinoidea var. segregata",
+    "Carex polymorpha",
+    "Carex microsperma",
+    "Carex setacea"
+  ],
+  "year": 1803
+},
+{
+  "_id": {
+    "$oid": "5ee818a9c4bd4800179384b0"
+  },
+  "photos": [],
+  "scientificName": "Amorpha canescens",
+  "commonName": "Leadplant",
+  "notes": "Grows to be about 3 feet tall",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/prairie/photox/leadplant3.jpg",
+  "createdAt": {
+    "$date": "2020-06-16T00:56:09.878Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-16T00:56:09.878Z"
+  },
+  "__v": 0,
+  "author": "Pursh",
+  "bibliography": "Fl. Amer. Sept. 2: 467 (1813)",
+  "common_name": "Leadplant",
+  "family": "Fabaceae",
+  "family_common_name": null,
+  "genus": "Amorpha",
+  "genus_id": 1909,
+  "id": 40475,
+  "image_url": "https://bs.plantnet.org/image/o/ca0cb2c014c04cb6913189526067ecc60d58d2b0",
+  "links": {
+    "self": "/api/v1/species/amorpha-canescens",
+    "plant": "/api/v1/plants/amorpha-canescens",
+    "genus": "/api/v1/genus/amorpha"
+  },
+  "rank": "species",
+  "scientific_name": "Amorpha canescens",
+  "slug": "amorpha-canescens",
+  "status": "accepted",
+  "synonyms": [
+    "Amorpha brachycarpa",
+    "Amorpha canescens f. glabrescens",
+    "Amorpha canescens f. glabrata",
+    "Amorpha canescens var. leptostachya",
+    "Amorpha canescens var. typica",
+    "Amorpha canescens var. glabrata"
+  ],
+  "year": 1813
+},
+{
+  "_id": {
+    "$oid": "5eeebdecddd0760017032dce"
+  },
+  "photos": [],
+  "scientificName": "Scirpus atrovirens",
+  "commonName": "Dark Green Bulrush",
+  "notes": "",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/grass/scirpus-atrovirens_0729_104449.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:54:52.804Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:54:52.804Z"
+  },
+  "__v": 0,
+  "author": "Willd.",
+  "bibliography": "Enum. Pl.: 79 (1809)",
+  "common_name": "Black bulrush",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Scirpus",
+  "genus_id": 7473,
+  "id": 143251,
+  "image_url": "https://bs.plantnet.org/image/o/c56076052a00e06112af40f7439b05a19585fe38",
+  "links": {
+    "self": "/api/v1/species/scirpus-atrovirens",
+    "plant": "/api/v1/plants/scirpus-atrovirens",
+    "genus": "/api/v1/genus/scirpus"
+  },
+  "rank": "species",
+  "scientific_name": "Scirpus atrovirens",
+  "slug": "scirpus-atrovirens",
+  "status": "accepted",
+  "synonyms": [
+    "Holoschoenus atrovirens",
+    "Scirpus atrovirens f. angustispicatus",
+    "Scirpus sylvaticus var. sychnocephalus",
+    "Scirpus atrovirens f. cephalanthus",
+    "Scirpus sylvaticus var. atrovirens",
+    "Scirpus atrovirens f. prolifer",
+    "Scirpus atrovirens f. sychnocephalus",
+    "Scirpus atrovirens f. viviparus",
+    "Scirpus atrovirens var. pycnocephalus"
+  ],
+  "year": 1809
+},
+{
+  "_id": {
+    "$oid": "5ee81ba6c4bd4800179384b5"
+  },
+  "photos": [],
+  "scientificName": "Carex bromoides",
+  "commonName": "Brome-Like Sedge",
+  "notes": "Leaves are very fine, almost grass like",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/grasses/photos/brome_sedge1.jpg",
+  "createdAt": {
+    "$date": "2020-06-16T01:08:54.223Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-16T01:08:54.223Z"
+  },
+  "__v": 0,
+  "author": "Willd.",
+  "bibliography": "Sp. Pl., ed. 4, 4: 258 (1805)",
+  "common_name": null,
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 93373,
+  "image_url": null,
+  "links": {
+    "self": "/api/v1/species/carex-bromoides",
+    "plant": "/api/v1/plants/carex-bromoides",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex bromoides",
+  "slug": "carex-bromoides",
+  "status": "accepted",
+  "synonyms": [
+    "Loncoperis bromoides"
+  ],
+  "year": 1805
+},
+{
+  "_id": {
+    "$oid": "605645a4b57adf00171e20f5"
+  },
+  "photos": [],
+  "tags": [
+    "1",
+    "2"
+  ],
+  "scientificName": "Salix discolor",
+  "commonName": "Pussy Willow",
+  "notes": "",
+  "botanicPhoto": "http://www.missouribotanicalgarden.org/PlantFinder/FullImageDisplay.aspx?documentid=14699",
+  "createdAt": {
+    "$date": "2021-03-20T18:57:40.831Z"
+  },
+  "updatedAt": {
+    "$date": "2021-03-20T18:57:40.831Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "607b6d93fdeb5a00177d27a3"
+  },
+  "photos": [],
+  "tags": [
+    "1",
+    "2"
+  ],
+  "scientificName": "Acer rubrum",
+  "commonName": "",
+  "notes": "",
+  "botanicPhoto": "",
+  "createdAt": {
+    "$date": "2021-04-17T23:21:55.678Z"
+  },
+  "updatedAt": {
+    "$date": "2021-04-17T23:21:55.678Z"
+  },
+  "__v": 0,
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 1055 (1753)",
+  "common_name": "Red maple",
+  "family": "Sapindaceae",
+  "family_common_name": null,
+  "genus": "Acer",
+  "genus_id": 7255,
+  "id": 137958,
+  "image_url": "https://bs.plantnet.org/image/o/c1023eba3ca60bfc8efadb3710586b9f8109d435",
+  "links": {
+    "self": "/api/v1/species/acer-rubrum",
+    "plant": "/api/v1/plants/acer-rubrum",
+    "genus": "/api/v1/genus/acer"
+  },
+  "rank": "species",
+  "scientific_name": "Acer rubrum",
+  "slug": "acer-rubrum",
+  "status": "accepted",
+  "synonyms": [
+    "Acer hypoleucum",
+    "Acer tomentosum",
+    "Acer sanguineum",
+    "Acer rubrum f. schlesingeri",
+    "Acer rubrum f. viride",
+    "Acer stenocarpum",
+    "Acer rubrum f. breviramusculum",
+    "Acer rubrum var. tridens",
+    "Acer rubrum f. rotundata",
+    "Acer rubrum var. drummondii",
+    "Acer glaucum",
+    "Rufacer rubrum",
+    "Acer rubrum f. wagneri",
+    "Acer rubrum var. sanguineum",
+    "Acer wagneri",
+    "Acer fulgens",
+    "Acer rubrum f. palmatum",
+    "Acer rubrum subsp. semiorbiculatum",
+    "Acer rubrum var. pallidum",
+    "Acer rubrum var. latifolium",
+    "Acer rubrum f. globosum",
+    "Acer rubrum f. semiorbiculatum",
+    "Rufacer drummondii",
+    "Acer rubrum subsp. microphyllum",
+    "Acer rubrum f. pallidiflorum",
+    "Acer rubrum f. clausum",
+    "Acer rubrum var. virginianum",
+    "Acer carolinianum",
+    "Acer splendens",
+    "Acer rubrum var. clausum",
+    "Acer rubrum var. columnare",
+    "Acer rubrum var. eurubrum",
+    "Acer rubrum f. tridens",
+    "Acer rubrum subsp. carolinianum",
+    "Acer rubrum var. rubrocarpum",
+    "Acer rubrum f. drummondii",
+    "Acer rubrum f. pendulum",
+    "Acer rubrum var. stenocarpum",
+    "Acer rubrum var. pendulum",
+    "Acer rubrum subsp. tomentosum",
+    "Acer rubrum f. microphyllum",
+    "Acer rubrum var. coccineum",
+    "Acer drummondii",
+    "Acer rubrum f. sanguineum",
+    "Rufacer carolinianum",
+    "Acer rubrum subsp. normale",
+    "Acer rubrum var. pallidiflorum",
+    "Acer rubrum var. trilobum",
+    "Acer rubrum var. tomentosum",
+    "Acer rubrum f. tomentosum",
+    "Acer rubrum var. viride",
+    "Acer semiorbiculatum",
+    "Acer rubrum subsp. drummondii",
+    "Acer rubrum var. intermedium",
+    "Acer rubrum var. globosum",
+    "Acer rubrum f. columnare"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5eeeb9d8ddd0760017032dc0"
+  },
+  "photos": [],
+  "scientificName": "Eutrochium fistulosum",
+  "commonName": "Hollow Joe-Pye Weed",
+  "notes": "",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/wetland/photos/hs_joepye1.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:37:28.638Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:37:28.638Z"
+  },
+  "__v": 0,
+  "author": "(Barratt) E.E.Lamont",
+  "bibliography": "Sida 21(2): 901 (2004)",
+  "common_name": "Hollow joe-pyeweed",
+  "family": "Asteraceae",
+  "family_common_name": "Aster family",
+  "genus": "Eutrochium",
+  "genus_id": 1270,
+  "id": 27596,
+  "image_url": "https://bs.plantnet.org/image/o/31f6df981874a05c79ed7019edab810b33990a19",
+  "links": {
+    "self": "/api/v1/species/eutrochium-fistulosum",
+    "plant": "/api/v1/plants/eutrochium-fistulosum",
+    "genus": "/api/v1/genus/eutrochium"
+  },
+  "rank": "species",
+  "scientific_name": "Eutrochium fistulosum",
+  "slug": "eutrochium-fistulosum",
+  "status": "accepted",
+  "synonyms": [
+    "Eupatorium fistulosum f. albidum",
+    "Eupatorium purpureum var. angustifolium",
+    "Eupatorium fistulosum f. truncatum",
+    "Eupatoriadelphus fistulosus",
+    "Eupatorium fistulosum"
+  ],
+  "year": 2004
+},
+{
+  "_id": {
+    "$oid": "5ee81e45c4bd4800179384bb"
+  },
+  "photos": [],
+  "scientificName": "Carex pellita",
+  "commonName": "Wooly Sedge",
+  "notes": "Almost seems like turf.  Small in height and fills in open areas.",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/grasses/photos/woolly_sedge1.jpg",
+  "createdAt": {
+    "$date": "2020-06-16T01:20:05.797Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-16T01:20:05.797Z"
+  },
+  "__v": 0,
+  "author": "Muhl. ex Willd.",
+  "bibliography": "Sp. Pl., ed. 4, 4: 302 (1805)",
+  "common_name": null,
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 94541,
+  "image_url": null,
+  "links": {
+    "self": "/api/v1/species/carex-pellita",
+    "plant": "/api/v1/plants/carex-pellita",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex pellita",
+  "slug": "carex-pellita",
+  "status": "accepted",
+  "synonyms": [
+    "Diemisa pellita"
+  ],
+  "year": 1805
+},
+{
+  "_id": {
+    "$oid": "5eeec05addd0760017032dd3"
+  },
+  "photos": [],
+  "scientificName": "Symphyotrichum puniceum",
+  "commonName": "Swamp Aster",
+  "notes": "",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/purple/purple-stem-aster_0905_150539.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T02:05:14.158Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T02:05:14.158Z"
+  },
+  "__v": 0,
+  "author": "(L.) Á.Löve & D.Löve",
+  "bibliography": "Taxon 31: 359 (1982)",
+  "common_name": "Bog aster",
+  "family": "Asteraceae",
+  "family_common_name": "Aster family",
+  "genus": "Symphyotrichum",
+  "genus_id": 132,
+  "id": 27027,
+  "image_url": "https://bs.plantnet.org/image/o/9ce7580dc7cd9f166a45ab21d28fed1fd4f2f62a",
+  "links": {
+    "self": "/api/v1/species/symphyotrichum-puniceum",
+    "plant": "/api/v1/plants/symphyotrichum-puniceum",
+    "genus": "/api/v1/genus/symphyotrichum"
+  },
+  "rank": "species",
+  "scientific_name": "Symphyotrichum puniceum",
+  "slug": "symphyotrichum-puniceum",
+  "status": "accepted",
+  "synonyms": [
+    "Aster puniceus"
+  ],
+  "year": 1982
+},
+{
+  "_id": {
+    "$oid": "5ee81eaec4bd4800179384bc"
+  },
+  "photos": [],
+  "scientificName": "Carex lupulina",
+  "commonName": "Hope Sedge",
+  "notes": "Uniquely large prickly pistillate spikelets",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/grasses/photos/hop_sedge1.jpg",
+  "createdAt": {
+    "$date": "2020-06-16T01:21:50.765Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-16T01:21:50.765Z"
+  },
+  "__v": 0,
+  "author": "Muhl. ex Willd.",
+  "bibliography": "Sp. Pl., ed. 4, 4: 266 (1805)",
+  "common_name": "Hop sedge",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 94227,
+  "image_url": "https://bs.plantnet.org/image/o/4ed3a24fea9a278a6d9e940988a32fa1c4d6cbe5",
+  "links": {
+    "self": "/api/v1/species/carex-lupulina",
+    "plant": "/api/v1/plants/carex-lupulina",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex lupulina",
+  "slug": "carex-lupulina",
+  "status": "accepted",
+  "synonyms": [
+    "Carex lupulina var. androgyna",
+    "Carex lupulina var. bella-villa",
+    "Carex lupulina var. albomarginata",
+    "Carex gigantea f. bella-villa",
+    "Carex bella-villa",
+    "Carex canadensis",
+    "Carex lupulina var. longipedunculata",
+    "Carex gigantea var. lupulina"
+  ],
+  "year": 1805
+},
+{
+  "_id": {
+    "$oid": "5eeebfd1ddd0760017032dd1"
+  },
+  "photos": [],
+  "scientificName": "Spartina pectinata",
+  "commonName": "Prairie Cordgrass",
+  "notes": "Leaves can easily give a paper cut ",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/grass/spartina-pectinata-prairie-cord-grass_0801_130125.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T02:02:57.917Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T02:02:57.917Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78da"
+  },
+  "scientificName": "Silene regia",
+  "botanicPhoto": "''",
+  "author": "Sims",
+  "bibliography": "Bot. Mag. 41: t. 1724 (1815)",
+  "common_name": "Royal catchfly",
+  "family": "Caryophyllaceae",
+  "family_common_name": null,
+  "genus": "Silene",
+  "genus_id": 5902,
+  "id": 115829,
+  "image_url": "https://bs.plantnet.org/image/o/f3ab56086bb33f66dd27fc97f0924ff0ac7e588f",
+  "links": {
+    "self": "/api/v1/species/silene-regia",
+    "plant": "/api/v1/plants/silene-regia",
+    "genus": "/api/v1/genus/silene"
+  },
+  "rank": "species",
+  "scientific_name": "Silene regia",
+  "slug": "silene-regia",
+  "status": "accepted",
+  "synonyms": [
+    "Melandrium illinoense",
+    "Melandrium regium"
+  ],
+  "year": 1815
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78d8"
+  },
+  "scientificName": "Rumex verticillatus",
+  "botanicPhoto": "''",
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 334 (1753)",
+  "common_name": "Swamp dock",
+  "family": "Polygonaceae",
+  "family_common_name": null,
+  "genus": "Rumex",
+  "genus_id": 5298,
+  "id": 288771,
+  "image_url": "https://bs.plantnet.org/image/o/550d231891bb145cc322f64f1d074941791a8a21",
+  "links": {
+    "self": "/api/v1/species/rumex-verticillatus",
+    "plant": "/api/v1/plants/rumex-verticillatus",
+    "genus": "/api/v1/genus/rumex"
+  },
+  "rank": "species",
+  "scientific_name": "Rumex verticillatus",
+  "slug": "rumex-verticillatus",
+  "status": "accepted",
+  "synonyms": [
+    "Lapathum verticillatum",
+    "Rumex verticillatus var. salicifolius"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78d9"
+  },
+  "scientificName": "Schoenoplectus acutus",
+  "botanicPhoto": "''",
+  "author": "(Muhl. ex Bigelow) Á.Löve & D.Löve",
+  "bibliography": "Bull. Torrey Bot. Club 81: 33 (1954)",
+  "common_name": null,
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Schoenoplectus",
+  "genus_id": 7389,
+  "id": 141559,
+  "image_url": null,
+  "links": {
+    "self": "/api/v1/species/schoenoplectus-acutus",
+    "plant": "/api/v1/plants/schoenoplectus-acutus",
+    "genus": "/api/v1/genus/schoenoplectus"
+  },
+  "rank": "species",
+  "scientific_name": "Schoenoplectus acutus",
+  "slug": "schoenoplectus-acutus",
+  "status": "accepted",
+  "synonyms": [
+    "Schoenoplectus lacustris subsp. acutus"
+  ],
+  "year": 1954
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78d3"
+  },
+  "scientificName": "Justicia americana",
+  "botanicPhoto": "''",
+  "author": "Vahl",
+  "bibliography": "Symb. bot. 2:15.  1791",
+  "common_name": null,
+  "family": "Acanthaceae",
+  "family_common_name": null,
+  "genus": "Justicia",
+  "genus_id": 4350,
+  "id": 480600,
+  "image_url": null,
+  "links": {
+    "self": "/api/v1/species/justicia-americana",
+    "plant": "/api/v1/plants/justicia-americana",
+    "genus": "/api/v1/genus/justicia"
+  },
+  "rank": "species",
+  "scientific_name": "Justicia americana",
+  "slug": "justicia-americana",
+  "status": null,
+  "synonyms": [],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78c6"
+  },
+  "scientificName": "Carex stricta",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/wetland/photos/msh_blzstar1.jpg",
+  "author": "Lam.",
+  "bibliography": "Encycl. 3: 387 (1792)",
+  "common_name": "Upright sedge",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 94952,
+  "image_url": "https://bs.plantnet.org/image/o/956724fb8c2428321544d1d7c7b0158ceecd160d",
+  "links": {
+    "self": "/api/v1/species/carex-stricta",
+    "plant": "/api/v1/plants/carex-stricta",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex stricta",
+  "slug": "carex-stricta",
+  "status": "accepted",
+  "synonyms": [
+    "Carex littoralis",
+    "Carex tenuispica",
+    "Carex sempervirens",
+    "Carex xerocarpa",
+    "Carex stricta var. curtissima",
+    "Carex verrucosa",
+    "Carex strictior f. curtissima",
+    "Carex stricta f. pedicellaris",
+    "Carex stricta f. curtissima",
+    "Carex stricta f. brevior",
+    "Carex prolixa",
+    "Carex kelvingtoniana",
+    "Carex tristicha",
+    "Carex strictior",
+    "Carex watsoniana",
+    "Diemisa stricta",
+    "Vignantha stricta",
+    "Vignea stricta",
+    "Carex stricta f. xerocarpa",
+    "Carex stricta var. strictior",
+    "Carex stricta var. xerocarpa"
+  ],
+  "year": 1792
+},
+{
+  "_id": {
+    "$oid": "5ee81fadc4bd4800179384be"
+  },
+  "photos": [],
+  "scientificName": "Carex lurida",
+  "commonName": "Sallow Sedge",
+  "notes": "Yellowish appearance of its pistillate spikelets",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/grasses/photos/sallow_sedge1.jpg",
+  "createdAt": {
+    "$date": "2020-06-16T01:26:05.517Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-16T01:26:05.517Z"
+  },
+  "__v": 0,
+  "author": "Wahlenb.",
+  "bibliography": "Kongl. Vetensk. Acad. Nya Handl. 24: 153 (1803)",
+  "common_name": "Shallow sedge",
+  "family": "Cyperaceae",
+  "family_common_name": "Sedge family",
+  "genus": "Carex",
+  "genus_id": 4314,
+  "id": 94228,
+  "image_url": "https://bs.plantnet.org/image/o/4fa3f0057b4fc17a2c881370b00eacd5afba15d7",
+  "links": {
+    "self": "/api/v1/species/carex-lurida",
+    "plant": "/api/v1/plants/carex-lurida",
+    "genus": "/api/v1/genus/carex"
+  },
+  "rank": "species",
+  "scientific_name": "Carex lurida",
+  "slug": "carex-lurida",
+  "status": "accepted",
+  "synonyms": [
+    "Carex purshii",
+    "Carex tentaculata var. rostrata",
+    "Carex tentaculata var. parvula",
+    "Carex lurida var. flaccida",
+    "Carex beyrichiana",
+    "Carex lurida var. exudans",
+    "Carex lurida var. altior",
+    "Carex tentaculata var. altior",
+    "Carex tentaculata",
+    "Carex lurida f. parvula",
+    "Carex lurida var. parvula",
+    "Carex lurida var. polystachya",
+    "Carex lupulina var. polystachya",
+    "Carex tentaculata var. flaccida"
+  ],
+  "year": 1803
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78d4"
+  },
+  "scientificName": "Liatris spicata",
+  "botanicPhoto": "http://www.illinoiswildflowers.info/prairie/photox/ppr_clover2.jpg",
+  "author": "(L.) Willd.",
+  "bibliography": "Sp. Pl., ed. 4, 3: 1636 (1803)",
+  "common_name": "Marsh blazingstar",
+  "family": "Asteraceae",
+  "family_common_name": "Aster family",
+  "genus": "Liatris",
+  "genus_id": 459,
+  "id": 16068,
+  "image_url": "https://bs.plantnet.org/image/o/a55f51eb1ff1e657c0b1fb8c31945204cb972a0c",
+  "links": {
+    "self": "/api/v1/species/liatris-spicata",
+    "plant": "/api/v1/plants/liatris-spicata",
+    "genus": "/api/v1/genus/liatris"
+  },
+  "rank": "species",
+  "scientific_name": "Liatris spicata",
+  "slug": "liatris-spicata",
+  "status": "accepted",
+  "synonyms": [
+    "Lacinaria spicata",
+    "Suprago spicata",
+    "Serratula spicata",
+    "Kuhnia spicata"
+  ],
+  "year": 1803
+},
+{
+  "_id": {
+    "$oid": "5eeeb984ddd0760017032dbf"
+  },
+  "photos": [],
+  "scientificName": "Eupatorium perfoliatum",
+  "commonName": "Boneset",
+  "notes": "",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/prairie/photox/cm_boneset1.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:36:04.172Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:36:04.172Z"
+  },
+  "__v": 0,
+  "author": "L.",
+  "bibliography": "Sp. Pl.: 838 (1753)",
+  "common_name": "Boneset",
+  "family": "Asteraceae",
+  "family_common_name": "Aster family",
+  "genus": "Eupatorium",
+  "genus_id": 317,
+  "id": 7735,
+  "image_url": "https://bs.plantnet.org/image/o/ed2f7097935e769c905bc4c2139fc7f21edda7b1",
+  "links": {
+    "self": "/api/v1/species/eupatorium-perfoliatum",
+    "plant": "/api/v1/plants/eupatorium-perfoliatum",
+    "genus": "/api/v1/genus/eupatorium"
+  },
+  "rank": "species",
+  "scientific_name": "Eupatorium perfoliatum",
+  "slug": "eupatorium-perfoliatum",
+  "status": "accepted",
+  "synonyms": [
+    "Eupatorium chapmanii",
+    "Uncasia perfoliata",
+    "Uncasia truncata",
+    "Eupatorium perfoliatum f. purpureum",
+    "Eupatorium perfoliatum f. trifolium",
+    "Eupatorium perfoliatum f. laciniatum",
+    "Eupatorium perfoliatum f. truncatum",
+    "Eupatorium connatum",
+    "Eupatorium perfoliatum var. cuneatum",
+    "Uncasia cuneata",
+    "Eupatorium perfoliatum var. colpophilum",
+    "Eupatorium perfoliatum var. truncatum",
+    "Eupatorium serotinum var. polyneuron",
+    "Eupatorium polyneuron",
+    "Cunigunda perfoliata"
+  ],
+  "year": 1753
+},
+{
+  "_id": {
+    "$oid": "5eeebc87ddd0760017032dcb"
+  },
+  "photos": [],
+  "scientificName": "Sagittaria latifolia",
+  "commonName": "Arrowhead",
+  "notes": "",
+  "botanicPhoto": "https://www.minnesotawildflowers.info/udata/r9ndp23q/white/broadleaf-arrowhead_0823_155446.jpg",
+  "createdAt": {
+    "$date": "2020-06-21T01:48:55.142Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-21T01:48:55.142Z"
+  },
+  "__v": 0,
+  "author": "Willd.",
+  "bibliography": "Sp. Pl. ed. 4. 4: 409 (1805)",
+  "common_name": "Duck-potato",
+  "family": "Alismataceae",
+  "family_common_name": null,
+  "genus": "Sagittaria",
+  "genus_id": 9795,
+  "id": 198485,
+  "image_url": "https://bs.plantnet.org/image/o/23d6c1894b8faf5c28422192f4a7e5327ad64e1e",
+  "links": {
+    "self": "/api/v1/species/sagittaria-latifolia",
+    "plant": "/api/v1/plants/sagittaria-latifolia",
+    "genus": "/api/v1/genus/sagittaria"
+  },
+  "rank": "species",
+  "scientific_name": "Sagittaria latifolia",
+  "slug": "sagittaria-latifolia",
+  "status": "accepted",
+  "synonyms": [
+    "Sagittaria variabilis",
+    "Sagittaria latifolia var. glabra",
+    "Sagittaria latifolia f. hastata",
+    "Sagittaria latifolia var. pubescens",
+    "Sagittaria hastata var. gracilis",
+    "Sagittaria pubescens",
+    "Sagittaria sagittifolia var. longirostra",
+    "Sagittaria sagittifolia f. hastata",
+    "Sagittaria planipes",
+    "Sagittaria gracilis",
+    "Sagittaria viscosa",
+    "Sagittaria sagittifolia var. hastata",
+    "Sagittaria variabilis var. pubescens",
+    "Urospatha friedrichsthalii",
+    "Sagittaria sagittifolia f. angustifolia",
+    "Sagittaria variabilis var. sagittifolia",
+    "Sagittaria variabilis f. obtusa",
+    "Sagittaria variabilis f. hastata",
+    "Sagittaria variabilis var. diversifolia",
+    "Sagittaria sagittifolia var. variabilis",
+    "Sagittaria variabilis f. angustifolia",
+    "Sagittaria esculenta",
+    "Sagittaria variabilis var. echinocephala",
+    "Sagittaria latifolia f. diversifolia",
+    "Sagittaria sagittifolia var. pubescens",
+    "Sagittaria latifolia f. gracilis",
+    "Sagittaria latifolia var. major",
+    "Sagittaria sagittifolia var. macrophylla",
+    "Sagittaria longirostra",
+    "Sagittaria sagittifolia f. latifolia",
+    "Sagittaria sagittifolia f. gracilis",
+    "Sagittaria sagittifolia var. gracilis",
+    "Sagittaria ornithorhyncha",
+    "Sagittaria latifolia var. obtusa",
+    "Sagittaria variabilis var. hastata",
+    "Sagittaria variabilis var. obtusa",
+    "Sagittaria sagittifolia var. vulgaris",
+    "Sagittaria variabilis var. latifolia",
+    "Sagittaria variabilis var. gracilis",
+    "Sagittaria variabilis var. angustifolia",
+    "Sagittaria sagittifolia var. latifolia",
+    "Sagitta latifolia",
+    "Sagittaria sagittifolia f. obtusa",
+    "Sagittaria engelmanniana subsp. longirostra"
+  ],
+  "year": 1805
+},
+{
+  "_id": {
+    "$oid": "5e989ee42dccfd124c9a78db"
+  },
+  "scientificName": "Sparganium eurycarpum",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/grasses/photos/gray_sedge1.jpg",
+  "author": "Engelm.",
+  "bibliography": "A.Gray, Manual, ed. 5: 481 (1867)",
+  "common_name": "Broadfruit bur-reed",
+  "family": "Typhaceae",
+  "family_common_name": null,
+  "genus": "Sparganium",
+  "genus_id": 7665,
+  "id": 148302,
+  "image_url": "https://bs.plantnet.org/image/o/5334a51710593921ffe0cf314d3981fdf6897b6c",
+  "links": {
+    "self": "/api/v1/species/sparganium-eurycarpum",
+    "plant": "/api/v1/plants/sparganium-eurycarpum",
+    "genus": "/api/v1/genus/sparganium"
+  },
+  "rank": "species",
+  "scientific_name": "Sparganium eurycarpum",
+  "slug": "sparganium-eurycarpum",
+  "status": "accepted",
+  "synonyms": [],
+  "year": 1867
+},
+{
+  "_id": {
+    "$oid": "5ee8193cc4bd4800179384b1"
+  },
+  "photos": [],
+  "scientificName": "Anglelica atropurpurea",
+  "commonName": "Great Angelica",
+  "notes": "Sun activated toxin will burn skin if not covered",
+  "botanicPhoto": "https://www.illinoiswildflowers.info/wetland/photos/grt_angelica1.jpg",
+  "createdAt": {
+    "$date": "2020-06-16T00:58:36.927Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-16T00:58:36.927Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5ee81a0ec4bd4800179384b2"
+  },
+  "photos": [],
+  "scientificName": "Boltonia latisquama",
+  "commonName": "False Aster",
+  "notes": "",
+  "botanicPhoto": "https://www.prairiemoon.com/mm5/graphics/00000001/boltonia-asteroides-false-aster_flower-leaves-pollinators.jpg",
+  "createdAt": {
+    "$date": "2020-06-16T01:02:06.328Z"
+  },
+  "updatedAt": {
+    "$date": "2020-06-16T01:02:06.328Z"
+  },
+  "__v": 0
+}]

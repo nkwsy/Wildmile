@@ -3,7 +3,6 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 const User = require('../models/User');
-const toTitleCase = require('../utils/toTitleCase');
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 
@@ -210,7 +209,7 @@ exports.getOauthUnlink = (req, res, next) => {
   User.findById(req.user.id, (err, user) => {
     if (err) { return next(err); }
     const lowerCaseProvider = provider.toLowerCase();
-    const titleCaseProvider = toTitleCase(provider);
+    const titleCaseProvider = provider.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
     user[lowerCaseProvider] = undefined;
     const tokensWithoutProviderToUnlink = user.tokens.filter(token =>
       token.kind !== lowerCaseProvider);

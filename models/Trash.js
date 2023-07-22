@@ -82,7 +82,7 @@ const individualTrashItemSchema = new mongoose.Schema({
   aggrigateWeight: Number,
   tags: Array,
   generic: { type: Boolean, default: true },
-  creator: { type: Schema.Types.ObjectId, ref: 'User' },
+  creator: { type: Schema.Types.ObjectId, ref: 'User' }, // This seems redundant since there is a creator on the trashlog itself
 }, { timestamps: true });
 
 individualTrashItemSchema.plugin(mongoose_delete, { overrideMethods: true });

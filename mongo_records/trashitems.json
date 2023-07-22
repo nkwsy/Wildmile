@@ -1,0 +1,1820 @@
+[{
+  "_id": {
+    "$oid": "602856b92f6dfc001763ad00"
+  },
+  "deleted": false,
+  "name": "Koozie",
+  "material": "Other",
+  "catagory": "Food",
+  "description": "Koozie",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-02-13T22:46:17.288Z"
+  },
+  "updatedAt": {
+    "$date": "2021-02-13T22:46:17.288Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fac59cfe6500e0017fd500a"
+  },
+  "deleted": false,
+  "name": "cigarettes",
+  "material": "Cigarettes",
+  "catagory": "Smoking",
+  "description": "Cigarettes, butts & filters",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-11T21:38:23.297Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-11T21:38:23.297Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fad6df46f111c00178e58bf"
+  },
+  "deleted": false,
+  "name": "FoilWrappers",
+  "material": "Metal",
+  "catagory": "Food",
+  "description": "Foil Wrappers, Aluminum foil",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-12T17:16:36.253Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-12T17:16:36.253Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fac5a31e6500e0017fd500d"
+  },
+  "deleted": false,
+  "name": "cigpack",
+  "material": "Plastic",
+  "catagory": "Smoking",
+  "description": "Packaging for Cigarettes / Cigars",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-11T21:40:01.460Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-11T21:40:01.460Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7f1d6e308b20017c3e463"
+  },
+  "deleted": false,
+  "name": "Rope",
+  "material": "Plastic",
+  "catagory": "Waterway Activities",
+  "description": "Rope",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T19:58:14.027Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T19:58:14.027Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7ef0eddec8abc721828bd"
+  },
+  "deleted": false,
+  "name": "fabric",
+  "material": "Cloth",
+  "catagory": "Dumping",
+  "description": "Carpet, large fabric",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7edbdddec8abc721828b9"
+  },
+  "deleted": false,
+  "name": "Packing Materials",
+  "material": "Styrofoam",
+  "catagory": "Dumping",
+  "description": "Packing Materials (strapping, packing, peanuts, cardboard boxes, paper bags)",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5faef1429ec4e600178656b2"
+  },
+  "deleted": false,
+  "name": "Condoms",
+  "material": "Rubber",
+  "catagory": "Medical - Hygenine",
+  "description": "Condoms",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-13T20:49:06.385Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-13T20:49:06.385Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fea5e31a9e3e60017959e0d"
+  },
+  "deleted": false,
+  "name": "2-layer mask",
+  "material": "Paper",
+  "catagory": "Medical - Hygenine",
+  "description": "COVID-paper masks",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-28T22:37:37.979Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-28T22:37:37.979Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "60286a032f6dfc001763b47f"
+  },
+  "deleted": false,
+  "name": "Candle",
+  "material": "Other",
+  "catagory": "Misc",
+  "description": "Candle",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-02-14T00:08:35.754Z"
+  },
+  "updatedAt": {
+    "$date": "2021-02-14T00:08:35.754Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fac59f2e6500e0017fd500c"
+  },
+  "deleted": false,
+  "name": "lighters",
+  "material": "Plastic",
+  "catagory": "Smoking",
+  "description": "Lighters",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-11T21:38:58.006Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-11T21:38:58.006Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fac5a55e6500e0017fd500f"
+  },
+  "deleted": false,
+  "name": "cups",
+  "material": "Styrofoam",
+  "catagory": "Food",
+  "description": "Cups",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-11T21:40:37.825Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-11T21:40:37.825Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7f1eee308b20017c3e464"
+  },
+  "deleted": false,
+  "name": "Foam buoys",
+  "material": "Styrofoam",
+  "catagory": "Waterway Activities",
+  "description": "Foam buoys",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T19:58:38.030Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T19:58:38.030Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "602856e22f6dfc001763ad01"
+  },
+  "deleted": false,
+  "name": "Toothpaste",
+  "material": "Other",
+  "catagory": "Medical - Hygenine",
+  "description": "Toothpaste",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-02-13T22:46:58.617Z"
+  },
+  "updatedAt": {
+    "$date": "2021-02-13T22:46:58.617Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "602870cd2f6dfc001763b7d5"
+  },
+  "deleted": false,
+  "name": "Seat or Chair",
+  "material": "Other",
+  "catagory": "Misc",
+  "description": "Seat or Chair",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-02-14T00:37:33.565Z"
+  },
+  "updatedAt": {
+    "$date": "2021-02-14T00:37:33.565Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc92d6be308b20017c3e46d"
+  },
+  "deleted": false,
+  "name": "Other styrofoam",
+  "material": "Styrofoam",
+  "catagory": "Misc",
+  "description": "Other styrofoam",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-03T18:24:43.235Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-03T18:24:43.235Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fac5b3de6500e0017fd5016"
+  },
+  "deleted": false,
+  "name": "Straws",
+  "material": "Plastic",
+  "catagory": "Food",
+  "description": "Straws, Stirrers",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-11T21:44:29.112Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-11T21:44:29.112Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7edd2ddec8abc721828ba"
+  },
+  "deleted": false,
+  "name": "Packing Materials",
+  "material": "Paper",
+  "catagory": "Dumping",
+  "description": "Packing Materials (strapping, packing, peanuts, cardboard boxes, paper bags)",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "60ed9a0abcf5cd001582f6cd"
+  },
+  "deleted": false,
+  "name": "Plastic straw",
+  "material": "Plastic",
+  "catagory": "Fragments",
+  "description": "Plastic straw",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-07-13T13:50:02.094Z"
+  },
+  "updatedAt": {
+    "$date": "2021-07-13T13:50:02.094Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "62b47f9abdc9670015fa1f09"
+  },
+  "deleted": false,
+  "name": "Plastic label",
+  "material": "Plastic",
+  "catagory": "Food",
+  "description": "Plastic label",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2022-06-23T14:58:34.009Z"
+  },
+  "updatedAt": {
+    "$date": "2022-06-23T14:58:34.009Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fac5a84e6500e0017fd5011"
+  },
+  "deleted": false,
+  "name": "bottles",
+  "material": "Plastic",
+  "catagory": "Food",
+  "description": "Bottles, Jars",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-11T21:41:24.988Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-11T21:41:24.988Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fad6d776f111c00178e58bb"
+  },
+  "deleted": false,
+  "name": "trays",
+  "material": "Styrofoam",
+  "catagory": "Food",
+  "description": "Food Trays, Takeout containers",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-12T17:14:31.933Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-12T17:14:31.933Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7dc1be308b20017c3e45f"
+  },
+  "deleted": false,
+  "name": "Bottles (not food related)",
+  "material": "Plastic",
+  "catagory": "Dumping",
+  "description": "Bottles (not food related)",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T18:25:31.601Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T18:25:31.601Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7da1a76c9670017268305"
+  },
+  "deleted": false,
+  "name": "Aerosol cans",
+  "material": "Metal",
+  "catagory": "Dumping",
+  "description": "Aerosol cans",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T18:16:58.739Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T18:16:58.739Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fad6dc56f111c00178e58bd"
+  },
+  "deleted": false,
+  "name": "bags",
+  "material": "Paper",
+  "catagory": "Food",
+  "description": "Bags (grocery, shopping, fast food)",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-12T17:15:49.940Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-12T17:15:49.940Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fac5ab2e6500e0017fd5012"
+  },
+  "deleted": false,
+  "name": "cans",
+  "material": "Metal",
+  "catagory": "Food",
+  "description": "Aluminum cans",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-11T21:42:10.470Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-11T21:42:10.470Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc92c8ee308b20017c3e469"
+  },
+  "deleted": false,
+  "name": "Balloons, balls, toys",
+  "material": "Rubber",
+  "catagory": "Misc",
+  "description": "Balloons, balls, toys",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-03T18:21:02.476Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-03T18:21:02.476Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc92d7de308b20017c3e46e"
+  },
+  "deleted": false,
+  "name": "Other wood",
+  "material": "Wood",
+  "catagory": "Misc",
+  "description": "Other wood",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-03T18:25:01.640Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-03T18:25:01.640Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fad6e186f111c00178e58c0"
+  },
+  "deleted": false,
+  "name": "Cutlery",
+  "material": "Plastic",
+  "catagory": "Food",
+  "description": "Cutlery (knives, spoons)",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-12T17:17:12.668Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-12T17:17:12.668Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7efd2ddec8abc721828c0"
+  },
+  "deleted": false,
+  "name": "Batteries, electronics, appliances",
+  "material": "Mixed",
+  "catagory": "Dumping",
+  "description": "Batteries, electronics, appliances",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7f0b6ddec8abc721828c4"
+  },
+  "deleted": false,
+  "name": "Construction Materials",
+  "material": "Wood",
+  "catagory": "Dumping",
+  "description": "Construction Materials (metal screws, metal bolts, ceramic brick, cement)",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fad6f366f111c00178e58c7"
+  },
+  "deleted": false,
+  "name": "sanitary",
+  "material": "Other",
+  "catagory": "Medical - Hygenine",
+  "description": "Sanitary (Diapers, wipes, fem. hygiene)",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-12T17:21:58.871Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-12T17:21:58.871Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7d81676c9670017268304"
+  },
+  "deleted": false,
+  "name": "Gloves",
+  "material": "Rubber",
+  "catagory": "Medical - Hygenine",
+  "description": "Gloves",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T18:08:22.555Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T18:08:22.555Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fea5e04a9e3e60017959e0c"
+  },
+  "deleted": false,
+  "name": "Plastic Gloves",
+  "material": "Plastic",
+  "catagory": "Medical - Hygenine",
+  "description": "plastic gloves",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-28T22:36:52.982Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-28T22:36:52.982Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fac59dde6500e0017fd500b"
+  },
+  "deleted": false,
+  "name": "cigars",
+  "material": "Plastic",
+  "catagory": "Smoking",
+  "description": "Cigars (plastic tips and other)",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-11T21:38:37.828Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-11T21:38:37.828Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "60ed9a58bcf5cd001582f6d7"
+  },
+  "deleted": false,
+  "name": "Beer can",
+  "material": "Metal",
+  "catagory": "Misc",
+  "description": "Beer can",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-07-13T13:51:20.270Z"
+  },
+  "updatedAt": {
+    "$date": "2021-07-13T13:51:20.270Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6028572f2f6dfc001763ad03"
+  },
+  "deleted": false,
+  "name": "Other Fiber Material",
+  "material": "Other",
+  "catagory": "Misc",
+  "description": "Other Fiber Material",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-02-13T22:48:15.262Z"
+  },
+  "updatedAt": {
+    "$date": "2021-02-13T22:48:15.262Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fad6f146f111c00178e58c6"
+  },
+  "deleted": false,
+  "name": "FirstAid",
+  "material": "Other",
+  "catagory": "Medical - Hygenine",
+  "description": "First Aid supplies and packaging, band aids",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-12T17:21:24.728Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-12T17:21:24.728Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "602856fc2f6dfc001763ad02"
+  },
+  "deleted": false,
+  "name": "Hand sanitizer",
+  "material": "Other",
+  "catagory": "Medical - Hygenine",
+  "description": "Hand sanitizer",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-02-13T22:47:24.807Z"
+  },
+  "updatedAt": {
+    "$date": "2021-02-13T22:47:24.807Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fac5affe6500e0017fd5014"
+  },
+  "deleted": false,
+  "name": "Bottlecaps",
+  "material": "Metal",
+  "catagory": "Food",
+  "description": "Bottle Caps, lids, tabs",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-11T21:43:27.388Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-11T21:43:27.388Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "602851cd2f6dfc001763abc7"
+  },
+  "deleted": false,
+  "name": "Other Metal",
+  "material": "Metal",
+  "catagory": "Misc",
+  "description": "Metal",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-02-13T22:25:17.593Z"
+  },
+  "updatedAt": {
+    "$date": "2021-02-13T22:25:17.593Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "60ed99bdbcf5cd001582f6c3"
+  },
+  "deleted": false,
+  "name": "Beer can ",
+  "material": "Metal",
+  "catagory": "Food",
+  "description": "Beer can",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-07-13T13:48:45.897Z"
+  },
+  "updatedAt": {
+    "$date": "2021-07-13T13:48:45.897Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7eed2ddec8abc721828bc"
+  },
+  "deleted": false,
+  "name": "Insulation",
+  "material": "Styrofom",
+  "catagory": "Dumping",
+  "description": "Insulation, coolers",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6164f8bfa0d6bd0015492f2e"
+  },
+  "deleted": false,
+  "name": "1",
+  "material": "Other",
+  "catagory": "Misc",
+  "description": "Hub Cap",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-10-12T02:53:51.422Z"
+  },
+  "updatedAt": {
+    "$date": "2021-10-12T02:53:51.422Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "60ed99e2bcf5cd001582f6c8"
+  },
+  "deleted": false,
+  "name": "Water bottle label",
+  "material": "Paper",
+  "catagory": "Fragments",
+  "description": "Paper label ",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-07-13T13:49:22.272Z"
+  },
+  "updatedAt": {
+    "$date": "2021-07-13T13:49:22.272Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fac5a73e6500e0017fd5010"
+  },
+  "deleted": false,
+  "name": "bottles",
+  "material": "Glass",
+  "catagory": "Food",
+  "description": "Bottles, Jars",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-11T21:41:07.282Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-11T21:41:07.282Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7f0a6ddec8abc721828c3"
+  },
+  "deleted": false,
+  "name": "Construction Materials",
+  "material": "Metal",
+  "catagory": "Dumping",
+  "description": "Construction Materials (metal screws, metal bolts, ceramic brick, cement)",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7ed73e308b20017c3e460"
+  },
+  "deleted": false,
+  "name": "Containers",
+  "material": "Metal",
+  "catagory": "Dumping",
+  "description": "Containers or drums (gas, oil)",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T19:39:31.886Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T19:39:31.886Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7ef65ddec8abc721828be"
+  },
+  "deleted": false,
+  "name": "Cloth",
+  "material": "Cloth",
+  "catagory": "Dumping",
+  "description": "Cloth (clothing, hats, cloth bags)",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fad6ef56f111c00178e58c5"
+  },
+  "deleted": false,
+  "name": "Syringes",
+  "material": "Plastic",
+  "catagory": "Medical - Hygenine",
+  "description": "Syringes",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-12T17:20:53.601Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-12T17:20:53.601Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fad6d686f111c00178e58ba"
+  },
+  "deleted": false,
+  "name": "trays",
+  "material": "Plastic",
+  "catagory": "Food",
+  "description": "Food Trays, Takeout containers",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-12T17:14:16.892Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-12T17:14:16.892Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fad6dd46f111c00178e58be"
+  },
+  "deleted": false,
+  "name": "bags",
+  "material": "Plastic",
+  "catagory": "Food",
+  "description": "Bags (grocery, shopping, fast food)",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-12T17:16:04.666Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-12T17:16:04.666Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "62e9abed56035e0016d3f0e9"
+  },
+  "deleted": false,
+  "name": "Water bottle, wound dressing,pack of ramenbag of empty beer can,beer cans,baseball,styrofoa,styrofoam pad,plastic water bottle",
+  "material": "Mixed",
+  "catagory": "Misc",
+  "description": "General mile",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2022-08-02T22:57:49.701Z"
+  },
+  "updatedAt": {
+    "$date": "2022-08-02T22:57:49.701Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5ffe15a1583ad8001730abda"
+  },
+  "deleted": false,
+  "name": "cups",
+  "material": "Plastic",
+  "catagory": "Food",
+  "description": "cups",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-01-12T21:33:21.369Z"
+  },
+  "updatedAt": {
+    "$date": "2021-01-12T21:33:21.369Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7f043ddec8abc721828c2"
+  },
+  "deleted": false,
+  "name": "Wire",
+  "material": "Metal",
+  "catagory": "Dumping",
+  "description": "Wire (wire, mesh, barbed wire)",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc92cb8e308b20017c3e46b"
+  },
+  "deleted": false,
+  "name": "Other Ceramics",
+  "material": "Ceramic",
+  "catagory": "Misc",
+  "description": "Other Ceramics",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-03T18:21:44.982Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-03T18:21:44.982Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "63d716caeeecd700168930e4"
+  },
+  "deleted": false,
+  "name": "Full Trash Bags",
+  "material": "Mixed",
+  "catagory": "Misc",
+  "description": "Full plastic Trash bags-dumping",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2023-01-30T01:00:58.257Z"
+  },
+  "updatedAt": {
+    "$date": "2023-01-30T01:00:58.257Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7f1c5e308b20017c3e462"
+  },
+  "deleted": false,
+  "name": "Fishing Related",
+  "material": "Plastic",
+  "catagory": "Waterway Activities",
+  "description": "Fishing related (sinkers, line hooks, nets",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T19:57:57.260Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T19:57:57.260Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc92c5ee308b20017c3e467"
+  },
+  "deleted": false,
+  "name": "Styrofoam fragments",
+  "material": "Styrofoam",
+  "catagory": "Fragments",
+  "description": "Styrofoam fragments",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-03T18:20:14.081Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-03T18:20:14.081Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7edabe308b20017c3e461"
+  },
+  "deleted": false,
+  "name": "Packing Materials",
+  "material": "Plastic",
+  "catagory": "Dumping",
+  "description": "Packing Materials (strapping, packing, peanuts, cardboard boxes, paper bags)",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fac5a48e6500e0017fd500e"
+  },
+  "deleted": false,
+  "name": "cups",
+  "material": "Paper",
+  "catagory": "Food",
+  "description": "Cups",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-11T21:40:24.090Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-11T21:40:24.090Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "602862272f6dfc001763b0c6"
+  },
+  "deleted": false,
+  "name": "Hair Tie",
+  "material": "Rubber",
+  "catagory": "Medical - Hygenine",
+  "description": "Hair Tie",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-02-13T23:35:03.492Z"
+  },
+  "updatedAt": {
+    "$date": "2021-02-13T23:35:03.492Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc92c3ae308b20017c3e466"
+  },
+  "deleted": false,
+  "name": "Plastic fragments",
+  "material": "Plastic",
+  "catagory": "Fragments",
+  "description": "Plastic Fragments",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-03T18:19:38.858Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-03T18:19:38.858Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "602863132f6dfc001763b121"
+  },
+  "deleted": false,
+  "name": "Construction Materials",
+  "material": "Plastic",
+  "catagory": "Misc",
+  "description": "Plastic",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-02-13T23:38:59.752Z"
+  },
+  "updatedAt": {
+    "$date": "2021-02-13T23:38:59.752Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6028682e2f6dfc001763b3b8"
+  },
+  "deleted": false,
+  "name": "Glass Fragment",
+  "material": "Glass",
+  "catagory": "Fragments",
+  "description": "Glass Fragment",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-02-14T00:00:46.647Z"
+  },
+  "updatedAt": {
+    "$date": "2021-02-14T00:00:46.647Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "63d71633eeecd70016892d8a"
+  },
+  "deleted": false,
+  "name": "dry wall",
+  "material": "Other",
+  "catagory": "Fragments",
+  "description": "dry wall panels, fragments",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2023-01-30T00:58:27.407Z"
+  },
+  "updatedAt": {
+    "$date": "2023-01-30T00:58:27.407Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "60286a962f6dfc001763b4dd"
+  },
+  "deleted": false,
+  "name": "Comb",
+  "material": "Plastic",
+  "catagory": "Misc",
+  "description": "Comb",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-02-14T00:11:02.822Z"
+  },
+  "updatedAt": {
+    "$date": "2021-02-14T00:11:02.822Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7f253e308b20017c3e465"
+  },
+  "deleted": false,
+  "name": "Paper / Cardboard fragments",
+  "material": "Paper",
+  "catagory": "Fragments",
+  "description": "Paper / Cardboard fragments",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T20:00:19.845Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T20:00:19.845Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fac5ad0e6500e0017fd5013"
+  },
+  "deleted": false,
+  "name": "Bottlecaps",
+  "material": "Plastic",
+  "catagory": "Food",
+  "description": "Bottle Caps, lids, tabs",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-11T21:42:40.443Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-11T21:42:40.443Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "602868132f6dfc001763b3b7"
+  },
+  "deleted": false,
+  "name": "Metal Washers",
+  "material": "Metal",
+  "catagory": "Misc",
+  "description": "Metal Washer",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-02-14T00:00:19.874Z"
+  },
+  "updatedAt": {
+    "$date": "2021-02-14T00:00:19.874Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "633379c7fa468100163962b5"
+  },
+  "deleted": false,
+  "name": "PlasticConstructionMaterial",
+  "material": "Plastic",
+  "catagory": "Misc",
+  "description": "Plastic fencing, fasteners, spacers",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2022-09-27T22:31:35.511Z"
+  },
+  "updatedAt": {
+    "$date": "2022-09-27T22:31:35.511Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6028624d2f6dfc001763b0c7"
+  },
+  "deleted": false,
+  "name": "Writing Utensil",
+  "material": "Other",
+  "catagory": "Misc",
+  "description": "Pen, Pencil, Other",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-02-13T23:35:41.480Z"
+  },
+  "updatedAt": {
+    "$date": "2021-02-13T23:35:41.480Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc92d8de308b20017c3e46f"
+  },
+  "deleted": false,
+  "name": "Other paper",
+  "material": "Paper",
+  "catagory": "Misc",
+  "description": "Other paper",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-03T18:25:17.830Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-03T18:25:17.830Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6164fc84a0d6bd00154939fe"
+  },
+  "deleted": false,
+  "name": "Facemask",
+  "material": "Cloth",
+  "catagory": "Medical - Hygenine",
+  "description": "Face Mask",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-10-12T03:09:56.574Z"
+  },
+  "updatedAt": {
+    "$date": "2021-10-12T03:09:56.574Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc92cd3e308b20017c3e46c"
+  },
+  "deleted": false,
+  "name": "Other plastics",
+  "material": "Plastic",
+  "catagory": "Misc",
+  "description": "Other plastics",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-03T18:22:11.423Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-03T18:22:11.423Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7eff4ddec8abc721828c1"
+  },
+  "deleted": false,
+  "name": "Tires",
+  "material": "Rubber",
+  "catagory": "Dumping",
+  "description": "Tires",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fad6e366f111c00178e58c1"
+  },
+  "deleted": false,
+  "name": "Paper Towels",
+  "material": "Paper",
+  "catagory": "Food",
+  "description": "Paper Towels/ Napkins",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-12T17:17:42.954Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-12T17:17:42.954Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fad6e646f111c00178e58c2"
+  },
+  "deleted": false,
+  "name": "Popsicle sticks",
+  "material": "Wood",
+  "catagory": "Food",
+  "description": "Popsicle sticks, toothpicks, corks",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-12T17:18:28.120Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-12T17:18:28.120Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fad6d3f6f111c00178e58b9"
+  },
+  "deleted": false,
+  "name": "wrappers",
+  "material": "Plastic",
+  "catagory": "Food",
+  "description": "Food Wrappers / packaging",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-12T17:13:35.869Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-12T17:13:35.869Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "602861982f6dfc001763b0b6"
+  },
+  "deleted": false,
+  "name": "Photo Strip",
+  "material": "Other",
+  "catagory": "Misc",
+  "description": "Photo Strip",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-02-13T23:32:40.688Z"
+  },
+  "updatedAt": {
+    "$date": "2021-02-13T23:32:40.688Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fad6da46f111c00178e58bc"
+  },
+  "deleted": false,
+  "name": "papertrays",
+  "material": "Paper",
+  "catagory": "Food",
+  "description": "Food trays, containers, wrappers",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-12T17:15:16.339Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-12T17:15:16.339Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fad6ee06f111c00178e58c4"
+  },
+  "deleted": false,
+  "name": "Toiletries",
+  "material": "Plastic",
+  "catagory": "Medical - Hygenine",
+  "description": "Toiletries (flossers, toothbrush)",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-12T17:20:32.959Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-12T17:20:32.959Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fac5b23e6500e0017fd5015"
+  },
+  "deleted": false,
+  "name": "plasticRings",
+  "material": "Plastic",
+  "catagory": "Food",
+  "description": "6-pack rings, carriers",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-11T21:44:03.400Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-11T21:44:03.400Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "60ed9a2ebcf5cd001582f6d2"
+  },
+  "deleted": false,
+  "name": "Diaper ",
+  "material": "Mixed",
+  "catagory": "Misc",
+  "description": "Diaper ",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2021-07-13T13:50:38.504Z"
+  },
+  "updatedAt": {
+    "$date": "2021-07-13T13:50:38.504Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fad6e8f6f111c00178e58c3"
+  },
+  "deleted": false,
+  "name": "Food",
+  "material": "Other",
+  "catagory": "Food",
+  "description": "Food items",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-12T17:19:11.245Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-12T17:19:11.245Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc92c72e308b20017c3e468"
+  },
+  "deleted": false,
+  "name": "Toys",
+  "material": "Plastic",
+  "catagory": "Misc",
+  "description": "Toys",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-03T18:20:34.882Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-03T18:20:34.882Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7efa2ddec8abc721828bf"
+  },
+  "deleted": false,
+  "name": "Footware",
+  "material": "Rubber",
+  "catagory": "Dumping",
+  "description": "Footware (shoes, flip-flops)",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7f0c6ddec8abc721828c5"
+  },
+  "deleted": false,
+  "name": "Construction Materials",
+  "material": "Ceramic",
+  "catagory": "Dumping",
+  "description": "Construction Materials (metal screws, metal bolts, ceramic brick, cement)",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc7ee51ddec8abc721828bb"
+  },
+  "deleted": false,
+  "name": "Packing Materials",
+  "material": "Plastic",
+  "catagory": "Dumping",
+  "description": "Baskets, crates, trash bags",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-02T19:40:27.405Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fc92ca1e308b20017c3e46a"
+  },
+  "deleted": false,
+  "name": "Dead animals",
+  "material": "Animal",
+  "catagory": "Misc",
+  "description": "Dead Animals",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-12-03T18:21:21.279Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-03T18:21:21.279Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5fad6f526f111c00178e58c8"
+  },
+  "deleted": false,
+  "name": "Medication",
+  "material": "Other",
+  "catagory": "Medical - Hygenine",
+  "description": "Medication, Drugs, drug paraphenalia",
+  "creator": {
+    "$oid": "64bb07cd7830c0dea702f85b"
+  },
+  "createdAt": {
+    "$date": "2020-11-12T17:22:26.137Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-12T17:22:26.137Z"
+  },
+  "__v": 0
+}]
