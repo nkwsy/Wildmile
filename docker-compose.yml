@@ -1,7 +1,11 @@
 version: '3'
 services:
   mongo:
-    image: mongo:6.0.8
+    build: 
+      context: .
+      dockerfile: Dockerfile.mongo
+    ports:
+     - "27016:27017"
   web:
     build: .
     ports:
