@@ -1,4 +1,4 @@
-extends ../layout
+extends ../../layout
 
 block content
   table#trash.table-sm.table-striped
@@ -11,13 +11,13 @@ block content
     tbody
     for trashItem in trashItems
       tr
-        th(scope='row') 1
-          td= trashItem.name
-          td= trashItem.description
-          td= trashItem.catagory
-          td= trashItem.material
+        td= trashItem.name
+        td= trashItem.description
+        td= trashItem.catagory
+        td= trashItem.material
 
   .pb-2.mt-2.mb-4.border-bottom
+    // - This should really be a modal instead of a single page
     h3 New Trash Item
   form(id='newTrash', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
