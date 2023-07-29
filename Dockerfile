@@ -2,10 +2,10 @@ FROM node:16-slim
 
 WORKDIR /usr/app
 
-COPY package.json .
+COPY wildmile/package.json .
 
-RUN npm install --production
+RUN npm install
 
-COPY . .
+COPY wildmile .
 
-CMD ["npm","start"]
+CMD ["npm","run","dev"]

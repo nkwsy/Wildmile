@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import mongoose from 'mongoose'
+const Schema = mongoose.Schema
 
 
 const plantSchema = new mongoose.Schema({
@@ -15,9 +15,9 @@ const plantSchema = new mongoose.Schema({
   weed: Boolean,
   tags: Array
 
-}, { timestamps: true });
+}, { timestamps: true })
 
 
-const Plant = mongoose.model('Plant', plantSchema);
+const Plant = mongoose.model('Plant', plantSchema)
 
-module.exports = Plant;
+module.exports = Plant

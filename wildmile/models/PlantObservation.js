@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import mongoose from 'mongoose'
+const Schema = mongoose.Schema
 
 const plantObservationSchema = Schema({
   individualPlant: { type: Schema.Types.ObjectId, ref: 'individualPlant' },
@@ -15,6 +15,6 @@ const plantObservationSchema = Schema({
   weeds: Boolean,
   flag: Boolean
 
-}, { timestamps: true });
-const PlantObservation = mongoose.model('plantObservation', plantObservationSchema);
-module.exports = PlantObservation;
+}, { timestamps: true })
+const PlantObservation = mongoose.model('plantObservation', plantObservationSchema)
+module.exports = PlantObservation

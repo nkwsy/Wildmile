@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import mongoose from 'mongoose'
+const Schema = mongoose.Schema
 
 const ModSchema = new mongoose.Schema({
   name: String,
@@ -21,7 +21,7 @@ const ModSchema = new mongoose.Schema({
   decommisioned: Boolean,
   sponsor: { type: Schema.Types.ObjectId, ref: 'User' }
 
-});
+})
 
-const Mod = mongoose.model('Mod', ModSchema);
-module.exports = Mod;
+const Mod = mongoose.model('Mod', ModSchema)
+module.exports = Mod

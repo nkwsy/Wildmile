@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import mongoose from 'mongoose'
+const Schema = mongoose.Schema
 
 const individualPlantSchema = Schema({
   plant: { type: Schema.Types.ObjectId, ref: 'Plant' },
@@ -9,7 +9,7 @@ const individualPlantSchema = Schema({
   supplier: String,
   datePlanted: Date,
   sponsor: { type: Schema.Types.ObjectId, ref: 'User' }
-}, { timestamps: true });
+}, { timestamps: true })
 
-const IndividualPlant = mongoose.model('individualPlant', individualPlantSchema);
-module.exports = IndividualPlant;
+const IndividualPlant = mongoose.model('individualPlant', individualPlantSchema)
+module.exports = IndividualPlant
