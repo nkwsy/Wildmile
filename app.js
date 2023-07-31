@@ -17,9 +17,6 @@ const passport = require('passport');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
-const multer = require('multer');
-
-const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -31,7 +28,6 @@ dotenv.config({ path: '.env' });
  */
 const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
-const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
 
 const plantController = require('./controllers/plant');
@@ -101,13 +97,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-app.use((req, res, next) => {
-  if (req.path === '/api/upload') {
-    next();
-  } else {
-    lusca.csrf()(req, res, next);
-  }
-});
+app.use(lusca.csrf());
 app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
 app.disable('x-powered-by');
@@ -196,16 +186,18 @@ app.route('/api/getModTags')
 app.post('/module/delete/:id', passportConfig.isAuthenticated, passportConfig.isAdmin, modController.postDeleteMod);
 app.post('/module/update', passportConfig.isAuthenticated, passportConfig.isAdmin, modController.postClearModPlants, modController.postUpdateMod);
 
+
+// Trash
 app.route('/trash')
   .all(passportConfig.isAuthenticated)
   .get(trashController.getTrash);
 
-app.route('/trash/trashLogs')
+app.route('/trash/logs')
   .all(passportConfig.isAuthenticated)
   .get(trashController.getTrashLogs)
   .post(trashController.postNewTrashLog);
 
-app.route('/trash/trashLog/:logId')
+app.route('/trash/logs/:logId')
   .all(passportConfig.isAuthenticated)
   .get(trashController.getTrashLog)
   .post(trashController.postClearLogItems, trashController.postTrashLog);
@@ -213,33 +205,20 @@ app.route('/trash/trashLog/:logId')
 app.route('/api/getTrashLogInfo/:logId')
   .get(trashController.getTrashLogInfo);
 
-app.route('/trash/trashLog/delete/:logId')
+app.route('/trash/log/delete/:logId')
   .all(passportConfig.isAuthenticated)
   .get(trashController.postDeleteTrashLog);
 
-app.route('/trash/trashItems')
+app.route('/trash/items')
   .all(passportConfig.isAuthenticated)
   .get(trashController.getTrashItems)
   .post(trashController.postTrashItem);
 
-app.route('/trash/trashInfo')
+app.route('/trash/info')
   .all(passportConfig.isAuthenticated)
   .get(trashController.getTrashInfo);
   // .post(trashController.findTrashInfo);
 
-/**
- * API examples routes.
- */
-app.get('/api', apiController.getApi);
-app.get('/api/aviary', apiController.getAviary);
-app.get('/api/twilio', apiController.getTwilio);
-app.post('/api/twilio', apiController.postTwilio);
-app.get('/api/clockwork', apiController.getClockwork);
-app.post('/api/clockwork', apiController.postClockwork);
-app.get('/api/lob', apiController.getLob);
-app.get('/api/upload', apiController.getFileUpload);
-app.post('/api/upload', upload.single('myFile'), apiController.postFileUpload);
-app.get('/api/google-maps', apiController.getGoogleMaps);
 
 /**
  * Error Handler.

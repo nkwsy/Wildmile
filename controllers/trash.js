@@ -53,7 +53,7 @@ exports.getTrashLog = (req, res) => {
           IndividualTrashItem
             .find({ logId: req.params.logId })
             .exec((err, individualItems) =>
-              res.render('trash/trashLog', { trashLogs: docs || '', trashItems: items, individualItems }));
+              res.render('trash/records/record', { trashLogs: docs || '', trashItems: items, individualItems }));
         });
     });
 };
@@ -70,7 +70,7 @@ exports.getTrashLogAPI = (req, res) => {
           IndividualTrashItem
             .find({ logId: req.params.logId })
             .exec((err, individualItems) =>
-              res.render('trash/trashLog', { trashLogs: docs || '', trashItems: items, individualItems }));
+              res.render('trash/records/record', { trashLogs: docs || '', trashItems: items, individualItems }));
         });
     });
 };
@@ -118,7 +118,7 @@ exports.getTrashLogs = (req, res) => {
   .find()
   .sort({ timeStart: -1 })
   .exec((err, docs) => {
-    res.render('trash/trashLogs', { trashLogs: docs });
+    res.render('trash/records/add', { trashLogs: docs });
   });
 };
 
@@ -148,7 +148,7 @@ exports.postNewTrashLog = (req, res, next) => {
 
 exports.getTrashItems = (req, res) => {
   TrashItem.find((err, docs) => {
-    res.render('trash/trashItems', { trashItems: docs });
+    res.render('trash/items/add', { trashItems: docs });
   });
 };
 
@@ -172,7 +172,7 @@ exports.getTrashInfo = (req, res) => {
     TrashItem.find((err, trashItem) => {
       IndividualTrashItem.find((err, individualTrashItem) => {
         console.log(trashLog);
-        res.render('trash/trashInfo', { trashLog, trashItem, individualTrashItem });
+        res.render('trash/info', { trashLog, trashItem, individualTrashItem });
       });
     });
   });
