@@ -90,9 +90,9 @@ block content
           td= trashLog.numOfParticipants
           td= trashLog.notes
           td
-            a(class='btn.btn-sm' type='button' href=`/trash/trashLog/${trashLog._id}`)
+            a(class='btn.btn-sm' type='button' href=`/trash/logs/${trashLog._id}`)
               i.fa.fa-edit.fa-sm
-            a(class='btn.btn-sm btn-outline-danger' onclick="return confirm('Are you sure you want to delete this log?')" type='button' href=`/trash/trashLog/delete/${trashLog._id}`)
+            a(class='btn.btn-sm btn-outline-danger' onclick="return confirm('Are you sure you want to delete this log?')" type='button' href=`/trash/log/delete/${trashLog._id}`)
               i.fa.fa-trash.fa-sm
   script(src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js")
   script(src="https://unpkg.com/bootstrap-table@1.17.1/dist/extensions/toolbar/bootstrap-table-toolbar.min.js")
