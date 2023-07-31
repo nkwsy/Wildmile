@@ -11,7 +11,7 @@ export default function SignupPage() {
     e.preventDefault()
 
     const body = {
-      username: e.currentTarget.username.value,
+      email: e.currentTarget.email.value,
       password: e.currentTarget.password.value,
       name: e.currentTarget.name.value,
     }
@@ -48,8 +48,8 @@ export default function SignupPage() {
       <div className="form-container">
         <form onSubmit={onSubmit}>
           <label>
-            <span>Username</span>
-            <input type="text" name="username" required />
+            <span>Email</span>
+            <input type="text" name="email" required />
           </label>
           <label>
             <span>Password</span>

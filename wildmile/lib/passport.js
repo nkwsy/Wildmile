@@ -1,35 +1,38 @@
 import passport from 'passport'
 import LocalStrategy from 'passport-local'
-
-import User from '../models/User'
+import { findUserByEmail } from './db'
 
 passport.serializeUser((user, done) => {
-  done(null, user.id)
+  done(null, user.email)
 })
 
-passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
-    done(err, user)
+passport.deserializeUser(function (email, done) {
+  // deserialize the email back into user object
+  findUserByEmail(email).then(user => {
+    done(null, user)
   })
 })
 
 /**
  * Sign in using Email and Password.
  */
-passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
-  User.findOne({ email: email.toLowerCase() }, (err, user) => {
-    if (err) { return done(err) }
-    if (!user) {
-      return done(null, false, { msg: `Email ${email} not found.` })
-    }
-    user.comparePassword(password, (err, isMatch) => {
-      if (err) { return done(err) }
-      if (isMatch) {
+
+passport.use(
+  new LocalStrategy(
+    (email, password, done) => {
+      // Here you lookup the user in your DB and compare the password/hashed password
+      const user = findUserByEmail(email)
+      if (!user) {
+        return done(null, false, { msg: `Email ${email} not found.` })
+      }
+
+      if (!user.comparePassword(password)) {
+        return done(null, false, { msg: 'Invalid email or password.' })
+      } else {
         return done(null, user)
       }
-      return done(null, false, { msg: 'Invalid email or password.' })
-    })
-  })
-}))
+    }
+  )
+)
 
 export default passport

@@ -9,7 +9,7 @@ function UserList() {
       {!!users?.length && (
         <ul>
           {users.map((user) => (
-            <li key={user.username}>
+            <li key={user.email}>
               <pre>{JSON.stringify(user, null, 2)}</pre>
             </li>
           ))}
@@ -38,11 +38,11 @@ export default function HomePage() {
       <h2>Steps to test the example:</h2>
       <h3>Sign up</h3>
       <ol>
-        <li>Click Sign up and enter a username and password.</li>
+        <li>Click Sign up and enter a email and password.</li>
         <li>You will be logged in and redirected home.</li>
         <li>Click Logout. You will be redirected home.</li>
         <li>
-          Try sign up again with the same username, you will see an error.
+          Try sign up again with the same email, you will see an error.
         </li>
       </ol>
       <h3>Sign in</h3>

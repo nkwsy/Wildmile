@@ -11,7 +11,7 @@ export default function LoginPage() {
     e.preventDefault()
 
     const body = {
-      username: e.currentTarget.username.value,
+      email: e.currentTarget.email.value,
       password: e.currentTarget.password.value,
     }
     const res = await fetch('/api/login', {
@@ -25,7 +25,7 @@ export default function LoginPage() {
       // set user to useSWR state
       mutate(userObj)
     } else {
-      setErrorMsg('Incorrect username or password. Try better!')
+      setErrorMsg('Incorrect email or password. Try better!')
     }
   }
 
@@ -41,8 +41,8 @@ export default function LoginPage() {
       <div className="form-container">
         <form onSubmit={onSubmit}>
           <label>
-            <span>Username</span>
-            <input type="text" name="username" required />
+            <span>email</span>
+            <input type="text" name="email" required />
           </label>
           <label>
             <span>Password</span>

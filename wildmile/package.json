@@ -16,17 +16,18 @@
   },
   "dependencies": {
     "@hapi/iron": "6.0.0",
+    "bcryptjs": "^2.4.3",
+    "connect-mongo": "^4.6.0",
     "cookie": "0.4.0",
+    "express-session": "^1.17.3",
+    "mongoose": "^7.0.2",
+    "next": "latest",
     "next-connect": "^0.6.1",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "uuidv4": "6.2.5",
-    "connect-mongo": "^4.6.0",
-    "bcryptjs": "^2.4.3",
-    "mongoose": "^7.0.2",
-    "next": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "swr": "^2.0.0"
+    "swr": "^2.0.0",
+    "uuidv4": "6.2.5"
   }
 }
