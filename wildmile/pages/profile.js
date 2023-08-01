@@ -12,7 +12,7 @@ function ProfileEdit() {
   useEffect(() => {
     if (!user || !user.profile) return
     nameRef.current.value = user.profile.name || 'Empty'
-    genderRef.current.value = user.profile.gender || 'Please Select'
+    genderRef.current.value = user.profile.gender || '--Please choose an option--'
     locRef.current.value = user.profile.location || 'Neighborhood'
   }, [user])
 

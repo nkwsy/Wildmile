@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useUser } from '../lib/hooks'
 import { NavAvatarPhoto } from './avatar'
-import React from "react";
+import Router from 'next/router'
 
 export default function Navbar() {
   const [user, { mutate }] = useUser()
@@ -9,6 +9,7 @@ export default function Navbar() {
   async function handleLogout() {
     await fetch('/api/logout')
     mutate({ user: null })
+    Router.push('/')
   }
 
   return (
@@ -16,14 +17,17 @@ export default function Navbar() {
       <nav>
         <ul>
           <li>
-            <Link href="/" legacyBehavior>
-              Home
-            </Link>
+            {user && <Link href={user ? '/home' : '/'}>
+              <img src='logo.png' alt='Urban River Logo' className='nav-logo' />
+            </Link>}
           </li>
+
           {user ? (
             <>
               <li>
-                <NavAvatarPhoto />
+                <Link href='/profile'>
+                  <NavAvatarPhoto />
+                </Link>
               </li>
               <li>
                 <a role="button" onClick={handleLogout}>
@@ -52,6 +56,10 @@ export default function Navbar() {
           margin: 0 auto;
           padding: 0.2rem 1.25rem;
         }
+        .nav-logo {
+          height: 4rem;
+          cursor: pointer;
+        }
         ul {
           display: flex;
           list-style: none;
@@ -62,7 +70,7 @@ export default function Navbar() {
           margin-right: 1rem;
         }
         li:first-child {
-          margin-left: auto;
+          margin: -1rem auto -1rem 0;
         }
         a {
           color: #fff;
