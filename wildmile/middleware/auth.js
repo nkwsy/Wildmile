@@ -1,13 +1,15 @@
 import nextConnect from 'next-connect'
-import passport from '../lib/passport'
+import passport from '../config/passport'
 import session from '../lib/session'
-import dbConnect from '../lib/dbConnect'
+import dbConnect from '../lib/db/setup'
 import MongoStore from 'connect-mongo'
 
 const auth = nextConnect()
+
+auth
   .use(async (req, res, next) => {
     await dbConnect()
-    next()
+    await next()
   })
   .use(
     session({
@@ -20,7 +22,7 @@ const auth = nextConnect()
         secure: process.env.NODE_ENV === 'production',
         path: '/',
         sameSite: 'lax',
-      }, 
+      },
       store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI })
     })
   )

@@ -1,6 +1,6 @@
 import passport from 'passport'
 import LocalStrategy from 'passport-local'
-import { findUserByEmail } from './db'
+import { findUserByEmail } from '../lib/db/user'
 
 passport.serializeUser((user, done) => {
   done(null, user.email)
@@ -18,15 +18,15 @@ passport.deserializeUser(function (email, done) {
  */
 
 passport.use(
-  new LocalStrategy(
-    (email, password, done) => {
+  new LocalStrategy({usernameField: 'email'},
+    async (email, password, done) => {
       // Here you lookup the user in your DB and compare the password/hashed password
-      const user = findUserByEmail(email)
+      const user = await findUserByEmail(email)
       if (!user) {
         return done(null, false, { msg: `Email ${email} not found.` })
       }
 
-      if (!user.comparePassword(password)) {
+      if (!await user.comparePassword(password)) {
         return done(null, false, { msg: 'Invalid email or password.' })
       } else {
         return done(null, user)

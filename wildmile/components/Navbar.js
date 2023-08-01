@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import { useUser } from '../lib/hooks'
+import { NavAvatarPhoto } from './avatar'
+import React from "react";
 
 export default function Navbar() {
   const [user, { mutate }] = useUser()
@@ -21,9 +23,7 @@ export default function Navbar() {
           {user ? (
             <>
               <li>
-                <Link href="/profile" legacyBehavior>
-                  Profile
-                </Link>
+                <NavAvatarPhoto />
               </li>
               <li>
                 <a role="button" onClick={handleLogout}>
@@ -49,7 +49,6 @@ export default function Navbar() {
       </nav>
       <style jsx>{`
         nav {
-          max-width: 42rem;
           margin: 0 auto;
           padding: 0.2rem 1.25rem;
         }
