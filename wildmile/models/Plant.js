@@ -1,23 +1,18 @@
 import mongoose from 'mongoose'
-const Schema = mongoose.Schema
-
 
 const plantSchema = new mongoose.Schema({
-  scientificName: String,
+  scientific_name: String,
   commonName: String,
-  usdaName: String,
-  symbol: String,
-  description: String,
-  notes: String,
-  photos: Array,
-  photoLeaf: String,
+  family: String,
+  family_common_name: String,
+  genus: String,
+  genus_id: Number,
+  notes: String, 
   botanicPhoto: String,
-  weed: Boolean,
-  tags: Array
-
+  image_url: String,
+  synonyms: Array,
+  year: Number
 }, { timestamps: true })
 
+export default mongoose.models.Plant || mongoose.model('Plant', plantSchema)
 
-const Plant = mongoose.model('Plant', plantSchema)
-
-module.exports = Plant

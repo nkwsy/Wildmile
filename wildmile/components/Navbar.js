@@ -18,7 +18,7 @@ export default function Navbar() {
         <ul>
           <li>
             {user && <Link href={user ? '/home' : '/'}>
-              <img src='logo.png' alt='Urban River Logo' className='nav-logo' />
+              <img src='/logo.png' alt='Urban River Logo' className='nav-logo' />
             </Link>}
           </li>
 

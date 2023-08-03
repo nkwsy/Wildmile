@@ -3,7 +3,7 @@ import Router from 'next/router'
 
 export function NavAvatarPhoto() {
   const [user] = useUser()
-  let photoSrc = <img src={'https://api.multiavatar.com/noname.png'} alt="Avatar Image" onClick={() => { Router.push('/profile') }} className='nav-profile' />
+  let photoSrc = 'https://api.multiavatar.com/noname.png'
 
 
   if (user && user.profile) {
@@ -16,14 +16,14 @@ export function NavAvatarPhoto() {
 
   return (
     <>
-      <img src={photoSrc} alt="Avatar Image" onClick={() => { Router.push('/profile') }} className='nav-profile' />
+      <img src={photoSrc} alt="Avatar Image"  className='nav-profile' />
     </>
   )
 }
 
 export function ProfileAvatarPhoto() {
   const [user] = useUser()
-  let photoSrc = <img src={'https://api.multiavatar.com/noname.png'} alt="Avatar Image" onClick={() => { Router.push('/profile') }} className='nav-profile' />
+  let photoSrc = 'https://api.multiavatar.com/noname.png'
 
 
   if (user && user.profile) {
@@ -36,7 +36,7 @@ export function ProfileAvatarPhoto() {
 
   return (
     <>
-      <img src={photoSrc} alt="Avatar Image" onClick={() => { Router.push('/profile') }} className='profile-photo' />
+      <img src={photoSrc} alt="Avatar Image" className='profile-photo' />
     </>
   )
 }
