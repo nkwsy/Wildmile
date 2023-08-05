@@ -1,5 +1,5 @@
 import nextConnect from 'next-connect'
-import userSchema from "../../validation/user"
+import userValidationSchema from "../../validation/user"
 import auth from '../../middleware/auth'
 import { createUser, findUserByEmail, updateUserByEmail } from '../../lib/db/user'
 import NextConnectOptions from '../../config/nextconnect'
@@ -23,7 +23,7 @@ handler
   })
   .post(async (req, res) => {
     try {
-      await userSchema.validate(req.body, { abortEarly: false })
+      await userValidationSchema.validate(req.body, { abortEarly: false })
     } catch (error) {
       return res.status(400).send(error.message)
     }
@@ -32,7 +32,9 @@ handler
     if (!!await findUserByEmail(req.body.email)) {
       return res.status(409).send('The email has already been used')
     }
+    console.log('creating user')
     const user = await createUser(req.body)
+    console.log("created user")
     req.logIn(user, (err) => {
       if (err) throw err
       // Log the signed up user in

@@ -1,5 +1,5 @@
 import multiavatar from '@multiavatar/multiavatar/esm'
 
-function getAvatar(name) {
+export default function getAvatar(name) {
     return multiavatar(name)
 }

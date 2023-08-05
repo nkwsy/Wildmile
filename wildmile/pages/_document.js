@@ -1,18 +1,20 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import { Html, Head, Main, NextScript } from "next/document";
+import { createGetInitialProps } from "@mantine/next";
 
-export default function Document() {
+const getInitialProps = createGetInitialProps();
+
+function Document({ initialProps }) {
   return (
-    <Html>
-      <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
+    <Html lang="en">
+      <Head />
       <body>
         <Main />
         <NextScript />
       </body>
     </Html>
-  )
+  );
 }
+
+Document.getInitialProps = getInitialProps;
+
+export default Document;

@@ -1,6 +1,6 @@
 import { object, string, number } from 'yup';
 
-const userSchema = object({
+const userValidationSchema = object({
     name: string().required(),
     age: number().positive().integer(),
     email: string().required().email(),
@@ -10,4 +10,4 @@ const userSchema = object({
     location: string()
 })
 
-export default userSchema
+export default userValidationSchema
