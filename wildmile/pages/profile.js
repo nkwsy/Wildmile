@@ -18,7 +18,6 @@ function ProfileEdit() {
 
   async function handleEditProfile(e) {
     e.preventDefault()
-    console.log(e)
 
     const body = {
       name: nameRef.current.value,
