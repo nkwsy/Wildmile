@@ -162,9 +162,9 @@ export function HeaderNav() {
                     className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
                   >
                     <Group spacing={7}>
-                      <Avatar src={photoSrc} alt={user.profile.name || 'Noname'} radius="xl" size={40} />
+                      <Avatar src={photoSrc} alt={user.profile ? user.profile.name || 'Username' : 'Username'} radius="xl" size={40} />
                       <Text weight={500} size="sm" sx={{ lineHeight: 1 }} mr={3}>
-                        {user.profile.name}
+                      {user.profile ? user.profile.name || 'Username' : 'Username'}
                       </Text>
                       <IconChevronDown size={rem(12)} stroke={1.5} />
                     </Group>

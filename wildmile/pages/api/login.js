@@ -8,7 +8,14 @@ const handler = nextConnect(NextConnectOptions)
 handler
   .use(auth)
   .post(passport.authenticate('local'), (req, res) => {
-    return res.json({ user: req.user })
+    const { email, ranger, admin, user_profile } = req.user
+    const profile = {
+      name: '',
+      website: '',
+      gender: '',
+      location: ''
+    }
+    return res.json({ user: { email, ranger: ranger || false, admin, profile: { ...profile, ...user_profile } } })
   })
 
-  export default handler
+export default handler

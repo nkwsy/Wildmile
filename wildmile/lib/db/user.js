@@ -31,7 +31,7 @@ export async function createUser({ name, email, password, website, gender, locat
 
 export async function findUserByEmail(email) {
   // Here you find the user based on id/email in the database
-  return await User.findOne({ email: email.toLowerCase() })
+  return await User.findOne({ email: email.toLowerCase() }, ['-_id', '-__v', '-createdAt', '-updatedAt'])
 }
 
 export async function updateUserByEmail(req, email, update) {

@@ -18,10 +18,11 @@ passport.deserializeUser(function (email, done) {
  */
 
 passport.use(
-  new LocalStrategy({usernameField: 'email'},
+  new LocalStrategy({ usernameField: 'email' },
     async (email, password, done) => {
       // Here you lookup the user in your DB and compare the password/hashed password
       const user = await findUserByEmail(email)
+
       if (!user) {
         return done(null, false, { msg: `Email ${email} not found.` })
       }

@@ -10,7 +10,7 @@ import {
   Group,
   Button,
 } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, isEmail } from '@mantine/form'
 import { useState, useEffect } from 'react'
 import Router from 'next/router'
 import Link from 'next/link'
@@ -18,7 +18,7 @@ import { useUser } from '../lib/hooks'
 
 export default function Login() {
   const [user, { mutate }] = useUser()
-  const [errorMsg, setErrorMsg] = useState('errors')
+  const [errorMsg, setErrorMsg] = useState('')
 
   const form = useForm({
     initialValues: {
@@ -27,12 +27,11 @@ export default function Login() {
     },
 
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+      email: isEmail('Invalid email'),
     },
   })
 
-  async function onSubmit(values) {
-
+  async function doLogin(values) {
     const res = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -64,18 +63,18 @@ export default function Login() {
       <Text color="dimmed" size="sm" align="center" mt={5}>
         Do not have an account yet?{' '}
         <Link href="/signup">
-        <Anchor size="sm" component="button">
-          Create account
-        </Anchor>
+          <Anchor size="sm" component="button">
+            Create account
+          </Anchor>
         </Link>
       </Text>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-      <form onSubmit={onSubmit}>
-        <TextInput label="Email" placeholder="you@urbanriv.com" required />
-        <PasswordInput label="Password" placeholder="Your password" required mt="md" />
+        <form onSubmit={form.onSubmit((values) => {doLogin(values)})}>
+        <TextInput label="Email" placeholder="you@urbanriv.com" required {...form.getInputProps('email')} />
+        <PasswordInput label="Password" placeholder="Your password" required mt="md" {...form.getInputProps('password')} />
         <Group position="apart" mt="lg">
-          <Checkbox label="Remember me" />
+          <Text size='sm' color='red'>{errorMsg}</Text>
           <Anchor component="button" size="sm">
             Forgot password?
           </Anchor>

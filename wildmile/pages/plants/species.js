@@ -46,7 +46,6 @@ export default function Species(props) {
   })
 
   function update_form_values(plant) {
-    console.log(plant)
     form.setFieldValue('_id', plant._id)
     form.setFieldValue('scientific_name', plant.scientific_name || plant.scientificName)
     form.setFieldValue('common_name', plant.common_name || plant.commonName)
