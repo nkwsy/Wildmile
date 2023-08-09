@@ -1,30 +1,4 @@
-# MongoDB and Mongoose with Next.js
-
-This example shows how you can use a MongoDB database to support your Next.js application.
-
-**Pet** is an application that allows users to add their pets' information (e.g., name, owner's name, diet, age, dislikes, likes, and photo). They can also delete it or edit it anytime.
-
-## Deploy your own
-
-Once you have access to [the environment variables you'll need](#step-2-set-up-environment-variables), deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-mongodb-mongoose&project-name=with-mongodb-mongoose&repository-name=with-mongodb-mongoose&env=MONGODB_URI&envDescription=Required%20to%20connect%20the%20app%20with%20MongoDB&envLink=https://github.com/vercel/next.js/tree/canary/examples/with-mongodb-mongoose%23step-2-set-up-environment-variables)
-
-## How to use
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-mongodb-mongoose with-mongodb-mongoose-app
-```
-
-```bash
-yarn create next-app --example with-mongodb-mongoose with-mongodb-mongoose-app
-```
-
-```bash
-pnpm create next-app --example with-mongodb-mongoose with-mongodb-mongoose-app
-```
+# Wildmile Management Portal
 
 ## Configuration
 
@@ -64,18 +38,11 @@ yarn dev
 
 Your app should be up and running on [http://localhost:3000](http://localhost:3000)! If it doesn't work, post on [GitHub discussions](https://github.com/vercel/next.js/discussions).
 
-## Deploy on Vercel
 
-You can deploy this app to the cloud with [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+## Running it locally using docker
 
-#### Deploy Your Local Project
+Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) 
 
-To deploy your local project to Vercel, push it to GitHub/GitLab/Bitbucket and [import to Vercel](https://vercel.com/import/git?utm_source=github&utm_medium=readme&utm_campaign=next-example).
+Once the docker engine is running at the root folder run `docker compose up -d`. That will bring up the Mongo Database locally and seed it with the files in the repo and then create a container to run the nextJS application. You can access the website at `localhost:8080`
 
-**Important**: When you import your project on Vercel, make sure to click on **Environment Variables** and set them to match your `.env.local` file.
-
-#### Deploy from Our Template
-
-Alternatively, you can deploy using our template by clicking on the Deploy button below.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-mongodb-mongoose&project-name=with-mongodb-mongoose&repository-name=with-mongodb-mongoose&env=MONGODB_URI&envDescription=Required%20to%20connect%20the%20app%20with%20MongoDB&envLink=https://github.com/vercel/next.js/tree/canary/examples/with-mongodb-mongoose%23step-2-set-up-environment-variables)
+To run commands on the node app, like installing new packages or something similar you can exec into the container by doing `docker compose exec web bash`, which will create a terminal window for the container. Note that actions in the container are ephemeral and will not persist on rebuild.

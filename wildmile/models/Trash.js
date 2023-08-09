@@ -17,9 +17,8 @@ const polygonSchema = new Schema({
 const TrashLogSchema = new Schema({
   // Supporting Info
   site: String,
-  date: Date,
-  timeStart: Date,
-  timeEnd: Date,
+  timeStart: { type: Date, default: Date.now },
+  timeEnd: { type: Date, default: Date.now },
   creator: { type: Schema.Types.ObjectId, ref: 'User' },
   numOfParticipants: Number,
   participants: [{ type: Schema.Types.ObjectId, ref: 'User' }],
@@ -27,10 +26,10 @@ const TrashLogSchema = new Schema({
   area: polygonSchema,
   notes: String,
   weight: Number,
-  trashiness: Number,
-  temp: Number,
-  wind: Number,
-  cloud: Number
+  trashiness: { type: Number, required: true },
+  temp: { type: Number, required: true },
+  wind: { type: Number, required: true },
+  cloud: { type: Number, required: true }
 
   //weather: String, TODO find API to calculate
 }, { timestamps: true })
@@ -43,4 +42,4 @@ TrashLogSchema.virtual('items', {
   options: { sort: { itemId: -1 } }
 })
 
-export default mongoose.models.TrashLog || mongoose.model('TrashLog', trashItemSchema)
+export default mongoose.models.TrashLog || mongoose.model('TrashLog', TrashLogSchema)

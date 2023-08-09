@@ -20,6 +20,11 @@ const useStyles = createStyles((theme) => ({
     padding: '0 !important',
   },
 
+  tr: {
+    '&:hover': {
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+    },  },
+
   control: {
     width: '100%',
     padding: `${theme.spacing.xs} ${theme.spacing.md}`,
@@ -72,6 +77,8 @@ function sortData(data, payload) {
 
   return filterData(
     [...data].sort((a, b) => {
+      console.log(a)
+      console.log(sortBy)
       if (payload.reversed) {
         return b[sortBy].localeCompare(a[sortBy])
       }
@@ -102,10 +109,13 @@ export default function TrashHistory(props) {
   }
 
   const rows = sortedData.map((row) => (
-    <tr key={row.name}>
-      <td>{row.name}</td>
-      <td>{row.email}</td>
-      <td>{row.company}</td>
+    <tr key={row.timeEnd}>
+      <td>{row.timeEnd}</td>
+      <td>{row.site}</td>
+      <td>{row.trashiness}</td>
+      <td>{row.wind}</td>
+      <td>{row.cloud}</td>
+      <td>{row.temp}</td>
     </tr>
   ))
 
@@ -120,27 +130,48 @@ export default function TrashHistory(props) {
       />
       <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} sx={{ tableLayout: 'fixed' }}>
         <thead>
-          <tr>
+          <tr >
             <Th
-              sorted={sortBy === 'name'}
+              sorted={sortBy === 'timeEnd'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('name')}
+              onSort={() => setSorting('timeEnd')}
             >
-              Name
+              Time
             </Th>
             <Th
-              sorted={sortBy === 'email'}
+              sorted={sortBy === 'site'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('email')}
+              onSort={() => setSorting('site')}
             >
-              Email
+              site
             </Th>
             <Th
-              sorted={sortBy === 'company'}
+              sorted={sortBy === 'trashiness'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('company')}
+              onSort={() => setSorting('trashiness')}
             >
-              Company
+              Trashiness
+            </Th>
+            <Th
+              sorted={sortBy === 'wind'}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting('wind')}
+            >
+              Wind
+            </Th>
+            <Th
+              sorted={sortBy === 'cloud'}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting('cloud')}
+            >
+              Cloudiness
+            </Th>
+            <Th
+              sorted={sortBy === 'temp'}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting('temp')}
+            >
+              Temperature
             </Th>
           </tr>
         </thead>
@@ -164,32 +195,21 @@ export default function TrashHistory(props) {
 
 /* Retrieves plant(s) data from mongodb database */
 export async function getStaticProps() {
-    await dbConnect()
-  
-    /* find all the data in our database */
-    const result = await TrashLog.find({}, ['-createdAt', '-updatedAt'])
-    const trash = result.map((doc) => {
-      const trash = doc.toObject()
-      trash._id = String(trash._id)
-      trash.date = String(trash.date)
-      trash.timeStart = String(trash.timeStart)
-      trash.timeEnd = String(trash.timeEnd)
-      trash.creator = String(trash.creator)
+  await dbConnect()
 
-      return trash
-    })
-    // plants.sort(((a, b) => {
-    //   const nameA = (a.scientific_name || a.scientificName).toUpperCase() // ignore upper and lowercase
-    //   const nameB = (b.scientific_name || b.scientificName).toUpperCase() // ignore upper and lowercase
-    //   if (nameA < nameB) {
-    //     return -1
-    //   }
-    //   if (nameA > nameB) {
-    //     return 1
-    //   }
-  
-    //   // names must be equal
-    //   return 0
-    // }))
-    return { props: { logs: trash } }
-  }
+  /* find all the data in our database */
+  const result = await TrashLog.find({ 'deleted': false }, ['-__v', '-createdAt', '-updatedAt']).limit(10).sort('-timeEnd')
+
+  const trashLogs = result.map((doc) => {
+    const log = doc.toObject()
+
+    // We need to convert everything to be JSON serializable
+    log._id = String(log._id)
+    log.timeStart = String(log.timeStart)
+    log.timeEnd = String(log.timeEnd)
+    log.creator = String(log.creator)
+
+    return log
+  })
+  return { props: { logs: trashLogs } }
+}
