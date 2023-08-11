@@ -53,8 +53,8 @@ handler
     }
   })
   .put((req, res) => {
-    const { name, gender, location, picture} = req.body
-    const user = updateUserByEmail(req, req.user.email, { name: name, gender: gender, location: location, picture: picture })
+    const { email, password, name, gender, location, picture} = req.body
+    const user = updateUserByEmail(req, req.user.email, { email: email, password: password, profile: {name: name, gender: gender, location: location, picture: picture }})
     return res.json({ user })
   })
 

@@ -1,4 +1,4 @@
-import { TrashLog } from '../../models/Trash'
+import TrashLog from '../../models/Trash'
 
 export async function getAllLogs() {
   return await TrashLog.find({}, ['-_id', '-__v'])
@@ -23,14 +23,17 @@ export async function getFilteredLogs(filters) {
     limit = filters.limit
     delete filters['limit']
   }
-  const filter = Object.entries(filters).map(([key, value]) => {
+  filters.deleted = false
+  const mapped_vals = Object.entries(filters).map(([key, value]) => {
     if(['timeStart', 'timeEnd'].includes(key)){
-      return { [key]: { $lte: [value] }}
+      return [ key, { $lte: new Date(Number(value)) }]
     }
-    return { [key]: value }
+    return [ key, value ]
   })
-  return await TrashLog.find(filter, ['-_id', '-__v'])
-    .limit(limit)
+  const filter = Object.fromEntries(mapped_vals)
+  // If we don't sort it just returns things in any order
+  await TrashLog.find(filter, ['-_id', '-__v']).limit(limit).sort('-timeEnd').explain()
+  return await TrashLog.find(filter, ['-_id', '-__v']).limit(limit).sort('-timeEnd')
 }
 
 export async function getLogByID(id) {

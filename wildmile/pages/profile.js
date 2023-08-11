@@ -1,33 +1,80 @@
-import { useEffect, useRef } from 'react'
+import {
+  Paper,
+  TextInput,
+  PasswordInput,
+  Select,
+  Button,
+  Avatar,
+  Container
+} from '@mantine/core';
 import Router from 'next/router'
+import { useForm, isEmail } from '@mantine/form'
+import { useEffect } from 'react'
 import { useUser } from '../lib/hooks'
-import { ProfileAvatarPhoto } from '../components/avatar'
 
-function ProfileEdit() {
-  const [user, { mutate }] = useUser()
-  const nameRef = useRef()
-  const genderRef = useRef()
-  const locRef = useRef()
+export default function ProfilePage() {
+  const [user, { loading, mutate }] = useUser()
+
+  const form = useForm({
+    initialValues: {
+      email: '',
+      password: '',
+      name: '',
+      gender: '',
+      location: '',
+    },
+
+    validate: (values) => {
+      return {
+        email: console.log(values.email),//isEmail('Invalid email'),
+        password:
+          values.password.length < 8 &&  values.password.length !== 0 ? 'Password must include at least 8 characters' : null,
+        name: values.name.trim().length < 2 ? 'Name must include at least 2 characters' : null,
+      }
+
+    },
+  })
 
   useEffect(() => {
     if (!user || !user.profile) return
-    nameRef.current.value = user.profile.name || 'Empty'
-    genderRef.current.value = user.profile.gender || '--Please choose an option--'
-    locRef.current.value = user.profile.location || 'Neighborhood'
+    form.setFieldValue('email', user.email || '')
+    form.setFieldValue('name', user.profile.name || '')
+    form.setFieldValue('gender', user.profile.gender || '')
+    form.setFieldValue('location', user.profile.location || '')
   }, [user])
 
-  async function handleEditProfile(e) {
-    e.preventDefault()
+  useEffect(() => {
+    // redirect user to login if not authenticated
+    if (!loading && !user) Router.replace('/login')
+  }, [user, loading])
 
-    const body = {
-      name: nameRef.current.value,
-      gender: genderRef.current.value,
-      location: locRef.current.value,
+  let photoSrc = 'https://api.multiavatar.com/noname.png'
+
+
+  if (user && user.profile) {
+    if (user.profile.picture) {
+      console.log(user.profile.picture)
+    } else {
+      photoSrc = 'https://api.multiavatar.com/' + user.profile.name + '.png'
     }
+  }
+
+  async function handleEditProfile(values) {
+
+    // Its ok if other values are empty but not email and password
+    if(!values.email){
+      delete values.email
+    }
+    if(!values.password){
+      delete values.password
+    }
+
+    console.log(values)
+
     const res = await fetch(`/api/user`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
+      body: JSON.stringify(values),
     })
     const updatedUser = await res.json()
 
@@ -35,67 +82,38 @@ function ProfileEdit() {
   }
 
   return (
-    <>
-      <div className="form-container">
-        <form onSubmit={handleEditProfile}>
-          <label>
-            <span>Name</span>
-            <input type="text" ref={nameRef} required />
-          </label>
-          <label>
-            <span>Pronouns</span>
-            <select id='pronouns' ref={genderRef}>
-              <option value="">--Please choose an option--</option>
-              <option>He/Him</option>
-              <option>She/Her</option>
-              <option>They/Them</option>
-            </select>
-          </label>
-          <label>
-            <span>Location</span>
-            <input type="text" ref={locRef} />
-          </label>
-          <label>
-            <span>Picture</span>
-            <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" />
-          </label>
-          <div className="submit">
-            <button type="submit">Update profile</button>
-          </div>
+    <Container maw='50%' my={40}>
+      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+        <Avatar src={photoSrc} alt={user && user.profile ? user.profile.name || 'Username' : 'Username'} size={250} />
+        <form onSubmit={form.onSubmit((values) => { handleEditProfile(values) })}>
+          <TextInput label="Email" placeholder="you@urbanriv.com" {...form.getInputProps('email')} />
+          <PasswordInput
+            mt="md"
+            label="New Password"
+            placeholder="Password"
+            {...form.getInputProps('password')}
+          />
+          <TextInput label="Name" placeholder="Name" {...form.getInputProps('name')} />
+          <Select
+            label="Your Pronouns"
+            placeholder="Pick one"
+            data={[
+              { value: 'He/Him', label: 'He/Him' },
+              { value: 'She/Her', label: 'She/Her' },
+              { value: 'They/Them', label: 'They/Them' },
+            ]}
+            {...form.getInputProps('gender')}
+          />
+          <TextInput
+            label="What Neighborhood are you located in?"
+            placeholder="Loop"
+            {...form.getInputProps('location')}
+          />
+          <Button mt="xl" type="submit">
+            Update Profile
+          </Button>
         </form>
-      </div>
-
-      <style>
-        {`
-        select {
-          padding: 8px;
-          margin: 0.3rem 0 1rem;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-        }
-        `}
-      </style>
-    </>
-  )
-}
-
-export default function ProfilePage() {
-  const [user, { loading }] = useUser()
-
-  useEffect(() => {
-    // redirect user to login if not authenticated
-    if (!loading && !user) Router.replace('/login')
-  }, [user, loading])
-
-  return (
-    <>
-      {user && (
-        <>
-          <ProfileAvatarPhoto />
-          <h1>Profile</h1>
-          <ProfileEdit />
-        </>
-      )}
-    </>
+      </Paper>
+    </Container>
   )
 }

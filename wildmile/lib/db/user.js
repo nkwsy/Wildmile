@@ -35,11 +35,17 @@ export async function findUserByEmail(email) {
 }
 
 export async function updateUserByEmail(req, email, update) {
-  // Here you update the user based on id/email in the database
-  const user = await findUserByEmail(email)
+  // Updating requires the _id which we filter out of results in other places so lets 
+  const user = await User.findOne({ email: email.toLowerCase() })
 
+  if(update.email && update.email != user.email){
+    user.email = update.email
+  }
+  if(update.password && !await user.comparePassword(password)){
+    user.password = update.password
+  }
   if (user) {
-    user.email = req.body.email || user.email
+    // Not all users have default values set so at least have empty values rather than null ones
     const profile_props = {
       name: '',
       website: '',
@@ -47,7 +53,7 @@ export async function updateUserByEmail(req, email, update) {
       location: '',
       picture: ''
     }
-    user.profile = {...profile_props, ...user.profile, ...update}
+    user.profile = {...profile_props, ...user.profile, ...update.profile}
     await user.save()
   }
   return user

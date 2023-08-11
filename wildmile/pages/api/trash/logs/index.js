@@ -14,8 +14,8 @@ handler
     console.log(`Request took ${end - start}ms`);
   })
   .get(async (req, res) => {
-    if (req.searchParams ) {
-      return res.json(await getFilteredLogs(req.searchParams))
+    if (req.query ) {
+      return res.json(await getFilteredLogs(req.query))
     }
     return res.json(await getAllLogs())
   })
