@@ -1,11 +1,11 @@
-import Head from 'next/head';
+import Head from 'next/head'
 import { HeaderNav } from '../components/nav'
-import { MantineProvider, AppShell } from '@mantine/core';
-import Footer from '../components/footer';
+import { MantineProvider, AppShell } from '@mantine/core'
+import Footer from '../components/footer'
 
 
 export default function App(props) {
-  const { Component, pageProps } = props;
+  const { Component, pageProps } = props
 
   return (
     <>
@@ -35,5 +35,5 @@ export default function App(props) {
         </AppShell>
       </MantineProvider>
     </>
-  );
+  )
 }

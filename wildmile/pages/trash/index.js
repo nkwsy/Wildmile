@@ -1,5 +1,5 @@
 import { Title, Text, Container} from '@mantine/core'
-import { IconClipboardPlus, IconCalendarSearch } from '@tabler/icons-react';
+import { IconClipboardPlus, IconCalendarSearch } from '@tabler/icons-react'
 import { useEffect } from 'react'
 import Router from 'next/router'
 import { useUser } from '../../lib/hooks'

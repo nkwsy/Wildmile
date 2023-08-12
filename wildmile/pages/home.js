@@ -1,5 +1,5 @@
 import { createStyles, SimpleGrid, Title, Text, Container, Card, rem } from '@mantine/core'
-import { IconTrash, IconPlant2, IconListDetails, IconUsers } from '@tabler/icons-react';
+import { IconTrash, IconPlant2, IconListDetails, IconUsers } from '@tabler/icons-react'
 import { useEffect } from 'react'
 import Router from 'next/router'
 import Link from 'next/link'

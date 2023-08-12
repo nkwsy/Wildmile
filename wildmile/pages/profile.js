@@ -6,7 +6,7 @@ import {
   Button,
   Avatar,
   Container
-} from '@mantine/core';
+} from '@mantine/core'
 import Router from 'next/router'
 import { useForm, isEmail } from '@mantine/form'
 import { useEffect } from 'react'

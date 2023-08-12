@@ -9,10 +9,10 @@ const handler = nextConnect(NextConnectOptions)
 handler
   .use(auth)
   .use(async (req, res, next) => {
-    const start = Date.now();
-    await next(); // call next in chain
-    const end = Date.now();
-    console.log(`Request took ${end - start}ms`);
+    const start = Date.now()
+    await next() // call next in chain
+    const end = Date.now()
+    console.log(`Request took ${end - start}ms`)
   })
   .get((req, res) => {
     const plant = getPlantByID(req.query.id)

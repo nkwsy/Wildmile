@@ -1,7 +1,7 @@
 import nextConnect from 'next-connect'
 // import userValidationSchema from "../../validation/user"
 import auth from '../../../../middleware/auth'
-import { getPlantByID, updatePlantByID } from '../../../../lib/db/plants'
+import { getLogByID, updateLogByID } from '../../../../lib/db/trash'
 import NextConnectOptions from '../../../../config/nextconnect'
 
 const handler = nextConnect(NextConnectOptions)
@@ -9,14 +9,14 @@ const handler = nextConnect(NextConnectOptions)
 handler
   .use(auth)
   .use(async (req, res, next) => {
-    const start = Date.now();
-    await next(); // call next in chain
-    const end = Date.now();
-    console.log(`Request took ${end - start}ms`);
+    const start = Date.now()
+    await next() // call next in chain
+    const end = Date.now()
+    console.log(`Request took ${end - start}ms`)
   })
   .get((req, res) => {
-    const plant = getPlantByID(req.query.id)
-    return res.json({plant})
+    const log = getLogByID(req.query.id)
+    return res.json({log})
   })
   .use(async (req, res, next) => {
     // handlers after this (PUT, DELETE) all require an authenticated user
@@ -28,15 +28,9 @@ handler
     }
   })
   .put((req, res) => {
-    const { scientific_name, common_name, notes, image_url, synonyms } = req.body
-    const plant = updatePlantByID(req, req.query.id, {
-        scientific_name: scientific_name,
-        common_name: common_name,
-        notes: notes,
-        image_url: image_url,
-        synonyms: synonyms
-     })
-    return res.json({ plant })
+    const { avar } = req.body
+    const log = updateLogByID(req, req.query.id, { avar })
+    return res.json({ log })
   })
 
   export default handler

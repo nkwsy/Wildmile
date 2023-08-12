@@ -14,14 +14,14 @@ import {
   UnstyledButton,
   Text,
   rem,
-} from '@mantine/core';
+} from '@mantine/core'
 import {
   IconLogout,
   IconSettings,
   IconChevronDown,
 } from '@tabler/icons-react'
-import { useState } from 'react';
-import { useDisclosure } from '@mantine/hooks';
+import { useState } from 'react'
+import { useDisclosure } from '@mantine/hooks'
 import Link from 'next/link'
 import { useUser } from '../lib/hooks'
 import Router from 'next/router'
@@ -97,7 +97,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
-}));
+}))
 
 
 let nav_tabs = []
@@ -107,9 +107,9 @@ export function setTabs(tabs) {
 }
 
 export function HeaderNav() {
-  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
-  const [userMenuOpened, setUserMenuOpened] = useState(false);
-  const { classes, theme, cx } = useStyles();
+  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false)
+  const [userMenuOpened, setUserMenuOpened] = useState(false)
+  const { classes, theme, cx } = useStyles()
   const [user, { mutate }] = useUser()
 
   let photoSrc = 'https://api.multiavatar.com/noname.png'
@@ -220,5 +220,5 @@ export function HeaderNav() {
         </ScrollArea>
       </Drawer>
     </Box >
-  );
+  )
 }

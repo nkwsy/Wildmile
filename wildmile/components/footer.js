@@ -1,5 +1,5 @@
-import { createStyles, Image, Group, ActionIcon, rem } from '@mantine/core';
-import { IconBrandTwitter, IconBrandYoutube, IconBrandInstagram } from '@tabler/icons-react';
+import { createStyles, Image, Group, ActionIcon, rem } from '@mantine/core'
+import { IconBrandTwitter, IconBrandYoutube, IconBrandInstagram } from '@tabler/icons-react'
 
 const useStyles = createStyles((theme) => ({
   footer: {
@@ -26,11 +26,11 @@ const useStyles = createStyles((theme) => ({
       marginBottom: theme.spacing.sm,
     },
   },
-}));
+}))
 
 
 export default function Footer() {
-  const { classes } = useStyles();
+  const { classes } = useStyles()
 
   return (
     <div className={classes.footer}>
@@ -51,5 +51,5 @@ export default function Footer() {
         </Group>
       </div>
     </div>
-  );
+  )
 }

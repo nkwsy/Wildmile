@@ -12,7 +12,7 @@ import {
   LoadingOverlay
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure } from '@mantine/hooks'
 import { useUser } from '../lib/hooks'
 import Router from 'next/router'
 
@@ -21,7 +21,7 @@ export default function SignupPage() {
   const [user, { mutate }] = useUser()
   const [errorMsg, setErrorMsg] = useState('')
   const [active, setActive] = useState(0)
-  const [visible, handlers] = useDisclosure(false);
+  const [visible, handlers] = useDisclosure(false)
 
   const form = useForm({
     initialValues: {

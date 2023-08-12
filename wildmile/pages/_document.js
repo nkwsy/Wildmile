@@ -1,7 +1,7 @@
-import { Html, Head, Main, NextScript } from "next/document";
-import { createGetInitialProps } from "@mantine/next";
+import { Html, Head, Main, NextScript } from "next/document"
+import { createGetInitialProps } from "@mantine/next"
 
-const getInitialProps = createGetInitialProps();
+const getInitialProps = createGetInitialProps()
 
 function Document({ initialProps }) {
   return (
@@ -12,9 +12,9 @@ function Document({ initialProps }) {
         <NextScript />
       </body>
     </Html>
-  );
+  )
 }
 
-Document.getInitialProps = getInitialProps;
+Document.getInitialProps = getInitialProps
 
-export default Document;
+export default Document
