@@ -14,7 +14,7 @@ handler
     console.log(`Request took ${end - start}ms`)
   })
   .get(async (req, res) => {
-    if (req.query ) {
+    if (req.query) {
       return res.json(await getFilteredLogs(req.query))
     }
     return res.json(await getAllLogs())
@@ -34,8 +34,8 @@ handler
     // } catch (error) {
     //   return res.status(400).send(error.message)
     // }
-    createLog({})
-
+    
+    return res.status(201).json(await createLog(req.body))
   })
 
 export default handler

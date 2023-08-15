@@ -14,15 +14,17 @@ const pointSchema = new Schema({
   }
 })
 
-const individualTrashItemSchema = new Schema({
+const TrashItemMetadataSchema = new Schema({
   itemId: { type: Schema.Types.ObjectId, ref: 'TrashItem' },
   logId: { type: Schema.Types.ObjectId, ref: 'TrashLog' },
   quantity: Number,
   notes: String,
   location: pointSchema,
+  photo: String,
+  weight: Number,
+  waterlogged: Boolean,
+  aggrigateWeight: Number,
   tags: Array,
-  generic: { type: Boolean, default: true },
-  creator: { type: Schema.Types.ObjectId, ref: 'User' }, // This seems redundant since there is a creator on the trashlog itself
 }, { timestamps: true })
 
-export default mongoose.models.IndividualTrashItem || mongoose.model('IndividualTrashItem', individualTrashItemSchema)
+export default mongoose.models.TrashItemMetadata || mongoose.model('TrashItemMetadata', TrashItemMetadataSchema)

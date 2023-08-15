@@ -34,6 +34,7 @@ const TrashLogSchema = new Schema({
   //weather: String, TODO find API to calculate
 }, { timestamps: true })
 
+// Does this work? using find doesnt return these values...
 TrashLogSchema.virtual('items', {
   ref: 'IndividualTrashItem', // The model to use
   localField: '_id', // Find people where `localField`
