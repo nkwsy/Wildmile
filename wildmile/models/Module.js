@@ -1,14 +1,13 @@
 import mongoose from 'mongoose'
-const Schema = mongoose.Schema
 
-const ModSchema = new mongoose.Schema({
+const ModuleSchema = new mongoose.Schema({
   name: String,
   dateInstalled: Date,
   installed: Boolean,
   x: Number,
   y: Number,
-  locationCode:String,
-  location: {type: "String", coordinates: []},
+  locationCode: String,
+  location: { type: "String", coordinates: [] },
   section: String,
   installGroup: Number,
   model: String,
@@ -19,9 +18,7 @@ const ModSchema = new mongoose.Schema({
   flipped: Boolean,
   tags: Array,
   decommisioned: Boolean,
-  sponsor: { type: Schema.Types.ObjectId, ref: 'User' }
+  sponsor: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+}, { collection: 'mods' })
 
-})
-
-const Mod = mongoose.model('Mod', ModSchema)
-module.exports = Mod
+export default mongoose.models.Module || mongoose.model('Module', ModuleSchema)

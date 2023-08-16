@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema({
   tokens: Array,
   admin: { type: Boolean, default: false },
   ranger: Boolean,
+  projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }],
 
   profile: {
     name: String,

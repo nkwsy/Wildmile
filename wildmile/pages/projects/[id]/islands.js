@@ -3,9 +3,8 @@ import { IconListDetails } from '@tabler/icons-react'
 import { useEffect } from 'react'
 import Router from 'next/router'
 import Link from 'next/link'
-import { useUser } from '../../lib/hooks'
-import Project from '../../models/Project'
-import dbConnect from '../../lib/db/setup'
+import { useUser } from '../../../lib/hooks'
+import dbConnect from '../../../lib/db/setup'
 
 const useStyles = createStyles((theme) => ({
   title: {
@@ -62,22 +61,6 @@ export default function ProjectHomeLanding(props) {
     if (!loading && !user) Router.replace('/')
   }, [user, loading])
 
-  const cards = props.projects.map((project) => {
-    return (
-      <Link key={project.name} href={"/projects/" + project.name}>
-        <Card shadow="md" radius="md" className={classes.card} padding="xl">
-          <IconListDetails size={rem(50)} stroke={2} color={theme.fn.primaryColor()} />
-          <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
-            {project.name}
-          </Text>
-          <Text fz="sm" c="dimmed" mt="sm">
-            {project.description}
-          </Text>
-        </Card>
-      </Link>
-    )
-  })
-
   return (
     <>
       <Container maw='75%' my={40}>
@@ -86,27 +69,27 @@ export default function ProjectHomeLanding(props) {
           Collecting and sharing data about Urban River's projects.
         </Text>
         <SimpleGrid mt={40} cols={2}>
-          {cards}
+          <Link href="/">
+            <Card shadow="md" radius="md" className={classes.card} padding="xl">
+              <IconListDetails size={rem(50)} stroke={2} color={theme.fn.primaryColor()} />
+              <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
+                placeholder
+              </Text>
+              <Text fz="sm" c="dimmed" mt="sm">
+                long placeholder
+              </Text>
+            </Card>
+          </Link>
         </SimpleGrid>
       </Container>
     </>
   )
 }
 
-
 /* Retrieves plant(s) data from mongodb database */
-export async function getStaticProps() {
+export async function getServerSideProps(context) {
+  const project_id = context.params.id 
   await dbConnect()
 
-  /* find all the data in our database */
-  const result = await Project.find({}, ['name', 'description'])
-  const projects = result.map((doc) => {
-    const project = doc.toObject()
-    project._id = String(project._id)
-    return project
-  })
-
-  console.log(projects)
-
-  return { props: { projects: projects } }
+  return { props: {} }
 }

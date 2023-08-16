@@ -16,6 +16,7 @@ const polygonSchema = new Schema({
 
 const TrashLogSchema = new Schema({
   // Supporting Info
+  project: { type: Schema.Types.ObjectId, ref: 'Project' },
   site: String,
   timeStart: { type: Date, default: Date.now },
   timeEnd: { type: Date, default: Date.now },
