@@ -91,32 +91,30 @@ export default function Species(props) {
           </form>
         </Modal>
         <SimpleGrid mt={40} cols={3}>
-          {mappedPlantProps.map((plant) => {
+          {mappedPlantProps.map((plant, index) => {
             return (
-              <>
-                <Card key={plant.title} onClick={() => {
-                  open()
-                  update_form_values(plant)
-                }} withBorder padding="lg" radius="md" className={classes.card}>
-                  <Card.Section mb="sm">
-                    <Image src={plant.image} alt={plant.title} />
-                  </Card.Section>
-                  <Title fw={700} className={classes.title} mt="xs">
-                    {plant.title}
-                  </Title>
-                  <Text fw={700} className={classes.subtitle} c='dimmed'>
-                    {plant.subtitle}
-                  </Text>
-                  <Text mb='xs'>
-                    {plant.description}
-                  </Text>
-                  {plant.tags.map((tag) => {
-                    return (
-                      <Badge>{tag.name || tag}</Badge>
-                    )
-                  })}
-                </Card>
-              </>
+              <Card key={plant.title + String(index)} onClick={() => {
+                open()
+                update_form_values(plant)
+              }} withBorder padding="lg" radius="md" className={classes.card}>
+                <Card.Section mb="sm">
+                  <Image src={plant.image} alt={plant.title} />
+                </Card.Section>
+                <Title fw={700} className={classes.title} mt="xs">
+                  {plant.title}
+                </Title>
+                <Text fw={700} className={classes.subtitle} c='dimmed'>
+                  {plant.subtitle}
+                </Text>
+                <Text mb='xs'>
+                  {plant.description}
+                </Text>
+                {plant.tags.map((tag) => {
+                  return (
+                    <Badge>{tag.name || tag}</Badge>
+                  )
+                })}
+              </Card>
             )
           })}
         </SimpleGrid>

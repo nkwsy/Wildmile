@@ -13,6 +13,7 @@ import {
   Avatar,
   UnstyledButton,
   Text,
+  Center,
   rem,
 } from '@mantine/core'
 import {
@@ -32,38 +33,34 @@ const useStyles = createStyles((theme) => ({
   },
 
   link: {
-    display: 'flex',
-    alignItems: 'center',
-    height: '100%',
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
+    display: 'block',
+    lineHeight: 1,
+    padding: `${rem(8)} ${rem(12)}`,
+    borderRadius: theme.radius.sm,
     textDecoration: 'none',
-    color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-    fontWeight: 500,
+    color: theme.white,
     fontSize: theme.fontSizes.sm,
+    fontWeight: 500,
 
-    [theme.fn.smallerThan('sm')]: {
-      height: rem(42),
-      display: 'flex',
-      alignItems: 'center',
-      width: '100%',
+    '&:hover': {
+      backgroundColor: theme.fn.lighten(
+        theme.fn.variant({ variant: 'filled', color: theme.primaryColor }).background,
+        0.1
+      ),
     },
-
-    ...theme.fn.hover({
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-    }),
   },
 
   subLink: {
     width: '100%',
-    padding: `${theme.spacing.xs} ${theme.spacing.md}`,
-    borderRadius: theme.radius.md,
+    textDecoration: 'none',
+    color: theme.black,
 
-    ...theme.fn.hover({
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
-    }),
 
     '&:active': theme.activeStyles,
+  },
+
+  linkLabel: {
+    marginRight: rem(5),
   },
 
   dropdownFooter: {
@@ -99,13 +96,6 @@ const useStyles = createStyles((theme) => ({
 
 }))
 
-
-let nav_tabs = []
-
-export function setTabs(tabs) {
-  nav_tabs = tabs
-}
-
 export function HeaderNav() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false)
   const [userMenuOpened, setUserMenuOpened] = useState(false)
@@ -113,6 +103,47 @@ export function HeaderNav() {
   const [user, { mutate }] = useUser()
 
   let photoSrc = 'https://api.multiavatar.com/noname.png'
+  const nav_tabs = [
+    {
+      "label": "Home",
+      "link": "/home"
+    },
+    {
+      "label": "Trash",
+      "link": "/trash",
+      "subitems":
+        [
+          {
+            "label": "New Log",
+            "link": "/trash/log"
+          },
+          {
+            "label": "History",
+            "link": "/trash/history"
+          }
+        ]
+    },
+    {
+      "label": "Plants",
+      "link": "/plants",
+      "subitems":
+        [
+          {
+            "label": "Species List",
+            "link": "/plants/species"
+          },
+          {
+            "label": "Add an Observation",
+            "link": "/plants/observe"
+          }
+        ]
+    },
+    // Subitems for projects need seeding somehow
+    {
+      "label": "Projects",
+      "link": "/projects"
+    },
+  ]
 
 
   if (user && user.profile) {
@@ -122,6 +153,45 @@ export function HeaderNav() {
       photoSrc = 'https://api.multiavatar.com/' + user.profile.name + '.png'
     }
   }
+
+  const items = nav_tabs.map((link) => {
+    const menuItems = link.subitems?.map((item) => (
+      <Menu.Item key={item.label}>
+        <Link href={item.link} className={classes.subLink}>
+          {item.label}
+        </Link>
+      </Menu.Item>
+    ))
+
+    if (menuItems) {
+      return (
+        <Menu key={link.label} trigger="hover" transitionProps={{ exitDuration: 0 }} withinPortal>
+          <Menu.Target>
+            <Link
+              href={link.link}
+              className={classes.link}
+            >
+              <Center>
+                <span className={classes.linkLabel}>{link.label}</span>
+                <IconChevronDown size={rem(12)} stroke={1.5} />
+              </Center>
+            </Link>
+          </Menu.Target>
+          <Menu.Dropdown>{menuItems}</Menu.Dropdown>
+        </Menu>
+      )
+    }
+
+    return (
+      <Link
+        key={link.label}
+        href={link.link}
+        className={classes.link}
+      >
+        {link.label}
+      </Link>
+    )
+  })
 
   async function handleLogout() {
     await fetch('/api/logout')
@@ -140,11 +210,7 @@ export function HeaderNav() {
           </Link>}
 
           <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
-            {nav_tabs.map((tab) => {
-              return (<Link href={tab.href} className={classes.link}>
-                {tab.name}
-              </Link>)
-            })}
+            {user && user ? items : null}
           </Group>
 
           <Group className={classes.hiddenMobile}>
@@ -164,7 +230,7 @@ export function HeaderNav() {
                     <Group spacing={7}>
                       <Avatar src={photoSrc} alt={user.profile ? user.profile.name || 'Username' : 'Username'} radius="xl" size={40} />
                       <Text weight={500} size="sm" sx={{ lineHeight: 1 }} mr={3}>
-                      {user.profile ? user.profile.name || 'Username' : 'Username'}
+                        {user.profile ? user.profile.name || 'Username' : 'Username'}
                       </Text>
                       <IconChevronDown size={rem(12)} stroke={1.5} />
                     </Group>
@@ -205,11 +271,7 @@ export function HeaderNav() {
           <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'} />
 
 
-          {nav_tabs.map((tab) => {
-            <Link href={tab.href} className={classes.link}>
-              {tab.name}
-            </Link>
-          })}
+          {user && user ? items : null}
 
           <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'} />
 

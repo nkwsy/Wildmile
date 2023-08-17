@@ -74,10 +74,10 @@ export default function ProjectLanding() {
         <Card shadow="md" radius="md" className={classes.card} padding="xl">
           <IconListDetails size={rem(50)} stroke={2} color={theme.fn.primaryColor()} />
           <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
-            Island
+            Sections
           </Text>
           <Text fz="sm" c="dimmed" mt="sm">
-            View and Edit islands
+            View and Edit sections for this project
           </Text>
         </Card>
       </Link>

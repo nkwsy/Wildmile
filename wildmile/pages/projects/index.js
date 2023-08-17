@@ -64,7 +64,7 @@ export default function ProjectHomeLanding(props) {
 
   const cards = props.projects.map((project) => {
     return (
-      <Link key={project.name} href={"/projects/" + project.name}>
+      <Link key={project.name} href={"/projects/" + encodeURIComponent(project.name)}>
         <Card shadow="md" radius="md" className={classes.card} padding="xl">
           <IconListDetails size={rem(50)} stroke={2} color={theme.fn.primaryColor()} />
           <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
@@ -99,14 +99,10 @@ export async function getStaticProps() {
   await dbConnect()
 
   /* find all the data in our database */
-  const result = await Project.find({}, ['name', 'description'])
+  const result = await Project.find({}, ['-_id', 'name', 'description'])
   const projects = result.map((doc) => {
     const project = doc.toObject()
-    project._id = String(project._id)
     return project
   })
-
-  console.log(projects)
-
   return { props: { projects: projects } }
 }
