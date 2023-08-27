@@ -11,5 +11,4 @@ const individualPlantSchema = Schema({
   sponsor: { type: Schema.Types.ObjectId, ref: 'User' }
 }, { timestamps: true })
 
-const IndividualPlant = mongoose.model('individualPlant', individualPlantSchema)
-module.exports = IndividualPlant
+export default mongoose.models.IndividualPlant || mongoose.model('IndividualPlant', individualPlantSchema)

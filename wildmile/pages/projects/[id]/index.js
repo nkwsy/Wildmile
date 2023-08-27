@@ -1,60 +1,15 @@
-import { createStyles, SimpleGrid, Title, Text, Container, Card, rem } from '@mantine/core'
+import { SimpleGrid, Title, Text, Container, Card, rem } from '@mantine/core'
 import { IconListDetails } from '@tabler/icons-react'
 import { useEffect } from 'react'
 import Router from 'next/router'
 import Link from 'next/link'
 import { useUser } from '../../../lib/hooks'
 import { useRouter } from 'next/router'
-
-const useStyles = createStyles((theme) => ({
-  title: {
-    fontSize: rem(34),
-    fontWeight: 900,
-
-    [theme.fn.smallerThan('sm')]: {
-      fontSize: rem(24),
-    },
-  },
-
-  description: {
-    maxWidth: 600,
-    margin: 'auto',
-
-    '&::after': {
-      content: '""',
-      display: 'block',
-      backgroundColor: theme.fn.primaryColor(),
-      width: rem(45),
-      height: rem(2),
-      marginTop: theme.spacing.sm,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
-  },
-
-  card: {
-    border: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]
-      }`,
-    ...theme.fn.hover({
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-    }),
-  },
-
-  cardTitle: {
-    '&::after': {
-      content: '""',
-      display: 'block',
-      backgroundColor: theme.fn.primaryColor(),
-      width: rem(45),
-      height: rem(2),
-      marginTop: theme.spacing.sm,
-    },
-  },
-}))
+import { cardStyles } from '../../../components/icon_card_grid'
 
 export default function ProjectLanding() {
   const router = useRouter()
-  const { classes, theme } = useStyles()
+  const { classes, theme } = cardStyles()
   const [user, { loading }] = useUser()
 
   useEffect(() => {
@@ -70,17 +25,17 @@ export default function ProjectLanding() {
           Collecting and sharing data about Urban River's projects.
         </Text>
         <SimpleGrid mt={40} cols={2}>
-        <Link href={"/projects/" + router.query.id + "/sections"}>
-        <Card shadow="md" radius="md" className={classes.card} padding="xl">
-          <IconListDetails size={rem(50)} stroke={2} color={theme.fn.primaryColor()} />
-          <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
-            Sections
-          </Text>
-          <Text fz="sm" c="dimmed" mt="sm">
-            View and Edit sections for this project
-          </Text>
-        </Card>
-      </Link>
+          <Link href={"/projects/" + router.query.id + "/sections"}>
+            <Card shadow="md" radius="md" className={classes.card} padding="xl">
+              <IconListDetails size={rem(50)} stroke={2} color={theme.fn.primaryColor()} />
+              <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
+                Sections
+              </Text>
+              <Text fz="sm" c="dimmed" mt="sm">
+                View and Edit sections for this project
+              </Text>
+            </Card>
+          </Link>
         </SimpleGrid>
       </Container>
     </>

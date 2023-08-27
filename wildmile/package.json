@@ -31,6 +31,7 @@
     "cookie": "0.4.0",
     "dayjs": "^1.11.9",
     "express-session": "^1.17.3",
+    "konva": "^9.2.0",
     "mongoose": "^7.0.2",
     "next": "latest",
     "next-connect": "^0.12.2",
@@ -38,6 +39,7 @@
     "passport-local": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-konva": "^18.2.10",
     "swr": "^2.0.0",
     "uuidv4": "6.2.5",
     "yup": "^1.2.0"

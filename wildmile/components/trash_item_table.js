@@ -65,7 +65,7 @@ export default function TrashItemTable(props) {
     <tr key={item.name + item.material}>
       <td><NumberInput
         defaultValue={0}
-        {...props.form.getInputProps('items.'+item.name)}
+        {...props.form.getInputProps('items.' + item.name)}
         maw={80}
         min={0}
       /></td>

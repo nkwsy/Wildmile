@@ -26,7 +26,7 @@ export default function ProfilePage() {
 
     validate: (values) => {
       return {
-        email: console.log(values.email),//isEmail('Invalid email'),
+        email: isEmail('Invalid email'),
         password:
           values.password.length < 8 &&  values.password.length !== 0 ? 'Password must include at least 8 characters' : null,
         name: values.name.trim().length < 2 ? 'Name must include at least 2 characters' : null,

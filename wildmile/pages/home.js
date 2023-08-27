@@ -4,55 +4,10 @@ import { useEffect } from 'react'
 import Router from 'next/router'
 import Link from 'next/link'
 import { useUser } from '../lib/hooks'
-
-const useStyles = createStyles((theme) => ({
-  title: {
-    fontSize: rem(34),
-    fontWeight: 900,
-
-    [theme.fn.smallerThan('sm')]: {
-      fontSize: rem(24),
-    },
-  },
-
-  description: {
-    maxWidth: 600,
-    margin: 'auto',
-
-    '&::after': {
-      content: '""',
-      display: 'block',
-      backgroundColor: theme.fn.primaryColor(),
-      width: rem(45),
-      height: rem(2),
-      marginTop: theme.spacing.sm,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
-  },
-
-  card: {
-    border: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]
-      }`,
-    ...theme.fn.hover({
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-    }),
-  },
-
-  cardTitle: {
-    '&::after': {
-      content: '""',
-      display: 'block',
-      backgroundColor: theme.fn.primaryColor(),
-      width: rem(45),
-      height: rem(2),
-      marginTop: theme.spacing.sm,
-    },
-  },
-}))
+import { cardStyles } from '../components/icon_card_grid'
 
 export default function HomePage() {
-  const { classes, theme } = useStyles()
+  const { classes, theme } = cardStyles()
   const [user, { loading }] = useUser()
 
   useEffect(() => {

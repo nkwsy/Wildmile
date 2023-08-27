@@ -1,62 +1,16 @@
-import { createStyles, SimpleGrid, Title, Text, Container, Card, rem } from '@mantine/core'
+import { Title, Text, Container } from '@mantine/core'
 import { IconListDetails } from '@tabler/icons-react'
 import { useEffect } from 'react'
 import { Router, useRouter } from 'next/router'
-import Link from 'next/link'
 import { useUser } from '../../../../lib/hooks'
 import dbConnect from '../../../../lib/db/setup'
 import Section from '../../../../models/Section'
 import Module from '../../../../models/Module'
+import { cardStyles, IconCardGrid } from '../../../../components/icon_card_grid'
 
-const useStyles = createStyles((theme) => ({
-  title: {
-    fontSize: rem(34),
-    fontWeight: 900,
-
-    [theme.fn.smallerThan('sm')]: {
-      fontSize: rem(24),
-    },
-  },
-
-  description: {
-    maxWidth: 600,
-    margin: 'auto',
-
-    '&::after': {
-      content: '""',
-      display: 'block',
-      backgroundColor: theme.fn.primaryColor(),
-      width: rem(45),
-      height: rem(2),
-      marginTop: theme.spacing.sm,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
-  },
-
-  card: {
-    border: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]
-      }`,
-    ...theme.fn.hover({
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-    }),
-  },
-
-  cardTitle: {
-    '&::after': {
-      content: '""',
-      display: 'block',
-      backgroundColor: theme.fn.primaryColor(),
-      width: rem(45),
-      height: rem(2),
-      marginTop: theme.spacing.sm,
-    },
-  },
-}))
-
-export default function ProjectSectionLanding(props) {
+export default function ProjectSectionModulesLanding(props) {
   const router = useRouter()
-  const { classes, theme } = useStyles()
+  const { classes, theme } = cardStyles()
   const [user, { loading }] = useUser()
 
   useEffect(() => {
@@ -65,34 +19,22 @@ export default function ProjectSectionLanding(props) {
   }, [user, loading])
 
   const modules = props.modules.map((module) => {
-    return (
-      <Link key={module._id} href={"/projects/" + router.query.id + "/modules/" + module._id}>
-        <Card shadow="md" radius="md" className={classes.card} padding="xl">
-          <IconListDetails size={rem(50)} stroke={2} color={theme.fn.primaryColor()} />
-          <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
-            {`X: ${module.x}, Y: ${module.y}`}
-          </Text>
-          <Text fz="sm" c="dimmed" mt="sm">
-            {`Model: ${module.model} - Shape: ${module.shape}`}
-          </Text>
-          <Text fz="sm" c="dimmed" mt="sm">
-            {module.notes}
-          </Text>
-        </Card>
-      </Link>
-    )
+    return {
+      icon: IconListDetails,
+      title: `Model: ${module.model} - Shape: ${module.shape} X: ${module.x}, Y: ${module.y}`,
+      href: `/projects/${router.query.id}/modules/${module._id}`,
+      description: module.notes
+    }
   })
 
   return (
     <>
       <Container maw='75%' my={40}>
-        <Title order={2} className={classes.title} ta="center" mt="sm">{router.query.id + "'s modules"}</Title>
+        <Title order={2} className={classes.title} ta="center" mt="sm">{`${router.query.id} ${router.query.sid}'s Modules`}</Title>
         <Text c="dimmed" className={classes.description} ta="center" mt="md">
-          modules for this project
+          modules for the {router.query.sid} project
         </Text>
-        <SimpleGrid mt={40} cols={2}>
-          {modules}
-        </SimpleGrid>
+        <IconCardGrid cards={modules} />
       </Container>
     </>
   )
