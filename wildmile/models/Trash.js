@@ -30,7 +30,8 @@ const TrashLogSchema = new Schema({
   trashiness: { type: Number, required: true },
   temp: { type: Number, required: true },
   wind: { type: Number, required: true },
-  cloud: { type: Number, required: true }
+  cloud: { type: Number, required: true },
+  trashFound:{type: Array}
 
   //weather: String, TODO find API to calculate
 }, { timestamps: true })

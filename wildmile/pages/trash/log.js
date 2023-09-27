@@ -9,7 +9,8 @@ import {
   Title,
   Container,
   Select,
-  LoadingOverlay
+  LoadingOverlay,
+  Affix
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { useDisclosure } from '@mantine/hooks'
@@ -85,9 +86,9 @@ export default function CreateLog(props) {
 
   return (
     <>
-      <Container maw='75%' my={40}>
+      <Container maw='95%' my={'xs'}>
         <LoadingOverlay visible={visible} overlayBlur={2} />
-        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+        <Paper withBorder shadow="md" p={'xs'} mt={30} radius="md">
           <Title
             mb={30}
             align="center"
@@ -172,7 +173,7 @@ export default function CreateLog(props) {
                   { value: 6, label: 'Sleet' },
                   { value: 7, label: 'Showers' },
                 ]}
-                {...form.getInputProps('cloud')}
+                {...form.getInputProps('clouds')}
               />
               <Textarea label="Notes" {...form.getInputProps('notes')} />
             </Stepper.Step>
@@ -191,7 +192,10 @@ export default function CreateLog(props) {
                 Back
               </Button>
             )}
-            {active < 1 ? <Button onClick={nextStep}>Next step</Button> : <Button onClick={createLog}>Submit</Button>}
+            {active < 1 ? <Button onClick={nextStep}>Next step</Button> :       
+            <Affix position={{ bottom: 20, right: 20 }}>
+              <Button onClick={createLog}>Submit</Button>
+            </Affix>}
           </Group>
         </Paper>
       </Container>

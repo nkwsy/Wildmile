@@ -102,7 +102,7 @@ export default function TrashHistory(props) {
   function convertDataToRows(data) {
     const starting_index = Math.max((totalPages - pageNum) * 10, 0)
     const page_data = data.slice(starting_index, starting_index + 10)
-    return page_data.toReversed().map((row, i) => (
+    return page_data.map((row, i) => (
       <tr key={row.timeEnd + i} className={classes.tr}>
         <td suppressHydrationWarning >{new Date(row.timeEnd).toLocaleString()}</td>
         <td>{row.site}</td>
