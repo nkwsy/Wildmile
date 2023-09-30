@@ -28,9 +28,8 @@ export default function SignupPage() {
       email: '',
       password: '',
       name: '',
-      gender: '',
-      location: '',
-      website: '',
+      phone: '',
+      zipcod: '',
     },
 
     validate: (values) => {
@@ -89,7 +88,7 @@ export default function SignupPage() {
           <Title
             mb={30}
             align="center"
-            sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900 })}
+            sx={(theme) => ({ fontFamily: `Source, sans-serif, ${theme.fontFamily}`, fontWeight: 900 })}
           >
             Become an Urban Ranger today!
           </Title>
@@ -104,31 +103,15 @@ export default function SignupPage() {
               />
             </Stepper.Step>
 
-            <Stepper.Step label="Second step" description="Personal information">
-              <TextInput label="Name" placeholder="Name" {...form.getInputProps('name')} />
-              <Select
-                label="Your Pronouns"
-                placeholder="Pick one"
-                data={[
-                  { value: 'He/Him', label: 'He/Him' },
-                  { value: 'She/Her', label: 'She/Her' },
-                  { value: 'They/Them', label: 'They/Them' },
-                ]}
-                {...form.getInputProps('gender')}
-              />
-            </Stepper.Step>
-
             <Stepper.Step label="Final step" description="Other Info">
-              <TextInput label="Website" placeholder="Website" {...form.getInputProps('website')} />
+              <TextInput label="Name" placeholder="Name" {...form.getInputProps('name')} />
+              <TextInput label="Phone" placeholder="Phone" {...form.getInputProps('phone')} />
               <TextInput
-                label="What Neighborhood are you located in?"
-                placeholder="Loop"
-                {...form.getInputProps('location')}
+                label="What's your zipcode?"
+                placeholder="90210"
+                {...form.getInputProps('zipcode')}
               />
             </Stepper.Step>
-            <Stepper.Completed>
-              <p>The end</p>
-            </Stepper.Completed>
           </Stepper>
 
           <Group position="right" mt="xl">
@@ -138,8 +121,8 @@ export default function SignupPage() {
                 Back
               </Button>
             )}
-            {active < 2 && <Button onClick={nextStep}>Next step</Button>}
-            {active === 2 && <Button onClick={doSignup}>Submit</Button>}
+            {active < 1 && <Button onClick={nextStep}>Next step</Button>}
+            {active === 1 && <Button onClick={doSignup}>Submit</Button>}
           </Group>
         </Paper>
       </Container>
