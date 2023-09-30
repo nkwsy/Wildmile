@@ -39,7 +39,7 @@ export default function Species(props) {
       ...plant,
       title: plant.commonName || plant.common_name || plant.scientificName,
       subtitle: plant.scientificName || plant.scientific_name,
-      image: plant.image_url || plant.botanicPhoto,
+      image: plant.thumbnail,
       description: plant.notes,
       tags: plant.synonyms.slice(0, 4),
     }
@@ -90,7 +90,14 @@ export default function Species(props) {
             </Button>
           </form>
         </Modal>
-        <SimpleGrid mt={40} cols={3}>
+        <SimpleGrid 
+        mt={40} 
+        cols={4}
+        breakpoints={[
+          { maxWidth: '62rem', cols: 3, spacing: 'md' },
+          { maxWidth: '48rem', cols: 2, spacing: 'sm' },
+          { maxWidth: '36rem', cols: 1, spacing: 'sm' },
+        ]}>
           {mappedPlantProps.map((plant, index) => {
             return (
               <Card key={plant.title + String(index)} onClick={() => {
@@ -98,22 +105,17 @@ export default function Species(props) {
                 update_form_values(plant)
               }} withBorder padding="lg" radius="md" className={classes.card}>
                 <Card.Section mb="sm">
-                  <Image src={plant.image} alt={plant.title} />
+                  <Image src={plant.image || '/No_plant_image.jpg'} alt={plant.title}  />
                 </Card.Section>
                 <Title fw={700} className={classes.title} mt="xs">
                   {plant.title}
                 </Title>
-                <Text fw={700} className={classes.subtitle} c='dimmed'>
+                <Text fs="italic" fw={700} className={classes.subtitle} c='dimmed'>
                   {plant.subtitle}
                 </Text>
-                <Text mb='xs'>
+                {/* <Text mb='xs'>
                   {plant.description}
-                </Text>
-                {plant.tags.map((tag) => {
-                  return (
-                    <Badge>{tag.name || tag}</Badge>
-                  )
-                })}
+                </Text> */}
               </Card>
             )
           })}

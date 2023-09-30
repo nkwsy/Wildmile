@@ -20,7 +20,7 @@ export async function getAllLogsBeforeDate(date, limit = 10) {
 }
 
 export async function getFilteredLogs(filters) {
-  let limit = 10
+  let limit = 100
   if (filters.limit) {
     limit = filters.limit
     delete filters['limit']
@@ -42,7 +42,7 @@ export async function getLogByID(id) {
   return await TrashLog.findOne({ _id: id })
 }
 
-export async function createLog({ site, participants, timeStart, timeEnd, trashiness, temp, wind, clouds, notes, items = {} }) {
+export async function createLog({ site, participants, timeStart, timeEnd, trashiness, temp, wind, cloud, notes, items = {} }) {
 
   // Here you should insert the Log into the database
   let log = await TrashLog.create({
@@ -53,7 +53,7 @@ export async function createLog({ site, participants, timeStart, timeEnd, trashi
     trashiness: trashiness,
     temp: temp,
     wind: wind,
-    cloud: clouds,
+    cloud: cloud,
     notes: notes,
   })
 

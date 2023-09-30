@@ -16,6 +16,8 @@ const UserSchema = new mongoose.Schema({
     name: String,
     gender: String,
     location: String,
+    zipcode: String,
+    phone: String,
     website: String,
     picture: Buffer
   }
