@@ -1,0 +1,13 @@
+.tdResponsiveText {
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+  }
+}
+
+.fullWidthOnMobile {
+  @media (max-width: 768px) {  /* 768px is a common breakpoint for tablets, adjust if needed */
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;   /* ensures padding doesn't push it outside the viewport */
+  }
+}

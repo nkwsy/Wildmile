@@ -19,7 +19,7 @@ import Router from 'next/router'
 import TrashItemTable from '../../components/trash_item_table'
 import TrashItem from '../../models/TrashItem'
 import dbConnect from '../../lib/db/setup'
-
+import styles from '../../styles.module.css'
 
 
 export default function CreateLog(props) {
@@ -86,9 +86,9 @@ export default function CreateLog(props) {
 
   return (
     <>
-      <Container maw='95%' my={'xs'}>
+      <Container className={styles.fullWidthOnMobile}>
         <LoadingOverlay visible={visible} overlayBlur={2} />
-        <Paper withBorder shadow="md" p={'xs'} mt={30} radius="md">
+        <Paper withBorder  shadow="md" p={'xs'} mt={30} radius="md">
           <Title
             mb={30}
             align="center"

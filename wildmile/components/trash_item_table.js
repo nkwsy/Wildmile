@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from 'react'
-import { Button, SimpleGrid, Box, Group,createStyles, NumberInput, NumberInputHandlers, Table, ScrollArea, rem } from '@mantine/core'
+import { createStyles, Button, SimpleGrid, Box, Group NumberInput, NumberInputHandlers, Table, ScrollArea, rem } from '@mantine/core'
+import styles from '../styles.module.css';
 
 
 const useStyles = createStyles((theme) => ({
@@ -168,7 +169,7 @@ function TrashItemTable(props) {
               />
             </td>
             <td>{item.material}</td>
-            <td size='xxs' maw='100' >{item.description}</td>
+            <td className={styles.tdResponsiveText} >{item.description}</td>
             <td>{item.catagory}</td>
           </tr>
 
