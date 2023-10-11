@@ -10,11 +10,12 @@ import {
   Center,
   TextInput,
   rem,
+  ActionIcon,
 } from '@mantine/core'
 import { keys } from '@mantine/utils'
 import TrashLog from '../../models/Trash'
 import dbConnect from '../../lib/db/setup'
-import { IconSelector, IconChevronDown, IconChevronUp, IconChevronRight, IconChevronLeft, IconSearch } from '@tabler/icons-react'
+import { IconSelector, IconChevronDown, IconChevronUp, IconChevronRight, IconChevronLeft, IconSearch, IconPencil, IconTrash} from '@tabler/icons-react'
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -90,6 +91,15 @@ function sortData(data, payload) {
   )
 }
 
+// Truncate string to a certain length for table
+function truncateString(str, num) {
+  if (str.length <= num) {
+    return str;
+  }
+  return str.slice(0, num) + "...";
+}
+
+
 export default function TrashHistory(props) {
   const { classes } = useStyles()
   const [search, setSearch] = useState('')
@@ -104,12 +114,32 @@ export default function TrashHistory(props) {
     const page_data = data.slice(starting_index, starting_index + 10)
     return page_data.map((row, i) => (
       <tr key={row.timeEnd + i} className={classes.tr}>
-        <td suppressHydrationWarning >{new Date(row.timeEnd).toLocaleString()}</td>
+        <td suppressHydrationWarning >{new Date(row.timeStart).toDateString()}</td>
+        <td suppressHydrationWarning >{new Date(row.timeStart).toLocaleTimeString('en-US', {timeZone: "CST"})}</td>
         <td>{row.site}</td>
-        <td>{row.trashiness}</td>
-        <td>{row.wind}</td>
-        <td>{row.cloud}</td>
-        <td>{row.temp}</td>
+        <td>{row.numOfParticipants}</td>
+        <td>{truncateString(row.notes, 60)}</td>
+<td>
+  <Group position="apart" spacing={3}>
+    <ActionIcon 
+        onClick={() => {
+            Router.push(`/trash/edit/${row._id}`)
+        }}
+        title="Edit"
+    >
+        <IconPencil />
+    </ActionIcon>
+    <ActionIcon 
+        onClick={() => {
+            // Handle Delete Logic Here
+        }}
+        title="Delete"
+        color="red" // Optional, if you want to give a different color to delete button
+    >
+        <IconTrash />
+    </ActionIcon>
+  </Group>
+</td>
       </tr>
     ))
   }
@@ -172,13 +202,20 @@ export default function TrashHistory(props) {
         value={search}
         onChange={handleSearchChange}
       />
-      <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} sx={{ tableLayout: 'fixed' }}>
+      <Table horizontalSpacing="xs" verticalSpacing="xs" withColumnBorders striped>
         <thead>
           <tr >
             <Th
-              sorted={sortBy === 'timeEnd'}
+              sorted={sortBy === 'timeStart'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('timeEnd')}
+              onSort={() => setSorting('timeStart')}
+            >
+              Date
+            </Th>
+             <Th
+              sorted={sortBy === 'timeStart'}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting('timeStart')}
             >
               Time
             </Th>
@@ -187,36 +224,22 @@ export default function TrashHistory(props) {
               reversed={reverseSortDirection}
               onSort={() => setSorting('site')}
             >
-              site
+              Site
             </Th>
             <Th
-              sorted={sortBy === 'trashiness'}
+              sorted={sortBy === 'numOfParticipants'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('trashiness')}
+              onSort={() => setSorting('numOfParticipants')}
             >
-              Trashiness
+             People 
             </Th>
-            <Th
-              sorted={sortBy === 'wind'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('wind')}
-            >
-              Wind
+            <Th>
+              Notes
             </Th>
-            <Th
-              sorted={sortBy === 'cloud'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('cloud')}
-            >
-              Cloudiness
+            <Th>
+              Edit
             </Th>
-            <Th
-              sorted={sortBy === 'temp'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('temp')}
-            >
-              Temperature
-            </Th>
+            
           </tr>
         </thead>
         <tbody>
@@ -250,7 +273,7 @@ export async function getServerSideProps() {
   await dbConnect()
 
   /* find all the data in our database */
-  const result = await TrashLog.find({ 'deleted': false }, ['-__v', '-createdAt', '-updatedAt']).limit(10).sort('-timeEnd')
+  const result = await TrashLog.find({ 'deleted': false }, ['-__v', '-createdAt', '-updatedAt']).limit(100).sort('-timeEnd')
 
   const trashLogs = result.map((doc) => {
     const log = doc.toObject()
