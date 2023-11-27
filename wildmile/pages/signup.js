@@ -88,7 +88,7 @@ export default function SignupPage() {
           <Title
             mb={30}
             align="center"
-            sx={(theme) => ({ fontFamily: `Source, sans-serif, ${theme.fontFamily}`, fontWeight: 900 })}
+            // sx={(theme) => ({ fontFamily: `Source, sans-serif, ${theme.fontFamily}`, fontWeight: 900 })}
           >
             Become an Urban Ranger today!
           </Title>

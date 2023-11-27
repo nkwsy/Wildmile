@@ -13,12 +13,11 @@ import {
 } from '@mantine/core'
 import dbConnect from '../../lib/db/setup'
 import Plant from '../../models/Plant'
-import { useStyles } from '../../components/image_card_grid'
 import { useDisclosure } from '@mantine/hooks'
 import { useForm } from '@mantine/form'
+import classes from '../../styles/card.module.css'
 
 export default function Species(props) {
-  const { classes, theme } = useStyles()
   const [opened, { open, close }] = useDisclosure(false)
 
   const form = useForm({

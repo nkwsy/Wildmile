@@ -1,0 +1,64 @@
+.header {
+  background-color: var(--mantine-primary);
+}
+
+.link {
+  display: block;
+  line-height: 1;
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--mantine-radius-sm);
+  text-decoration: none;
+  color: var(--mantine-white);
+  font-size: var(--mantine-font-size-sm);
+  font-weight: 500;
+}
+
+.link:hover {
+  background-color: lighten(var(--mantine-primary), 10%);
+}
+
+.subLink {
+  width: 100%;
+  text-decoration: none;
+  color: var(--mantine-black);
+}
+
+.subLink:active {
+  /* Replace with your active styles */
+}
+
+.linkLabel {
+  margin-right: 0.5rem;
+}
+
+.dropdownFooter {
+  background-color: var(--mantine-dark-7);
+  margin: calc(var(--mantine-spacing-md) * -1);
+  margin-top: var(--mantine-spacing-sm);
+  padding: var(--mantine-spacing-md) calc(var(--mantine-spacing-md) * 2);
+  padding-bottom: var(--mantine-spacing-xl);
+  border-top: 0.1rem solid var(--mantine-dark-5);
+}
+
+@media (max-width: 600px) {
+  .hiddenMobile {
+    display: none;
+  }
+}
+
+@media (min-width: 600px) {
+  .hiddenDesktop {
+    display: none;
+  }
+}
+
+.user {
+  color: var(--mantine-dark-0);
+  border-radius: var(--mantine-radius-sm);
+}
+
+@media (max-width: 480px) {
+  .user {
+    display: none;
+  }
+}

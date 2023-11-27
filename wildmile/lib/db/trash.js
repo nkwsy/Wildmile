@@ -77,7 +77,7 @@ export async function createLog({ site, participants, timeStart, timeEnd, trashi
 export async function updateLogByID(req, id, update) {
   // Here you update the log based on id in the database
   const log = await getLogByID(id)
-
+  
   return log
 }
 

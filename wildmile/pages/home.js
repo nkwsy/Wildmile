@@ -1,13 +1,14 @@
-import { createStyles, SimpleGrid, Title, Text, Container, Card, rem } from '@mantine/core'
+import { SimpleGrid, Title, Text, Container, Card, rem } from '@mantine/core'
 import { IconTrash, IconPlant2, IconListDetails, IconUsers } from '@tabler/icons-react'
 import { useEffect } from 'react'
 import Router from 'next/router'
 import Link from 'next/link'
 import { useUser } from '../lib/hooks'
-import { cardStyles } from '../components/icon_card_grid'
+// import { cardStyles } from '../components/icon_card_grid'
+import classes from '../styles/card.module.css'
 
 export default function HomePage() {
-  const { classes, theme } = cardStyles()
+  // const { classes, theme } = cardStyles()
   const [user, { loading }] = useUser()
 
   useEffect(() => {
@@ -17,7 +18,46 @@ export default function HomePage() {
 
   return (
     <>
-      <Container maw='75%' my={40}>
+    <Container maw='75%' my={40}>
+        <Title order={2} className={classes.title} ta="center" mt="sm">Home Page</Title>
+        <Text c="dimmed" className={classes.description} ta="center" mt="md">
+          Collecting and sharing data about Urban River's projects.
+        </Text>
+        <SimpleGrid mt={40} cols={2}>
+          <Link href="/trash">
+            <Card shadow="xs" radius="sm" className={classes.card} padding="xl">
+              <IconTrash size='2rem' stroke={2} />
+              <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
+                Trash
+              </Text>
+              <Text fz="sm" c="dimmed" mt="sm">
+                Check Trash Info
+              </Text>
+            </Card>
+          </Link>
+          <Link href="/plants">
+            <Card shadow="xs" radius="sm" className={classes.card} padding="xl">
+              <IconPlant2 size='2rem' stroke={2}  />
+              <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
+                Plants
+              </Text>
+              <Text fz="sm" c="dimmed" mt="sm">
+                Manage the plants on the wild mile
+              </Text>
+            </Card>
+          </Link>
+          <Link href="/projects">
+            <Card shadow="xs" radius="sm" className={classes.card} padding="xl">
+              <IconListDetails size='2rem' stroke={2}  />
+              <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
+                Projects
+              </Text>
+              <Text fz="sm" c="dimmed" mt="sm">
+                See the Current Wild Mile Projects
+              </Text>
+            </Card>
+          </Link>
+      {/* <Container maw='75%' my={40}>
         <Title order={2} className={classes.title} ta="center" mt="sm">Home Page</Title>
         <Text c="dimmed" className={classes.description} ta="center" mt="md">
           Collecting and sharing data about Urban River's projects.
@@ -25,7 +65,7 @@ export default function HomePage() {
         <SimpleGrid mt={40} cols={2}>
           <Link href="/trash">
             <Card shadow="md" radius="md" className={classes.card} padding="xl">
-              <IconTrash size={rem(50)} stroke={2} color={theme.fn.primaryColor()} />
+              <IconTrash size='2rem' stroke={2} />
               <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
                 Trash
               </Text>
@@ -36,7 +76,7 @@ export default function HomePage() {
           </Link>
           <Link href="/plants">
             <Card shadow="md" radius="md" className={classes.card} padding="xl">
-              <IconPlant2 size={rem(50)} stroke={2} color={theme.fn.primaryColor()} />
+              <IconPlant2 size={rem(50)} stroke={2}  />
               <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
                 Plants
               </Text>
@@ -47,7 +87,7 @@ export default function HomePage() {
           </Link>
           <Link href="/projects">
             <Card shadow="md" radius="md" className={classes.card} padding="xl">
-              <IconListDetails size={rem(50)} stroke={2} color={theme.fn.primaryColor()} />
+              <IconListDetails size={rem(50)} stroke={2}  />
               <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
                 Projects
               </Text>
@@ -55,11 +95,11 @@ export default function HomePage() {
                 See the Current Wild Mile Projects
               </Text>
             </Card>
-          </Link>
+          </Link> */}
           {user && user.admin ?
             <Link href="/admin">
               <Card shadow="md" radius="md" className={classes.card} padding="xl">
-                <IconUsers size={rem(50)} stroke={2} color={theme.fn.primaryColor()} />
+                <IconUsers size='2rem' stroke={2}  />
                 <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
                   Admin
                 </Text>

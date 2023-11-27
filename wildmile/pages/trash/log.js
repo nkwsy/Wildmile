@@ -92,7 +92,7 @@ export default function CreateLog(props) {
           <Title
             mb={30}
             align="center"
-            sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900 })}
+            // sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900 })}
           >
             Create a new trash log
           </Title>

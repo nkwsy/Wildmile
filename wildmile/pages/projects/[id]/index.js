@@ -27,7 +27,7 @@ export default function ProjectLanding() {
         <SimpleGrid mt={40} cols={2}>
           <Link href={"/projects/" + router.query.id + "/sections"}>
             <Card shadow="md" radius="md" className={classes.card} padding="xl">
-              <IconListDetails size={rem(50)} stroke={2} color={theme.fn.primaryColor()} />
+              <IconListDetails size={rem(50)} stroke={2}  />
               <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
                 Sections
               </Text>
