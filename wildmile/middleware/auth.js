@@ -1,11 +1,13 @@
-import nextConnect from 'next-connect'
-import passport from '../config/passport'
-import session from '../lib/session'
-import dbConnect from '../lib/db/setup'
-import MongoStore from 'connect-mongo'
+import nextConnect  from 'next-connect';
+// import { createRouter } from "next-connect";
+import passport from '../config/passport';
+import session from '../lib/session';
+import dbConnect from '../lib/db/setup';
+import MongoStore from 'connect-mongo';
 
+
+// const auth = createRouter()
 const auth = nextConnect()
-
 auth
   .use(async (req, res, next) => {
     await dbConnect()
