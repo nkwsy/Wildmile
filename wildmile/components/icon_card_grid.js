@@ -83,11 +83,12 @@ export function IconCardGrid(props) {
 
   return (
     <>
-      <SimpleGrid mt={40} cols={columns || 2}>
+    <div className={classes.wrapper}>
+      <SimpleGrid mt={40} cols={columns || 2} className="centerGrid">
         {cards.map((card) => {
           return (
             <Link key={card.title} href={card.href}>
-              <Card key={card.title} shadow="md" radius="md" className={classes.card} padding="xl">
+              <Card key={card.title} shadow="md" radius="md" className={classes.card} >
                 <card.icon size='2rem' stroke={2}/>
                 <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
                   {card.title}
@@ -100,6 +101,7 @@ export function IconCardGrid(props) {
           )
         })}
       </SimpleGrid>
+      </div>
     </>
   )
 }
