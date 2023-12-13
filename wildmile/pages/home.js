@@ -4,10 +4,10 @@ import { useEffect } from 'react'
 import Router from 'next/router'
 import Link from 'next/link'
 import { useUser } from '../lib/hooks'
-import { cardStyles } from '../components/icon_card_grid'
+// import { cardStyles } from '../components/icon_card_grid'
+import classes from '/styles/card.module.css'
 
 export default function HomePage() {
-  const { classes, theme } = cardStyles()
   const [user, { loading }] = useUser()
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function HomePage() {
         <SimpleGrid mt={40} cols={2}>
           <Link href="/trash">
             <Card shadow="md" radius="md" className={classes.card} padding="xl">
-              <IconTrash size={rem(50)} stroke={2} color={theme.fn.primaryColor()} />
+              <IconTrash stroke={2}  />
               <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
                 Trash
               </Text>
@@ -36,7 +36,7 @@ export default function HomePage() {
           </Link>
           <Link href="/plants">
             <Card shadow="md" radius="md" className={classes.card} padding="xl">
-              <IconPlant2 size={rem(50)} stroke={2} color={theme.fn.primaryColor()} />
+              <IconPlant2  stroke={2}  />
               <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
                 Plants
               </Text>
@@ -47,7 +47,7 @@ export default function HomePage() {
           </Link>
           <Link href="/projects">
             <Card shadow="md" radius="md" className={classes.card} padding="xl">
-              <IconListDetails size={rem(50)} stroke={2} color={theme.fn.primaryColor()} />
+              <IconListDetails stroke={2}  />
               <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
                 Projects
               </Text>
@@ -59,7 +59,7 @@ export default function HomePage() {
           {user && user.admin ?
             <Link href="/admin">
               <Card shadow="md" radius="md" className={classes.card} padding="xl">
-                <IconUsers size={rem(50)} stroke={2} color={theme.fn.primaryColor()} />
+                <IconUsers  stroke={2}  />
                 <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
                   Admin
                 </Text>

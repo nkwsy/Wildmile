@@ -3,11 +3,10 @@ import { IconClipboardPlus, IconCalendarSearch } from '@tabler/icons-react'
 import { useEffect } from 'react'
 import Router from 'next/router'
 import { useUser } from '../../lib/hooks'
-import { cardStyles, IconCardGrid } from '../../components/icon_card_grid'
+import classes from '/styles/card.module.css'
 
 export default function TrashLanding() {
   const [user, { loading }] = useUser()
-  const { classes, theme } = cardStyles()
 
   useEffect(() => {
     // redirect user to login if not authenticated

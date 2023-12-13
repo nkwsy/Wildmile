@@ -11,43 +11,17 @@ import {
   TextInput,
   rem,
   ActionIcon,
+  keys
 } from '@mantine/core'
-import { keys } from '@mantine/utils'
 import TrashLog from '../../models/Trash'
 import dbConnect from '../../lib/db/setup'
 import { IconSelector, IconChevronDown, IconChevronUp, IconChevronRight, IconChevronLeft, IconSearch, IconPencil, IconTrash} from '@tabler/icons-react'
 
-const useStyles = createStyles((theme) => ({
-  th: {
-    padding: '0 !important',
-  },
+import classes from '/styles/table.module.css'
 
-  tr: {
-    '&:hover': {
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-      cursor: 'pointer',
-    },
-  },
-
-  control: {
-    width: '100%',
-    padding: `${theme.spacing.xs} ${theme.spacing.md}`,
-
-    '&:hover': {
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-    },
-  },
-
-  icon: {
-    width: rem(21),
-    height: rem(21),
-    borderRadius: rem(21),
-  },
-}))
 
 
 function Th({ children, reversed, sorted, onSort }) {
-  const { classes } = useStyles()
   const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector
   return (
     <th className={classes.th}>
@@ -101,7 +75,6 @@ function truncateString(str, num) {
 
 
 export default function TrashHistory(props) {
-  const { classes } = useStyles()
   const [search, setSearch] = useState('')
   const [sortedData, setSortedData] = useState(props.logs)
   const [sortBy, setSortBy] = useState('timeEnd')
@@ -113,13 +86,13 @@ export default function TrashHistory(props) {
     const starting_index = Math.max((totalPages - pageNum) * 10, 0)
     const page_data = data.slice(starting_index, starting_index + 10)
     return page_data.map((row, i) => (
-      <tr key={row.timeEnd + i} className={classes.tr}>
-        <td suppressHydrationWarning >{new Date(row.timeStart).toDateString()}</td>
-        <td suppressHydrationWarning >{new Date(row.timeStart).toLocaleTimeString('en-US', {timeZone: "CST"})}</td>
-        <td>{row.site}</td>
-        <td>{row.numOfParticipants}</td>
-        <td>{truncateString(row.notes, 60)}</td>
-<td>
+      <Table.Tr key={row.timeEnd + i} className={classes.tr}>
+        <Table.Td suppressHydrationWarning >{new Date(row.timeStart).toDateString()}</Table.Td>
+        <Table.Td suppressHydrationWarning >{new Date(row.timeStart).toLocaleTimeString('en-US', {timeZone: "CST"})}</Table.Td>
+        <Table.Td>{row.site}</Table.Td>
+        <Table.Td>{row.numOfParticipants}</Table.Td>
+        <Table.Td>{truncateString(row.notes, 60)}</Table.Td>
+<Table.Td>
   <Group position="apart" spacing={3}>
     <ActionIcon 
         onClick={() => {
@@ -139,8 +112,8 @@ export default function TrashHistory(props) {
         <IconTrash />
     </ActionIcon>
   </Group>
-</td>
-      </tr>
+</Table.Td>
+      </Table.Tr>
     ))
   }
 
@@ -203,58 +176,58 @@ export default function TrashHistory(props) {
         onChange={handleSearchChange}
       />
       <Table horizontalSpacing="xs" verticalSpacing="xs" withColumnBorders striped>
-        <thead>
-          <tr >
-            <Th
+        <Table.Thead>
+          <Table.Tr >
+            <Table.Th
               sorted={sortBy === 'timeStart'}
               reversed={reverseSortDirection}
               onSort={() => setSorting('timeStart')}
             >
               Date
-            </Th>
-             <Th
+            </Table.Th>
+             <Table.Th
               sorted={sortBy === 'timeStart'}
               reversed={reverseSortDirection}
               onSort={() => setSorting('timeStart')}
             >
               Time
-            </Th>
-            <Th
+            </Table.Th>
+            <Table.Th
               sorted={sortBy === 'site'}
               reversed={reverseSortDirection}
               onSort={() => setSorting('site')}
             >
               Site
-            </Th>
-            <Th
+            </Table.Th>
+            <Table.Th
               sorted={sortBy === 'numOfParticipants'}
               reversed={reverseSortDirection}
               onSort={() => setSorting('numOfParticipants')}
             >
              People 
-            </Th>
-            <Th>
+            </Table.Th>
+            <Table.Th>
               Notes
-            </Th>
-            <Th>
+            </Table.Th>
+            <Table.Th>
               Edit
-            </Th>
+            </Table.Th>
             
-          </tr>
-        </thead>
-        <tbody>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
           {rows.length > 0 ? (
             rows
           ) : (
-            <tr>
-              <td colSpan={5}>
+            <Table.Tr>
+              <Table.Td colSpan={5}>
                 <Text weight={500} align="center">
                   Nothing found
                 </Text>
-              </td>
-            </tr>
+              </Table.Td>
+            </Table.Tr>
           )}
-        </tbody>
+        </Table.Tbody>
       </Table>
       <Group position="center">
         <Button leftIcon={<IconChevronLeft />} mt="xl" disabled={pageNum == 0} onClick={previousPage}>

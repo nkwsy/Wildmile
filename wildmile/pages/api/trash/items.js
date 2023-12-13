@@ -1,8 +1,8 @@
 import nextConnect from 'next-connect'
 // import userValidationSchema from "../../validation/user"
-import auth from '../../../../middleware/auth'
-import { getPlantByID, updatePlantByID } from '../../../../lib/db/plants'
-import NextConnectOptions from '../../../../config/nextconnect'
+import auth from '/middleware/auth'
+import { getPlantByID, updatePlantByID } from '/lib/db/plants'
+import NextConnectOptions from '/config/nextconnect'
 
 const handler = nextConnect(NextConnectOptions)
 

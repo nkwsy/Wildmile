@@ -1,0 +1,21 @@
+.footer{
+
+    background-color: var(--mantine-primary);
+  }
+
+.inner {
+    display: 'flex';
+    padding: var(--mantine-spacing-md) calc(var(--mantine-spacing-md) * 2);
+
+
+  }
+.links {
+  display: block;
+  line-height: 1;
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--mantine-radius-sm);
+  text-decoration: none;
+  color: var(--mantine-white);
+  font-size: var(--mantine-font-size-sm);
+  font-weight: 500;
+}

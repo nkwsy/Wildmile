@@ -15,15 +15,12 @@
     "start": "next start"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/server": "^11.11.0",
     "@hapi/iron": "6.0.0",
-    "@mantine/core": "^6.0.17",
-    "@mantine/dates": "^6.0.17",
-    "@mantine/form": "^6.0.17",
-    "@mantine/hooks": "^6.0.17",
-    "@mantine/modals": "^6.0.17",
-    "@mantine/next": "^6.0.17",
+    "@mantine/core": "^7.3.1",
+    "@mantine/dates": "^7.3.1",
+    "@mantine/form": "^7.3.1",
+    "@mantine/hooks": "^7.3.1",
+    "@mantine/modals": "^7.3.1",
     "@multiavatar/multiavatar": "^1.0.7",
     "@tabler/icons-react": "^2.30.0",
     "bcryptjs": "^2.4.3",
@@ -43,5 +40,13 @@
     "swr": "^2.0.0",
     "uuidv4": "6.2.5",
     "yup": "^1.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.55.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "postcss": "^8.4.32",
+    "postcss-preset-mantine": "^1.11.1",
+    "postcss-simple-vars": "^7.0.1"
   }
 }

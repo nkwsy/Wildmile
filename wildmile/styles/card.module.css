@@ -1,0 +1,49 @@
+.title {
+  font-size: 2.4rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 2.4rem;
+  }
+}
+
+.description {
+  max-width: 600px;
+  margin: auto;
+  text-decoration: none;
+}
+
+.description::after {
+  content: "";
+  display: block;
+  background-color: var(--mantine-primary);
+  width: 45%;
+  height: 0.2rem;
+  margin-top: var(--mantine-spacing-sm);
+  margin-left: auto;
+  margin-right: auto;
+}
+.card {
+  border: 0.1rem solid var(--mantine-dark-5);
+  background-color: var(--mantine-dark-6);
+}
+
+.card:hover {
+  background-color: var(--mantine-gray-0);
+}
+
+.cardTitle {
+  text-decoration: none;
+}
+
+.cardTitle::after {
+  content: "";
+  display: block;
+  background-color: var(--mantine-primary);
+  width: 45%;
+  height: 0.2rem;
+  margin-top: var(--mantine-spacing-sm);
+}

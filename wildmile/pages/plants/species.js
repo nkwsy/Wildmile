@@ -16,9 +16,9 @@ import Plant from '../../models/Plant'
 import { useStyles } from '../../components/image_card_grid'
 import { useDisclosure } from '@mantine/hooks'
 import { useForm } from '@mantine/form'
+import classes from '/styles/imagecard.module.css'
 
 export default function Species(props) {
-  const { classes, theme } = useStyles()
   const [opened, { open, close }] = useDisclosure(false)
 
   const form = useForm({
@@ -92,7 +92,8 @@ export default function Species(props) {
         </Modal>
         <SimpleGrid 
         mt={40} 
-        cols={4}
+        // cols={4}
+         cols={{ base: 2, sm: 2, lg:5, xl: 8 }}
         breakpoints={[
           { maxWidth: '62rem', cols: 3, spacing: 'md' },
           { maxWidth: '48rem', cols: 2, spacing: 'sm' },
@@ -103,7 +104,7 @@ export default function Species(props) {
               <Card key={plant.title + String(index)} onClick={() => {
                 open()
                 update_form_values(plant)
-              }} withBorder padding="lg" radius="md" className={classes.card}>
+              }} withBorder padding="lg" radius="md" className={classes.mantineCard}>
                 <Card.Section mb="sm">
                   <Image src={plant.image || '/No_plant_image.jpg'} alt={plant.title}  />
                 </Card.Section>
