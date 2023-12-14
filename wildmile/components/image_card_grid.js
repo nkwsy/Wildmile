@@ -8,25 +8,6 @@ import {
   Modal
 } from '@mantine/core'
 import classes from '/styles/imagecard.module.css'
-// export const useStyles = createStyles((theme) => ({
-
-//   card: {
-//     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-//     ...theme.fn.hover({
-//       backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-//       cursor:'pointer',
-//     }),
-//   },
-
-//   title: {
-//     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-//   },
-
-//   subtitle: {
-//     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-//   },
-
-// }))
 
 export function ImageCardGrid(props) {
   const { cards, columns } = props

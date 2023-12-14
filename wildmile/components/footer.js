@@ -1,33 +1,6 @@
 import { createStyles, Image, Group, ActionIcon, rem } from '@mantine/core'
 import { IconBrandTwitter, IconBrandYoutube, IconBrandInstagram } from '@tabler/icons-react'
 import classes from '/styles/footer.module.css'
-// const useStyles = createStyles((theme) => ({
-//   footer: {
-//     backgroundColor: theme.fn.variant({ variant: 'filled', color: theme.primaryColor }).background,
-//     borderTop: `${rem(1)} solid ${
-//       theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2]
-//     }`,
-//   },
-
-//   inner: {
-//     display: 'flex',
-//     justifyContent: 'space-between',
-//     alignItems: 'center',
-//     padding: `${theme.spacing.md} ${theme.spacing.md}`,
-
-//     [theme.fn.smallerThan('sm')]: {
-//       flexDirection: 'column',
-//     },
-//   },
-
-//   links: {
-//     [theme.fn.smallerThan('sm')]: {
-//       marginTop: theme.spacing.lg,
-//       marginBottom: theme.spacing.sm,
-//     },
-//   },
-// }))
-
 
 export default function Footer() {
 
