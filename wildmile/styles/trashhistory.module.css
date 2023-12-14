@@ -1,0 +1,25 @@
+  .th {
+    padding: 0,
+  }
+
+  .tr {
+    &:hover {
+      background-color: var(--mantine-color-gray-6);
+      cursor: 'pointer';
+    }
+  }
+
+.control {
+    width: '100%';
+    padding: var();
+    &:hover {
+      background-color: var(--mantine-color-gray-6);
+
+    }
+  }
+
+.icon {
+    width: rem(21);
+    height: rem(21);
+    border-radius: rem(21);
+  }

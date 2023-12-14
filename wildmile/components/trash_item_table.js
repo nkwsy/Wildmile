@@ -1,76 +1,10 @@
 import { useState, useCallback, useRef } from 'react'
 import { Button, SimpleGrid, Box, Group,createStyles, NumberInput, NumberInputHandlers, Table, ScrollArea, rem } from '@mantine/core'
+import cx from 'clsx'
+import classes from '/styles/table.module.css'
 
-
-const useStyles = createStyles((theme) => ({
-  header: {
-    position: 'sticky',
-    top: 0,
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-    transition: 'box-shadow 150ms ease',
-    zIndex: 10,
-
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: 0,
-      borderBottom: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[2]
-        }`,
-    },
-  },
-
-  scrolled: {
-    boxShadow: theme.shadows.sm,
-  },
-  // Header styles for each material accordion
-  materialHeader: {
-    backgroundColor: theme.colors.gray[2], // Choose appropriate shade of grey
-    cursor: 'pointer', // Indicate that it's clickable
-    fontWeight: 'bold', // Optional: Make it bold to stand out
-    row: {height: 'xs',}, // Smaller row height
-  },
-  // Smaller row height
-  row: {
-  height: 'xs', // Set an appropriate height value
-},
-
-// Grid styles
-gridContainer: {
-  display: 'flex',
-  flexWrap: 'wrap',   // Allows boxes to wrap to the next line
-  gap: '20px',        // Spacing between boxes
-  justifyContent: 'space-between',  // Distributes boxes evenly
-},
-materialBox: {
-  flex: '1 1 calc(50% - 20px)', // Roughly one-third of the container minus the gap
-  border: `1px solid ${theme.colors.gray[4]}`, 
-  padding: '10px',
-  borderRadius: '5px', 
-  backgroundColor: theme.colors.gray[1],
-  overflowY: 'auto',  // In case of too many inputs, adds a scrollbar
-  transition: 'max-height 0.2s ease-in-out', // smooth transition for expanding/collapsing
-  maxHeight: '300px',  // Adjust based on your preference
-},
-
-// gridContainer: {
-//   display: 'grid',
-//   gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', // Adjust as needed
-//   gap: '20px', // Adjust as needed
-// },
-// materialBox: {
-//   border: `1px solid ${theme.colors.gray[4]}`, // Adjust as needed
-//   padding: '10px',
-//   borderRadius: '5px', // Optional rounded corners
-//   backgroundColor: theme.colors.gray[1],
-// },
-
-
-}))
 
 function TrashItemTable(props) {
-  const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
   const [openMaterials, setOpenMaterials] = useState({});
   const [inputValues, setInputValues] = useState({});  // State for input values

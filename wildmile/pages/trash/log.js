@@ -152,26 +152,26 @@ export default function CreateLog(props) {
               <Select
                 label="Wind Speed"
                 data={[
-                  { value: 0, label: 'None' },
-                  { value: 1, label: 'Barely Perceptible' },
-                  { value: 2, label: 'Felt on face, leaves rustle' },
-                  { value: 3, label: 'Leaves in constant motion' },
-                  { value: 4, label: 'Branches moving, debris pushed around' },
-                  { value: 5, label: 'Trees sway, noticeable waves' },
+                  { value: '0', label: 'None' },
+                  { value: '1', label: 'Barely Perceptible' },
+                  { value: '2', label: 'Felt on face, leaves rustle' },
+                  { value: '3', label: 'Leaves in constant motion' },
+                  { value: '4', label: 'Branches moving, debris pushed around' },
+                  { value: '5', label: 'Trees sway, noticeable waves' },
                 ]}
                 {...form.getInputProps('wind')}
               />
               <Select
                 label="Cloud Cover"
                 data={[
-                  { value: 0, label: 'Clear' },
-                  { value: 1, label: 'Partly Cloudy' },
-                  { value: 2, label: 'Cloudy' },
-                  { value: 3, label: 'Fog' },
-                  { value: 4, label: 'Light Rain' },
-                  { value: 5, label: 'Snow' },
-                  { value: 6, label: 'Sleet' },
-                  { value: 7, label: 'Showers' },
+                  { value: '0', label: 'Clear' },
+                  { value: '1', label: 'Partly Cloudy' },
+                  { value: '2', label: 'Cloudy' },
+                  { value: '3', label: 'Fog' },
+                  { value: '4', label: 'Light Rain' },
+                  { value: '5', label: 'Snow' },
+                  { value: '6', label: 'Sleet' },
+                  { value: '7', label: 'Showers' },
                 ]}
                 {...form.getInputProps('clouds')}
               />
