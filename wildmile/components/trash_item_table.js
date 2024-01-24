@@ -112,7 +112,7 @@ function TrashItemTable(props) {
   }
 
   return (
-    <ScrollArea h={1000} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+    <ScrollArea mt={"md"} pd={'lg'} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
       <SimpleGrid cols={5} spacing="xs">
         {materialButtons}
       </SimpleGrid>

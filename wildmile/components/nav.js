@@ -107,7 +107,7 @@ export function HeaderNav() {
             >
               <Center>
                 <span className={classes.linkLabel}>{link.label}</span>
-                <IconChevronDown size={10} stroke={1.5} />
+                <IconChevronDown size={15} stroke={2.5} />
               </Center>
             </Link>
           </Menu.Target>
@@ -134,16 +134,16 @@ export function HeaderNav() {
   }
 
   return (
-    <Box bp={10}>
-      {/* <Header  className={classes.header}> */}
-        <Group position="apart">
+    <Box pb={10}>
+      <header className={classes.header}>
+        <Group justify="space-between" h="100%" >
           {user && user ? <Link href='/home'>
-            <Image src='/logo.png' alt='Urban River Logo' height='3.8rem' width='auto' />
+            <Image src='/logo.png' alt='Urban River Logo' h='3.8rem' w='auto' mt="0.5rem" mb="-1rem"/>
           </Link> : <Link href='/'>
-            <Image src='/logo.png' alt='Urban River Logo' height='3.8rem' width='auto' />
+            <Image src='/logo.png' alt='Urban River Logo' h='3.8rem' w='auto' mt="0.5rem" mb="-1rem"/>
           </Link>}
 
-          <Group style={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
+          <Group h="100%" mt="1rem" gap={0} visibleFrom="sm" className={classes.hiddenMobile}>
             {user && user ? items : null}
           </Group>
 
@@ -156,6 +156,7 @@ export function HeaderNav() {
                 onClose={() => setUserMenuOpened(false)}
                 onOpen={() => setUserMenuOpened(true)}
                 withinPortal
+                mt="0.5rem"
               >
                 <Menu.Target>
                   <UnstyledButton
@@ -163,10 +164,10 @@ export function HeaderNav() {
                   >
                     <Group spacing={7}>
                       <Avatar src={photoSrc} alt={user.profile ? user.profile.name || 'Username' : 'Username'} radius="xl" size={40} />
-                      <Text weight={500} size="sm" stylex ={{ lineHeight: 1 }} mr={3}>
+                      <Text fw={500} size="sm" lh={1} mr={3}>
                         {user.profile ? user.profile.name || 'Username' : 'Username'}
                       </Text>
-                      <IconChevronDown size={10} stroke={1.5} />
+                      <IconChevronDown size={15} stroke={2.5} />
                     </Group>
                   </UnstyledButton>
                 </Menu.Target>
@@ -190,7 +191,7 @@ export function HeaderNav() {
 
           <Burger opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop} />
         </Group>
-      {/* </Header> */}
+      </header>
 
       <Drawer
         opened={drawerOpened}

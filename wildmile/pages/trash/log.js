@@ -27,30 +27,37 @@ export default function CreateLog(props) {
   const [active, setActive] = useState(0)
   const [visible, handlers] = useDisclosure(false)
 
+  const isBrowser = () => typeof window !== 'undefined'; //The approach recommended by Next.js
+
+  function scrollToTop() {
+    if (!isBrowser()) return;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   const trashFormVals = Object.fromEntries(props.items.map((item) => {
     return [item.name, 0]
   }))
 
   const form = useForm({
     initialValues: {
-        site: '',
-        participants: 1,
-        timeStart: new Date(),
-        timeEnd: new Date(),
-        trashiness: 1,
-        temp: 65,
-        wind: 1,
-        cloud: 1,
-        notes: '',
-        items: trashFormVals
+      site: '',
+      participants: 1,
+      timeStart: new Date(),
+      timeEnd: new Date(),
+      trashiness: 1,
+      temp: 65,
+      wind: 1,
+      cloud: 1,
+      notes: '',
+      items: trashFormVals
     },
 
     validate: (values) => {
       if (active === 0) {
-          return {
-              site: values.site === '' ? 'Must choose a site location' : null,
-              timeEnd: values.timeEnd < values.timeStart ? "Time ended cannot be before time started" : null,
-          }
+        return {
+          site: values.site === '' ? 'Must choose a site location' : null,
+          timeEnd: values.timeEnd < values.timeStart ? "Time ended cannot be before time started" : null,
+        }
       }
 
       return {}
@@ -74,25 +81,29 @@ export default function CreateLog(props) {
     }
   }
 
-  const nextStep = () =>
+  const nextStep = () => {
+    scrollToTop()
     setActive((current) => {
       if (form.validate().hasErrors) {
         return current
       }
       return current < 2 ? current + 1 : current
     })
+  }
 
-  const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current))
+  const prevStep = () => {
+    scrollToTop()
+    setActive((current) => (current > 0 ? current - 1 : current))
+  }
 
   return (
     <>
-      <Container maw='95%' my={'xs'}>
+      <Container maw='95%' my="6rem">
         <LoadingOverlay visible={visible} overlayBlur={2} />
-        <Paper withBorder shadow="md" p={'xs'} mt={30} radius="md">
+        <Paper withBorder shadow="md" py={'md'} px={'xl'} mt={30} radius="md">
           <Title
             mb={30}
             align="center"
-            sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900 })}
           >
             Create a new trash log
           </Title>
@@ -178,24 +189,21 @@ export default function CreateLog(props) {
               <Textarea label="Notes" {...form.getInputProps('notes')} />
             </Stepper.Step>
             <Stepper.Step label="Trash Items" description="Fill in details about trash that was recovered">
-              <TrashItemTable items={props.items} form={form}/>
+              <TrashItemTable items={props.items} form={form} />
             </Stepper.Step>
             <Stepper.Completed>
               <p>The end</p>
             </Stepper.Completed>
           </Stepper>
 
-          <Group position="right" mt="xl">
+          <Group justify="right" mt="xl">
             {errorMsg && <p className="error">{errorMsg}</p>}
             {active !== 0 && (
               <Button variant="default" onClick={prevStep}>
                 Back
               </Button>
             )}
-            {active < 1 ? <Button onClick={nextStep}>Next step</Button> :       
-            <Affix position={{ bottom: 20, right: 20 }}>
-              <Button onClick={createLog}>Submit</Button>
-            </Affix>}
+            {active < 1 ? <Button onClick={nextStep}>Next step</Button> : <Button onClick={createLog}>Submit</Button>}
           </Group>
         </Paper>
       </Container>

@@ -82,13 +82,13 @@ export default function SignupPage() {
 
   return (
     <>
-      <Container maw='75%' my={40}>
+      <Container maw='75%' my="5rem">
         <LoadingOverlay visible={visible} overlayBlur={2} />
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
           <Title
             mb={30}
             align="center"
-            sx={(theme) => ({ fontFamily: `Source, sans-serif, ${theme.fontFamily}`, fontWeight: 900 })}
+            // sx={(theme) => ({ fontFamily: `Source, sans-serif, ${theme.fontFamily}`, fontWeight: 900 })}
           >
             Become an Urban Ranger today!
           </Title>

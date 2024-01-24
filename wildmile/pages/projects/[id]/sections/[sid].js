@@ -29,7 +29,7 @@ export default function ProjectSectionModulesLanding(props) {
 
   return (
     <>
-      <Container maw='75%' my={40}>
+      <Container maw='75%' my="5rem">
         <Title order={2} className={classes.title} ta="center" mt="sm">{`${router.query.id} ${router.query.sid}'s Modules`}</Title>
         <Text c="dimmed" className={classes.description} ta="center" mt="md">
           modules for the {router.query.sid} project

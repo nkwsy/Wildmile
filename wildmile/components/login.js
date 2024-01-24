@@ -53,10 +53,10 @@ export default function Login() {
   }, [user])
 
   return (
-    <Container size={420} my={40}>
+    <Container size={420} my="5rem">
       <Title
         align="center"
-        sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900 })}
+        // sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900 })}
       >
         Welcome back!
       </Title>

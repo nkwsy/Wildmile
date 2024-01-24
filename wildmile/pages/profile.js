@@ -26,7 +26,7 @@ export default function ProfilePage() {
 
     validate: (values) => {
       return {
-        email: isEmail('Invalid email'),
+        // email: isEmail('Invalid email'), // This doesn't seem to work
         password:
           values.password.length < 8 &&  values.password.length !== 0 ? 'Password must include at least 8 characters' : null,
         name: values.name.trim().length < 2 ? 'Name must include at least 2 characters' : null,
@@ -82,7 +82,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <Container maw='50%' my={40}>
+    <Container maw='50%' my="7rem">
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
         <Avatar src={photoSrc} alt={user && user.profile ? user.profile.name || 'Username' : 'Username'} size={250} />
         <form onSubmit={form.onSubmit((values) => { handleEditProfile(values) })}>

@@ -24,6 +24,7 @@
     "@multiavatar/multiavatar": "^1.0.7",
     "@tabler/icons-react": "^2.30.0",
     "bcryptjs": "^2.4.3",
+    "clsx": "^2.1.0",
     "connect-mongo": "^4.6.0",
     "cookie": "0.4.0",
     "dayjs": "^1.11.9",

@@ -88,7 +88,7 @@ export default function TrashHistory(props) {
     return page_data.map((row, i) => (
       <Table.Tr key={row.timeEnd + i} className={classes.tr}>
         <Table.Td suppressHydrationWarning >{new Date(row.timeStart).toDateString()}</Table.Td>
-        <Table.Td suppressHydrationWarning >{new Date(row.timeStart).toLocaleTimeString('en-US', {timeZone: "CST"})}</Table.Td>
+        <Table.Td suppressHydrationWarning >{new Date(row.timeStart).toLocaleTimeString('en-US')}</Table.Td>
         <Table.Td>{row.site}</Table.Td>
         <Table.Td>{row.numOfParticipants}</Table.Td>
         <Table.Td>{truncateString(row.notes, 60)}</Table.Td>
@@ -230,10 +230,10 @@ export default function TrashHistory(props) {
         </Table.Tbody>
       </Table>
       <Group position="center">
-        <Button leftIcon={<IconChevronLeft />} mt="xl" disabled={pageNum == 0} onClick={previousPage}>
+        <Button leftSection={<IconChevronLeft />} mt="xl" disabled={pageNum == 0} onClick={previousPage}>
           Previous Page
         </Button>
-        <Button rightIcon={<IconChevronRight />} mt="xl" disabled={rows.length < 10} onClick={nextPage}>
+        <Button rightSection={<IconChevronRight />} mt="xl" disabled={rows.length < 10} onClick={nextPage}>
           Next Page
         </Button>
       </Group>
