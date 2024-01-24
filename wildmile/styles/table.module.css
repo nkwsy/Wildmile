@@ -3,7 +3,6 @@
   top: 0;
   background-color: var(--mantine-dark-7);
   transition: box-shadow 150ms ease;
-  z-index: 10;
 }
 
 .header::after {
