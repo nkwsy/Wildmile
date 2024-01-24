@@ -55,7 +55,6 @@ function TrashItemAccordian(props) {
             <NumberInput
               {...props.form.getInputProps('items.' + item.name)}
               allowNegative={false}
-              handlersRef={handlersRef}
             />
         </Group>)
     })
