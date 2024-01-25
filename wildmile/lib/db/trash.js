@@ -76,7 +76,32 @@ export async function createLog({ site, participants, timeStart, timeEnd, trashi
 
 export async function updateLogByID(req, id, update) {
   // Here you update the log based on id in the database
-  const log = await getLogByID(id)
+  const log = await findByIdAndUpdate(id,
+    {
+      site: update.site,
+      numOfParticipants: update.participants,
+      timeStart: update.timeStart,
+      timeEnd: update.timeEnd,
+      trashiness: update.trashiness,
+      temp: update.temp,
+      wind: update.wind,
+      cloud: update.cloud,
+      notes: update.notes,
+    }
+    )
+
+  log.items = []
+
+  Object.entries(update.items).forEach(([item, total]) => {
+    if(total > 0){
+      const trash_item = TrashItem.findOne({name: item})
+      const indItem = IndividualTrashItem.findOneAndUpdate({
+        itemId: trash_item._id,
+        logId: id,
+      }, {quantity: total})
+      log.items.push(indItem)
+    }
+  })
 
   return log
 }

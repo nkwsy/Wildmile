@@ -28,8 +28,7 @@ handler
     }
   })
   .put((req, res) => {
-    const { avar } = req.body
-    const log = updateLogByID(req, req.query.id, { avar })
+    const log = updateLogByID(req, req.query.id, req.body)
     return res.json({ log })
   })
 

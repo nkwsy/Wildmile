@@ -8,11 +8,11 @@ import {
   Text,
   Center,
   TextInput,
-  ActionIcon,
   keys
 } from '@mantine/core'
 import TrashLog from '../../../models/Trash'
 import dbConnect from '../../../lib/db/setup'
+import Link from 'next/link';
 import Router from 'next/router'
 import { IconSelector, IconChevronDown, IconChevronUp, IconChevronRight, IconChevronLeft, IconSearch, IconPencil, IconTrash } from '@tabler/icons-react'
 
@@ -92,23 +92,27 @@ export default function TrashHistory(props) {
         <Table.Td>{row.numOfParticipants}</Table.Td>
         <Table.Td>{truncateString(row.notes, 60)}</Table.Td>
         <Table.Td>
-          <Group position="apart" spacing={3}>
-            <ActionIcon
-              component="a"
+          <Group justify="center" position="apart" spacing={3}>
+            <Button
+              justify="center"
+              fullWidth
+              component={Link}
               href={`/trash/history/${row._id}`}
-              title="Edit"
+              leftSection={<IconPencil />}
             >
-              <IconPencil />
-            </ActionIcon>
-            <ActionIcon
+              Edit
+            </Button>
+            <Button
               onClick={() => {
                 // Handle Delete Logic Here
               }}
-              title="Delete"
+              justify="center"
+              fullWidth
+              leftSection={<IconTrash />}
               color="red" // Optional, if you want to give a different color to delete button
             >
-              <IconTrash />
-            </ActionIcon>
+              Delete
+            </Button>
           </Group>
         </Table.Td>
       </Table.Tr>

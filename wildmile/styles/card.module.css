@@ -8,57 +8,22 @@
   flex-wrap: wrap;
 }
 
-.title {
-  font-size: rem(34px);
-  font-weight: 900;
-}
-
-
-
-.description {
-  max-width: rem(600px);
-  margin: auto;
-}
-.description::after {
-    content: '';
-    display: block;
-    background-color: var(--mantine-color-blue-filled);
-    width: rem(45px);
-    height: rem(2px);
-    margin-top: var(--mantine-spacing-sm);
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-
 .card {
   border: rem(1px) solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
 }
-
-.cardTitle::after {
-    content: '';
-    display: block;
-    background-color: var(--mantine-color-blue-filled);
-    width: rem(45px);
-    height: rem(2px);
-    margin-top: var(--mantine-spacing-sm);
-  }
 
 .card:hover {
   background-color: var(--mantine-gray-0);
 }
 
-.cardTitle {
-  text-decoration: none;
-}
-
 .cardTitle::after {
-  content: "";
+  content: '';
   display: block;
-  background-color: var(--mantine-primary);
-  width: 45%;
-  height: 0.2rem;
+  background-color: var(--mantine-color-blue-filled);
+  width: rem(45px);
+  height: rem(2px);
   margin-top: var(--mantine-spacing-sm);
 }
-
-
+.cardLink {
+  text-decoration: none !important;
+}

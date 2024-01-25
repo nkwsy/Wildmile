@@ -1,4 +1,4 @@
-import { Stack, Group, SimpleGrid, Text, Card } from '@mantine/core'
+import { Stack, Group, SimpleGrid, Text, Title, Card } from '@mantine/core'
 import Link from 'next/link'
 import classes from '/styles/card.module.css'
 
@@ -7,13 +7,13 @@ export function IconCardGrid(props) {
 
   const content = cards.map((card) => {
     return (
-      <Link key={card.title} href={card.href}>
-        <Card key={card.title} shadow="md" radius="md" className={classes.card} >
-          <Group>
-            <card.icon size='2rem' stroke={2} />
-            <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
+      <Link key={card.title} href={card.href} className={classes.cardLink}>
+        <Card key={card.title} withBorder shadow="md" radius="md" className={{ root: classes.card }} >
+          <Group gap='xs'>
+            <card.icon size='2.5rem' stroke={2} />
+            <Title size="h2" className={classes.cardTitle} mt="md">
               {card.title}
-            </Text>
+            </Title>
           </Group>
           <Text fz="sm" c="dimmed" mt="sm">
             {card.description}
