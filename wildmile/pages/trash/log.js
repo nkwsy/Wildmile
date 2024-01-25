@@ -133,6 +133,7 @@ export default function CreateLog(props) {
               <DateTimePicker
                 suppressHydrationWarning
                 dropdownType="modal"
+                valueFormat="DD MMM YYYY hh:mm A"
                 label="Time Start"
                 placeholder="Pick date and time"
                 maw={400}
@@ -141,6 +142,7 @@ export default function CreateLog(props) {
               <DateTimePicker
                 suppressHydrationWarning
                 dropdownType="modal"
+                valueFormat="DD MMM YYYY hh:mm A"
                 label="Time End"
                 placeholder="Pick date and time"
                 maw={400}
@@ -185,7 +187,7 @@ export default function CreateLog(props) {
                   { value: '6', label: 'Sleet' },
                   { value: '7', label: 'Showers' },
                 ]}
-                {...form.getInputProps('clouds')}
+                {...form.getInputProps('cloud')}
               />
               <Textarea label="Notes" {...form.getInputProps('notes')} />
             </Stepper.Step>
@@ -298,12 +300,12 @@ export default function CreateLog(props) {
                   { value: '6', label: 'Sleet' },
                   { value: '7', label: 'Showers' },
                 ]}
-                {...form.getInputProps('clouds')}
+                {...form.getInputProps('cloud')}
               />
               <Textarea label="Notes" {...form.getInputProps('notes')} />
             </Stepper.Step>
             <Stepper.Step label="Trash Items" description="Fill in details about trash that was recovered">
-              <TrashItemAccordian items={props.items} form={form}/>
+              <TrashItemAccordian items={props.items} form={form} />
             </Stepper.Step>
             <Stepper.Completed>
               <p>The end</p>

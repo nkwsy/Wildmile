@@ -19,7 +19,7 @@ export default function ProjectLanding() {
 
   return (
     <>
-      <Container maw='75%' my="5rem">
+      <Container maw='85%' my="5rem">
         <Title order={2} className={classes.title} ta="center" mt="sm">{router.query.id}</Title>
         <Text c="dimmed" className={classes.description} ta="center" mt="md">
           Collecting and sharing data about Urban River's projects.

@@ -55,7 +55,7 @@ export default function ProjectSectionLanding(props) {
 
   return (
     <>
-      <Container maw='75%' my="5rem">
+      <Container maw='85%' my="5rem">
         <Title order={2} ta="center" mt="sm">{`${router.query.id} Module ${router.query.mid}`}</Title>
         <Paper withBorder shadow="md" mt="lg" p={30} radius="md">
           <ModuleRenderer width={800} height={400}/>

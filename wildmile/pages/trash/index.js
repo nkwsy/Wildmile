@@ -32,7 +32,7 @@ export default function TrashLanding() {
 
   return (
     <>
-      <Container maw='75%' my="5rem">
+      <Container maw='85%' my="5rem">
         <Title order={2} className={classes.title} ta="center" mt="sm">Urban River Trash Resources</Title>
         <Text c="dimmed" className={classes.description} ta="center" mt="md">
           Collecting and sharing data about Urban River's projects.
