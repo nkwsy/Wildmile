@@ -29,7 +29,7 @@ export default function SignupPage() {
       password: '',
       name: '',
       phone: '',
-      zipcod: '',
+      zipcode: '',
     },
 
     validate: (values) => {

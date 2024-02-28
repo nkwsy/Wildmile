@@ -12,11 +12,13 @@ export async function getAllLogs() {
  * @param {*} date 
  * @returns 
  */
-export async function getAllLogsBeforeDate(date, limit = 10) {
-
-  return await TrashLog.find({ timeEnd: { $lte: date }, 'deleted': false }, ['-_id', '-__v'])
+export async function getAllLogsBeforeDate(date, page = 1, limit = 10) {
+  const skip = (page-1) * limit
+  // return await TrashLog.find({ timeEnd: { $lte: date }, 'deleted': false }, ['-_id', '-__v'])
+  return await TrashLog.find({ 'deleted': false }, ['-_id', '-__v'])
+    .skip(skip)
     .limit(limit)
-    .sort('-timeEnd')
+    .sort('-timeEnd') 
 }
 
 export async function getFilteredLogs(filters) {
@@ -57,19 +59,19 @@ export async function createLog({ site, participants, timeStart, timeEnd, trashi
     notes: notes,
   })
 
-  log.items = []
+  // log.items = []
 
-  Object.entries(items).forEach(([item, total]) => {
-    if(total > 0){
-      const trash_item = TrashItem.findOne({name: item})
-      const indItem = IndividualTrashItem.create({
-        itemId: trash_item._id,
-        logId: log._id,
-        quantity: total,
-      })
-      log.items.push(indItem)
-    }
-  })
+  // Object.entries(items).forEach(([item, total]) => {
+  //   if(total > 0){
+  //     const trash_item = TrashItem.findOne({name: item})
+  //     const indItem = IndividualTrashItem.create({
+  //       itemId: trash_item._id,
+  //       logId: log._id,
+  //       quantity: total,
+  //     })
+  //     log.items.push(indItem)
+  //   }
+  // })
 
   return log
 }
@@ -92,17 +94,29 @@ export async function updateLogByID(req, id, update) {
 
   log.items = []
 
-  Object.entries(update.items).forEach(([item, total]) => {
-    if(total > 0){
-      const trash_item = TrashItem.findOne({name: item})
-      const indItem = IndividualTrashItem.findOneAndUpdate({
-        itemId: trash_item._id,
-        logId: id,
-      }, {quantity: total})
-      log.items.push(indItem)
-    }
-  })
+
 
   return log
 }
 
+export async function updateLogItems(req, log) {
+    if (!req.body || !req.body.items) {
+    throw new Error('Request body is missing or does not contain an items property');
+  }
+
+  Object.entries(req.body.items).forEach((item) => {
+    if(item.total > 0){
+      const trash_item = TrashItem.findOne({_id: item._id})
+      const indItem = IndividualTrashItem.findOneAndUpdate({
+        itemId: trash_item._id,
+        logId: req.logId,
+      }, 
+      {
+        quantity: total
+        },
+      {upsert: true, new: true})
+      log.items.push(indItem)
+    }
+  })
+  await log.save()
+}

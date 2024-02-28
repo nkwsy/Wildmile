@@ -8,7 +8,7 @@ import dbConnect from '../../lib/db/setup'
 import { cardStyles, IconCardGrid } from '../../components/icon_card_grid'
 
 export default function ProjectHomeLanding(props) {
-  const { classes, theme } = cardStyles()
+  // const { classes, theme } = cardStyles()
   const [user, { loading }] = useUser()
 
   useEffect(() => {

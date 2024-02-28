@@ -18,6 +18,7 @@ import { DateTimePicker } from '@mantine/dates'
 import Router from 'next/router'
 import TrashItemTable from '../../components/trash_item_table'
 import TrashItemAccordian from '../../components/trash_item_accordian'
+import IndividualTrashItem from '../../models/IndividualTrashItem'
 import TrashItem from '../../models/TrashItem'
 import dbConnect from '../../lib/db/setup'
 
@@ -80,6 +81,13 @@ export default function CreateLog(props) {
       handlers.close()
       setErrorMsg(await res.text())
     }
+  
+  // Get the _id from the server response
+  const data = await res.json();
+  const id = data._id;
+
+  // Navigate to the trash/edit/[id].js page
+  Router.push(`/trash/edit/${id}`);
   }
 
   const nextStep = () => {
@@ -108,8 +116,6 @@ export default function CreateLog(props) {
           >
             Create a new trash log
           </Title>
-          <Stepper active={active} breakpoint="sm">
-            <Stepper.Step label="First step" description="General Log Data">
               <Select
                 label="Site"
                 data={[
@@ -190,24 +196,13 @@ export default function CreateLog(props) {
                 {...form.getInputProps('cloud')}
               />
               <Textarea label="Notes" {...form.getInputProps('notes')} />
-            </Stepper.Step>
-            <Stepper.Step label="Trash Items" description="Fill in details about trash that was recovered">
-              <TrashItemTable items={props.items} form={form} />
+              
+              <TrashItemAccordian items={props.items} form={form} />
               {/* <TrashItemAccordian items={props.items} form={form}/> */}
-            </Stepper.Step>
-            <Stepper.Completed>
-              <p>The end</p>
-            </Stepper.Completed>
-          </Stepper>
 
           <Group justify="right" mt="xl">
             {errorMsg && <p className="error">{errorMsg}</p>}
-            {active !== 0 && (
-              <Button variant="default" onClick={prevStep}>
-                Back
-              </Button>
-            )}
-            {active < 1 ? <Button onClick={nextStep}>Next step</Button> : <Button onClick={createLog}>Submit</Button>}
+             <Button onClick={createLog}>Submit</Button>
           </Group>
         </Paper>
       </Container>
