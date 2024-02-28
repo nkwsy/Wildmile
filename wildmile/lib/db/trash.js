@@ -98,25 +98,46 @@ export async function updateLogByID(req, id, update) {
 
   return log
 }
-
-export async function updateLogItems(req, log) {
-    if (!req.body || !req.body.items) {
+export async function updateLogItems(items, log) {
+  if (!items) {
     throw new Error('Request body is missing or does not contain an items property');
   }
 
-  Object.entries(req.body.items).forEach((item) => {
-    if(item.total > 0){
-      const trash_item = TrashItem.findOne({_id: item._id})
-      const indItem = IndividualTrashItem.findOneAndUpdate({
+  for (const [key, value] of Object.entries(items)) {
+    if(value.quantity > 0){
+      const trash_item = await TrashItem.findOne({_id: key})
+      const indItem = await IndividualTrashItem.findOneAndUpdate({
         itemId: trash_item._id,
-        logId: req.logId,
+        logId: log,
       }, 
       {
-        quantity: total
+        quantity: value.total
         },
       {upsert: true, new: true})
       log.items.push(indItem)
     }
-  })
-  await log.save()
+  }
+  // await log.save()
+  return items
 }
+// export async function updateLogItems(items, log) {
+//     if (!items) {
+//     throw new Error('Request body is missing or does not contain an items property');
+//   }
+
+//   Object.entries(items).forEach((item) => {
+//     if(item.total > 0){
+//       const trash_item = TrashItem.findOne({_id: item._id})
+//       const indItem = IndividualTrashItem.findOneAndUpdate({
+//         itemId: trash_item._id,
+//         logId: log,
+//       }, 
+//       {
+//         quantity: total
+//         },
+//       {upsert: true, new: true})
+//       log.items.push(indItem)
+//     }
+//   })
+//   await log.save()
+// }

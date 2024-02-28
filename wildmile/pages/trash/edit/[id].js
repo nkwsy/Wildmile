@@ -42,20 +42,31 @@ export default function UpdateTrashCountLog(props) {
 
 
   console.log(props.logId);
-  const form = useForm({
-    initialValues: {
+    console.log(props.items)
+   const form = useForm({
+   initialValues: {
       logId: props.logId,
     //   creator: userId, // Add this line
       items: props.items,
-      quantity: 0,
+  //       items: items.reduce((acc, item) => {
+  //   acc[item._id] = { quantity: item.quantity };
+  //   return acc;
+  // }, {}),
     },
+    // validate: (values) => {
+    //   // console.log('validate ' + values)
+
+    //   return {}
+    // },
   })
+// const itemsArray = Object.entries(form.values.items).map(([id, quantity]) => ({ id, quantity }));
+console.log('Initial form state:', form);
 
     // console.log(props.items)
   async function createLog() {
-    console.log('createlog ' + form.values)
+  console.log('Form state on submit:', form);
     handlers.open()
-    const res = await fetch('/api/trash/logs/logItems', {
+    const res = await fetch('/api/trash/logItems', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form.values),
@@ -134,7 +145,7 @@ export async function getServerSideProps(context) {
     return acc
   }, {});
 
-  // console.log(items)
+  console.log(items)
   return { props: { items: items, logId: id } }
 }
 

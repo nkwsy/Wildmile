@@ -55,10 +55,11 @@ function TrashItemAccordian(props) {
           <Text>
             {item.name}
           </Text>
-            <NumberInput
-              {...props.form.getInputProps('items.' + item._id + '.quantity')}
+            {/* <NumberInput
+              {...props.form.getInputProps(`items.${item._id}.quantity`)}
               allowNegative={false}
-            />
+            /> */}
+            <input type="number" {...props.form.getInputProps(`items.${item._id}.quantity`)} />
         </Group>)
     })
 
