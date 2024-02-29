@@ -181,28 +181,28 @@ export default function TrashHistory(props) {
         <Table.Thead>
           <Table.Tr >
             <Table.Th
-              sorted={sortBy === 'timeStart'}
+              // sorted={sortBy === 'timeStart'}
               reversed={reverseSortDirection}
               onSort={() => setSorting('timeStart')}
             >
               Date
             </Table.Th>
             <Table.Th
-              sorted={sortBy === 'timeStart'}
+              // sorted={sortBy === 'timeStart'}
               reversed={reverseSortDirection}
               onSort={() => setSorting('timeStart')}
             >
               Time
             </Table.Th>
             <Table.Th
-              sorted={sortBy === 'site'}
+              // sorted={sortBy === 'site'}
               reversed={reverseSortDirection}
               onSort={() => setSorting('site')}
             >
               Site
             </Table.Th>
             <Table.Th
-              sorted={sortBy === 'numOfParticipants'}
+              // sorted={sortBy === 'numOfParticipants'}
               reversed={reverseSortDirection}
               onSort={() => setSorting('numOfParticipants')}
             >
@@ -248,7 +248,7 @@ export async function getServerSideProps() {
   await dbConnect()
 
   /* find all the data in our database */
-  const result = await TrashLog.find({ 'deleted': false }, ['-__v', '-createdAt', '-updatedAt']).limit(100).sort('-timeEnd')
+  const result = await TrashLog.find({ 'deleted': false }, ['-__v', '-createdAt', '-updatedAt']).sort({ timeEnd: -1 })
 
   const trashLogs = result.map((doc) => {
     const log = doc.toObject()
@@ -257,8 +257,8 @@ export async function getServerSideProps() {
     log._id = String(log._id)
     log.timeStart = Date.parse(log.timeStart)
     log.timeEnd = Date.parse(log.timeEnd)
+    console.log(log)
     log.creator = String(log.creator)
-
     return log
   })
   return { props: { logs: trashLogs } }

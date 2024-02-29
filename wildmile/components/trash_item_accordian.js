@@ -1,11 +1,15 @@
 import { Group, Stack, NumberInput, Text, Accordion } from '@mantine/core'
 
+// todo: may want to use mantine nested features https://mantine.dev/form/nested/
 
 function TrashItemAccordian(props) {
+  // set the item data to an array
+  const dataArray = Object.values(props.items);
 
 
   // Sort on category
-  const sortedItems = props.items.sort(((a, b) => {
+  // const sortedItems = props.items.sort(((a, b) => {
+  const sortedItems = dataArray.sort(((a, b) => {
     const nameA = (a.catagory || a.catagory).toUpperCase() // ignore upper and lowercase
     const nameB = (b.catagory || b.catagory).toUpperCase() // ignore upper and lowercase
     if (nameA < nameB) {
@@ -48,14 +52,15 @@ function TrashItemAccordian(props) {
     const itemRows = []
     items.forEach(item => {
       itemRows.push(
-        <Group key={item.name + material} justify="space-between">
+        <Group key={item._id} justify="space-between">
           <Text>
             {item.name}
           </Text>
             <NumberInput
-              {...props.form.getInputProps('items.' + item.name)}
+              {...props.form.getInputProps(`items.${item._id}.quantity`)}
               allowNegative={false}
             />
+            {/* <input type="number" {...props.form.getInputProps(`items.${item._id}.quantity`)} /> */}
         </Group>)
     })
 

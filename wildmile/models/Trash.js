@@ -27,6 +27,7 @@ const TrashLogSchema = new Schema({
   area: polygonSchema,
   notes: String,
   weight: Number,
+  deleted: { type: Boolean, default: false },
   trashiness: { type: Number, required: true },
   temp: { type: Number, required: true },
   wind: { type: Number, required: true },

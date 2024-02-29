@@ -23,6 +23,11 @@ const individualTrashItemSchema = new Schema({
   tags: Array,
   generic: { type: Boolean, default: true },
   creator: { type: Schema.Types.ObjectId, ref: 'User' }, // This seems redundant since there is a creator on the trashlog itself
-}, { timestamps: true })
+}, { 
+  timestamps: true, 
+  strictPopulate: false, 
+  toJSON: { virtuals: true }, 
+  toObject: { virtuals: true }
+})
 
 export default mongoose.models.IndividualTrashItem || mongoose.model('IndividualTrashItem', individualTrashItemSchema)
