@@ -1,5 +1,6 @@
 import { Group, Stack, NumberInput, Text, Accordion } from '@mantine/core'
 
+// todo: may want to use mantine nested features https://mantine.dev/form/nested/
 
 function TrashItemAccordian(props) {
   // set the item data to an array
@@ -55,11 +56,11 @@ function TrashItemAccordian(props) {
           <Text>
             {item.name}
           </Text>
-            {/* <NumberInput
+            <NumberInput
               {...props.form.getInputProps(`items.${item._id}.quantity`)}
               allowNegative={false}
-            /> */}
-            <input type="number" {...props.form.getInputProps(`items.${item._id}.quantity`)} />
+            />
+            {/* <input type="number" {...props.form.getInputProps(`items.${item._id}.quantity`)} /> */}
         </Group>)
     })
 

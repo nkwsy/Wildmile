@@ -98,23 +98,23 @@ export async function updateLogByID(req, id, update) {
 
   return log
 }
-export async function updateLogItems(items, log) {
+export async function updateLogItems(items, logId) {
   if (!items) {
     throw new Error('Request body is missing or does not contain an items property');
   }
 
   for (const [key, value] of Object.entries(items)) {
     if(value.quantity > 0){
-      const trash_item = await TrashItem.findOne({_id: key})
+      const trash_item = await TrashItem.findOne({_id: value._id})
       const indItem = await IndividualTrashItem.findOneAndUpdate({
         itemId: trash_item._id,
-        logId: log,
+        logId: logId,
       }, 
       {
-        quantity: value.total
+        quantity: value.quantity
         },
       {upsert: true, new: true})
-      log.items.push(indItem)
+      // log.items.push(indItem)
     }
   }
   // await log.save()
