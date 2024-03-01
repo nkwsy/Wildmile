@@ -30,6 +30,7 @@
     "dayjs": "^1.11.9",
     "express-session": "^1.17.3",
     "konva": "^9.2.0",
+    "mapbox-gl": "^3.1.2",
     "mongoose": "^7.0.2",
     "next": "latest",
     "next-connect": "^0.12.2",
