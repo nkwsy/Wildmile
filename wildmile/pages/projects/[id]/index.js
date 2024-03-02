@@ -5,7 +5,6 @@ import Router from "next/router";
 import Link from "next/link";
 import { useUser } from "/lib/hooks";
 import { useRouter } from "next/router";
-import Router from "next/router";
 import dbConnect from "/lib/db/setup";
 
 export default function ProjectLanding() {
