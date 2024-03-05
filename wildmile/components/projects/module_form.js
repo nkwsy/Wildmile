@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import {
   Stepper,
   Button,
@@ -18,15 +18,23 @@ import { DateTimePicker } from "@mantine/dates";
 
 // const [errorMsg, setErrorMsg] = useState('')
 
-export default function ProjectForm(props) {
+export default function ModuleForm(props) {
   return (
-    <div>
+    <>
       <TextInput label="Name" {...props.form.getInputProps("name")} />
       <Textarea
         label="Description"
         {...props.form.getInputProps("description")}
       />
       <Textarea label="Notes" {...props.form.getInputProps("notes")} />
-    </div>
+      <DateTimePicker
+        label="Date Installed"
+        {...props.form.getInputProps("dateInstalled")}
+      />
+      <Group>
+        <NumberInput label="Size X" {...props.form.getInputProps("size.x")} />
+        <NumberInput label="Size Y" {...props.form.getInputProps("size.y")} />
+      </Group>
+    </>
   );
 }

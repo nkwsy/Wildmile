@@ -1,11 +1,18 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
+const { pointsSchema, polygonSchema } = require("./locationSchemas");
 
 const SectionSchema = new mongoose.Schema({
   name: String,
   description: String,
   dateInstalled: Date,
-  installed: Boolean,
-  project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' },
-})
+  installed: { type: Boolean, default: false },
+  decommisioned: { type: Boolean, default: false },
+  size: {
+    x: Number,
+    y: Number,
+  },
+  projectId: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
+});
 
-export default mongoose.models.Section || mongoose.model('Section', SectionSchema)
+export default mongoose.models.Section ||
+  mongoose.model("Section", SectionSchema);

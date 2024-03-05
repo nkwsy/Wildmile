@@ -37,7 +37,7 @@ export default function ProjectHomeLanding(props) {
     ? cards.push({
         icon: IconBackhoe,
         title: "New Project",
-        href: "/projects/new",
+        href: "/projects/project/new",
         description: "Create a new project",
       })
     : null;
@@ -61,6 +61,7 @@ export default function ProjectHomeLanding(props) {
           Collecting and sharing data about Urban River's projects.
         </Text>
         <IconCardGrid cards={cards} />
+        <IconCardGrid cards={ProjectCards} />
         <MapPicker />
       </Container>
     </>
@@ -72,7 +73,7 @@ export async function getStaticProps() {
   await dbConnect();
 
   /* find all the data in our database */
-  const result = await Project.find({}, [, "name", "description"]);
+  const result = await Project.find({}, ["-_id", "name", "description"]);
   const projects = result.map((doc) => {
     const project = doc.toObject();
     return project;
