@@ -10,6 +10,10 @@ import {
   cardStyles,
   IconCardGrid,
 } from "../../../../components/icon_card_grid";
+import { GridMap } from "components/projects/mod_map";
+import ModMap from "components/projects/3_map";
+import { string } from "yup";
+import { stringify } from "postcss";
 
 export default function ProjectSectionModulesLanding(props) {
   const router = useRouter();
@@ -19,15 +23,15 @@ export default function ProjectSectionModulesLanding(props) {
     // redirect user to login if not authenticated
     if (!loading && !user) Router.replace("/");
   }, [user, loading]);
-
-  const modules = props.modules.map((module) => {
-    return {
-      icon: IconListDetails,
-      title: `Model: ${module.model} - Shape: ${module.shape} X: ${module.x}, Y: ${module.y}`,
-      href: `/projects/${router.query.id}/modules/${module._id}`,
-      description: module.notes,
-    };
-  });
+  const modules = JSON.parse(props.modules);
+  // const modules = props.modules.map((module) => {
+  //   return {
+  //     icon: IconListDetails,
+  //     title: `Model: ${module.model} - Shape: ${module.shape} X: ${module.x}, Y: ${module.y}`,
+  //     href: `/projects/${router.query.id}/modules/${module._id}`,
+  //     description: module.notes,
+  //   };
+  // });
 
   return (
     <>
@@ -40,7 +44,10 @@ export default function ProjectSectionModulesLanding(props) {
         <Text c="dimmed" ta="center" mt="md">
           modules for the {router.query.sid} project
         </Text>
-        <IconCardGrid cards={modules} />
+        {/* <ModMap /> */}
+        <GridMap modules={modules} />
+        {/* <ModuleGrid modules={modules} width={20} height={200} /> */}
+        {/* <IconCardGrid cards={modules} /> */}
       </Container>
     </>
   );
@@ -56,14 +63,14 @@ export async function getServerSideProps(context) {
   }
 
   const section = await Section.findOne({ name: section_name });
-  const result = await Module.find({ section: section._id });
+  const result = await Module.find({ sectionId: section._id }).lean();
 
-  const modules = result.map((doc) => {
-    const module = doc.toObject();
-    module._id = String(module._id);
-    module.section = String(module.section);
-    return module;
-  });
-
+  const modules = JSON.stringify(result);
+  // const modules = result.map((doc) => {
+  //   const module = doc.toObject();
+  //   module._id = String(module._id);
+  //   module.section = String(module.section);
+  //   return module;
+  // });
   return { props: { modules: modules } };
 }
