@@ -10,15 +10,18 @@ import {
   cardStyles,
   IconCardGrid,
 } from "../../../../components/icon_card_grid";
-// import ModuleGrid from "components/projects/mod_map";
+import ModuleGrid from "components/projects/mod_map";
 // import ModMap from "components/projects/3_map";
 import { string } from "yup";
 import { stringify } from "postcss";
 import dynamic from "next/dynamic";
+// import { BaseGrid, createRectLayer } from "components/projects/base_grid";
+// const ModuleGrid = dynamic(() => import("components/projects/mod_map"), {
+//   ssr: false,
+// });
 
-const ModuleGrid = dynamic(() => import("components/projects/mod_map"), {
-  ssr: false,
-});
+// import { GridLayer, ModuleLayer } from "components/projects/mod_map";
+
 export default function ProjectSectionModulesLanding(props) {
   const router = useRouter();
   const [user, { loading }] = useUser();
@@ -51,6 +54,8 @@ export default function ProjectSectionModulesLanding(props) {
         </Text>
         <Grid>
           <Grid.Col span={4}>
+            {/* <GridLayer width={20} height={200} /> */}
+            {/* <ModuleLayer modules={modules} width={20} /> */}
             <ModuleGrid modules={modules} width={20} height={200} />
           </Grid.Col>
           <Grid.Col span={8}>xxxx </Grid.Col>

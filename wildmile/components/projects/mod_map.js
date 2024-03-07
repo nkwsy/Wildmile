@@ -1,3 +1,299 @@
+import React, { useState, useEffect } from "react";
+import { Stage, Layer, Rect, Text, Group, Line } from "react-konva";
+
+// Draw a right triangle within a cell
+const RightTriangle = ({ module, cellWidth, cellHeight, findColor }) => {
+  // Calculate the top left corner of the cell
+  const x = module.y * cellWidth;
+  const y = (201 - module.x) * cellHeight; // Work backwards from 200 because of the wildmile grid
+
+  // Define points for a right triangle within the cell
+  // Assuming the right angle is at the top left corner of the cell
+  const points = [
+    x,
+    y, // Point 1: Top left corner
+    x + cellWidth,
+    y, // Point 2: Top right corner
+    x,
+    y + cellHeight, // Point 3: Bottom left corner
+  ];
+
+  return (
+    <Line
+      points={points}
+      closed={true} // Close the path to form a shape
+      fill={findColor(module.model)} // Fill color
+      stroke="#5ECCA2" // Stroke color
+      strokeWidth={1} // Stroke width
+    />
+  );
+};
+
+// Choose correct module color
+// Draw correct module
+const Module = ({ module, cellWidth, cellHeight }) => {
+  const color = module.model === "5-d" ? "#D68D5E" : "#189968";
+  if (module.shape === "R3" || module.shape === "R2.3") {
+    console.log("Module:", module);
+    return (
+      <Rect
+        x={module.y * cellWidth} // Use cellWidth for the x position, work backwards from 200 because of the wildmile grid
+        y={(201 - module.x) * cellHeight} // Use cellHeight for the y position
+        width={cellWidth} // Set the width of the rectangle to cellWidth
+        height={cellHeight} // Set the height of the rectangle to cellHeight
+        fill={color}
+        stroke="#5ECCA2"
+        strokeWidth={1}
+      />
+    );
+  }
+  if (module.shape === "T3" || module.shape === "T2.3") {
+    // Calculate the top left corner of the cell
+    const x = module.y * cellWidth;
+    const y = (201 - module.x) * cellHeight; // Work backwards from 200 because of the wildmile grid
+
+    // Define points for a right triangle within the cell
+    // Assuming the right angle is at the top left corner of the cell
+    const points = [
+      x,
+      y, // Point 1: Top left corner
+      x + cellWidth,
+      y, // Point 2: Top right corner
+      x,
+      y + cellHeight, // Point 3: Bottom left corner
+    ];
+
+    return (
+      <Line
+        points={points}
+        closed={true} // Close the path to form a shape
+        fill={color} // Fill color
+        stroke="#5ECCA2" // Stroke color
+        strokeWidth={1} // Stroke width
+      />
+    );
+  }
+};
+
+const ModuleGrid = ({ modules, width: cols, height: rows }) => {
+  const [scale, setScale] = useState(1);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    console.log("isClient:", isClient);
+    return null;
+  }
+  // Calculate cell size based on the number of columns and rows
+  const cellWidth = window.innerWidth / cols;
+  const cellHeight = cellWidth;
+  console.log(
+    "cellWidth:",
+    cellWidth,
+    "cellHeight:",
+    cellHeight,
+    "window.innerWidth:",
+    window.innerWidth,
+    "window.innerHeight:",
+    window.innerHeight
+  );
+  const findColor = (model) => {
+    return model === "5-d" ? "#D68D5E" : "#189968";
+  };
+
+  const handleWheel = (e) => {
+    e.evt.preventDefault();
+    const scaleBy = 1.02;
+    const stage = e.target.getStage();
+    const oldScale = stage.scaleX();
+    const pointer = stage.getPointerPosition();
+    const mousePointTo = {
+      x: (pointer.x - stage.x()) / oldScale,
+      y: (pointer.y - stage.y()) / oldScale,
+    };
+    const newScale = e.evt.deltaY > 0 ? oldScale / scaleBy : oldScale * scaleBy;
+    setScale(newScale);
+    const newPos = {
+      x: pointer.x - mousePointTo.x * newScale,
+      y: pointer.y - mousePointTo.y * newScale,
+    };
+    stage.position(newPos);
+    stage.batchDraw();
+  };
+
+  return (
+    <Stage
+      width={window.innerWidth}
+      height={window.innerHeight}
+      scaleX={scale}
+      scaleY={scale}
+      onWheel={handleWheel}
+      draggable
+    >
+      <Layer>
+        {modules.map((module, index) => (
+          <Group key={index}>
+            {/* // Attempt to dynamically render the correct module shape */}
+            {/* <Module module={(module, cellWidth, cellHeight)} /> */}
+            <Rect
+              x={module.y * cellWidth} // Use cellWidth for the x position, work backwards from 200 because of the wildmile grid
+              y={(201 - module.x) * cellHeight} // Use cellHeight for the y position
+              width={cellWidth} // Set the width of the rectangle to cellWidth
+              height={cellHeight} // Set the height of the rectangle to cellHeight
+              fill={findColor(module.model)}
+              stroke="#5ECCA2"
+              strokeWidth={1}
+            />
+            <Text
+              text={`${module.x},${module.y}`}
+              x={module.y * cellWidth + 5} // Adjust text position based on cellWidth
+              y={module.x * cellHeight + 5} // Adjust text position based on cellHeight
+              fontSize={12}
+              fill="#000"
+            />
+          </Group>
+        ))}
+      </Layer>
+    </Stage>
+  );
+};
+
+export default ModuleGrid;
+
+// import React, { useState, useEffect } from "react";
+// import { Stage, Layer, Rect, Text, Group } from "react-konva";
+
+// const GridLayer = ({ width: cols, height: rows }) => {
+//   const [isClient, setIsClient] = useState(false);
+
+//   useEffect(() => {
+//     setIsClient(true);
+//   }, []);
+
+//   if (!isClient) {
+//     console.log("isClient:", isClient);
+//     return null;
+//   }
+
+//   // Calculate cell size based on the number of columns and rows
+//   const cellWidth = 900 / cols;
+//   const cellHeight = cellWidth;
+//   console.log(
+//     "cellWidth:",
+//     cellWidth,
+//     "cellHeight:",
+//     cellHeight,
+//     "window.innerWidth:",
+//     window.innerWidth,
+//     "window.innerHeight:",
+//     window.innerHeight
+//   );
+
+//   return (
+//     <Stage width={window.innerWidth} height={window.innerHeight} draggable>
+//       <Layer>
+//         {/* Render the grid */}
+//         {Array.from({ length: rows }, (_, rowIndex) => (
+//           <Group key={rowIndex}>
+//             {Array.from({ length: cols }, (_, colIndex) => (
+//               <Rect
+//                 key={colIndex}
+//                 x={colIndex * cellWidth}
+//                 y={rowIndex * cellHeight}
+//                 width={cellWidth}
+//                 height={cellHeight}
+//                 fill="#FFFFFF"
+//                 stroke="#5ECCA2"
+//                 strokeWidth={1}
+//               />
+//             ))}
+//           </Group>
+//         ))}
+//       </Layer>
+//     </Stage>
+//   );
+// };
+
+// const ModuleLayer = ({ modules, width: cols }) => {
+//   const [isClient, setIsClient] = useState(false);
+//   const [scale, setScale] = useState(1);
+
+//   useEffect(() => {
+//     setIsClient(true);
+//   }, []);
+
+//   if (!isClient) {
+//     return null;
+//   }
+
+//   const cellWidth = window.innerWidth / cols;
+//   const cellHeight = cellWidth;
+
+//   const findColor = (model) => {
+//     return model === "5-d" ? "#D68D5E" : "#189968";
+//   };
+
+//   const handleWheel = (e) => {
+//     e.evt.preventDefault();
+//     const scaleBy = 1.02;
+//     const stage = e.target.getStage();
+//     const oldScale = stage.scaleX();
+//     const pointer = stage.getPointerPosition();
+//     const mousePointTo = {
+//       x: (pointer.x - stage.x()) / oldScale,
+//       y: (pointer.y - stage.y()) / oldScale,
+//     };
+//     const newScale = e.evt.deltaY > 0 ? oldScale / scaleBy : oldScale * scaleBy;
+//     setScale(newScale);
+//     const newPos = {
+//       x: pointer.x - mousePointTo.x * newScale,
+//       y: pointer.y - mousePointTo.y * newScale,
+//     };
+//     stage.position(newPos);
+//     stage.batchDraw();
+//   };
+
+//   return (
+//     <Stage
+//       width={window.innerWidth}
+//       height={window.innerHeight}
+//       scaleX={scale}
+//       scaleY={scale}
+//       onWheel={handleWheel}
+//       draggable
+//     >
+//       <Layer>
+//         {/* Render the modules */}
+//         {modules.map((module, index) => (
+//           <Group key={index}>
+//             <Rect
+//               x={module.y * cellWidth}
+//               y={module.x * cellHeight}
+//               width={cellWidth}
+//               height={cellHeight}
+//               fill={findColor(module.model)}
+//               stroke="#5ECCA2"
+//               strokeWidth={1}
+//             />
+//             <Text
+//               text={`${module.x},${module.y}`}
+//               x={module.y * cellWidth + 5}
+//               y={module.x * cellHeight + 5}
+//               fontSize={12}
+//               fill="#000"
+//             />
+//           </Group>
+//         ))}
+//       </Layer>
+//     </Stage>
+//   );
+// };
+
+// export { GridLayer, ModuleLayer };
+
 // import React, { useState } from "react";
 // import { Stage, Layer, Rect, Text, Group } from "react-konva";
 
@@ -66,86 +362,7 @@
 //   );
 // };
 
-// export default ModuleGrid;
-import React, { useState } from "react";
-import { Stage, Layer, Rect, Text, Group } from "react-konva";
-
-const ModuleGrid = ({ modules, width: cols, height: rows }) => {
-  const [scale, setScale] = useState(1);
-
-  // Calculate cell size based on the number of columns and rows
-  const cellWidth = window.innerWidth / cols;
-  const cellHeight = cellWidth;
-  console.log(
-    "cellWidth:",
-    cellWidth,
-    "cellHeight:",
-    cellHeight,
-    "window.innerWidth:",
-    window.innerWidth,
-    "window.innerHeight:",
-    window.innerHeight
-  );
-  const findColor = (model) => {
-    return model === "5-d" ? "#D68D5E" : "#189968";
-  };
-
-  const handleWheel = (e) => {
-    e.evt.preventDefault();
-    const scaleBy = 1.02;
-    const stage = e.target.getStage();
-    const oldScale = stage.scaleX();
-    const pointer = stage.getPointerPosition();
-    const mousePointTo = {
-      x: (pointer.x - stage.x()) / oldScale,
-      y: (pointer.y - stage.y()) / oldScale,
-    };
-    const newScale = e.evt.deltaY > 0 ? oldScale / scaleBy : oldScale * scaleBy;
-    setScale(newScale);
-    const newPos = {
-      x: pointer.x - mousePointTo.x * newScale,
-      y: pointer.y - mousePointTo.y * newScale,
-    };
-    stage.position(newPos);
-    stage.batchDraw();
-  };
-
-  return (
-    <Stage
-      width={window.innerWidth}
-      height={window.innerHeight}
-      scaleX={scale}
-      scaleY={scale}
-      onWheel={handleWheel}
-      draggable
-    >
-      <Layer>
-        {modules.map((module, index) => (
-          <Group key={index}>
-            <Rect
-              x={module.y * cellWidth} // Use cellWidth for the x position, work backwards from 200 because of the wildmile grid
-              y={(201 - module.x) * cellHeight} // Use cellHeight for the y position
-              width={cellWidth} // Set the width of the rectangle to cellWidth
-              height={cellHeight} // Set the height of the rectangle to cellHeight
-              fill={findColor(module.model)}
-              stroke="#5ECCA2"
-              strokeWidth={1}
-            />
-            <Text
-              text={`${module.x},${module.y}`}
-              x={module.y * cellWidth + 5} // Adjust text position based on cellWidth
-              y={module.x * cellHeight + 5} // Adjust text position based on cellHeight
-              fontSize={12}
-              fill="#000"
-            />
-          </Group>
-        ))}
-      </Layer>
-    </Stage>
-  );
-};
-
-export default ModuleGrid;
+// // export default ModuleGrid;
 
 // const ModuleGrider = ({ modules, width: cols }) => {
 //   // Example usage within a Mantine Container and Grid
