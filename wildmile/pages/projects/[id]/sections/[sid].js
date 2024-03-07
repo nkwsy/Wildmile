@@ -1,4 +1,4 @@
-import { Title, Text, Container } from "@mantine/core";
+import { Title, Text, Container, Grid } from "@mantine/core";
 import { IconListDetails } from "@tabler/icons-react";
 import { useEffect } from "react";
 import { Router, useRouter } from "next/router";
@@ -10,11 +10,15 @@ import {
   cardStyles,
   IconCardGrid,
 } from "../../../../components/icon_card_grid";
-import { GridMap } from "components/projects/mod_map";
-import ModMap from "components/projects/3_map";
+// import ModuleGrid from "components/projects/mod_map";
+// import ModMap from "components/projects/3_map";
 import { string } from "yup";
 import { stringify } from "postcss";
+import dynamic from "next/dynamic";
 
+const ModuleGrid = dynamic(() => import("components/projects/mod_map"), {
+  ssr: false,
+});
 export default function ProjectSectionModulesLanding(props) {
   const router = useRouter();
   const [user, { loading }] = useUser();
@@ -24,6 +28,7 @@ export default function ProjectSectionModulesLanding(props) {
     if (!loading && !user) Router.replace("/");
   }, [user, loading]);
   const modules = JSON.parse(props.modules);
+  console.log("modules: " + modules);
   // const modules = props.modules.map((module) => {
   //   return {
   //     icon: IconListDetails,
@@ -44,10 +49,12 @@ export default function ProjectSectionModulesLanding(props) {
         <Text c="dimmed" ta="center" mt="md">
           modules for the {router.query.sid} project
         </Text>
-        {/* <ModMap /> */}
-        <GridMap modules={modules} />
-        {/* <ModuleGrid modules={modules} width={20} height={200} /> */}
-        {/* <IconCardGrid cards={modules} /> */}
+        <Grid>
+          <Grid.Col span={4}>
+            <ModuleGrid modules={modules} width={20} height={200} />
+          </Grid.Col>
+          <Grid.Col span={8}>xxxx </Grid.Col>
+        </Grid>
       </Container>
     </>
   );

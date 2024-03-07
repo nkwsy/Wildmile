@@ -1,74 +1,313 @@
-// Grid.js
+// import React, { useState } from "react";
+// import { Stage, Layer, Rect, Text, Group } from "react-konva";
+
+// const ModuleGrid = ({ modules, width: cols, height: rows }) => {
+//   const [scale, setScale] = useState(1);
+
+//   // Calculate cell size based on the number of columns and rows
+//   const cellWidth = window.innerWidth / cols;
+//   const cellHeight = window.innerHeight / rows;
+
+//   const findColor = (model) => {
+//     return model === "5-d" ? "#D68D5E" : "#189968";
+//   };
+
+//   const handleWheel = (e) => {
+//     e.evt.preventDefault();
+//     const scaleBy = 1.02;
+//     const stage = e.target.getStage();
+//     const oldScale = stage.scaleX();
+//     const pointer = stage.getPointerPosition();
+//     const mousePointTo = {
+//       x: (pointer.x - stage.x()) / oldScale,
+//       y: (pointer.y - stage.y()) / oldScale,
+//     };
+//     const newScale = e.evt.deltaY > 0 ? oldScale / scaleBy : oldScale * scaleBy;
+//     setScale(newScale);
+//     const newPos = {
+//       x: pointer.x - mousePointTo.x * newScale,
+//       y: pointer.y - mousePointTo.y * newScale,
+//     };
+//     stage.position(newPos);
+//     stage.batchDraw();
+//   };
+
+//   return (
+//     <Stage
+//       width={window.innerWidth}
+//       height={window.innerHeight}
+//       scaleX={scale}
+//       scaleY={scale}
+//       onWheel={handleWheel}
+//     >
+//       <Layer>
+//         {modules.map((module, index) => (
+//           <Group key={index}>
+//             <Rect
+//               x={module.y * cellWidth} // Use cellWidth for the x position
+//               y={module.x * cellHeight} // Use cellHeight for the y position
+//               width={cellWidth} // Set the width of the rectangle to cellWidth
+//               height={cellHeight} // Set the height of the rectangle to cellHeight
+//               fill={findColor(module.model)}
+//               stroke="#5ECCA2"
+//               strokeWidth={1}
+//             />
+//             <Text
+//               text={`${module.x},${module.y}`}
+//               x={module.y * cellWidth + 5} // Adjust text position based on cellWidth
+//               y={module.x * cellHeight + 5} // Adjust text position based on cellHeight
+//               fontSize={12}
+//               fill="#000"
+//             />
+//           </Group>
+//         ))}
+//       </Layer>
+//     </Stage>
+//   );
+// };
+
+// export default ModuleGrid;
 import React, { useState } from "react";
+import { Stage, Layer, Rect, Text, Group } from "react-konva";
 
-// Helper functions
-const getMod = (data, x, y) => data.find((mod) => mod.x === x && mod.y === y);
+const ModuleGrid = ({ modules, width: cols, height: rows }) => {
+  const [scale, setScale] = useState(1);
 
-const findColor = (model) => {
-  return model === "5-d" ? "#D68D5E" : "#189968";
-};
+  // Calculate cell size based on the number of columns and rows
+  const cellWidth = window.innerWidth / cols;
+  const cellHeight = cellWidth;
+  console.log(
+    "cellWidth:",
+    cellWidth,
+    "cellHeight:",
+    cellHeight,
+    "window.innerWidth:",
+    window.innerWidth,
+    "window.innerHeight:",
+    window.innerHeight
+  );
+  const findColor = (model) => {
+    return model === "5-d" ? "#D68D5E" : "#189968";
+  };
 
-const hashCode = (str) => {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return hash;
-};
-
-const pickColor = (str) => {
-  str = str.replace(/ .*/, "");
-  return `hsl(${hashCode(str) % 360}, 80%, 60%)`; // Adjusted to stay within the HSL color wheel
-};
-
-const GridMap = ({ modules }) => {
-  const [selected, setSelected] = useState(null);
-
-  const selectItem = (scientificName) => {
-    setSelected(scientificName === selected ? null : scientificName);
+  const handleWheel = (e) => {
+    e.evt.preventDefault();
+    const scaleBy = 1.02;
+    const stage = e.target.getStage();
+    const oldScale = stage.scaleX();
+    const pointer = stage.getPointerPosition();
+    const mousePointTo = {
+      x: (pointer.x - stage.x()) / oldScale,
+      y: (pointer.y - stage.y()) / oldScale,
+    };
+    const newScale = e.evt.deltaY > 0 ? oldScale / scaleBy : oldScale * scaleBy;
+    setScale(newScale);
+    const newPos = {
+      x: pointer.x - mousePointTo.x * newScale,
+      y: pointer.y - mousePointTo.y * newScale,
+    };
+    stage.position(newPos);
+    stage.batchDraw();
   };
 
   return (
-    <svg width="100%" height="100vh" style={{ border: "1px solid black" }}>
-      {/* Render modules */}
-      {modules.map((mod, index) => {
-        const fill = findColor(mod.model);
-        return (
-          <rect
-            key={index}
-            x={mod.y * 20} // Assuming 20 is the width of a column
-            y={mod.x * 60} // Assuming 60 is the height of a row
-            width="20"
-            height="60"
-            fill={fill}
-            stroke="#5ECCA2"
-            strokeWidth="1"
-            onClick={() => selectItem(mod.scientificName)}
-          />
-        );
-      })}
-      {/* Render plants */}
-      {/* {plants.map((plant, index) => {
-        const fill = pickColor(plant.scientificName);
-        return (
-          <rect
-            key={index}
-            x={plant.y * 20 + 15 - plant.x * 5} // Custom position logic
-            y={plant.x * 60 + plant.y * 6} // Custom position logic
-            width="5"
-            height="6"
-            fill={fill}
-            stroke={selected === plant.scientificName ? "red" : "#5ECCA2"}
-            strokeWidth={selected === plant.scientificName ? "2" : "1"}
-            onClick={() => selectItem(plant.scientificName)}
-          />
-        );
-      })} */}
-    </svg>
+    <Stage
+      width={window.innerWidth}
+      height={window.innerHeight}
+      scaleX={scale}
+      scaleY={scale}
+      onWheel={handleWheel}
+      draggable
+    >
+      <Layer>
+        {modules.map((module, index) => (
+          <Group key={index}>
+            <Rect
+              x={module.y * cellWidth} // Use cellWidth for the x position, work backwards from 200 because of the wildmile grid
+              y={(201 - module.x) * cellHeight} // Use cellHeight for the y position
+              width={cellWidth} // Set the width of the rectangle to cellWidth
+              height={cellHeight} // Set the height of the rectangle to cellHeight
+              fill={findColor(module.model)}
+              stroke="#5ECCA2"
+              strokeWidth={1}
+            />
+            <Text
+              text={`${module.x},${module.y}`}
+              x={module.y * cellWidth + 5} // Adjust text position based on cellWidth
+              y={module.x * cellHeight + 5} // Adjust text position based on cellHeight
+              fontSize={12}
+              fill="#000"
+            />
+          </Group>
+        ))}
+      </Layer>
+    </Stage>
   );
 };
 
-export default GridMap;
+export default ModuleGrid;
+
+// const ModuleGrider = ({ modules, width: cols }) => {
+//   // Example usage within a Mantine Container and Grid
+//   return (
+//     <Container size="xl" padding="md">
+//       <Grid>
+//         <Col span={12}>
+//           {/* Assuming 'modules' is an array of module objects */}
+//           {/* <ModuleGrid modules={modules} width={cols} /> */}
+//         </Col>
+//       </Grid>
+//     </Container>
+//   );
+// };
+
+// export default ModuleGrider;
+// export default ModuleGrid;
+
+// import React, { useState } from "react";
+// import { Stage, Layer, Rect, Text, Group } from "react-konva";
+
+// const ModuleGrid = ({ modules, width: cols, height: rows }) => {
+//   const [scale, setScale] = useState(1);
+
+//   // Calculate cell width based on the number of columns and the total available width
+//   //   const cellWidth = window.innerWidth / cols;
+//   //   const cellWidth = "2000px";
+//   // Set cell height to be three times the cell width
+//   //   const cellHeight = cellWidth * 3;
+//   const cellWidth = window.innerWidth / cols;
+//   const cellHeight = window.innerHeight / rows;
+//   const findColor = (model) => {
+//     return model === "5-d" ? "#D68D5E" : "#189968";
+//   };
+
+//   const handleWheel = (e) => {
+//     e.evt.preventDefault();
+//     const scaleBy = 1.02;
+//     const stage = e.target.getStage();
+//     const oldScale = stage.scaleX();
+//     const pointer = stage.getPointerPosition();
+//     const mousePointTo = {
+//       x: (pointer.x - stage.x()) / oldScale,
+//       y: (pointer.y - stage.y()) / oldScale,
+//     };
+//     const newScale = e.evt.deltaY > 0 ? oldScale / scaleBy : oldScale * scaleBy;
+//     setScale(newScale);
+//     const newPos = {
+//       x: pointer.x - mousePointTo.x * newScale,
+//       y: pointer.y - mousePointTo.y * newScale,
+//     };
+//     stage.position(newPos);
+//     stage.batchDraw();
+//   };
+
+//   return (
+//     <Stage
+//       width={window.innerWidth}
+//       height={window.innerHeight}
+//       scaleX={scale}
+//       scaleY={scale}
+//       onWheel={handleWheel}
+//     >
+//       <Layer>
+//         {modules.map((module, index) => (
+//           <Group key={index}>
+//             <Rect
+//               x={module.y * cellWidth} // Use cellWidth for the x position
+//               y={module.x * cellHeight} // Use cellHeight for the y position
+//               width={cellWidth} // Set the width of the rectangle to cellWidth
+//               height={cellHeight} // Set the height of the rectangle to cellHeight
+//               fill={findColor(module.model)}
+//               stroke="#5ECCA2"
+//               strokeWidth={1}
+//             />
+//             <Text
+//               text={`${module.x},${module.y}`}
+//               x={module.y * cellWidth + 5} // Adjust text position based on cellWidth
+//               y={module.x * cellHeight + 5} // Adjust text position based on cellHeight
+//               fontSize={12}
+//               fill="#000"
+//             />
+//           </Group>
+//         ))}
+//       </Layer>
+//     </Stage>
+//   );
+// };
+
+// export default ModuleGrid;
+
+// // Grid.js
+// import React, { useState } from "react";
+
+// // Helper functions
+// const getMod = (data, x, y) => data.find((mod) => mod.x === x && mod.y === y);
+
+// const findColor = (model) => {
+//   return model === "5-d" ? "#D68D5E" : "#189968";
+// };
+
+// const hashCode = (str) => {
+//   let hash = 0;
+//   for (let i = 0; i < str.length; i++) {
+//     hash = str.charCodeAt(i) + ((hash << 5) - hash);
+//   }
+//   return hash;
+// };
+
+// const pickColor = (str) => {
+//   str = str.replace(/ .*/, "");
+//   return `hsl(${hashCode(str) % 360}, 80%, 60%)`; // Adjusted to stay within the HSL color wheel
+// };
+
+// const GridMap = ({ modules }) => {
+//   const [selected, setSelected] = useState(null);
+
+//   const selectItem = (scientificName) => {
+//     setSelected(scientificName === selected ? null : scientificName);
+//   };
+
+//   return (
+//     <svg width="100%" height="100vh" style={{ border: "1px solid black" }}>
+//       {/* Render modules */}
+//       {modules.map((mod, index) => {
+//         const fill = findColor(mod.model);
+//         return (
+//           <rect
+//             key={index}
+//             x={mod.y * 20} // Assuming 20 is the width of a column
+//             y={mod.x * 60} // Assuming 60 is the height of a row
+//             width="20"
+//             height="60"
+//             fill={fill}
+//             stroke="#5ECCA2"
+//             strokeWidth="1"
+//             onClick={() => selectItem(mod.scientificName)}
+//           />
+//         );
+//       })}
+//       {/* Render plants */}
+//       {/* {plants.map((plant, index) => {
+//         const fill = pickColor(plant.scientificName);
+//         return (
+//           <rect
+//             key={index}
+//             x={plant.y * 20 + 15 - plant.x * 5} // Custom position logic
+//             y={plant.x * 60 + plant.y * 6} // Custom position logic
+//             width="5"
+//             height="6"
+//             fill={fill}
+//             stroke={selected === plant.scientificName ? "red" : "#5ECCA2"}
+//             strokeWidth={selected === plant.scientificName ? "2" : "1"}
+//             onClick={() => selectItem(plant.scientificName)}
+//           />
+//         );
+//       })} */}
+//     </svg>
+//   );
+// };
+
+// export default GridMap;
 
 // import { useState } from "react";
 // import { Group, Rect, Text, Svg } from "@mantine/core";
