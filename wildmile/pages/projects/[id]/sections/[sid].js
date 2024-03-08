@@ -1,4 +1,4 @@
-import { Title, Text, Container, Grid } from "@mantine/core";
+import { Title, Text, Container, Grid, Button } from "@mantine/core";
 import { IconListDetails } from "@tabler/icons-react";
 import { useEffect } from "react";
 import { Router, useRouter } from "next/router";
@@ -10,7 +10,7 @@ import {
   cardStyles,
   IconCardGrid,
 } from "../../../../components/icon_card_grid";
-import ModuleGrid from "components/projects/mod_map";
+// import ModuleGrid from "components/projects/mod_map";
 // import ModMap from "components/projects/3_map";
 import { string } from "yup";
 import { stringify } from "postcss";
@@ -19,7 +19,7 @@ import dynamic from "next/dynamic";
 // const ModuleGrid = dynamic(() => import("components/projects/mod_map"), {
 //   ssr: false,
 // });
-
+const ModuleGrid = dynamic(() => import("components/projects/mod_map"));
 // import { GridLayer, ModuleLayer } from "components/projects/mod_map";
 
 export default function ProjectSectionModulesLanding(props) {
@@ -30,6 +30,7 @@ export default function ProjectSectionModulesLanding(props) {
     // redirect user to login if not authenticated
     if (!loading && !user) Router.replace("/");
   }, [user, loading]);
+
   const modules = JSON.parse(props.modules);
   console.log("modules: " + modules);
   // const modules = props.modules.map((module) => {
@@ -53,12 +54,16 @@ export default function ProjectSectionModulesLanding(props) {
           modules for the {router.query.sid} project
         </Text>
         <Grid>
+          {/* <ModuleGrid modules={modules} width={20} height={200} /> */}
           <Grid.Col span={4}>
-            {/* <GridLayer width={20} height={200} /> */}
-            {/* <ModuleLayer modules={modules} width={20} /> */}
+            {/* <Container size="sm" padding="md"> */}
             <ModuleGrid modules={modules} width={20} height={200} />
+            {/* </Container> */}
           </Grid.Col>
-          <Grid.Col span={8}>xxxx </Grid.Col>
+          <Grid.Col span={8}>
+            xxxx
+            <Button>add module</Button>
+          </Grid.Col>
         </Grid>
       </Container>
     </>
