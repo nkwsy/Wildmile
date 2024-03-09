@@ -2,33 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { Stage, Layer, Rect, Text, Group, Line } from "react-konva";
 import { Grid } from "@mantine/core";
 import { Button } from "@mantine/core";
-// Draw a right triangle within a cell
-const RightTriangle = ({ module, cellWidth, cellHeight, findColor }) => {
-  // Calculate the top left corner of the cell
-  const x = module.y * cellWidth;
-  const y = (201 - module.x) * cellHeight; // Work backwards from 200 because of the wildmile grid
-
-  // Define points for a right triangle within the cell
-  // Assuming the right angle is at the top left corner of the cell
-  const points = [
-    x,
-    y, // Point 1: Top left corner
-    x + cellWidth,
-    y, // Point 2: Top right corner
-    x,
-    y + cellHeight, // Point 3: Bottom left corner
-  ];
-
-  return (
-    <Line
-      points={points}
-      closed={true} // Close the path to form a shape
-      fill={findColor(module.model)} // Fill color
-      stroke="#5ECCA2" // Stroke color
-      strokeWidth={1} // Stroke width
-    />
-  );
-};
 
 // Choose correct module color
 // Draw correct module
@@ -91,27 +64,6 @@ const TriangelePointsGen = ({
   return points;
 };
 
-// Generate a cell for a module
-export const CellGen = ({ x, y, cellWidth, cellHeight }) => {
-  return (
-    <Rect
-      x={y * cellWidth} // Use cellWidth for the x position, work backwards from 200 because of the wildmile grid
-      y={x * cellHeight} // Use cellHeight for the y position
-      width={cellWidth} // Set the width of the rectangle to cellWidth
-      height={cellHeight} // Set the height of the rectangle to cellHeight
-      // fill={color}
-      // shadowEnabled={true}
-      // shadowColor="black"
-      stroke="grey" // Stroke color
-      strokeWidth={0.1}
-      // dash={[3, 9]} // Make the line dotted
-      strokeOpacity={0.2} // Make the line slightly transparent
-      onClick={() => console.log("Clicked on module:", module)}
-      id={module._id}
-    />
-  );
-};
-
 // Draw a module
 export const ModuleGen = ({ module, cellWidth, cellHeight }) => {
   const color = module.model === "5-d" ? "#D68D5E" : "#189968";
@@ -159,12 +111,37 @@ export const ModuleGen = ({ module, cellWidth, cellHeight }) => {
   }
 };
 
-const ModuleGrid = ({ modules, width: cols, height: rows }) => {
+// Generate a cell for a module
+export const CellGen = ({ x, y, cellWidth, cellHeight }) => {
+  return (
+    <Rect
+      x={y * cellWidth} // Use cellWidth for the x position, work backwards from 200 because of the wildmile grid
+      y={x * cellHeight} // Use cellHeight for the y position
+      width={cellWidth} // Set the width of the rectangle to cellWidth
+      height={cellHeight} // Set the height of the rectangle to cellHeight
+      // fill={color}
+      // shadowEnabled={true}
+      // shadowColor="black"
+      stroke="grey" // Stroke color
+      strokeWidth={0.1}
+      // dash={[3, 9]} // Make the line dotted
+      strokeOpacity={0.2} // Make the line slightly transparent
+      onClick={() => console.log("Clicked on module:", module)}
+      id={module._id}
+    />
+  );
+};
+
+const ModuleGrid = ({ width: cols, height: rows }) => {
   const gridRef = useRef(null);
   const stageRef = useRef();
   const [stageHeight, setStageHeight] = useState(0);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const [rotation, setRotation] = useState(0);
+  const [modules, setModules] = useState({});
+  export const addModule = (newModule) => {
+    setModules((prevModules) => [...prevModules, newModule]);
+  };
   //   useEffect(() => {
   //     if (gridRef.current) {
   //       setStageHeight(gridRef.current.offsetHeight);
@@ -263,7 +240,7 @@ const ModuleGrid = ({ modules, width: cols, height: rows }) => {
   return (
     <div ref={gridRef}>
       <Button onClick={handleButtonClick}>Rotate</Button>
-
+      <Button onClick={() => addModule(newModule)}>add module</Button>
       <Stage
         ref={stageRef}
         width={window.innerWidth}

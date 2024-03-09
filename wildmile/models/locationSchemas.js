@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // Point Schema
-const pointSchema = new mongoose.Schema({
+const PointSchema = new mongoose.Schema({
   type: {
     type: String,
     enum: ["Point"],
@@ -14,7 +14,7 @@ const pointSchema = new mongoose.Schema({
 });
 
 // Polygon Schema
-const polygonSchema = new mongoose.Schema({
+const PolygonSchema = new mongoose.Schema({
   type: {
     type: String,
     enum: ["Polygon"],
@@ -26,7 +26,7 @@ const polygonSchema = new mongoose.Schema({
   },
 });
 
-pointSchema.add({
+PointSchema.add({
   angle: {
     type: Number,
     min: 0,
@@ -38,4 +38,4 @@ pointSchema.add({
   },
 });
 
-module.exports = { pointSchema, polygonSchema };
+module.exports = { PointSchema, PolygonSchema };

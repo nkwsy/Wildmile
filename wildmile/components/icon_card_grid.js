@@ -1,4 +1,13 @@
-import { Stack, Group, SimpleGrid, Text, Title, Card } from "@mantine/core";
+import {
+  Stack,
+  Group,
+  SimpleGrid,
+  Text,
+  Title,
+  Card,
+  rem,
+  ThemeIcon,
+} from "@mantine/core";
 import Link from "next/link";
 import classes from "/styles/card.module.css";
 

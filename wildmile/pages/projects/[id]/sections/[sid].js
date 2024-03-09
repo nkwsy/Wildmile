@@ -20,7 +20,7 @@ import dynamic from "next/dynamic";
 //   ssr: false,
 // });
 const ModuleGrid = dynamic(() => import("components/projects/mod_map"));
-// import { GridLayer, ModuleLayer } from "components/projects/mod_map";
+import { addModule } from "components/projects/mod_map";
 
 export default function ProjectSectionModulesLanding(props) {
   const router = useRouter();
@@ -44,25 +44,22 @@ export default function ProjectSectionModulesLanding(props) {
 
   return (
     <>
-      <Container maw="85%" my="5rem">
+      <Container maw="100%" my="5rem">
         <Title
           order={2}
-          ta="center"
+          ta="right"
           mt="sm"
         >{`${router.query.id} ${router.query.sid}'s Modules`}</Title>
-        <Text c="dimmed" ta="center" mt="md">
-          modules for the {router.query.sid} project
-        </Text>
         <Grid>
           {/* <ModuleGrid modules={modules} width={20} height={200} /> */}
           <Grid.Col span={4}>
             {/* <Container size="sm" padding="md"> */}
-            <ModuleGrid modules={modules} width={20} height={200} />
+            <ModuleGrid width={20} height={200} />
             {/* </Container> */}
           </Grid.Col>
           <Grid.Col span={8}>
             xxxx
-            <Button>add module</Button>
+            <Button onClick={addModule(modules)}>add module</Button>
           </Grid.Col>
         </Grid>
       </Container>
