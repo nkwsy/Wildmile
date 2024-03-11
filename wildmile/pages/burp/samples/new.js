@@ -45,9 +45,10 @@ export default function CreateLog() {
       replicateNumber: 0,
       depth: 0,
       substrate: "",
-      canopy: "",
+      canopy: false,
       numberOfCSO: 0,
       notes: "",
+      coordinates: [],
     },
   });
 

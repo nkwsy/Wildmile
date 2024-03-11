@@ -8,21 +8,22 @@ export async function getMacroSampleByID(id) {
   return await MacroSample.findOne({ _id: id });
 }
 
-export async function createMacroSample({ req }) {
+export async function createMacroSample(req) {
   // Here you should insert the macro sample into the database
+  console.log("createMacroSample req:", req.body);
   const macroSample = await MacroSample.create({
-    boxNum: req.boxNum,
-    samplingPeriod: req.samplingPeriod,
-    dateDeployed: req.dateDeployed,
-    dateCollected: req.dateCollected,
-    locationName: req.locationName,
-    treatment: req.treatment,
-    replicateNumber: req.replicateNumber,
-    depth: req.depth,
-    substrate: req.substrate,
-    canopy: req.canopy,
-    numberOfCSO: req.numberOfCSO,
-    notes: req.notes,
+    boxNum: req.boxNum || "",
+    samplingPeriod: req.samplingPeriod || "",
+    dateDeployed: req.dateDeployed || "",
+    dateCollected: req.dateCollected || "",
+    locationName: req.locationName || "",
+    treatment: req.treatment || "",
+    replicateNumber: req.replicateNumber || "",
+    depth: req.depth || "",
+    substrate: req.substrate || "",
+    canopy: req.canopy || "",
+    numberOfCSO: req.numberOfCSO || "",
+    notes: req.notes || "",
   });
   return macroSample;
 }

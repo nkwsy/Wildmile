@@ -13,16 +13,13 @@ const MacroinvertebrateDataSchema = new mongoose.Schema({
 // Macro sample box schema
 const MacroSampleSchema = new mongoose.Schema({
   boxNum: Number,
-  samplingPeriod: { type: Number, required: true },
+  samplingPeriod: { type: Number },
   dateDeployed: { type: Date },
   dateCollected: { type: Date },
   deploymentDuration: { type: Number },
   locationName: { type: String },
   coordinates: { PointSchema },
-  treatment: {
-    type: String,
-    enum: ["Artificial Structure", "Sea Wall", "Bank", "Benthic", "Surface"],
-  },
+  treatment: [],
   replicateNumber: { type: Number },
   depth: { type: Number },
   substrate: { type: String },

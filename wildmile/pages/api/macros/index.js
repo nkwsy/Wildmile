@@ -31,6 +31,7 @@ handler
   })
   .post(async (req, res) => {
     try {
+      console.log("POST /api/macro/Samples req.body:", req.body);
       const Sample = await createMacroSample(req);
       console.log("POST /api/macro/Samples Sample:", Sample);
       return res.status(201).json({ success: true, data: Sample });

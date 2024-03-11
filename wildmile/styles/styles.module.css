@@ -1,7 +1,8 @@
 /* styles.module.css */
 .footer {
   background-color: var(--mantine-primary-color-background);
-  border-top: var(--mantine-1-rem-border-width) solid var(--mantine-border-color);
+  border-top: var(--mantine-1-rem-border-width) solid
+    var(--mantine-border-color);
 }
 
 .inner {

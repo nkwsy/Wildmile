@@ -139,9 +139,7 @@ const ModuleGrid = ({ width: cols, height: rows }) => {
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const [rotation, setRotation] = useState(0);
   const [modules, setModules] = useState({});
-  export const addModule = (newModule) => {
-    setModules((prevModules) => [...prevModules, newModule]);
-  };
+
   //   useEffect(() => {
   //     if (gridRef.current) {
   //       setStageHeight(gridRef.current.offsetHeight);

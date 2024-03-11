@@ -20,9 +20,12 @@ import {
   Fieldset,
 } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
-import MapPicker from "components/map_picker";
+// import MapPicker from "components/map_picker";
+import LocationModal from "components/maps/LocationModal";
 export default function SampleForm(props) {
   const [bugData, setBugData] = useState([]);
+  const [locationModalOpened, setLocationModalOpened] = useState(false);
+  const [location, setLocation] = useState(null);
 
   const handleBugDataChange = (index, field, value) => {
     const updatedBugData = [...bugData];
@@ -91,7 +94,7 @@ export default function SampleForm(props) {
           label="Substrate"
           {...props.form.getInputProps("substrate")}
         />
-        <TextInput label="Canopy" {...props.form.getInputProps("canopy")} />
+        {/* <TextInput label="Canopy" {...props.form.getInputProps("canopy")} /> */}
         <NumberInput
           label="Number of CSO"
           {...props.form.getInputProps("numberOfCSO")}
@@ -148,7 +151,25 @@ export default function SampleForm(props) {
             Add Bug Data
           </Button>
         </Fieldset>
-        <MapPicker />
+        <Button onClick={() => setLocationModalOpened(true)}>
+          Select Location
+        </Button>
+        <LocationModal
+          opened={locationModalOpened}
+          setOpened={setLocationModalOpened}
+          setLocation={setLocation}
+        />
+        <div>
+          Selected Location:{" "}
+          {...props.form.getInputProps("coordinates").value
+            ? `[${props.form.values.coordinates.lat}, ${props.form.values.coordinates.lng}]`
+            : "None"}
+        </div>
+        {location && (
+          <p>
+            Selected Location: {location.lat}, {location.lng}
+          </p>
+        )}
       </Group>
     </Box>
   );

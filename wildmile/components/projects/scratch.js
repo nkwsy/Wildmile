@@ -1,9 +1,96 @@
-Rebuild this using three.js in react in an existing nextjs / mantine project. It should be a reusible component which I can put on a page. 
+Rebuild this using react Konva in an existing nextjs / mantine project. It should be a reusible component which I can put on a page. 
 It should contain a grid with the module's x, y coordinates reffering to a place on the screen. 
 x is the row and y is the column. Give me less verbose and more specific actions as well as example code to use. 
 Give comments in code if explanation is needed. Present all code for one file in one code box.
 
+Here is an example od the module document which dictates the X, Y coordinates of the module on the grid.
+{
+  "_id": {
+    "$oid": "5f1cb09bff72d7001750e1ff"
+  },
+  "x": 195,
+  "y": 7,
+  "locationCode": "E",
+  "model": "3-d",
+  "shape": "R3",
+  "orientation": "flat",
+  "flipped": false,
+  "notes": "Redo this module, program is flipping plants around and removing them",
+  "tag": "c1",
+  "__v": 2,
+  "tags": [
+    "emergent"
+  ],
+  "island_name": "east",
+  "project": "wildmile",
+  "projectId": {
+    "$oid": "65e6a8ee649b4080e129b778"
+  },
+  "sectionId": {
+    "$oid": "65e6aa9a649b4080e129b789"
+  }
+}
 
+Here is the new page where I will be using the component:
+```
+//sections.js
+
+import { Title, Text, Container } from "@mantine/core";
+import { IconListDetails } from "@tabler/icons-react";
+import { useEffect } from "react";
+import { Router, useRouter } from "next/router";
+import { useUser } from "../../../../lib/hooks";
+import dbConnect from "../../../../lib/db/setup";
+import Section from "../../../../models/Section";
+import Module from "../../../../models/Module";
+import { GridMap } from "components/projects/mod_map";
+import ModMap from "components/projects/3_map";
+
+export default function ProjectSectionModulesLanding(props) {
+  const router = useRouter();
+  const [user, { loading }] = useUser();
+
+  useEffect(() => {
+    // redirect user to login if not authenticated
+    if (!loading && !user) Router.replace("/");
+  }, [user, loading]);
+  const modules = JSON.parse(props.modules);
+
+  return (
+    <>
+      <Container maw="85%" my="5rem">
+        <Title
+          order={2}
+          ta="center"
+          mt="sm"
+        >modules</Title>
+        <Text c="dimmed" ta="center" mt="md">
+          modules for the {router.query.sid} project
+        </Text>
+        <ModuleGrid modules={modules} width={20} height={200} />
+      </Container>
+    </>
+  );
+}
+
+/* Retrieves plant(s) data from mongodb database */
+export async function getServerSideProps(context) {
+  const section_name = context.params.sid;
+  await dbConnect();
+
+  if (section_name === "new") {
+    return { props: { modules: [] } };
+  }
+
+  const section = await Section.findOne({ name: section_name });
+  const result = await Module.find({ sectionId: section._id }).lean();
+
+  const modules = JSON.stringify(result);
+  return { props: { modules: modules } };
+}
+```
+
+Here is the JS from the old project which I am trying to transfer to the new nextjs project:
 ```///Modmap.js
 
 let article = document.querySelector('#modMap');
