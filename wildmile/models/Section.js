@@ -8,8 +8,8 @@ const SectionSchema = new mongoose.Schema({
   installed: { type: Boolean, default: false },
   decommisioned: { type: Boolean, default: false },
   size: {
-    x: Number,
-    y: Number,
+    width: Number,
+    length: Number,
   },
   projectId: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
 });

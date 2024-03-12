@@ -8,7 +8,7 @@ import {
   rem,
   ThemeIcon,
 } from "@mantine/core";
-import Link from "next/link";
+// import Link from "next/link";
 import classes from "/styles/card.module.css";
 
 export function IconCardGrid(props) {

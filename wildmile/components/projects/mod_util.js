@@ -133,15 +133,56 @@ export const CellGen = ({ x, y, cellWidth, cellHeight }) => {
   );
 };
 
-const ModuleGrid = ({moduleId}) => {
+// const ModuleGrid = ({moduleId}) => {
+// <Layer>
+//   {modules.map((module, index) => (
+//     <Group key={index}>
+//       <ModuleGen
+//         module={module}
+//         cellWidth={cellWidth}
+//         cellHeight={cellHeight}
+//       />
+//     </Group>
+//   ))}
+// </Layer>
+export default function ModuleGrid({ sectionName }) {
+  const [modules, setModules] = useState([]);
+  const [newModule, setNewModule] = useState({});
+  const addModule = (module) => {
+    setModules((prevModules) => [...prevModules, module]);
+  };
 
-{ width: cols, height: rows }
+  /// failed attempt to do client side fetch
+  // TODO: implement wss
+  console.log("sectionName:", sectionName);
+  useEffect(() => {
+    const fetchModules = () => {
+      const res = fetch(`/projects/api`, { params: sectionName });
+      //   const data = res.JSON({ section: sectionName });
+      console.log("res:", res);
+      setModules(res);
+    };
+    fetchModules();
+  }, []);
+  // return (
+  //     <ModuleGrid
+  //     cols={20}
+  //     rows={200}
+  //     modules={modules}
+  //     addModule={addModule}
+  //     newModule={newModule}
+  //     />
+  // );
+  // }
+
+  // { width: cols, height: rows }
   const gridRef = useRef(null);
   const stageRef = useRef();
-  // const [stageHeight, setStageHeight] = useState(0);
-  // const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
-  // const [rotation, setRotation] = useState(0);
-  // const [modules, setModules] = useState({});
+  const [stageHeight, setStageHeight] = useState(0);
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+  const [rotation, setRotation] = useState(0);
+  const [cols, setCols] = useState(20);
+  const [rows, setRows] = useState(200);
 
   //   useEffect(() => {
   //     if (gridRef.current) {
@@ -267,23 +308,12 @@ const ModuleGrid = ({moduleId}) => {
             </Group>
           ))}
         </Layer>
-        {/* <Layer>
-          {modules.map((module, index) => (
-            <Group key={index}>
-              <ModuleGen
-                module={module}
-                cellWidth={cellWidth}
-                cellHeight={cellHeight}
-              />
-            </Group>
-          ))}
-        </Layer> */}
       </Stage>
     </div>
   );
-};
+}
 
-export default ModuleGrid;
+// export default ModuleGrid;
 
 // <Group key={index}>
 //   {/* // Attempt to dynamically render the correct module shape */}

@@ -9,7 +9,7 @@ import Project from "/models/Project";
 import {
   cardStyles,
   IconCardGrid,
-} from "../../../../components/icon_card_grid";
+} from "../../../../../components/icon_card_grid";
 
 export default function ProjectSectionLanding(props) {
   const router = useRouter();

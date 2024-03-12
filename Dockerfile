@@ -1,4 +1,4 @@
-FROM node:18-slim
+FROM node:20-slim
 
 WORKDIR /usr/app
 
@@ -10,5 +10,7 @@ RUN npm install
 COPY wildmile .
 # Set permissions for the .next directory
 RUN mkdir -p .next && chown node:node .next
+
+# USER node
 
 CMD ["npm","run","dev"]

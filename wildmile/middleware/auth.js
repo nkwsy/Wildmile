@@ -1,15 +1,15 @@
-import nextConnect from 'next-connect'
-import passport from '../config/passport'
-import session from '../lib/session'
-import dbConnect from '../lib/db/setup'
-import MongoStore from 'connect-mongo'
+import nextConnect from "next-connect";
+import passport from "../config/passport";
+import session from "../lib/session";
+import dbConnect from "../lib/db/setup";
+import MongoStore from "connect-mongo";
 
-const auth = nextConnect()
+const auth = nextConnect();
 
 auth
   .use(async (req, res, next) => {
-    await dbConnect()
-    await next()
+    await dbConnect();
+    await next();
   })
   .use(
     session({
@@ -19,14 +19,14 @@ auth
       cookie: {
         maxAge: 2 * 7 * 24 * 60 * 60 * 1000, // Two weeks in milliseconds
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        path: '/',
-        sameSite: 'lax',
+        secure: process.env.NODE_ENV === "production",
+        path: "/",
+        sameSite: "lax",
       },
-      store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI })
+      store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
     })
   )
   .use(passport.initialize())
-  .use(passport.session())
+  .use(passport.session());
 
-export default auth
+export default auth;
