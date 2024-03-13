@@ -1,4 +1,13 @@
-import { Title, Text, Container, Grid, Button } from "@mantine/core";
+import {
+  Title,
+  Text,
+  Container,
+  Grid,
+  Button,
+  TextInput,
+  Textarea,
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
 import { IconListDetails } from "@tabler/icons-react";
 import { Router, useRouter } from "next/navigation";
 import { useUser } from "/lib/hooks";
@@ -8,7 +17,6 @@ import Module from "/models/Module";
 import { cardStyles, IconCardGrid } from "/components/icon_card_grid";
 import { get } from "mongoose";
 import { ClientProvider, useClient } from "components/projects/context_mod_map";
-import useStore from "lib/store";
 // import ModuleGrid from "components/projects/mod_util";
 import {
   BaseGrid,
@@ -16,14 +24,19 @@ import {
   CreateModuleLayer,
   CanvasBase,
 } from "components/projects/canvas_base";
+import { use } from "passport";
+import ModuleForm from "components/projects/module_form";
 // import ModMap from "components/projects/3_map";
 // import { string } from "yup";
 // import { stringify } from "postcss";
 // import dynamic from "next/dynamic";
 // import { BaseGrid, createRectLayer } from "components/projects/base_grid";
-// const ModuleGrid = dynamic(() => import("components/projects/mod_map"), {
-//   ssr: false,
-// });
+// const { BaseGrid, CreateGridLayer, CreateModuleLayer, CanvasBase } = dynamic(
+//   () => import("components/projects/canvas_base"),
+//   {
+//     ssr: false,
+//   }
+// );
 // const ModuleGrid = dynamic(() => import("components/projects/mod_map"));
 
 // import { addModule } from "components/projects/mod_map";
@@ -39,10 +52,17 @@ export default async function Page(context) {
   //     description: module.notes,
   //   };
   // });
-  const width = useStore((state) => state.width);
-
-  // Use useEffect to update the Zustand store with serverValue when component mounts
-
+  const mod_form = useForm({
+    initialValues: {
+      model: "",
+      size: {
+        x: 0,
+        y: 0,
+      },
+      notes: "",
+      dateInstalled: new Date(),
+    },
+  });
   return (
     <>
       <Container maw="100%" my="5rem">
@@ -56,7 +76,7 @@ export default async function Page(context) {
           {/* <Grid.Col span={4}> */}
           {/* <Container size="sm" padding="md"> */}
           {/* <ModuleGrid sectionName={context.params.section} modules={modules} /> */}
-          <CanvasBase>
+          <CanvasBase width={20} height={200}>
             <CreateModuleLayer modules={modules} />
             <CreateGridLayer />
           </CanvasBase>

@@ -1,5 +1,7 @@
 // import { Html, Main, NextScript } from "next/document";
 import "@mantine/core/styles.css";
+// import Hydration from "/lib/hydration"; // (c)
+
 // import Head from "next/head";
 import {
   MantineProvider,
@@ -27,6 +29,8 @@ export default function RootLayout({ children }) {
         <ColorSchemeScript />
       </head>
       <body>
+        {/* <Hydration /> */}
+
         <MantineProvider>{children}</MantineProvider>
       </body>
     </html>

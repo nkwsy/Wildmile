@@ -1,13 +1,15 @@
 "use client";
 // In CanvasBase.js
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { Stage, Layer, Rect, Text, Group, Line } from "react-konva";
 import { Grid } from "@mantine/core";
 import { Button } from "@mantine/core";
 import useSWR from "swr";
 import { CellGen, ModuleGen } from "./mod_util";
 const CanvasContext = React.createContext();
+// import Hydration from "lib/hydration";
 import useStore from "/lib/store";
+import { use } from "passport";
 
 const Component = () => {
   const { key, updateKey } = useStore();
@@ -15,14 +17,26 @@ const Component = () => {
   // Use the state and actions in your component
 };
 
-export const CanvasBase = ({ children }) => {
+export const CanvasBase = ({ children, width, height }) => {
   const [scale, setScale] = useState(1);
-  //   const width = props.width;
-  //   const height = props.height;
+  const [cols, setCols] = useState(width); // Set initial value of cols to width
+  const [rows, setRows] = useState(height); // Set initial value of rows to height
+
+  //   const cols = useStore((state) => state.cols);
+  //   const [hydrated, setHydrated] = useState(false);
+  //   useEffect(() => {
+  //     setHydrated(true);
+  //   }, []);
+  //   cols: width;
+  useEffect(() => {
+    setCols(width);
+  }, [width]);
+  useEffect(() => {
+    setRows(height);
+  }, [height]);
+
   const [zoomLevel, setZoomLevel] = useState(1);
-  //   const { cols, width } = useStore();
-  //   const cols = useStore;
-  const [rows, height] = useStore();
+  // const [rows, height] = useStore();
   const gridRef = useRef(null);
   const stageRef = useRef();
   useEffect(() => {
@@ -56,7 +70,7 @@ export const CanvasBase = ({ children }) => {
   //   const [cellWidth, setCellWidth] = useState(
   // typeof window !== "undefined" ? window.innerWidth / cols / 2 : 20
   //   );
-  const [cellWidth, setCellWidth] = useState(200);
+  const [cellWidth, setCellWidth] = useState(20);
   const [cellHeight, setCellHeight] = useState(cellWidth * 3);
 
   const handleWheel = (e) => {
@@ -83,7 +97,7 @@ export const CanvasBase = ({ children }) => {
   useEffect(() => {
     // Update the state to store the window size
     const handleResize = () => {
-      setCellWidth(window.innerWidth / cols / 2);
+      setCellWidth(useWindow() / cols / 2);
       setCellHeight(cellWidth * 3);
     };
 
@@ -150,12 +164,19 @@ export function BaseGrid({ children, ...props }) {
 }
 
 export function CreateModuleLayer({ ...props }) {
+  const { cellWidth, cellHeight, setCellWidth, setCellHeight, rows, cols } =
+    useContext(CanvasContext);
   const modules = props.modules;
+  console.log(props.value);
   return (
     <Layer>
       {modules.map((module, index) => (
         <Group key={index}>
-          <ModuleGen module={module} cellWidth={20} cellHeight={60} />
+          <ModuleGen
+            module={module}
+            cellWidth={cellWidth}
+            cellHeight={cellHeight}
+          />
         </Group>
       ))}
     </Layer>
@@ -163,6 +184,9 @@ export function CreateModuleLayer({ ...props }) {
 }
 
 export function CreateGridLayer({ ...props }) {
+  const { cellWidth, cellHeight, setCellWidth, setCellHeight, rows, cols } =
+    useContext(CanvasContext);
+  useWindow();
   return (
     <Layer>
       {Array.from({ length: rows }, (_, i) => (
@@ -180,5 +204,10 @@ export function CreateGridLayer({ ...props }) {
       ))}
     </Layer>
   );
+}
+
+export function useWindow() {
+  console.log(window.innerWidth);
+  return useContext(window.innerWidth);
 }
 export const useCanvas = () => React.useContext(CanvasContext);
