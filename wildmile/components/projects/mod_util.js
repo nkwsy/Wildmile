@@ -4,7 +4,9 @@ import { Stage, Layer, Rect, Text, Group, Line } from "react-konva";
 import { Grid } from "@mantine/core";
 import { Button } from "@mantine/core";
 import useSWR from "swr";
-
+import LocationModal from "components/maps/LocationModal";
+import { ModuleFormModal } from "./module_form";
+import { use } from "passport";
 // import dynamic from "next/dynamic";
 
 // const Canvas = dynamic(() => import("../components/canvas"), {
@@ -74,7 +76,16 @@ const TriangelePointsGen = ({
 };
 
 // Draw a module
-export const ModuleGen = ({ module, cellWidth, cellHeight }) => {
+export const ModuleGen = ({
+  module,
+  cellWidth,
+  cellHeight,
+  setSelectedModule,
+}) => {
+  // let [selectedModule, setSelectedModule] = useState({});
+  function changeModState() {
+    setSelectedModule(module);
+  }
   const color = module.model === "5-d" ? "#D68D5E" : "#189968";
   if (module.shape === "R3" || module.shape === "R2.3") {
     return (
@@ -87,7 +98,7 @@ export const ModuleGen = ({ module, cellWidth, cellHeight }) => {
         stroke="#5ECCA2"
         strokeWidth={1}
         draggable
-        onClick={() => console.log("Clicked on module:", module)}
+        onClick={changeModState}
         id={module._id}
       />
     );

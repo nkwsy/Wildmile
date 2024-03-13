@@ -10,7 +10,7 @@ const CanvasContext = React.createContext();
 // import Hydration from "lib/hydration";
 import useStore from "/lib/store";
 import { use } from "passport";
-
+import { ModuleFormModal } from "./module_form";
 const Component = () => {
   const { key, updateKey } = useStore();
 
@@ -22,6 +22,10 @@ export const CanvasBase = ({ children, width, height }) => {
   const [cols, setCols] = useState(width); // Set initial value of cols to width
   const [rows, setRows] = useState(height); // Set initial value of rows to height
 
+  const [selectedModule, setSelectedModule] = useState({
+    _id: false,
+    module: "none",
+  });
   //   const cols = useStore((state) => state.cols);
   //   const [hydrated, setHydrated] = useState(false);
   //   useEffect(() => {
@@ -34,6 +38,16 @@ export const CanvasBase = ({ children, width, height }) => {
   useEffect(() => {
     setRows(height);
   }, [height]);
+
+  // selectedModule useEffect
+  useEffect(() => {
+    console.log("Selected Module:", selectedModule);
+    if (selectedModule._id) {
+      console.log("Selected open:", selectedModule);
+      ModuleFormModal(selectedModule);
+      setIsFormOpen(true);
+    }
+  }, [selectedModule]);
 
   const [zoomLevel, setZoomLevel] = useState(1);
   // const [rows, height] = useStore();
@@ -106,6 +120,8 @@ export const CanvasBase = ({ children, width, height }) => {
   }, [cols, cellWidth]); // Update when cols or cellWidth changes
 
   // Create default context for context provider
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
   const value = {
     cellWidth,
     cellHeight,
@@ -113,26 +129,39 @@ export const CanvasBase = ({ children, width, height }) => {
     setCellHeight,
     rows,
     cols,
+    selectedModule,
+    setSelectedModule,
+    setIsFormOpen,
   };
   if (!isClient) {
     console.log("isClient:", isClient);
     return null;
   }
   return (
-    <CanvasContext.Provider value={value}>
-      <Stage
-        ref={stageRef}
-        width={window.innerWidth}
-        height={window.innerHeight}
-        scaleX={scale}
-        scaleY={scale}
-        onWheel={handleWheel}
-        //   rotation={rotation}
-        draggable
-      >
-        {children}
-      </Stage>
-    </CanvasContext.Provider>
+    <>
+      <CanvasContext.Provider value={value}>
+        <div>
+          {isFormOpen && (
+            <ModuleFormModal
+              values={module}
+              onClose={() => setIsFormOpen(false)}
+            />
+          )}
+        </div>
+        <Stage
+          ref={stageRef}
+          width={window.innerWidth}
+          height={window.innerHeight}
+          scaleX={scale}
+          scaleY={scale}
+          onWheel={handleWheel}
+          //   rotation={rotation}
+          draggable
+        >
+          {children}
+        </Stage>
+      </CanvasContext.Provider>
+    </>
   );
 };
 
@@ -164,10 +193,19 @@ export function BaseGrid({ children, ...props }) {
 }
 
 export function CreateModuleLayer({ ...props }) {
-  const { cellWidth, cellHeight, setCellWidth, setCellHeight, rows, cols } =
-    useContext(CanvasContext);
+  const {
+    cellWidth,
+    cellHeight,
+    setCellWidth,
+    setCellHeight,
+    rows,
+    cols,
+    selectedModule,
+    setSelectedModule,
+  } = useContext(CanvasContext);
   const modules = props.modules;
   console.log(props.value);
+  console.log("Modules:", selectedModule);
   return (
     <Layer>
       {modules.map((module, index) => (
@@ -176,6 +214,7 @@ export function CreateModuleLayer({ ...props }) {
             module={module}
             cellWidth={cellWidth}
             cellHeight={cellHeight}
+            setSelectedModule={setSelectedModule}
           />
         </Group>
       ))}

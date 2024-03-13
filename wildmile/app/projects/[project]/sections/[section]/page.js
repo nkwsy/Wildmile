@@ -52,17 +52,17 @@ export default async function Page(context) {
   //     description: module.notes,
   //   };
   // });
-  const mod_form = useForm({
-    initialValues: {
-      model: "",
-      size: {
-        x: 0,
-        y: 0,
-      },
-      notes: "",
-      dateInstalled: new Date(),
-    },
-  });
+  // const mod_form = useForm({
+  //   initialValues: {
+  //     model: "",
+  //     size: {
+  //       x: 0,
+  //       y: 0,
+  //     },
+  //     notes: "",
+  //     dateInstalled: new Date(),
+  //   },
+  // });
   return (
     <>
       <Container maw="100%" my="5rem">
@@ -77,8 +77,8 @@ export default async function Page(context) {
           {/* <Container size="sm" padding="md"> */}
           {/* <ModuleGrid sectionName={context.params.section} modules={modules} /> */}
           <CanvasBase width={20} height={200}>
-            <CreateModuleLayer modules={modules} />
             <CreateGridLayer />
+            <CreateModuleLayer modules={modules} />
           </CanvasBase>
           {/* </Container> */}
           {/* </Grid.Col> */}
