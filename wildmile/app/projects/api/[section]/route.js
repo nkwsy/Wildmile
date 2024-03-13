@@ -12,15 +12,16 @@ import {
   getModulesToDraw,
 } from "/lib/db/projects";
 
-export async function GET(req, { params }) {
-  console.log("GET /api/project/", req.body, params);
-  const modules = await getModulesToDraw(params.section);
+export async function GET(req, res) {
+  // const { section_name } = req;
+  console.log("GET /api/project/", req);
+
+  const modules = await getModulesToDraw(req.query.section_name);
   if (req.query) {
     return res.json(modules);
   }
   return res.json({});
 }
-
 // export async function GET() {
 //     const res = await fetch('https://data.mongodb-api.com/...', {
 //       headers: {
@@ -29,6 +30,5 @@ export async function GET(req, { params }) {
 //       },
 //     })
 //     const data = await res.json()
-
 //     return Response.json({ data })
 //   }

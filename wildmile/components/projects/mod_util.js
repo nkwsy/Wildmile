@@ -3,6 +3,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { Stage, Layer, Rect, Text, Group, Line } from "react-konva";
 import { Grid } from "@mantine/core";
 import { Button } from "@mantine/core";
+import useSWR from "swr";
+
+// import dynamic from "next/dynamic";
+
+// const Canvas = dynamic(() => import("../components/canvas"), {
+//   ssr: false,
+// });
+export const fetcher = (url) => fetch(url).then((res) => res.json());
 
 // Choose correct module color
 // Draw correct module
@@ -134,36 +142,98 @@ export const CellGen = ({ x, y, cellWidth, cellHeight }) => {
 };
 
 // const ModuleGrid = ({moduleId}) => {
-// <Layer>
-//   {modules.map((module, index) => (
-//     <Group key={index}>
-//       <ModuleGen
-//         module={module}
-//         cellWidth={cellWidth}
-//         cellHeight={cellHeight}
-//       />
-//     </Group>
-//   ))}
-// </Layer>
-export default function ModuleGrid({ sectionName }) {
-  const [modules, setModules] = useState([]);
+
+// export function getMods(section_name) {
+//   const { data, error, isLoading } = useSWR(
+//     `/projects/api?section_name=${section_name}`,
+//     fetcher
+//   );
+
+//   if (error) return <div>failed to load</div>;
+//   if (isLoading) return <div>loading...</div>;
+// return (
+//   <div>
+//     <Layer>
+//       {data.modules.map((module, index) => (
+//         <Group key={index}>
+//           <ModuleGen
+//             module={module}
+//             cellWidth={cellWidth}
+//             cellHeight={cellHeight}
+//           />
+//         </Group>
+//       ))}
+//     </Layer>
+//   </div>
+// );
+// }
+
+// Existing code...
+
+// Call the addLayers function from another function
+
+// export default ModuleGrid;
+
+export async function getMods(section_name) {
+  const response = await fetch(`/projects/api/${section_name}`);
+  const data = await response.json();
+
+  return data.modules;
+}
+export default function ModuleGrid({ ...params }) {
+  const section_name = params.sectionName;
+  const current_modules = params.modules;
+  const [modules, setModules] = useState(current_modules);
   const [newModule, setNewModule] = useState({});
   const addModule = (module) => {
-    setModules((prevModules) => [...prevModules, module]);
+    setModules((prevModules) => [...prevModules].concat(module));
   };
+  const [layers, setLayers] = useState([]);
+
+  const addLayers = (layers) => {
+    // Add the layers to the existing modules state
+    setModules((prevModules) => [...prevModules, ...layers]);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetcher(`/projects/api/${section_name}`);
+      // Transform your data into layers here
+      const newLayers = data.map((item) => {
+        // Create a layer or any Konva objects based on your item
+        return item; // Placeholder, transform item into a Konva Layer or other Konva objects
+      });
+      setLayers(newLayers);
+    };
+    fetchData();
+  }, []); // Empty dependency array means this runs once on component mount
+
+  // Fetch modules on component mount or when sectionName changes
+  useEffect(() => {
+    fetchModules();
+  }, [sectionName]);
+
+  const handleFetchModulesClick = () => {
+    fetchModules();
+  };
+
+  //   if (error) return <div>Failed to load</div>;
+  //   if (!data) return <div>Loading...</div>;
+  // render data
+  // return <div>Hello {data.name}!</div>
 
   /// failed attempt to do client side fetch
   // TODO: implement wss
-  console.log("sectionName:", sectionName);
-  useEffect(() => {
-    const fetchModules = () => {
-      const res = fetch(`/projects/api`, { params: sectionName });
-      //   const data = res.JSON({ section: sectionName });
-      console.log("res:", res);
-      setModules(res);
-    };
-    fetchModules();
-  }, []);
+  //   console.log("sectionName:", sectionName);
+  //   useEffect(() => {
+  //     const fetchModules = () => {
+  //       const res = fetch(`/projects/api`, { params: sectionName });
+  //       //   const data = res.JSON({ section: sectionName });
+  //       console.log("res:", res);
+  //       setModules(res);
+  //     };
+  //     fetchModules();
+  //   }, []);
   // return (
   //     <ModuleGrid
   //     cols={20}
@@ -174,7 +244,7 @@ export default function ModuleGrid({ sectionName }) {
   //     />
   // );
   // }
-
+  console.log("section_name:", modules);
   // { width: cols, height: rows }
   const gridRef = useRef(null);
   const stageRef = useRef();
@@ -223,27 +293,13 @@ export default function ModuleGrid({ sectionName }) {
     return null;
   }
 
-  const findColor = (model) => {
-    return model === "5-d" ? "#D68D5E" : "#189968";
-  };
   const cellWidth = window.innerWidth / cols / 2;
   const cellHeight = cellWidth * 3;
-  console.log("stage:", gridRef.width);
-  console.log(
-    "cellWidth:",
-    cellWidth,
-    "cellHeight:",
-    cellHeight,
-    "window.innerWidth:",
-    window.innerWidth,
-    "window.innerHeight:",
-    window.innerHeight
-  );
-
   const pivotX = window.innerWidth / 2;
   const pivotY = window.innerHeight / 2;
   const handleButtonClick = (e) => {
     setRotation((prevRotation) => (prevRotation === 0 ? 270 : 0));
+
     // const stage = stageRef.current;
 
     // console.log("grefcr:", gridRef.current);
@@ -255,6 +311,9 @@ export default function ModuleGrid({ sectionName }) {
     // const dy = pivotY - (pivotX * sin + pivotY * cos);
     // stage.position({ x: dx, y: dy });
   };
+  //   const redraw = () => {
+  //     stageRef.draw();
+  //   };
 
   //   console.log("stageHeight:", gridRef.current.offsetWidth);
   console.log("stageHeight:", stageHeight);
@@ -262,6 +321,7 @@ export default function ModuleGrid({ sectionName }) {
     e.evt.preventDefault();
     const scaleBy = 1.1;
     const stage = e.target.getStage();
+
     const oldScale = stage.scaleX();
     const pointer = stage.getPointerPosition();
     const mousePointTo = {
@@ -282,7 +342,11 @@ export default function ModuleGrid({ sectionName }) {
   return (
     <div ref={gridRef}>
       <Button onClick={handleButtonClick}>Rotate</Button>
-      <Button onClick={() => addModule(newModule)}>add module</Button>
+      <Button onClick={() => addModule()}>add module</Button>
+      <Button onClick={() => console.log("modules:", modules)} />
+      <Button onClick={() => redraw()}>Redraw</Button>
+      <button onClick={handleFetchModulesClick}>Fetch Modules</button>
+
       <Stage
         ref={stageRef}
         width={window.innerWidth}
@@ -305,6 +369,17 @@ export default function ModuleGrid({ sectionName }) {
                   cellHeight={cellHeight}
                 />
               ))}
+            </Group>
+          ))}
+        </Layer>
+        <Layer>
+          {modules.map((module, index) => (
+            <Group key={index}>
+              <ModuleGen
+                module={module}
+                cellWidth={cellWidth}
+                cellHeight={cellHeight}
+              />
             </Group>
           ))}
         </Layer>

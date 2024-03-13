@@ -8,7 +8,14 @@ import Module from "/models/Module";
 import { cardStyles, IconCardGrid } from "/components/icon_card_grid";
 import { get } from "mongoose";
 import { ClientProvider, useClient } from "components/projects/context_mod_map";
-import ModuleGrid from "components/projects/mod_util";
+import useStore from "lib/store";
+// import ModuleGrid from "components/projects/mod_util";
+import {
+  BaseGrid,
+  CreateGridLayer,
+  CreateModuleLayer,
+  CanvasBase,
+} from "components/projects/canvas_base";
 // import ModMap from "components/projects/3_map";
 // import { string } from "yup";
 // import { stringify } from "postcss";
@@ -22,8 +29,8 @@ import ModuleGrid from "components/projects/mod_util";
 // import { addModule } from "components/projects/mod_map";
 
 export default async function Page(context) {
-  const modules = await getModules(context);
-  console.log("modules: " + modules);
+  const raw_modules = await getModules(context);
+  const modules = JSON.parse(raw_modules.modules);
   // const modules = props.modules.map((module) => {
   //   return {
   //     icon: IconListDetails,
@@ -32,6 +39,9 @@ export default async function Page(context) {
   //     description: module.notes,
   //   };
   // });
+  const width = useStore((state) => state.width);
+
+  // Use useEffect to update the Zustand store with serverValue when component mounts
 
   return (
     <>
@@ -45,7 +55,11 @@ export default async function Page(context) {
           {/* <ModuleGrid modules={modules} width={20} height={200} /> */}
           {/* <Grid.Col span={4}> */}
           {/* <Container size="sm" padding="md"> */}
-          <ModuleGrid sectionName={context.params.section} />
+          {/* <ModuleGrid sectionName={context.params.section} modules={modules} /> */}
+          <CanvasBase>
+            <CreateModuleLayer modules={modules} />
+            <CreateGridLayer />
+          </CanvasBase>
           {/* </Container> */}
           {/* </Grid.Col> */}
           {/* <Grid.Col span={8}> */}
