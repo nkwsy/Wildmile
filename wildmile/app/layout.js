@@ -27,7 +27,7 @@ const theme = createTheme({
 import { WebVitals } from "./_components/web-vitals";
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" dir="rtl">
+    <html lang="en">
       <head>
         <ColorSchemeScript />
       </head>

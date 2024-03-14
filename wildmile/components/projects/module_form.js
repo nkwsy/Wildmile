@@ -1,6 +1,5 @@
-// import { useState } from "react";
+"use client";
 import React from "react";
-
 import {
   Stepper,
   Button,
@@ -26,88 +25,92 @@ import {
   MenuItem,
   MenuTarget,
   MenuDropdown,
+  SegmentedControl,
 } from "@mantine/core";
 import { IconDots, IconEye, IconFileZip, IconTrash } from "@tabler/icons-react";
 import { DateTimePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
-import { useContext } from "react";
-import { CanvasContext } from "/components/projects/canvas_base";
-
+import { useContext, Suspense, useState, useEffect } from "react";
+import CanvasContext from "./context_mod_map";
 // const [visible, handlers] = useDisclosure(false);
 
 // const [errorMsg, setErrorMsg] = useState('')
 
-export default function ModuleForm(props) {
+// export default function ModuleForm(props) {
+//   return (
+//     <>
+//       {/* <TextInput label="model" {...props.form.getInputProps("model")} />
+//       <Textarea label="Notes" {...props.form.getInputProps("notes")} />
+//       <DateTimePicker
+//         label="Date Installed"
+//         {...props.form.getInputProps("dateInstalled")}
+//       />
+//       <Group>
+//         <NumberInput label="Size X" {...props.form.getInputProps("size.x")} />
+//         <NumberInput label="Size Y" {...props.form.getInputProps("size.y")} />
+//       </Group> */}
+//     </>
+//   );
+// }
+// TODO: Make this an element that sits on the right side of page and allows for editing of module properties
+// TODO: make a master toolbar
+
+export function sliderz() {
+  const [value, setValue] = useState("react");
   return (
     <>
-      {/* <TextInput label="model" {...props.form.getInputProps("model")} />
-      <Textarea label="Notes" {...props.form.getInputProps("notes")} />
-      <DateTimePicker
-        label="Date Installed"
-        {...props.form.getInputProps("dateInstalled")}
+      <SegmentedControl
+        value={value}
+        onChange={setValue}
+        data={[
+          { label: "React", value: "react" },
+          { label: "Angular", value: "ng" },
+          { label: "Vue", value: "vue" },
+          { label: "Svelte", value: "svelte" },
+        ]}
       />
-      <Group>
-        <NumberInput label="Size X" {...props.form.getInputProps("size.x")} />
-        <NumberInput label="Size Y" {...props.form.getInputProps("size.y")} />
-      </Group> */}
     </>
   );
 }
-// TODO: Make this an element that sits on the right side of page and allows for editing of module properties
-// TODO: make a master toolbar
-export function ModuleToolbar() {
-  const { selectedModule, setSelectedModule } = useContext(CanvasContext);
-  return (
-    // <Container>
-    <Card shadow="xs" padding="lg" pl={8} radius="sm" withBorder>
-      <CardSection withBorder inheritPadding py="xs">
-        <Group justify="space-between">
-          <Text fw={500}>Module Toolbar</Text>{" "}
-          <Menu withinPortal position="bottom-end" shadow="sm">
-            <MenuTarget>
-              <ActionIcon variant="subtle" color="gray">
-                <IconDots style={{ width: rem(16), height: rem(16) }} />
-              </ActionIcon>
-            </MenuTarget>
 
-            <MenuDropdown>
-              <MenuItem
-                leftSection={
-                  <IconFileZip style={{ width: rem(14), height: rem(14) }} />
-                }
-              >
-                Download zip
-              </MenuItem>
-              <MenuItem
-                leftSection={
-                  <IconEye style={{ width: rem(14), height: rem(14) }} />
-                }
-              >
-                Preview all
-              </MenuItem>
-              <MenuItem
-                leftSection={
-                  <IconTrash style={{ width: rem(14), height: rem(14) }} />
-                }
-                color="red"
-              >
-                Delete all
-              </MenuItem>
-            </MenuDropdown>
-          </Menu>
+export default function ModuleToolbar() {
+  // console.log("ModuleToolbar");
+  // const CanvasContext =
+  //   typeof window !== "undefined"
+  //     ? require("/components/projects/canvas_base").CanvasContext
+  //     :
+  const { selectedModule } = useContext(CanvasContext);
+  // const [selectedModule, setSelectedModule] = useState(null);
+  // useEffect(() => {
+  //   if (CanvasContext) {
+  //     setSelectedModule(CanvasContext.selectedModule);
+  //   }
+  // }, [CanvasContext]);
+  console.log("CanvasContext:", selectedModule);
+
+  return (
+    <>
+      <Card shadow="xs" padding="lg" pl={8} radius="sm" withBorder>
+        <CardSection withBorder inheritPadding py="xs">
+          <Group justify="space-between">
+            <Text fw={500}>Module Toolbar {selectedModule.locationCode}</Text>{" "}
+          </Group>
+        </CardSection>
+        <CardSection withBorder inheritPadding py="xs">
+          <Group justify="space-between">{sliderz()}</Group>
+        </CardSection>
+
+        <Group>
+          <Button color="blue" variant="light" radius="md">
+            Add Module
+          </Button>
+          <Button color="red" variant="light" radius="md">
+            Remove Module
+          </Button>
         </Group>
-      </CardSection>
-      <Group>
-        <Button color="blue" variant="light" radius="md">
-          Add Module
-        </Button>
-        <Button color="red" variant="light" radius="md">
-          Remove Module
-        </Button>
-      </Group>
-    </Card>
-    // </Container>
+      </Card>
+    </>
   );
 }
 

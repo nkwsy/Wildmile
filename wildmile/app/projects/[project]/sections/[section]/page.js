@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Title,
   Text,
@@ -9,6 +7,7 @@ import {
   TextInput,
   Textarea,
   GridCol,
+  Flex,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconListDetails } from "@tabler/icons-react";
@@ -30,16 +29,10 @@ import {
 } from "components/projects/canvas_base";
 import { use } from "passport";
 import dynamic from "next/dynamic";
-
-const ModuleToolbar = dynamic(
-  () =>
-    import("components/projects/module_form").then(
-      (module) => module.ModuleToolbar
-    ),
-  {
-    ssr: false,
-  }
-);
+import React from "react";
+const ModuleToolbar = dynamic(() => import("components/projects/module_form"), {
+  ssr: false,
+});
 
 // import ModMap from "components/projects/3_map";
 // import { string } from "yup";
@@ -85,17 +78,26 @@ export default async function Page(context) {
           ta="right"
           mt="sm"
         >{`${context.params.project} ${context.params.section}'s Modules`}</Title>
-        <Grid justify="flex-end" overflow="hidden" maw="100%">
-          <ModMapWrapper>
-            <GridCol span={4} pos={"fixed"} flex miw={200}>
-              <ModuleToolbar />
-            </GridCol>
+        <ModMapWrapper>
+          {/* <Grid justify="flex-end" overflow="hidden" maw="100%">
+            <GridCol span={4} pos={"fixed"} justify="flex-end" flex miw={200}> */}
+          <Flex
+            mih={50}
+            gap="md"
+            justify="flex-end"
+            align="flex-start"
+            direction="row"
+            wrap="wrap"
+          >
+            <ModuleToolbar />
+            {/* </GridCol> */}
             <CanvasBase width={12} height={200}>
               {/* <CreateGridLayer /> */}
               <CreateModuleLayer modules={modules} />
             </CanvasBase>
-          </ModMapWrapper>
-        </Grid>
+          </Flex>
+          {/* </Grid> */}
+        </ModMapWrapper>
       </Container>
     </>
   );

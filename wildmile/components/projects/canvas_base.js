@@ -6,11 +6,12 @@ import { Grid, GridCol } from "@mantine/core";
 import { Button } from "@mantine/core";
 import useSWR from "swr";
 import { CellGen, ModuleGen } from "./mod_util";
-export const CanvasContext = React.createContext();
+// export const CanvasContext = React.createContext();
+import CanvasContext from "./context_mod_map";
 // import Hydration from "lib/hydration";
 import useStore from "/lib/store";
 import { use } from "passport";
-import { ModuleFormModal } from "./module_form";
+// import { ModuleFormModal } from "./module_form";
 import { useMediaQuery } from "@mantine/hooks";
 const Component = () => {
   const { key, updateKey } = useStore();
@@ -164,22 +165,20 @@ export const CanvasBase = ({ children, width, height }) => {
   return (
     <>
       <CanvasContext.Provider value={value}>
-        <GridCol span={8} z-index={0}>
-          <div>
-            <Stage
-              ref={gridRef}
-              width={containerSize.width}
-              height={containerSize.height}
-              scaleX={scale}
-              scaleY={scale}
-              onWheel={handleWheel}
-              //   rotation={rotation}
-              draggable
-            >
-              {children}
-            </Stage>
-          </div>
-        </GridCol>
+        <div>
+          <Stage
+            ref={gridRef}
+            width={containerSize.width}
+            height={containerSize.height}
+            scaleX={scale}
+            scaleY={scale}
+            onWheel={handleWheel}
+            //   rotation={rotation}
+            draggable
+          >
+            {children}
+          </Stage>
+        </div>
       </CanvasContext.Provider>
     </>
   );
