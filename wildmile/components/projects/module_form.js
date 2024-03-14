@@ -19,10 +19,20 @@ import {
   Image,
   Badge,
   Text,
+  CardSection,
+  Menu,
+  ActionIcon,
+  rem,
+  MenuItem,
+  MenuTarget,
+  MenuDropdown,
 } from "@mantine/core";
+import { IconDots, IconEye, IconFileZip, IconTrash } from "@tabler/icons-react";
 import { DateTimePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
+import { useContext } from "react";
+import { CanvasContext } from "/components/projects/canvas_base";
 
 // const [visible, handlers] = useDisclosure(false);
 
@@ -31,7 +41,7 @@ import { useDisclosure } from "@mantine/hooks";
 export default function ModuleForm(props) {
   return (
     <>
-      <TextInput label="model" {...props.form.getInputProps("model")} />
+      {/* <TextInput label="model" {...props.form.getInputProps("model")} />
       <Textarea label="Notes" {...props.form.getInputProps("notes")} />
       <DateTimePicker
         label="Date Installed"
@@ -40,12 +50,67 @@ export default function ModuleForm(props) {
       <Group>
         <NumberInput label="Size X" {...props.form.getInputProps("size.x")} />
         <NumberInput label="Size Y" {...props.form.getInputProps("size.y")} />
-      </Group>
+      </Group> */}
     </>
   );
 }
 // TODO: Make this an element that sits on the right side of page and allows for editing of module properties
 // TODO: make a master toolbar
+export function ModuleToolbar() {
+  const { selectedModule, setSelectedModule } = useContext(CanvasContext);
+  return (
+    // <Container>
+    <Card shadow="xs" padding="lg" pl={8} radius="sm" withBorder>
+      <CardSection withBorder inheritPadding py="xs">
+        <Group justify="space-between">
+          <Text fw={500}>Module Toolbar</Text>{" "}
+          <Menu withinPortal position="bottom-end" shadow="sm">
+            <MenuTarget>
+              <ActionIcon variant="subtle" color="gray">
+                <IconDots style={{ width: rem(16), height: rem(16) }} />
+              </ActionIcon>
+            </MenuTarget>
+
+            <MenuDropdown>
+              <MenuItem
+                leftSection={
+                  <IconFileZip style={{ width: rem(14), height: rem(14) }} />
+                }
+              >
+                Download zip
+              </MenuItem>
+              <MenuItem
+                leftSection={
+                  <IconEye style={{ width: rem(14), height: rem(14) }} />
+                }
+              >
+                Preview all
+              </MenuItem>
+              <MenuItem
+                leftSection={
+                  <IconTrash style={{ width: rem(14), height: rem(14) }} />
+                }
+                color="red"
+              >
+                Delete all
+              </MenuItem>
+            </MenuDropdown>
+          </Menu>
+        </Group>
+      </CardSection>
+      <Group>
+        <Button color="blue" variant="light" radius="md">
+          Add Module
+        </Button>
+        <Button color="red" variant="light" radius="md">
+          Remove Module
+        </Button>
+      </Group>
+    </Card>
+    // </Container>
+  );
+}
+
 export function ModuleFormModal(values, onClose) {
   console.log("props:", values);
   // const onClose = useContext(CanvasContext);

@@ -1,0 +1,5 @@
+.overlay {
+  position: absolute;
+  z-index: 10; /* Higher value means this will be on top of other positioned elements */
+  /* Other styles */
+}

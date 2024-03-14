@@ -25,7 +25,7 @@ export default async function Page(context) {
   // console.log("sections: " + JSON.stringify(sections_card));
   return (
     <>
-      <Container maw="85%" my="5rem">
+      <Container maw="100%" mah="100%" my="5rem">
         <Title order={2} ta="center" mt="sm">
           {projectName}
         </Title>

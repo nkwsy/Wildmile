@@ -2,36 +2,59 @@
 // In CanvasBase.js
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { Stage, Layer, Rect, Text, Group, Line } from "react-konva";
-import { Grid } from "@mantine/core";
+import { Grid, GridCol } from "@mantine/core";
 import { Button } from "@mantine/core";
 import useSWR from "swr";
 import { CellGen, ModuleGen } from "./mod_util";
-const CanvasContext = React.createContext();
+export const CanvasContext = React.createContext();
 // import Hydration from "lib/hydration";
 import useStore from "/lib/store";
 import { use } from "passport";
 import { ModuleFormModal } from "./module_form";
+import { useMediaQuery } from "@mantine/hooks";
 const Component = () => {
   const { key, updateKey } = useStore();
 
   // Use the state and actions in your component
 };
 
-export const CanvasBase = ({ children, width, height }) => {
-  const [scale, setScale] = useState(1);
-  const [cols, setCols] = useState(width); // Set initial value of cols to width
-  const [rows, setRows] = useState(height); // Set initial value of rows to height
+export const LoadMods = () => {
+  const { data, error } = useSWR("/api/modules", fetcher);
+  if (error) return <div>Failed to load</div>;
+  if (!data) return <div>Loading...</div>;
+  return <ModMap modules={data} />;
+};
 
+export const ModMapWrapper = ({ children }) => {
   const [selectedModule, setSelectedModule] = useState({
     _id: false,
     module: "none",
   });
-  //   const cols = useStore((state) => state.cols);
-  //   const [hydrated, setHydrated] = useState(false);
-  //   useEffect(() => {
-  //     setHydrated(true);
-  //   }, []);
-  //   cols: width;
+  const values = { selectedModule, setSelectedModule };
+  return (
+    <div>
+      <CanvasContext.Provider value={values}>{children}</CanvasContext.Provider>
+    </div>
+  );
+};
+
+export const CanvasBase = ({ children, width, height }) => {
+  const { selectedModule, setSelectedModule } = useContext(CanvasContext);
+
+  const gridRef = useRef(null);
+  const [scale, setScale] = useState(1);
+  const [cols, setCols] = useState(width); // Set initial value of cols to width
+  const [rows, setRows] = useState(height); // Set initial value of rows to height
+  const [containerSize, setContainerSize] = useState({
+    width:
+      typeof window !== "undefined" && window.innerWidth
+        ? window.innerWidth
+        : 1200,
+    height:
+      typeof window !== "undefined" && window.innerHeight
+        ? window.innerHeight
+        : 1200,
+  });
   useEffect(() => {
     setCols(width);
   }, [width]);
@@ -44,14 +67,13 @@ export const CanvasBase = ({ children, width, height }) => {
     console.log("Selected Module:", selectedModule);
     if (selectedModule._id) {
       console.log("Selected open:", selectedModule);
-      ModuleFormModal(selectedModule);
+      //   ModuleFormModal(selectedModule);
       setIsFormOpen(true);
     }
   }, [selectedModule]);
 
   const [zoomLevel, setZoomLevel] = useState(1);
   // const [rows, height] = useStore();
-  const gridRef = useRef(null);
   const stageRef = useRef();
   useEffect(() => {
     if (gridRef.current) {
@@ -59,6 +81,7 @@ export const CanvasBase = ({ children, width, height }) => {
         width: gridRef.current.offsetWidth,
         height: gridRef.current.offsetHeight,
       });
+      console.log("Container Size:", containerSize);
     }
   }, []);
 
@@ -69,6 +92,7 @@ export const CanvasBase = ({ children, width, height }) => {
           width: gridRef.current.offsetWidth,
           height: gridRef.current.offsetHeight,
         });
+        console.log("Container Size:", containerSize);
       }
     };
 
@@ -140,26 +164,22 @@ export const CanvasBase = ({ children, width, height }) => {
   return (
     <>
       <CanvasContext.Provider value={value}>
-        <div>
-          {isFormOpen && (
-            <ModuleFormModal
-              values={module}
-              onClose={() => setIsFormOpen(false)}
-            />
-          )}
-        </div>
-        <Stage
-          ref={stageRef}
-          width={window.innerWidth}
-          height={window.innerHeight}
-          scaleX={scale}
-          scaleY={scale}
-          onWheel={handleWheel}
-          //   rotation={rotation}
-          draggable
-        >
-          {children}
-        </Stage>
+        <GridCol span={8} z-index={0}>
+          <div>
+            <Stage
+              ref={gridRef}
+              width={containerSize.width}
+              height={containerSize.height}
+              scaleX={scale}
+              scaleY={scale}
+              onWheel={handleWheel}
+              //   rotation={rotation}
+              draggable
+            >
+              {children}
+            </Stage>
+          </div>
+        </GridCol>
       </CanvasContext.Provider>
     </>
   );
@@ -225,7 +245,6 @@ export function CreateModuleLayer({ ...props }) {
 export function CreateGridLayer({ ...props }) {
   const { cellWidth, cellHeight, setCellWidth, setCellHeight, rows, cols } =
     useContext(CanvasContext);
-  useWindow();
   return (
     <Layer>
       {Array.from({ length: rows }, (_, i) => (
@@ -247,6 +266,6 @@ export function CreateGridLayer({ ...props }) {
 
 export function useWindow() {
   console.log(window.innerWidth);
-  return useContext(window.innerWidth);
+  return window.innerWidth;
 }
 export const useCanvas = () => React.useContext(CanvasContext);

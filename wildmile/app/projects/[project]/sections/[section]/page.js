@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Title,
   Text,
@@ -6,6 +8,7 @@ import {
   Button,
   TextInput,
   Textarea,
+  GridCol,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconListDetails } from "@tabler/icons-react";
@@ -23,13 +26,24 @@ import {
   CreateGridLayer,
   CreateModuleLayer,
   CanvasBase,
+  ModMapWrapper,
 } from "components/projects/canvas_base";
 import { use } from "passport";
-import ModuleForm from "components/projects/module_form";
+import dynamic from "next/dynamic";
+
+const ModuleToolbar = dynamic(
+  () =>
+    import("components/projects/module_form").then(
+      (module) => module.ModuleToolbar
+    ),
+  {
+    ssr: false,
+  }
+);
+
 // import ModMap from "components/projects/3_map";
 // import { string } from "yup";
 // import { stringify } from "postcss";
-// import dynamic from "next/dynamic";
 // import { BaseGrid, createRectLayer } from "components/projects/base_grid";
 // const { BaseGrid, CreateGridLayer, CreateModuleLayer, CanvasBase } = dynamic(
 //   () => import("components/projects/canvas_base"),
@@ -71,21 +85,16 @@ export default async function Page(context) {
           ta="right"
           mt="sm"
         >{`${context.params.project} ${context.params.section}'s Modules`}</Title>
-        <Grid>
-          {/* <ModuleGrid modules={modules} width={20} height={200} /> */}
-          {/* <Grid.Col span={4}> */}
-          {/* <Container size="sm" padding="md"> */}
-          {/* <ModuleGrid sectionName={context.params.section} modules={modules} /> */}
-          <CanvasBase width={20} height={200}>
-            <CreateGridLayer />
-            <CreateModuleLayer modules={modules} />
-          </CanvasBase>
-          {/* </Container> */}
-          {/* </Grid.Col> */}
-          {/* <Grid.Col span={8}> */}
-          xxxx
-          {/* <Button onClick={addModule(modules)}>add module</Button> */}
-          {/* </Grid.Col> */}
+        <Grid justify="flex-end" overflow="hidden" maw="100%">
+          <ModMapWrapper>
+            <GridCol span={4} pos={"fixed"} flex miw={200}>
+              <ModuleToolbar />
+            </GridCol>
+            <CanvasBase width={12} height={200}>
+              {/* <CreateGridLayer /> */}
+              <CreateModuleLayer modules={modules} />
+            </CanvasBase>
+          </ModMapWrapper>
         </Grid>
       </Container>
     </>

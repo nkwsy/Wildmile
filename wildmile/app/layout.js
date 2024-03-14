@@ -1,4 +1,5 @@
 // import { Html, Main, NextScript } from "next/document";
+
 import "@mantine/core/styles.css";
 // import Hydration from "/lib/hydration"; // (c)
 
@@ -8,6 +9,7 @@ import {
   //   AppShell,
   ColorSchemeScript,
   createTheme,
+  DirectionProvider,
 } from "@mantine/core";
 
 // import { HeaderNav } from "/components/nav";
@@ -22,13 +24,16 @@ const theme = createTheme({
   /** Put your mantine theme override here */
 });
 
+import { WebVitals } from "./_components/web-vitals";
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" dir="rtl">
       <head>
         <ColorSchemeScript />
       </head>
       <body>
+        <WebVitals />
+
         {/* <Hydration /> */}
 
         <MantineProvider>{children}</MantineProvider>
