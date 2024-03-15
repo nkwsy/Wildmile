@@ -52,12 +52,15 @@ export default function Demo({ props }) {
             />
           </Group>
           <Group style={{ display: "flex", gap: "8px" }}>
-            <SegmentedControl data={["R3", "T3", "R2.3", "T2.3"]} />
+            <SegmentedControl
+              data={["R3", "T3", "R2.3", "T2.3"]}
+              {...form.getInputProps("shape")}
+            />
             <SegmentedControl
               data={["flat", "RH", "LH"]}
               {...form.getInputProps("orientation", {
                 value:
-                  initialValues.model === "R3" || initialValues.model === "R2.3"
+                  initialValues.shape === "R3" || initialValues.shape === "R2.3"
                     ? "flat"
                     : initialValues.orientation,
               })}

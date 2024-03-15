@@ -35,8 +35,8 @@ import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { useContext, Suspense, useState, useEffect } from "react";
 import CanvasContext from "./context_mod_map";
-import Demo from "./mf.js";
 const ModuleForm = dynamic(() => import("components/projects/mf.js"));
+const MultiModuleForm = dynamic(() => import("components/projects/mf.js"));
 // const [visible, handlers] = useDisclosure(false);
 
 // const [errorMsg, setErrorMsg] = useState('')
@@ -70,8 +70,14 @@ export default function ModuleToolbar() {
   //   typeof window !== "undefined"
   //     ? require("/components/projects/canvas_base").CanvasContext
   //     :
-  const { selectedModule, setSelectedModule, mode, setMode } =
-    useContext(CanvasContext);
+  const {
+    selectedModule,
+    setSelectedModule,
+    mode,
+    setMode,
+    setSelectedCell,
+    selectedCell,
+  } = useContext(CanvasContext);
   // const [selectedModule, setSelectedModule] = useState(null);
 
   console.log("CanvasContext:", selectedModule);

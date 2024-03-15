@@ -135,7 +135,8 @@ export const ModuleGen = ({
 // Generate a cell for a module
 export const CellGen = ({ x, y, cellWidth, cellHeight, setSelectedCell }) => {
   function changeSelectedCell() {
-    setSelectedCell({ x: x, y: y });
+    const selectedCell = { x, y };
+    setSelectedCell({ x, y });
   }
   return (
     <Rect
@@ -150,8 +151,8 @@ export const CellGen = ({ x, y, cellWidth, cellHeight, setSelectedCell }) => {
       strokeWidth={0.1}
       // dash={[3, 9]} // Make the line dotted
       strokeOpacity={0.2} // Make the line slightly transparent
-      onClick={() => changeSelectedCell}
-      id={module._id}
+      onClick={changeSelectedCell}
+      // id={module._id}
     />
   );
 };

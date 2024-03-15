@@ -29,7 +29,7 @@ export const ModMapWrapper = ({ children }) => {
     _id: false,
     module: "none",
   });
-  const [selectedCell, setSelectedCell] = useState([0, 0]);
+  const [selectedCell, setSelectedCell] = useState({ x: 0, y: 0 });
   // Sets the exploration mode of the map
   const [mode, setMode] = useState("plants");
   const [editMode, setEditMode] = useState(false);
@@ -51,7 +51,8 @@ export const ModMapWrapper = ({ children }) => {
 };
 
 export const CanvasBase = ({ children, width, height }) => {
-  const { selectedModule, setSelectedModule } = useContext(CanvasContext);
+  const { selectedModule, setSelectedModule, selectedCell, setSelectedCell } =
+    useContext(CanvasContext);
 
   const gridRef = useRef(null);
   const [scale, setScale] = useState(1);
@@ -83,7 +84,14 @@ export const CanvasBase = ({ children, width, height }) => {
       setIsFormOpen(true);
     }
   }, [selectedModule]);
-
+  useEffect(() => {
+    console.log("Selected Cell:", selectedCell);
+    if (selectedModule._id) {
+      console.log("Selected Cell open:", selectedCell);
+      //   ModuleFormModal(selectedModule);
+      setIsFormOpen(true);
+    }
+  }, [selectedModule]);
   const [zoomLevel, setZoomLevel] = useState(1);
   // const [rows, height] = useStore();
   const stageRef = useRef();
@@ -167,6 +175,8 @@ export const CanvasBase = ({ children, width, height }) => {
     cols,
     selectedModule,
     setSelectedModule,
+    selectedCell,
+    setSelectedCell,
     setIsFormOpen,
   };
   if (!isClient) {
@@ -256,14 +266,15 @@ export function CreateGridLayer({ ...props }) {
   const {
     cellWidth,
     cellHeight,
+    selectedCell,
+    setSelectedCell,
     setCellWidth,
     setCellHeight,
     rows,
     cols,
-    selectedCell,
-    setSelectedCell,
     mode,
   } = useContext(CanvasContext);
+  console.log("selectedCell:", selectedCell);
   return (
     <Layer>
       {Array.from({ length: rows }, (_, i) => (
