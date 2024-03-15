@@ -125,6 +125,7 @@ export const ModuleGen = ({
         fill={color} // Fill color
         stroke="#5ECCA2" // Stroke color
         strokeWidth={1} // Stroke width
+        onClick={changeModState}
         id={module._id}
       />
     );
@@ -132,7 +133,10 @@ export const ModuleGen = ({
 };
 
 // Generate a cell for a module
-export const CellGen = ({ x, y, cellWidth, cellHeight }) => {
+export const CellGen = ({ x, y, cellWidth, cellHeight, setSelectedCell }) => {
+  function changeSelectedCell() {
+    setSelectedCell({ x: x, y: y });
+  }
   return (
     <Rect
       x={y * cellWidth} // Use cellWidth for the x position, work backwards from 200 because of the wildmile grid
@@ -146,7 +150,7 @@ export const CellGen = ({ x, y, cellWidth, cellHeight }) => {
       strokeWidth={0.1}
       // dash={[3, 9]} // Make the line dotted
       strokeOpacity={0.2} // Make the line slightly transparent
-      onClick={() => console.log("Clicked on module:", module)}
+      onClick={() => changeSelectedCell}
       id={module._id}
     />
   );

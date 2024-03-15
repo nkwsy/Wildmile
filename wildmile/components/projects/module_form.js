@@ -1,5 +1,7 @@
 "use client";
 import React from "react";
+import dynamic from "next/dynamic";
+
 import {
   Stepper,
   Button,
@@ -33,40 +35,28 @@ import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { useContext, Suspense, useState, useEffect } from "react";
 import CanvasContext from "./context_mod_map";
+import Demo from "./mf.js";
+const ModuleForm = dynamic(() => import("components/projects/mf.js"));
 // const [visible, handlers] = useDisclosure(false);
 
 // const [errorMsg, setErrorMsg] = useState('')
 
-// export default function ModuleForm(props) {
-//   return (
-//     <>
-//       {/* <TextInput label="model" {...props.form.getInputProps("model")} />
-//       <Textarea label="Notes" {...props.form.getInputProps("notes")} />
-//       <DateTimePicker
-//         label="Date Installed"
-//         {...props.form.getInputProps("dateInstalled")}
-//       />
-//       <Group>
-//         <NumberInput label="Size X" {...props.form.getInputProps("size.x")} />
-//         <NumberInput label="Size Y" {...props.form.getInputProps("size.y")} />
-//       </Group> */}
-//     </>
-//   );
-// }
-// TODO: Make this an element that sits on the right side of page and allows for editing of module properties
+// DONE: Make this an element that sits on the right side of page and allows for editing of module properties
 // TODO: make a master toolbar
+// TODO: Implement search for plants... https://nextjs.org/docs/app/building-your-application/optimizing/lazy-loading
 
 export function sliderz() {
-  const [value, setValue] = useState("react");
+  const { mode, setMode } = useContext(CanvasContext);
+  const [value, setValue] = useState(mode);
   return (
     <>
       <SegmentedControl
-        value={value}
-        onChange={setValue}
+        value={mode}
+        onChange={setMode}
         data={[
-          { label: "React", value: "react" },
-          { label: "Angular", value: "ng" },
-          { label: "Vue", value: "vue" },
+          { label: "Modules", value: "Modules" },
+          { label: "Plants", value: "plants" },
+          { label: "Edit", value: "edit" },
           { label: "Svelte", value: "svelte" },
         ]}
       />
@@ -80,35 +70,46 @@ export default function ModuleToolbar() {
   //   typeof window !== "undefined"
   //     ? require("/components/projects/canvas_base").CanvasContext
   //     :
-  const { selectedModule } = useContext(CanvasContext);
+  const { selectedModule, setSelectedModule, mode, setMode } =
+    useContext(CanvasContext);
   // const [selectedModule, setSelectedModule] = useState(null);
-  // useEffect(() => {
-  //   if (CanvasContext) {
-  //     setSelectedModule(CanvasContext.selectedModule);
-  //   }
-  // }, [CanvasContext]);
-  console.log("CanvasContext:", selectedModule);
 
+  console.log("CanvasContext:", selectedModule);
   return (
     <>
       <Card shadow="xs" padding="lg" pl={8} radius="sm" withBorder>
         <CardSection withBorder inheritPadding py="xs">
           <Group justify="space-between">
-            <Text fw={500}>Module Toolbar {selectedModule.locationCode}</Text>{" "}
+            <Group justify="space-between">{sliderz()}</Group>
+            <Text fw={500}>
+              Module: {selectedModule.x}, {selectedModule.y}
+            </Text>
           </Group>
         </CardSection>
-        <CardSection withBorder inheritPadding py="xs">
-          <Group justify="space-between">{sliderz()}</Group>
-        </CardSection>
 
-        <Group>
-          <Button color="blue" variant="light" radius="md">
-            Add Module
-          </Button>
-          <Button color="red" variant="light" radius="md">
-            Remove Module
-          </Button>
-        </Group>
+        {mode === "edit" && (
+          <CardSection withBorder inheritPadding py="xs">
+            <Group>
+              <ModuleForm key={selectedModule._id} props={selectedModule} />
+            </Group>
+            <Button color="red" variant="light" radius="md">
+              <IconTrash />
+            </Button>
+            <Button
+              onClick={() =>
+                setSelectedModule({ ...selectedModule, x: "", y: "", _id: "" })
+              }
+              color="yellow"
+              variant="light"
+              radius="md"
+            >
+              Clear
+            </Button>
+            <Button color="blue" variant="light" radius="md">
+              Add Module
+            </Button>
+          </CardSection>
+        )}
       </Card>
     </>
   );
@@ -120,12 +121,12 @@ export function ModuleFormModal(values, onClose) {
   // const [opened, { open, close }] = useDisclosure(false);
 
   // const form = useForm({
-  //   initialValues: {
-  //     model: "",
-  //     size: {
-  //       x: 0,
-  //       y: 0,
-  //     },
+  // initialValues: {
+  //   model: "",
+  //   size: {
+  //     x: 0,
+  //     y: 0,
+  //   },
   //     notes: "",
   //     dateInstalled: new Date(),
   //   },

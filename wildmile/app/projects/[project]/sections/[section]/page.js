@@ -8,6 +8,12 @@ import {
   Textarea,
   GridCol,
   Flex,
+  Box,
+  Group,
+  NumberInput,
+  OptionalPortal,
+  Affix,
+  Portal,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconListDetails } from "@tabler/icons-react";
@@ -19,7 +25,7 @@ import Module from "/models/Module";
 import { cardStyles, IconCardGrid } from "/components/icon_card_grid";
 import { get } from "mongoose";
 import { ClientProvider, useClient } from "components/projects/context_mod_map";
-// import ModuleGrid from "components/projects/mod_util";
+import ModuleGrid from "components/projects/mod_util";
 import {
   BaseGrid,
   CreateGridLayer,
@@ -27,8 +33,9 @@ import {
   CanvasBase,
   ModMapWrapper,
 } from "components/projects/canvas_base";
-import { use } from "passport";
 import dynamic from "next/dynamic";
+
+import "passport";
 import React from "react";
 const ModuleToolbar = dynamic(() => import("components/projects/module_form"), {
   ssr: false,
@@ -72,36 +79,68 @@ export default async function Page(context) {
   // });
   return (
     <>
-      <Container maw="100%" my="5rem">
-        <Title
-          order={2}
-          ta="right"
-          mt="sm"
-        >{`${context.params.project} ${context.params.section}'s Modules`}</Title>
+      <Title
+        order={2}
+        ta="right"
+        mt="sm"
+      >{`${context.params.project} ${context.params.section}'s Modules`}</Title>
+      <Portal>
         <ModMapWrapper>
-          {/* <Grid justify="flex-end" overflow="hidden" maw="100%">
-            <GridCol span={4} pos={"fixed"} justify="flex-end" flex miw={200}> */}
-          <Flex
-            mih={50}
-            gap="md"
-            justify="flex-end"
-            align="flex-start"
-            direction="row"
-            wrap="wrap"
-          >
-            <ModuleToolbar />
-            {/* </GridCol> */}
+          <Box sx={{ position: "relative", width: "100%", height: "500px" }}>
+            {/* <Box
+            // component="canvas"
+            width="100%"
+            height="500"
+            sx={{ display: "block", width: "100%", height: "100%" }}
+          > */}
             <CanvasBase width={12} height={200}>
-              {/* <CreateGridLayer /> */}
+              <CreateGridLayer />
               <CreateModuleLayer modules={modules} />
             </CanvasBase>
-          </Flex>
-          {/* </Grid> */}
+            {/* </Box> */}
+            <Affix position={{ top: 100, right: 20 }}>
+              <Group
+                position="apart"
+                sx={{
+                  position: "absolute",
+                  top: 10, // Adjust the position as needed
+                  left: 10, // Adjust the position as needed
+                  zIndex: 10, // Ensure the toolbar is above other content
+                }}
+              >
+                <ModuleToolbar />
+              </Group>
+            </Affix>
+          </Box>
         </ModMapWrapper>
-      </Container>
+      </Portal>
     </>
   );
 }
+
+{
+  /* // <ModMapWrapper> */
+}
+//   {/* <Grid justify="flex-end" overflow="hidden" maw="100%">
+//       <GridCol span={4} pos={"fixed"} justify="flex-end" flex miw={200}> */}
+//   <Flex
+//     mih={10}
+//     gap="md"
+//     justify="flex-end"
+//     align="flex-start"
+//     direction={{ base: "column", sm: "row" }}
+//     wrap="wrap"
+//   >
+//     <ModuleToolbar />
+//     {/* </GridCol> */}
+//     <CanvasBase width={12} height={200}>
+//       {/* <CreateGridLayer /> */}
+//       <CreateModuleLayer modules={modules} />
+//     </CanvasBase>
+//   </Flex>
+//   {/* </Grid> */}
+// </ModMapWrapper>
+// {/* </Container> */}
 
 /* Retrieves plant(s) data from mongodb database */
 export async function getModules(context) {

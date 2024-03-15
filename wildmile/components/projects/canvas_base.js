@@ -2,8 +2,6 @@
 // In CanvasBase.js
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { Stage, Layer, Rect, Text, Group, Line } from "react-konva";
-import { Grid, GridCol } from "@mantine/core";
-import { Button } from "@mantine/core";
 import useSWR from "swr";
 import { CellGen, ModuleGen } from "./mod_util";
 // export const CanvasContext = React.createContext();
@@ -31,7 +29,20 @@ export const ModMapWrapper = ({ children }) => {
     _id: false,
     module: "none",
   });
-  const values = { selectedModule, setSelectedModule };
+  const [selectedCell, setSelectedCell] = useState([0, 0]);
+  // Sets the exploration mode of the map
+  const [mode, setMode] = useState("plants");
+  const [editMode, setEditMode] = useState(false);
+  const values = {
+    selectedModule,
+    setSelectedModule,
+    selectedCell,
+    setSelectedCell,
+    mode,
+    setMode,
+    editMode,
+    setEditMode,
+  };
   return (
     <div>
       <CanvasContext.Provider value={values}>{children}</CanvasContext.Provider>
@@ -242,8 +253,17 @@ export function CreateModuleLayer({ ...props }) {
 }
 
 export function CreateGridLayer({ ...props }) {
-  const { cellWidth, cellHeight, setCellWidth, setCellHeight, rows, cols } =
-    useContext(CanvasContext);
+  const {
+    cellWidth,
+    cellHeight,
+    setCellWidth,
+    setCellHeight,
+    rows,
+    cols,
+    selectedCell,
+    setSelectedCell,
+    mode,
+  } = useContext(CanvasContext);
   return (
     <Layer>
       {Array.from({ length: rows }, (_, i) => (
@@ -255,6 +275,7 @@ export function CreateGridLayer({ ...props }) {
               y={j}
               cellWidth={cellWidth}
               cellHeight={cellHeight}
+              setSelectedCell={setSelectedCell}
             />
           ))}
         </Group>
