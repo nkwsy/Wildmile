@@ -29,14 +29,22 @@ import {
   MenuDropdown,
   SegmentedControl,
 } from "@mantine/core";
-import { IconDots, IconEye, IconFileZip, IconTrash } from "@tabler/icons-react";
+import {
+  IconDots,
+  IconEye,
+  IconFileZip,
+  IconTrash,
+  IconRefresh,
+} from "@tabler/icons-react";
 import { DateTimePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { useContext, Suspense, useState, useEffect } from "react";
 import CanvasContext from "./context_mod_map";
 const ModuleForm = dynamic(() => import("components/projects/mf.js"));
-const MultiModuleForm = dynamic(() => import("components/projects/mf.js"));
+const MultiModuleForm = dynamic(() => import("components/projects/mfs.js"));
+import { usePathname, useSearchParams } from "next/navigation";
+
 // const [visible, handlers] = useDisclosure(false);
 
 // const [errorMsg, setErrorMsg] = useState('')
@@ -64,6 +72,12 @@ export function sliderz() {
   );
 }
 
+// export const LoadMods = () => {
+//   return fetch("/your-api-endpoint")
+//     .then((response) => response.json())
+//     .catch((error) => console.error("Error:", error));
+// };
+
 export default function ModuleToolbar() {
   // console.log("ModuleToolbar");
   // const CanvasContext =
@@ -77,10 +91,15 @@ export default function ModuleToolbar() {
     setMode,
     setSelectedCell,
     selectedCell,
+    modules,
+    setModules,
   } = useContext(CanvasContext);
   // const [selectedModule, setSelectedModule] = useState(null);
-
+  const clearSelectedCells = () => {
+    setSelectedCell(new Map());
+  };
   console.log("CanvasContext:", selectedModule);
+
   return (
     <>
       <Card shadow="xs" padding="lg" pl={8} radius="sm" withBorder>
@@ -95,16 +114,17 @@ export default function ModuleToolbar() {
 
         {mode === "edit" && (
           <CardSection withBorder inheritPadding py="xs">
-            <Group>
+            {/* <Group>
               <ModuleForm key={selectedModule._id} props={selectedModule} />
-            </Group>
+            </Group> */}
             <Button color="red" variant="light" radius="md">
               <IconTrash />
             </Button>
             <Button
-              onClick={() =>
-                setSelectedModule({ ...selectedModule, x: "", y: "", _id: "" })
-              }
+              // onClick={() =>
+              // setSelectedModule({ ...selectedModule, x: "", y: "", _id: "" })
+              // }
+              onClick={clearSelectedCells}
               color="yellow"
               variant="light"
               radius="md"
@@ -112,8 +132,21 @@ export default function ModuleToolbar() {
               Clear
             </Button>
             <Button color="blue" variant="light" radius="md">
-              Add Module
+              Select Modules
             </Button>
+            {/* <ActionIcon
+              onClick={() => {
+                LoadMods().then((data) => setModules(data));
+              }}
+              color="blue"
+            >
+              <IconRefresh />
+            </ActionIcon> */}
+            {selectedCell.size > 1 && (
+              <Group>
+                <MultiModuleForm modules={selectedCell} />
+              </Group>
+            )}
           </CardSection>
         )}
       </Card>

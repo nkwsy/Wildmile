@@ -94,8 +94,8 @@ export default async function Page(context) {
             sx={{ display: "block", width: "100%", height: "100%" }}
           > */}
             <CanvasBase width={12} height={200}>
-              <CreateGridLayer />
-              <CreateModuleLayer modules={modules} />
+              <CreateGridLayer initModules={modules} />
+              {/* <CreateModuleLayer modules={modules} /> */}
             </CanvasBase>
             {/* </Box> */}
             <Affix position={{ top: 100, right: 20 }}>

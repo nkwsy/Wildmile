@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { Stage, Layer, Rect, Text, Group, Line } from "react-konva";
 import useSWR from "swr";
+import { usePathname, useSearchParams } from "next/navigation";
+
 import { CellGen, ModuleGen } from "./mod_util";
 // export const CanvasContext = React.createContext();
 import CanvasContext from "./context_mod_map";
@@ -11,37 +13,74 @@ import useStore from "/lib/store";
 import { use } from "passport";
 // import { ModuleFormModal } from "./module_form";
 import { useMediaQuery } from "@mantine/hooks";
+import { set } from "mongoose";
 const Component = () => {
   const { key, updateKey } = useStore();
 
   // Use the state and actions in your component
 };
 
-export const LoadMods = () => {
-  const { data, error } = useSWR("/api/modules", fetcher);
-  if (error) return <div>Failed to load</div>;
-  if (!data) return <div>Loading...</div>;
-  return <ModMap modules={data} />;
-};
+export function LoadMods({ newMods }) {
+  useEffect(() => {
+    async function fetchData() {
+      const pathname = usePathname();
+      const searchParams = useSearchParams("");
+      const setModules = useContext(CanvasContext);
+      const mods = searchParams.get("");
+      const response = await fetch(`${pathname}/edit`);
+      const data = await response.json();
+      console.log("LoadMods", data);
+      newMods(data);
+    }
+    newMods();
+  }, [fetchData]);
+  return null;
+}
 
 export const ModMapWrapper = ({ children }) => {
   const [selectedModule, setSelectedModule] = useState({
     _id: false,
     module: "none",
   });
-  const [selectedCell, setSelectedCell] = useState({ x: 0, y: 0 });
+  const [selectedCell, setSelectedCell] = useState(new Map());
   // Sets the exploration mode of the map
   const [mode, setMode] = useState("plants");
   const [editMode, setEditMode] = useState(false);
+
+  // Allows user to click to add to cell or remove from cell
+  const toggleCellSelection = (x, y) => {
+    setSelectedCell((prevCells) => {
+      const key = `${x},${y}`;
+      const newCells = new Map(prevCells);
+      if (newCells.has(key)) {
+        newCells.delete(key);
+      } else {
+        newCells.set(key, { x, y });
+      }
+      return newCells;
+    });
+  };
+
+  const clearSelectedCells = () => {
+    setSelectedCells(new Map());
+  };
+
+  const isCellSelected = (x, y) => {
+    return selectedCells.has(`${x},${y}`);
+  };
+
   const values = {
     selectedModule,
     setSelectedModule,
     selectedCell,
     setSelectedCell,
+    toggleCellSelection,
     mode,
     setMode,
     editMode,
     setEditMode,
+    isCellSelected,
+    clearSelectedCells,
   };
   return (
     <div>
@@ -51,10 +90,19 @@ export const ModMapWrapper = ({ children }) => {
 };
 
 export const CanvasBase = ({ children, width, height }) => {
-  const { selectedModule, setSelectedModule, selectedCell, setSelectedCell } =
-    useContext(CanvasContext);
+  const {
+    selectedModule,
+    setSelectedModule,
+    selectedCell,
+    setSelectedCell,
+    toggleCellSelection,
+  } = useContext(CanvasContext);
 
+  const [modules, setModules] = useState({});
   const gridRef = useRef(null);
+  const selectedCellRef = useRef(null);
+  const plantRef = useRef(null);
+  const modRef = useRef(null);
   const [scale, setScale] = useState(1);
   const [cols, setCols] = useState(width); // Set initial value of cols to width
   const [rows, setRows] = useState(height); // Set initial value of rows to height
@@ -68,6 +116,7 @@ export const CanvasBase = ({ children, width, height }) => {
         ? window.innerHeight
         : 1200,
   });
+
   useEffect(() => {
     setCols(width);
   }, [width]);
@@ -75,6 +124,25 @@ export const CanvasBase = ({ children, width, height }) => {
     setRows(height);
   }, [height]);
 
+  // Function to redraw layer by name
+  const redrawLayerByName = () => {
+    if (!gridRef.current || !modRef.current) {
+      console.warn("Stage or mofref is not yet available");
+      return;
+    }
+    const stage = gridRef.current.getStage(); // Get the Konva Stage instance
+    const layer = modRef.current.getLayer(); // Get the Konva Layer instance
+    console.log("redraw Layer:", layer);
+    // layer.draw();
+    // gridRef.current.batchDraw();
+  };
+
+  useEffect(() => {
+    redrawLayerByName();
+  }, [modules, setModules]);
+  const handleLoadMods = (newMods) => {
+    setModules(newMods);
+  };
   // selectedModule useEffect
   useEffect(() => {
     console.log("Selected Module:", selectedModule);
@@ -149,7 +217,7 @@ export const CanvasBase = ({ children, width, height }) => {
       y: pointer.y - mousePointTo.y * newScale,
     };
     stage.position(newPos);
-    stage.batchDraw();
+    // stage.batchDraw();
   };
 
   useEffect(() => {
@@ -167,6 +235,10 @@ export const CanvasBase = ({ children, width, height }) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const value = {
+    plantRef,
+    modRef,
+    modules,
+    setModules,
     cellWidth,
     cellHeight,
     setCellWidth,
@@ -177,6 +249,7 @@ export const CanvasBase = ({ children, width, height }) => {
     setSelectedModule,
     selectedCell,
     setSelectedCell,
+    toggleCellSelection,
     setIsFormOpen,
   };
   if (!isClient) {
@@ -197,6 +270,7 @@ export const CanvasBase = ({ children, width, height }) => {
             //   rotation={rotation}
             draggable
           >
+            <Layer ref={modRef}></Layer>
             {children}
           </Stage>
         </div>
@@ -205,7 +279,7 @@ export const CanvasBase = ({ children, width, height }) => {
   );
 };
 
-export function BaseGrid({ children, ...props }) {
+export async function BaseGrid({ children, ...props }) {
   const width = props.width;
   const height = props.height;
   console.log("width:", width);
@@ -231,69 +305,216 @@ export function BaseGrid({ children, ...props }) {
     </CanvasBase>
   );
 }
-
-export function CreateModuleLayer({ ...props }) {
+export function CreateGridLayer({ initModules }) {
   const {
-    cellWidth,
-    cellHeight,
-    setCellWidth,
-    setCellHeight,
-    rows,
-    cols,
-    selectedModule,
-    setSelectedModule,
-  } = useContext(CanvasContext);
-  const modules = props.modules;
-  console.log(props.value);
-  console.log("Modules:", selectedModule);
-  return (
-    <Layer>
-      {modules.map((module, index) => (
-        <Group key={index}>
-          <ModuleGen
-            module={module}
-            cellWidth={cellWidth}
-            cellHeight={cellHeight}
-            setSelectedModule={setSelectedModule}
-          />
-        </Group>
-      ))}
-    </Layer>
-  );
-}
-
-export function CreateGridLayer({ ...props }) {
-  const {
+    modRef,
+    modules,
+    setModules,
     cellWidth,
     cellHeight,
     selectedCell,
     setSelectedCell,
+    toggleCellSelection,
+    setSelectedModule,
     setCellWidth,
     setCellHeight,
     rows,
     cols,
     mode,
   } = useContext(CanvasContext);
-  console.log("selectedCell:", selectedCell);
-  return (
-    <Layer>
-      {Array.from({ length: rows }, (_, i) => (
-        <Group key={i}>
-          {Array.from({ length: cols }, (_, j) => (
-            <CellGen
-              key={`${i}-${j}`}
-              x={i}
-              y={j}
-              cellWidth={cellWidth}
-              cellHeight={cellHeight}
-              setSelectedCell={setSelectedCell}
-            />
-          ))}
-        </Group>
-      ))}
-    </Layer>
-  );
+  setModules(initModules);
+  useEffect(() => {
+    if (!modRef.current) {
+      return;
+    }
+    // Clear the layer before adding new elements
+    modRef.current.clear();
+
+    // Generate cells and optionally modules within each cell
+    // Note: CellGen should now return a Konva shape, not a React component
+    for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
+      for (let colIndex = 0; colIndex < cols; colIndex++) {
+        const cellShape = CellGen({
+          x: rowIndex,
+          y: colIndex,
+          cellWidth,
+          cellHeight,
+          toggleCellSelection,
+          selectedCell,
+          modules,
+          setSelectedModule,
+        });
+
+        // Add the shape to the layer
+        modRef.current.add(cellShape);
+      }
+    }
+
+    // Redraw the layer to display the new shapes
+    // modRef.current.batchDraw();
+  }, [
+    modRef,
+    rows,
+    cols,
+    cellWidth,
+    cellHeight,
+    modules,
+    selectedCell,
+    toggleCellSelection,
+    setSelectedModule,
+  ]);
+  // No need to return anything from this function if it's used for side effects only
 }
+
+// Does not do anything rn
+export async function LoadModules() {
+  const { setModules } = useContext(CanvasContext);
+  const pathname = usePathname();
+  const searchParams = useSearchParams("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await LoadMods(pathname, searchParams);
+      if (data) {
+        setModules(data);
+      }
+    };
+
+    fetchData();
+  }, [pathname, searchParams, setModules]);
+}
+
+// export function CreateGridLayer(props) {
+//   const {
+//     modRef,
+//     modules,
+//     setModules,
+//     cellWidth,
+//     cellHeight,
+//     selectedCell,
+//     toggleCellSelection,
+//     setSelectedModule,
+//     rows,
+//     cols,
+//   } = useContext(CanvasContext);
+//   useEffect(() => {
+//     if (!modRef.current) {
+//       return;
+//     }
+
+//   // Clear the layer before adding new elements
+//   modRef.current.clear();
+// // const pathname = usePathname();
+// // const searchParams = useSearchParams("");
+
+// // useEffect(() => {
+// //   const fetchData = async () => {
+// //     const data = await LoadMods(pathname, searchParams);
+// //     if (data) {
+// //       setModules(data);
+// //     }
+// //   };
+
+// //   fetchData();
+// // }, [pathname, searchParams, setModules]);
+
+//   // Generate cells and optionally modules within each cell
+//   const cells = Array.from({ length: rows }).map((_, rowIndex) =>
+//     Array.from({ length: cols }).map((_, colIndex) => {
+//       const cellProps = {
+//         x: rowIndex,
+//         y: colIndex,
+//         cellWidth,
+//         cellHeight,
+//         toggleCellSelection,
+//         selectedCell,
+//         modules,
+//         setSelectedModule,
+//       };
+
+//       // CellGen should return a Konva shape or a group of shapes
+//       return <CellGen key={`${rowIndex}-${colIndex}`} {...cellProps} />;
+//     })
+//   );
+
+//   const layer = modRef;
+//   console.log("Layer:", layer);
+//   console.log("Cells:", cells);
+
+//   cells.map((rowCells, i) => layer.add(rowCells));
+
+//   // return (
+//   //   // <Layer ref={modRef}>
+//   //     // {cells.map((rowCells, i) => (
+//   //     //   <Group key={i}>{rowCells}</Group>
+//   //     // ))}
+//   //   // </Layer>
+//   // );
+// }
+
+// export function CreateGridLayer({ ...props }) {
+//   const {
+//     modules,
+//     setModules,
+//     cellWidth,
+//     cellHeight,
+//     selectedCell,
+//     setSelectedCell,
+//     toggleCellSelection,
+//     setSelectedModule,
+//     setCellWidth,
+//     setCellHeight,
+//     rows,
+//     cols,
+//     mode,
+//   } = useContext(CanvasContext);
+//   const pathname = usePathname();
+//   const searchParams = useSearchParams("");
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       const data = await LoadMods(pathname, searchParams);
+//       // Do something with the data
+//       if (data) {
+//         setModules(data);
+//       }
+//     };
+
+//     fetchData();
+//   }, [pathname, searchParams]);
+//   // useEffect(() => {
+//   //   const fetchModules = async () => {
+//   //     const mods = await LoadMods();
+//   //     if (mods) {
+//   //       setModules(mods);
+//   //     }
+//   //   };
+
+//   //   fetchModules();
+//   // }, []); // Empty dependency array means this effect runs once on mount
+
+//   return (
+//     <Layer name="mods">
+//       {Array.from({ length: rows }, (_, i) => (
+//         <Group key={i}>
+//           {Array.from({ length: cols }, (_, j) => (
+//             <CellGen
+//               key={`${i}-${j}`}
+//               x={i}
+//               y={j}
+//               cellWidth={cellWidth}
+//               cellHeight={cellHeight}
+//               toggleCellSelection={toggleCellSelection}
+//               selectedCell={selectedCell}
+//               modules={modules}
+//               setSelectedModule={setSelectedModule}
+//             />
+//           ))}
+//         </Group>
+//       ))}
+//     </Layer>
+//   );
+// }
 
 export function useWindow() {
   console.log(window.innerWidth);
