@@ -12,5 +12,9 @@ module.exports = {
 
     return config;
   },
-  experimental: {},
+  experimental: {
+    logging: {
+      level: "verbose",
+    },
+  },
 };

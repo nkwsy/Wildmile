@@ -3,9 +3,17 @@
 export async function insertModules(formData) {
   console.log("Data:", formData);
   const rawFormData = {
-    customerId: formData.model,
-    amount: formData.locations,
-    status: formData.model,
+    model: formData.get("model"),
+    flipped: formData.get("flipped"),
+    island_name: formData.get("island_name"),
+    locationCode: formData.get("locationCode"),
+    notes: formData.get("notes"),
+    orientation: formData.get("orientation"),
+    project: formData.get("project"),
+    sectionName: formData.get("sectionName"),
+    shape: formData.get("shape"),
+    tag: formData.get("tag"),
+    tags: formData.get("tags"),
   };
   console.log("Raw Form Data:", rawFormData);
 }

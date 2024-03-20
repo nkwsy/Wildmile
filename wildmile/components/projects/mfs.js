@@ -1,4 +1,6 @@
 "use client";
+import { useContext, Suspense, useState, useEffect } from "react";
+
 import { insertModules } from "/app/actions";
 import {
   TextInput,
@@ -16,42 +18,60 @@ import { useForm } from "@mantine/form";
 import { useParams } from "next/navigation";
 
 import { IconTrash } from "@tabler/icons-react";
-export default function MultiModuleForm(modules) {
+export default function MultiModuleForm({ modules }) {
   const params = useParams();
 
+  console.log("Params:", params);
+  const locations = [];
+  modules.forEach((cell) => {
+    locations.push({ x: cell.x, y: cell.y });
+  });
+  console.log("Locations:", locations);
   const initialValues = {
-    model: modules.model || "",
-    locations: {
-      modules,
-    },
-    flipped: modules.flipped || "",
-    island_name: modules.island_name || "",
-    locationCode: modules.locationCode || "",
-    notes: modules.notes || "",
-    orientation: modules.orientation || "",
-    project: modules.project || "",
-    projectName: params.project || "",
-    sectionName: modules.sectionId || "",
-    shape: modules.shape || "",
-    tag: modules.tag || "",
-    tags: modules.tags || [],
+    model: "",
+    locations: locations,
+    flipped: "",
+    island_name: "",
+    locationCode: "",
+    notes: "",
+    orientation: "",
+    project: "",
+    projectName: params.project,
+    sectionName: params.section,
+    shape: "",
+    tag: [],
+    tags: [],
   };
 
   // const initialValues = { locations: modules };
   const form = useForm({
     initialValues,
   });
-  console.log("Params:", params);
-  console.log("Modules:", modules);
+
   function submitForm() {
     console.log("Form state on submit:", form.values);
     insertModules(form.values);
   }
+  const initialState = {
+    message: null,
+  };
+
+  function SubmitButton() {
+    const { pending } = useFormStatus();
+
+    return (
+      <Button onClick={submitForm} color="blue">
+        Submit
+      </Button>
+    );
+  }
+
+  const [state, formAction] = useFormState(insertModules, initialState);
   // console.log("Form state on submit:", modules, form.values);
   return (
     <>
       <Box maw={340} mx="auto">
-        <form>
+        <form action={formAction}>
           <Group style={{ display: "flex", gap: "8px" }}>
             <SegmentedControl
               data={["3-d", "5-d", "Sub", "Dock"]}
@@ -107,8 +127,17 @@ export default function MultiModuleForm(modules) {
           </Group>
           <TagsInput label="Tags" {...form.getInputProps("tags")} />
           <TextInput label="Notes" {...form.getInputProps("notes")} />
+          {/* <input
+            type="hidden"
+            id="locations"
+            name="locations"
+            value={locations}
+          />
+          <input type="hidden" id="postId" name="postId" value="34657" /> */}
+
           <Group justify="flex-end" mt="sm">
-            <Button onClick={submitForm}>Submit</Button>
+            <SubmitButton />
+            {/* <Button onClick={submitForm}>Submit</Button> */}
           </Group>
         </form>
       </Box>

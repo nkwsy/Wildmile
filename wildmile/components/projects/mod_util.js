@@ -91,111 +91,53 @@ export function findItemInArray(array, x, y) {
   }
   return array.find((item) => item.x === x && item.y === y) || false;
 }
-// // Draw a module
-// export const ModuleGen = ({
-//   module,
-//   cellWidth,
-//   cellHeight,
-//   setSelectedModule,
-//   isSelected,
-//   changeSelectedCell,
-// }) => {
-//   // let [selectedModule, setSelectedModule] = useState({});
-//   function changeModState() {
-//     setSelectedModule(module);
-//     changeSelectedCell();
-//   }
-//   // const isSelected = isXYInArray(selectedModule, module.x, module.y);
-//   const stroke = isSelected ? "#1080dc" : "#5ECCA2";
-//   const strokeWidth = isSelected ? 4 : 0.1;
-//   const color = module.model === "5-d" ? "#D68D5E" : "#189968";
-//   if (module.shape === "R3" || module.shape === "R2.3") {
-//     return (
-//       <Rect
-//         x={module.y * cellWidth} // Use cellWidth for the x position, work backwards from 200 because of the wildmile grid
-//         y={(201 - module.x) * cellHeight} // Use cellHeight for the y position
-//         width={cellWidth} // Set the width of the rectangle to cellWidth
-//         height={cellHeight} // Set the height of the rectangle to cellHeight
-//         fill={color}
-//         stroke={stroke}
-//         strokeWidth={strokeWidth}
-//         draggable
-//         onClick={changeModState}
-//         id={module._id}
-//       />
-//     );
-//   }
-//   if (module.shape === "T3" || module.shape === "T2.3") {
-//     // Calculate the top left corner of the cell
-//     const x = module.y * cellWidth;
-//     const y = (201 - module.x) * cellHeight; // Work backwards from 200 because of the wildmile grid
-//     // Define points for a right triangle within the cell
-
-//     const points = TriangelePointsGen({
-//       orientation: module.orientation,
-//       flipped: module.flipped,
-//       cellWidth: cellWidth,
-//       cellHeight: cellHeight,
-//       x: x,
-//       y: y,
-//     });
-
-//     return (
-//       <Line
-//         points={points}
-//         closed={true} // Close the path to form a shape
-//         fill={color} // Fill color
-//         stroke={stroke} // Stroke color
-//         strokeWidth={strokeWidth} // Stroke width
-//         onClick={changeModState}
-//         id={module._id}
-//       />
-//     );
-//   }
-// };
 
 export const ModuleGen = (config) => {
   const {
     module,
     cellWidth,
     cellHeight,
-    setSelectedModule,
-    isSelected,
-    changeSelectedCell,
+    // setSelectedModule,
+    // isSelected,
+    // changeSelectedCell,
+    // toggleCellSelection,
   } = config;
 
-  const changeModState = () => {
-    setSelectedModule(module);
-    changeSelectedCell();
-  };
+  // const changeModState = () => {
+  //   setSelectedModule(module);
+  //   toggleCellSelection(module.x, module.y);
+  // };
+  // const stroke = isSelected ? "#1080dc" : "#5ECCA2";
+  // const strokeWidth = isSelected ? 4 : 0.1;
+  // const color = module.model === "5-d" ? "#D68D5E" : "#189968";
 
-  const stroke = isSelected ? "#1080dc" : "#5ECCA2";
-  const strokeWidth = isSelected ? 4 : 0.1;
+  const stroke = "#5ECCA2";
+  const strokeWidth = 0.1;
   const color = module.model === "5-d" ? "#D68D5E" : "#189968";
 
   if (module.shape === "R3" || module.shape === "R2.3") {
     // Create a rectangle shape
     const rect = new Konva.Rect({
       x: module.y * cellWidth,
-      y: (201 - module.x) * cellHeight,
+      y: module.x * cellHeight,
       width: cellWidth,
       height: cellHeight,
       fill: color,
       stroke: stroke,
       strokeWidth: strokeWidth,
-      draggable: true,
-      id: module._id,
+      // draggable: true,
+      id: `${module.x},${module.y}`,
     });
 
     // Add click event listener
-    rect.on("click", changeModState);
+    // rect.on("click", changeModState);
 
     return rect;
   }
 
   if (module.shape === "T3" || module.shape === "T2.3") {
     const x = module.y * cellWidth;
-    const y = (201 - module.x) * cellHeight;
+    const y = module.x * cellHeight;
 
     const points = TriangelePointsGen({
       orientation: module.orientation,
@@ -213,67 +155,82 @@ export const ModuleGen = (config) => {
       fill: color,
       stroke: stroke,
       strokeWidth: strokeWidth,
+      id: `${module.x}-${module.y}`,
     });
 
     // Add click event listener
-    line.on("click", changeModState);
+    // line.on("click", changeModState);
 
     return line;
   }
 };
 // Generate a cell for a module
 
-export const CellGen = (config) => {
-  const {
-    x,
-    y,
-    cellWidth,
-    cellHeight,
-    toggleCellSelection,
-    selectedCell,
-    modules,
-    setSelectedModule,
-  } = config;
-
-  const changeSelectedCell = () => {
-    toggleCellSelection(x, y);
-  };
-
+export const CellGen = ({
+  x,
+  y,
+  cellWidth,
+  cellHeight,
+  toggleCellSelection,
+  selectedCell,
+  modules,
+  // setSelectedModule,
+}) => {
+  // const changeSelectedCell = () => {
+  //   toggleCellSelection(x, y);
+  //   // console.log(x, y, "selected", isCellSelected(x, y));
+  // };
   const isCellSelected = (x, y) => {
     return selectedCell.has(`${x},${y}`);
   };
+  // const [isSelected, setIsSelected] = useState(false);
+  let isSelected = false;
+  function toggleSelection(currentValue) {
+    return !currentValue;
+  }
 
   const isModule = findItemInArray(modules, x, y);
-  const isSelected = isCellSelected(x, y);
+  // const isSelected = isCellSelected(x, y);
   const stroke = isSelected ? "#1080dc" : "grey";
   const strokeWidth = isSelected ? 2 : 0.1;
+  // const stroke = "grey";
+  // const strokeWidth = 0.1;
 
+  // console.log("isModule:", isModule, x, y, isSelected, isCellSelected(x, y));
+  let rect;
   if (isModule) {
-    return ModuleGen({
+    rect = ModuleGen({
       module: isModule,
       cellWidth,
       cellHeight,
-      setSelectedModule,
-      isSelected,
-      changeSelectedCell,
+      // setSelectedModule,
+      // isSelected,
+      // changeSelectedCell,
+      toggleCellSelection,
     });
   } else {
     // Create a rectangle shape for the cell
-    const rect = new Konva.Rect({
+    rect = new Konva.Rect({
       x: y * cellWidth,
       y: x * cellHeight,
       width: cellWidth,
       height: cellHeight,
+      opacity: 0.5,
       stroke: stroke,
       strokeWidth: strokeWidth,
       id: `${x},${y}`,
     });
-
-    // Add click event listener
-    rect.on("click", changeSelectedCell);
-
-    return rect;
   }
+  const changeSelectedCell = (e) => {
+    // logs clicked Konva.Circle instance
+    toggleSelection(isSelected);
+    toggleCellSelection(x, y, e.target);
+    console.log("clicked cell", e.target, e.target.id());
+  };
+  // Add click event listener
+  rect.on("click", changeSelectedCell);
+
+  return rect;
 };
 
 // export const CellGen = ({

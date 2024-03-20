@@ -42,7 +42,8 @@ import { useDisclosure } from "@mantine/hooks";
 import { useContext, Suspense, useState, useEffect } from "react";
 import CanvasContext from "./context_mod_map";
 const ModuleForm = dynamic(() => import("components/projects/mf.js"));
-const MultiModuleForm = dynamic(() => import("components/projects/mfs.js"));
+// const MultiModuleForm = dynamic(() => import("components/projects/mfs.js"));
+import MultiModuleForm from "components/projects/mfs.js";
 import { usePathname, useSearchParams } from "next/navigation";
 
 // const [visible, handlers] = useDisclosure(false);
@@ -93,12 +94,10 @@ export default function ModuleToolbar() {
     selectedCell,
     modules,
     setModules,
+    clearSelectedCells,
   } = useContext(CanvasContext);
   // const [selectedModule, setSelectedModule] = useState(null);
-  const clearSelectedCells = () => {
-    setSelectedCell(new Map());
-  };
-  console.log("CanvasContext:", selectedModule);
+  // console.log("CanvasContext:", selectedModule);
 
   return (
     <>

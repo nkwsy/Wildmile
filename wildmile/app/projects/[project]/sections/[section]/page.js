@@ -25,11 +25,11 @@ import Module from "/models/Module";
 import { cardStyles, IconCardGrid } from "/components/icon_card_grid";
 import { get } from "mongoose";
 import { ClientProvider, useClient } from "components/projects/context_mod_map";
-import ModuleGrid from "components/projects/mod_util";
+// import ModuleGrid from "components/projects/mod_util";
 import {
-  BaseGrid,
+  // BaseGrid,
   CreateGridLayer,
-  CreateModuleLayer,
+  // CreateModuleLayer,
   CanvasBase,
   ModMapWrapper,
 } from "components/projects/canvas_base";
@@ -45,19 +45,27 @@ const ModuleToolbar = dynamic(() => import("components/projects/module_form"), {
 // import { string } from "yup";
 // import { stringify } from "postcss";
 // import { BaseGrid, createRectLayer } from "components/projects/base_grid";
-// const { BaseGrid, CreateGridLayer, CreateModuleLayer, CanvasBase } = dynamic(
+// const CreateGridLayer = dynamic(
 //   () => import("components/projects/canvas_base"),
 //   {
-//     ssr: false,
+//     // ssr: false,
 //   }
 // );
-// const ModuleGrid = dynamic(() => import("components/projects/mod_map"));
+// const CanvasBase = dynamic(() => import("components/projects/canvas_base"), {
+//   // ssr: false,
+// });
+
+// const ModMapWrapper = dynamic(() => import("components/projects/canvas_base"), {
+//   // ssr: false,
+// });
 
 // import { addModule } from "components/projects/mod_map";
 
 export default async function Page(context) {
   const raw_modules = await getModules(context);
-  const modules = JSON.parse(raw_modules.modules);
+  // const modules = JSON.parse(raw_modules.modules);
+  const section = JSON.parse(raw_modules.section);
+  console.log("Modules:", section);
   // const modules = props.modules.map((module) => {
   //   return {
   //     icon: IconListDetails,
@@ -93,8 +101,8 @@ export default async function Page(context) {
             height="500"
             sx={{ display: "block", width: "100%", height: "100%" }}
           > */}
-            <CanvasBase width={12} height={200}>
-              <CreateGridLayer initModules={modules} />
+            <CanvasBase width={section.size.width} height={section.size.length}>
+              <CreateGridLayer />
               {/* <CreateModuleLayer modules={modules} /> */}
             </CanvasBase>
             {/* </Box> */}
@@ -151,15 +159,20 @@ export async function getModules(context) {
     return { props: { modules: [] } };
   }
 
-  const section = await Section.findOne({ name: section_name });
-  const result = await Module.find({ sectionId: section._id }).lean();
+  const section = await Section.findOne({ name: section_name }).lean();
+  // const result = await Module.find({ sectionId: section._id }).lean();
 
-  const modules = JSON.stringify(result);
+  // const modules = JSON.stringify(result);
+  const section_json = JSON.stringify(section);
   // const modules = result.map((doc) => {
   //   const module = doc.toObject();
   //   module._id = String(module._id);
   //   module.section = String(module.section);
   //   return module;
   // });
-  return { modules: modules };
+  const returns = {
+    // modules: modules,
+    section: section_json,
+  };
+  return returns;
 }
