@@ -1,11 +1,11 @@
-import { useRouter } from "next-connect";
+import { createRouter } from "next-connect";
 import auth from "../../middleware/auth";
 import { getAllUsers } from "../../lib/db/user";
 import { NextConnectOptions } from "../../config/nextconnect";
 
-const handler = useRouter(NextConnectOptions);
+const router = createRouter(NextConnectOptions);
 
-handler
+router
   .use(auth)
   .use(async (req, event, next) => {
     const start = Date.now();
@@ -19,4 +19,9 @@ handler
     res.json({ users: await getAllUsers() });
   });
 
-export default handler;
+export default router.handler({
+  onError: (err, req, res) => {
+    console.error(err.stack);
+    res.status(err.statusCode || 500).end(err.message);
+  },
+});
