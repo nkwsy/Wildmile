@@ -1,10 +1,10 @@
-import nextConnect from "next-connect";
+import { createRouter } from "next-connect";
 import userValidationSchema from "/validation/user";
 import auth from "/middleware/auth";
 import { createUser, findUserByEmail, updateUserByEmail } from "/lib/db/user";
-import NextConnectOptions from "/config/nextconnect";
+import { NextConnectOptions } from "/config/nextconnect";
 
-const handler = nextConnect(NextConnectOptions);
+const handler = createRouter(NextConnectOptions);
 
 handler
   .use(auth)

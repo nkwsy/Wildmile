@@ -1,5 +1,5 @@
 "use client";
-import { useContext, Suspense, useState, useEffect } from "react";
+import { useContext, Suspense, useState, useEffect, useFormState } from "react";
 
 import { insertModules } from "/app/actions";
 import {
@@ -66,12 +66,13 @@ export default function MultiModuleForm({ modules }) {
     );
   }
 
-  const [state, formAction] = useFormState(insertModules, initialState);
+  // const [state, formAction] = useFormState(insertModules, initialState);
   // console.log("Form state on submit:", modules, form.values);
   return (
     <>
       <Box maw={340} mx="auto">
-        <form action={formAction}>
+        {/* <form action={formAction}> */}
+        <form>
           <Group style={{ display: "flex", gap: "8px" }}>
             <SegmentedControl
               data={["3-d", "5-d", "Sub", "Dock"]}
@@ -136,8 +137,8 @@ export default function MultiModuleForm({ modules }) {
           <input type="hidden" id="postId" name="postId" value="34657" /> */}
 
           <Group justify="flex-end" mt="sm">
-            <SubmitButton />
-            {/* <Button onClick={submitForm}>Submit</Button> */}
+            {/* <SubmitButton /> */}
+            <Button onClick={submitForm}>Submit</Button>
           </Group>
         </form>
       </Box>

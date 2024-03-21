@@ -1,10 +1,10 @@
-import nextConnect from "next-connect";
+import { useRouter } from "next-connect";
 import auth from "/middleware/auth";
 import { updateMacroSampleByID, createMacroSample } from "/lib/db/macros"; // Updated import statement
 
-import NextConnectOptions from "/config/nextconnect";
+import { NextConnectOptions } from "/config/nextconnect";
 
-const handler = nextConnect(NextConnectOptions);
+const handler = useRouter(NextConnectOptions);
 
 handler
   .use(auth)

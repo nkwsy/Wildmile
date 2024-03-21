@@ -1,9 +1,9 @@
-import nextConnect from "next-connect";
+import { useRouter } from "next-connect";
 import auth from "/middleware/auth";
 import { createProject } from "/lib/db/projects";
-import NextConnectOptions from "/config/nextconnect";
+import { NextConnectOptions } from "/config/nextconnect";
 
-const handler = nextConnect(NextConnectOptions);
+const handler = useRouter(NextConnectOptions);
 
 handler
   .use(auth)
