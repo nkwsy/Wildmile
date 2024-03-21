@@ -4,9 +4,9 @@ import auth from "/middleware/auth";
 import { createUser, findUserByEmail, updateUserByEmail } from "/lib/db/user";
 import { NextConnectOptions } from "/config/nextconnect";
 
-const handler = createRouter(NextConnectOptions);
+const router = createRouter(NextConnectOptions);
 
-handler
+router
   .use(auth)
   .use(async (req, res, next) => {
     const start = Date.now();
@@ -69,4 +69,9 @@ handler
     return res.json({ user });
   });
 
-export default handler;
+export default router.handler({
+  onError: (err, req, res) => {
+    console.error(err.stack);
+    res.status(err.statusCode || 500).end(err.message);
+  },
+});
