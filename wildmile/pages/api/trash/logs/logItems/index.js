@@ -1,4 +1,4 @@
-import { useRouter } from "next-connect";
+import { createRouter } from "next-connect";
 import auth from "/middleware/auth";
 import {
   getAllLogs,
@@ -8,9 +8,9 @@ import {
 } from "/lib/db/trash";
 import { NextConnectOptions } from "/config/nextconnect";
 
-const handler = useRouter(NextConnectOptions);
+const router = createRouter(NextConnectOptions);
 
-handler
+router
   .use(auth)
   .use(async (req, res, next) => {
     const start = Date.now();
@@ -43,4 +43,9 @@ handler
     return res.status(201).json(await updateLogItems(req.body, req.query.id));
   });
 
-export default handler;
+export default router.handler({
+  onError: (err, req, res) => {
+    console.error(err.stack);
+    res.status(err.statusCode || 500).end(err.message);
+  },
+});

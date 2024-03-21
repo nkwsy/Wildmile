@@ -1,12 +1,12 @@
-import { useRouter } from "next-connect";
+import { createRouter } from "next-connect";
 // import userValidationSchema from "../../validation/user"
 import auth from "/middleware/auth";
 import { getPlantByID, updatePlantByID } from "/lib/db/plants";
 import { NextConnectOptions } from "/config/nextconnect";
 
-const handler = useRouter(NextConnectOptions);
+const router = createRouter(NextConnectOptions);
 
-handler
+router
   .use(auth)
   .use(async (req, res, next) => {
     const start = Date.now();
@@ -39,5 +39,9 @@ handler
     });
     return res.json({ plant });
   });
-
-export default handler;
+export default router.handler({
+  onError: (err, req, res) => {
+    console.error(err.stack);
+    res.status(err.statusCode || 500).end(err.message);
+  },
+});
