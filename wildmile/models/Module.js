@@ -6,7 +6,8 @@ const ModuleSchema = new mongoose.Schema(
     installed: Boolean,
     x: Number,
     y: Number,
-    section: { type: mongoose.Schema.Types.ObjectId, ref: "Section" },
+    sectionId: { type: mongoose.Schema.Types.ObjectId, ref: "Section" },
+    projectId: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
     placement: {
       section: { x: Number, y: Number },
       project: { x: Number, y: Number },

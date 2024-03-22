@@ -15,9 +15,13 @@ export async function GET(request, { params }) {
   return Response.json(modules);
 }
 
-export async function POST(request) {
-  const formData = await request.formData();
-  const name = formData.get("name");
-  const email = formData.get("email");
-  return Response.json({ name, email });
+export async function POST(request, { params }) {
+  await dbConnect();
+  const formData = await request.body;
+  console.log("Request:", formData);
+  return Response.json(request.body);
+  // console.log("Data:", formData);
+  // const name = formData.get("name");
+  // const email = formData.get("email");
+  // return Response.json({ name, email });
 }

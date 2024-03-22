@@ -15,30 +15,34 @@ import {
   TextInput,
   Box,
 } from "@mantine/core";
-import { DateTimePicker } from "@mantine/dates";
+import { DateInput, DateTimePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useParams, useRouter, useFetch, usePathname } from "next/navigation";
-import { newEditProject } from "/app/actions";
+import { newEditSection } from "/app/actions";
 
-export default function ProjectForm(props) {
+export default function SectionForm(props) {
   const router = useRouter();
 
   const pathname = usePathname();
   const params = useParams();
+  console.log("Params:", params);
   const form = useForm({
     initialValues: {
       name: "",
       description: "",
+      dateInstalled: "",
       notes: "",
+      size: { width: 0, length: 0 },
+      project_name: params.project,
     },
   });
 
   async function submitForm() {
     console.log("Form state on submit:", form.values);
-    const result = await newEditProject(form.values);
+    const result = await newEditSection(form.values);
     console.log("Result:", result);
     if (result.success === true) {
-      router.push(`/projects/${result.data.name}`);
+      router.push(`/projects/${params.project}`);
     }
   }
   const initialState = {
@@ -68,6 +72,13 @@ export default function ProjectForm(props) {
             {...form.getInputProps("description")}
           />
           <Textarea label="Notes" {...form.getInputProps("notes")} />
+          <DateInput
+            label="Date Installed"
+            {...form.getInputProps("dateInstalled")}
+          />
+          <NumberInput label="Width" {...form.getInputProps("size.width")} />
+          <NumberInput label="length" {...form.getInputProps("size.length")} />
+
           <SubmitButton />
         </div>
       </Box>

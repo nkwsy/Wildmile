@@ -1,5 +1,6 @@
 "use client";
 import { useContext, Suspense, useState, useEffect, useFormState } from "react";
+import { useFormStatus } from "react-dom";
 
 import { insertModules } from "/app/actions";
 import {
@@ -15,10 +16,14 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useParams } from "next/navigation";
+import { useParams, useRouter, useFetch, usePathname } from "next/navigation";
 
 import { IconTrash } from "@tabler/icons-react";
+
 export default function MultiModuleForm({ modules }) {
+  const router = useRouter();
+
+  const pathname = usePathname();
   const params = useParams();
 
   console.log("Params:", params);
@@ -30,7 +35,7 @@ export default function MultiModuleForm({ modules }) {
   const initialValues = {
     model: "",
     locations: locations,
-    flipped: "",
+    flipped: false,
     island_name: "",
     locationCode: "",
     notes: "",
@@ -48,19 +53,35 @@ export default function MultiModuleForm({ modules }) {
     initialValues,
   });
 
-  function submitForm() {
-    console.log("Form state on submit:", form.values);
-    insertModules(form.values);
+  async function submitForm() {
+    if (form.isSubmitting) {
+      return; // Prevent multiple submissions
+    }
+
+    try {
+      console.log("Form state on submit:", form.values);
+      const result = await insertModules(form.values);
+      console.log("Result:", result);
+
+      if (result.success === true) {
+        return result;
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      // Handle the error as needed
+    }
   }
+
   const initialState = {
     message: null,
   };
 
   function SubmitButton() {
     const { pending } = useFormStatus();
+    console.log("Pending:", pending);
 
     return (
-      <Button onClick={submitForm} color="blue">
+      <Button type="submit" loading={pending} color="blue">
         Submit
       </Button>
     );
@@ -72,7 +93,7 @@ export default function MultiModuleForm({ modules }) {
     <>
       <Box maw={340} mx="auto">
         {/* <form action={formAction}> */}
-        <form>
+        <form action={submitForm}>
           <Group style={{ display: "flex", gap: "8px" }}>
             <SegmentedControl
               data={["3-d", "5-d", "Sub", "Dock"]}
@@ -137,8 +158,8 @@ export default function MultiModuleForm({ modules }) {
           <input type="hidden" id="postId" name="postId" value="34657" /> */}
 
           <Group justify="flex-end" mt="sm">
-            {/* <SubmitButton /> */}
-            <Button onClick={submitForm}>Submit</Button>
+            <SubmitButton />
+            {/* <Button onClick={submitForm}>Submit</Button> */}
           </Group>
         </form>
       </Box>

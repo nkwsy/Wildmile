@@ -141,7 +141,7 @@ export default function ModuleToolbar() {
             >
               <IconRefresh />
             </ActionIcon> */}
-            {selectedCell.size > 1 && (
+            {selectedCell.size >= 1 && (
               <Group>
                 <MultiModuleForm modules={selectedCell} />
               </Group>

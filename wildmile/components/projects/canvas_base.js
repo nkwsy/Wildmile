@@ -56,7 +56,9 @@ export function UpdateModules({ triggerUpdate }) {
     async function fetchData() {
       // Fetch and update logic here
       // const mods = searchParams.get("");
-      const response = await fetch(`${pathname}/edit`);
+      const response = await fetch(`${pathname}/edit`, {
+        next: { tags: ["modules"] },
+      });
       const modData = await response.json();
       console.log("Fetching and updating modules...");
       // Simulate fetching data
@@ -79,6 +81,7 @@ export const ModMapWrapper = ({ children }) => {
     _id: false,
     module: "none",
   });
+  const [newModules, setNewModules] = useState([]);
   const [selectedCell, setSelectedCell] = useState(new Map());
   const [cells, setCells] = useState(new Map());
   // Sets the exploration mode of the map
@@ -518,24 +521,6 @@ export function CreateGridLayer({ initModules }) {
   useEffect(() => {
     handleSomeUpdate();
   }, []);
-}
-
-// Does not do anything rn
-export async function LoadModules() {
-  const { setModules } = useContext(CanvasContext);
-  const pathname = usePathname();
-  const searchParams = useSearchParams("");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await LoadMods(pathname, searchParams);
-      if (data) {
-        setModules(data);
-      }
-    };
-
-    fetchData();
-  }, [pathname, searchParams, setModules]);
 }
 
 export function useWindow() {
