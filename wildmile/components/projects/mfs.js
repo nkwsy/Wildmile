@@ -20,7 +20,7 @@ import { useParams, useRouter, useFetch, usePathname } from "next/navigation";
 
 import { IconTrash } from "@tabler/icons-react";
 
-export default function MultiModuleForm({ modules }) {
+export default function MultiModuleForm({ returnSelectedCells }) {
   const router = useRouter();
 
   const pathname = usePathname();
@@ -28,10 +28,7 @@ export default function MultiModuleForm({ modules }) {
 
   console.log("Params:", params);
   const locations = [];
-  modules.forEach((cell) => {
-    locations.push({ x: cell.x, y: cell.y });
-  });
-  console.log("Locations:", locations);
+
   const initialValues = {
     model: "",
     locations: locations,
@@ -60,6 +57,13 @@ export default function MultiModuleForm({ modules }) {
 
     try {
       console.log("Form state on submit:", form.values);
+      const modules = returnSelectedCells();
+      console.log("Modules:", modules);
+      modules.forEach((cell) => {
+        locations.push({ x: cell.x, y: cell.y });
+      });
+      console.log("Locations:", locations);
+      form.values.locations = locations;
       const result = await insertModules(form.values);
       console.log("Result:", result);
 

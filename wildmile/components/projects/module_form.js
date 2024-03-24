@@ -95,6 +95,7 @@ export default function ModuleToolbar() {
     modules,
     setModules,
     clearSelectedCells,
+    returnSelectedCells,
   } = useContext(CanvasContext);
   // const [selectedModule, setSelectedModule] = useState(null);
   // console.log("CanvasContext:", selectedModule);
@@ -143,7 +144,7 @@ export default function ModuleToolbar() {
             </ActionIcon> */}
             {selectedCell.size >= 1 && (
               <Group>
-                <MultiModuleForm modules={selectedCell} />
+                <MultiModuleForm returnSelectedCells={returnSelectedCells} />
               </Group>
             )}
           </CardSection>

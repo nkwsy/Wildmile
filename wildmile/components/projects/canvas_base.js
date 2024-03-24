@@ -132,11 +132,15 @@ export const ModMapWrapper = ({ children }) => {
     return selectedCells.has(`${x},${y}`);
   };
 
+  const returnSelectedCells = () => {
+    return selectedCell;
+  };
   //
   // Allows user to click to add to cell or remove from cell
   //
 
   const values = {
+    returnSelectedCells,
     selectedModule,
     setSelectedModule,
     selectedCell,

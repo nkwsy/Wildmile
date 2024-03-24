@@ -13,6 +13,8 @@ COPY wildmile .
 # Set permissions for the .next directory
 RUN mkdir -p .next && chown node:node .next
 
+# Set the NODE_OPTIONS environment variable to enable debugging
+ENV NODE_OPTIONS='--inspect=0.0.0.0:9229'
 # USER node
 
 CMD ["npm","run","dev"]

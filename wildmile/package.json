@@ -12,7 +12,8 @@
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "@hapi/iron": "6.0.0",
@@ -50,8 +51,9 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "eslint": "^8.55.0",
+    "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-next": "^14.1.4",
     "eslint-plugin-import": "^2.29.0",
     "postcss": "^8.4.32",
     "postcss-preset-mantine": "^1.11.1",

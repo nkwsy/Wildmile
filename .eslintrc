@@ -1,5 +1,11 @@
 {
-  "extends": ["airbnb-base", "next", "next/core-web-vitals"],
+  "extends": [
+    // "airbnb-base",
+    "next",
+    "next/core-web-vitals",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+  ],
   "env": {
     "node": true,
     "mocha": true,
