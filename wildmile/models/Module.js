@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+const mongoose_delete = require("mongoose-delete");
 
 const ModuleSchema = new mongoose.Schema(
   {
@@ -18,10 +19,12 @@ const ModuleSchema = new mongoose.Schema(
     notes: String,
     flipped: Boolean,
     tags: Array,
+    deleted: Boolean,
     decommisioned: Boolean,
     sponsor: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
-  { collection: "mods" }
+  { collection: "mods", timestamps: true }
 );
 
 export default mongoose.models.Module || mongoose.model("Module", ModuleSchema);
+ModuleSchema.plugin(mongoose_delete, { overrideMethods: "all" });

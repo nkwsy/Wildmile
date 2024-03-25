@@ -33,6 +33,7 @@ import {
   CanvasBase,
   ModMapWrapper,
 } from "components/projects/canvas_base";
+import { PlantMap } from "components/projects/plant_map";
 import dynamic from "next/dynamic";
 
 import "passport";
@@ -103,6 +104,7 @@ export default async function Page(context) {
           > */}
             <CanvasBase width={section.size.width} height={section.size.length}>
               <CreateGridLayer />
+              <PlantMap />
               {/* <CreateModuleLayer modules={modules} /> */}
             </CanvasBase>
             {/* </Box> */}

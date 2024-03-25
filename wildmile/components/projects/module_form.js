@@ -44,6 +44,7 @@ import CanvasContext from "./context_mod_map";
 const ModuleForm = dynamic(() => import("components/projects/mf.js"));
 // const MultiModuleForm = dynamic(() => import("components/projects/mfs.js"));
 import MultiModuleForm from "components/projects/mfs.js";
+import RemoveModuleForm from "./mf_delete";
 import { usePathname, useSearchParams } from "next/navigation";
 
 // const [visible, handlers] = useDisclosure(false);
@@ -117,9 +118,10 @@ export default function ModuleToolbar() {
             {/* <Group>
               <ModuleForm key={selectedModule._id} props={selectedModule} />
             </Group> */}
-            <Button color="red" variant="light" radius="md">
-              <IconTrash />
-            </Button>
+            <RemoveModuleForm returnSelectedCells={returnSelectedCells} />
+            {/* <Button color="red" variant="light" radius="md"> */}
+            {/* <IconTrash /> */}
+            {/* </Button> */}
             <Button
               // onClick={() =>
               // setSelectedModule({ ...selectedModule, x: "", y: "", _id: "" })

@@ -3,6 +3,7 @@ import {
   createProject,
   createSection,
   updateOrInsertModules,
+  deleteModules,
 } from "/lib/db/projects";
 export async function insertModules(formData) {
   console.log("Data:", formData);
@@ -25,6 +26,20 @@ export async function insertModules(formData) {
   return JSON.stringify(result);
 }
 
+// To Delete Modules
+export async function removeModules(formData) {
+  console.log("Data:", formData);
+  const rawFormData = {
+    project_name: formData.projectName,
+    section_name: formData.sectionName,
+  };
+  const result = await deleteModules(rawFormData, formData.locations);
+
+  console.log("Result: removeModules", result);
+  return JSON.stringify(result);
+}
+
+// To Load Modules
 export const LoadMods = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams("");
@@ -34,6 +49,8 @@ export const LoadMods = () => {
     .catch((error) => console.error("Error:", error));
 };
 
+// To Add or Edit Project
+//TODO Allow to Edit project
 export async function newEditProject(formData) {
   console.log("newEditProject:", formData);
   const rawFormData = {

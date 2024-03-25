@@ -12,6 +12,7 @@ import {
 } from "react-konva";
 import useSWR from "swr";
 import { usePathname, useSearchParams } from "next/navigation";
+// import { UpdatePlants } from "./plant_map";
 
 useStrictMode(true);
 
@@ -30,22 +31,22 @@ const Component = () => {
   // Use the state and actions in your component
 };
 
-export function LoadMods({ newMods }) {
-  useEffect(() => {
-    async function fetchData() {
-      const pathname = usePathname();
-      const searchParams = useSearchParams("");
-      const setModules = useContext(CanvasContext);
-      const mods = searchParams.get("");
-      const response = await fetch(`${pathname}/edit`);
-      const data = await response.json();
-      console.log("LoadMods", data);
-      newMods(data);
-    }
-    newMods();
-  }, [fetchData]);
-  return null;
-}
+// export function LoadMods({ newMods }) {
+//   useEffect(() => {
+//     async function fetchData() {
+//       const pathname = usePathname();
+//       const searchParams = useSearchParams("");
+//       const setModules = useContext(CanvasContext);
+//       const mods = searchParams.get("");
+//       const response = await fetch(`${pathname}/edit`);
+//       const data = await response.json();
+//       console.log("LoadMods", data);
+//       newMods(data);
+//     }
+//     newMods();
+//   }, [fetchData]);
+//   return null;
+// }
 
 export function UpdateModules({ triggerUpdate }) {
   const { setModules } = useContext(CanvasContext);
@@ -82,6 +83,7 @@ export const ModMapWrapper = ({ children }) => {
     module: "none",
   });
   const [newModules, setNewModules] = useState([]);
+  const [removedModules, setRemovedModules] = useState([]);
   const [selectedCell, setSelectedCell] = useState(new Map());
   const [cells, setCells] = useState(new Map());
   // Sets the exploration mode of the map
@@ -90,6 +92,8 @@ export const ModMapWrapper = ({ children }) => {
   const gridRef = useRef(null);
   const selectedCellRef = useRef(null);
   const plantRef = useRef(null);
+  const [plants, setPlants] = useState([]);
+
   const modRef = useRef(null);
   const [triggerUpdate, setTriggerUpdate] = useState(false);
   const handleSomeUpdate = () => {
@@ -103,7 +107,6 @@ export const ModMapWrapper = ({ children }) => {
       const key = `${x},${y}`;
       const rect_id = `#${id}`;
       // const rect = modRef.current.find(id);
-      console.log("New Modules:", newModules);
       console.log("toggleCellSelection rect", id);
       const newCells = new Map(prevCells);
       if (newCells.has(key)) {
@@ -117,29 +120,34 @@ export const ModMapWrapper = ({ children }) => {
       return newCells;
     });
   };
+
+  // updates the stroke width of selected cell
   const updateSelectedCellStrokeWidth = () => {
     selectedCell.forEach((cell) => {
       // console.log("updateSelectedCellStrokeWidth", cell.x);
       cell.id.strokeWidth(0.1);
     });
   };
+  // clears the selected cells
   const clearSelectedCells = () => {
     console.log("clearSelectedCells");
     updateSelectedCellStrokeWidth();
     setSelectedCell(new Map());
   };
-
+  // utility to check if cell is selected
   const isCellSelected = (x, y) => {
     return selectedCells.has(`${x},${y}`);
   };
 
+  // utility to return the selected cells
   const returnSelectedCells = () => {
     return selectedCell;
   };
 
-  //
-  // Allows user to click to add to cell or remove from cell
-  //
+  // useEffect to log selected cells
+  useEffect(() => {
+    console.log("Selected Cells:", selectedCell);
+  }, [selectedCell]);
 
   const values = {
     returnSelectedCells,
@@ -163,6 +171,10 @@ export const ModMapWrapper = ({ children }) => {
     modRef,
     setNewModules,
     newModules,
+    setRemovedModules,
+    removedModules,
+    setPlants,
+    plants,
   };
   return (
     // <div>
@@ -196,6 +208,8 @@ export const CanvasBase = ({ children, width, height }) => {
     modRef,
     newModules,
     setNewModules,
+    removedModules,
+    setRemovedModules,
   } = useContext(CanvasContext);
 
   const [rotation, setRotation] = useState(0);
@@ -214,25 +228,26 @@ export const CanvasBase = ({ children, width, height }) => {
   useEffect(() => {
     console.log("New Modules:", newModules, modules);
     setModules((prevModules) => [...prevModules, ...newModules]);
+    setSelectedCell(new Map());
+
+    // setNewModules([]);
   }, [newModules]);
 
-  const [containerSize, setContainerSize] = useState({
-    width:
-      typeof window !== "undefined" && window.innerWidth
-        ? window.innerWidth
-        : 1200,
-    height:
-      typeof window !== "undefined" && window.innerHeight
-        ? window.innerHeight
-        : 1200,
-  });
+  // handle updating the removed modules
+  useEffect(() => {
+    console.log("Removed Modules:", removedModules, modules);
+    setModules((prevModules) =>
+      prevModules.filter(
+        (module) =>
+          !removedModules.some(
+            (removedModule) => removedModule._id === module._id
+          )
+      )
+    );
 
-  useEffect(() => {
-    setCols(width);
-  }, [width]);
-  useEffect(() => {
-    setRows(height);
-  }, [height]);
+    // Optionally, clear the removedModules if needed
+    setSelectedCell(new Map());
+  }, [removedModules]);
 
   // Function to redraw layer by name
   const redrawLayerByName = () => {
@@ -264,6 +279,30 @@ export const CanvasBase = ({ children, width, height }) => {
       setIsFormOpen(true);
     }
   }, [selectedModule]);
+
+  // useEffect to log updated modules
+  useEffect(() => {
+    console.log("Updated Modules:", modules);
+  }, [modules]);
+
+  // Set the container size, unknown if used
+  const [containerSize, setContainerSize] = useState({
+    width:
+      typeof window !== "undefined" && window.innerWidth
+        ? window.innerWidth
+        : 1200,
+    height:
+      typeof window !== "undefined" && window.innerHeight
+        ? window.innerHeight
+        : 1200,
+  });
+
+  useEffect(() => {
+    setCols(width);
+  }, [width]);
+  useEffect(() => {
+    setRows(height);
+  }, [height]);
 
   // Zoom functions
   const [zoomLevel, setZoomLevel] = useState(1);
@@ -521,9 +560,9 @@ export function CreateGridLayer({ initModules }) {
     cols,
     mode,
     selectedCell,
-    handleSomeUpdate,
+    // handleSomeUpdate,
     // setSelectedCell,
-    toggleCellSelection,
+    // toggleCellSelection,
     // setSelectedModule,
     // setCellWidth,
     // setCellHeight,
@@ -534,9 +573,9 @@ export function CreateGridLayer({ initModules }) {
   // useEffect(() => {
   //   setModules(initModules);
   // }, [initModules, setModules]);
-  useEffect(() => {
-    handleSomeUpdate();
-  }, []);
+  // useEffect(() => {
+  //   handleSomeUpdate();
+  // }, []);
 }
 
 export function useWindow() {

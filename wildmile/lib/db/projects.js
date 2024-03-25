@@ -149,34 +149,46 @@ export async function updateOrInsertModules(params, locations) {
   }
 }
 
-//   Project.findOne({ name: req.body.projectName }).select("_id").exec((err, project) => {
-//     if (err) {
-//       console.log("Error finding project:", err);
-//     }
-// Section.find
+// To Delete Modules
+export async function deleteModules(params, locations) {
+  console.log("deleteModules params:", params, "locations:", locations);
+  try {
+    const removedModules = [];
+    // Find Project by projectName
+    const project = await Project.findOne({ name: params.project_name });
+    if (!project) throw new Error("Project not found");
 
-// req.body.forEach(async (module) => {
-//   const { _id, name, description, dateInstalled, notes, size, projectId } = module;
-//   Module.find
-//   if (_id) {
-//     await Module.findOneAndUpdate(_id, {
-//       name,
-//       description,
-//       dateInstalled,
-//       notes,
-//       size,
-//       projectId,
-//     });
-//   } else {
-//     await Module.create({
-//       name,
-//       description,
-//       dateInstalled,
-//       notes,
-//       size,
-//       projectId,
-//     });
-//   }
-// });
+    // Find Section by sectionName
+    const section = await Section.findOne({ name: params.section_name });
+    if (!section) throw new Error("Section not found");
 
-// }
+    console.log("Project:", project, "Section:", section);
+    // Iterate over locations and update/insert Modules
+    for (const location of locations) {
+      const { x, y } = location; // Assuming each location has x and y properties
+
+      // Check if a Module exists with the given criteria
+      const existingModule = await Module.findOne({
+        x: x,
+        y: y,
+        projectId: project._id,
+        sectionId: section._id,
+      });
+
+      if (existingModule) {
+        // Update the existing Module
+        const delMod = await Module.findOneAndDelete({
+          _id: existingModule._id,
+        });
+        removedModules.push(delMod);
+      } else {
+        console.log("Module not found at location:", location);
+      }
+    }
+    const result = await { success: true, data: removedModules };
+    return result;
+  } catch (error) {
+    console.error("Error updating or inserting modules:", error);
+    throw error; // Rethrow or handle as needed
+  }
+}

@@ -9,7 +9,10 @@ export async function GET(request, { params }) {
   const section_name = params.section; // '1', '2', or '3'
   console.log("Project:", project_name, "Section:", section_name);
   const section = await Section.findOne({ name: section_name });
-  const result = await Module.find({ sectionId: section._id }).lean();
+  const result = await Module.find({
+    sectionId: section._id,
+    deleted: { $ne: true },
+  }).lean();
 
   const modules = JSON.stringify(result);
   return Response.json(modules);
