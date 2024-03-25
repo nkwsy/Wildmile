@@ -17,7 +17,7 @@ useStrictMode(true);
 
 import { CellGen, ModuleGen } from "./mod_util";
 // export const CanvasContext = React.createContext();
-import CanvasContext from "./context_mod_map";
+import { CanvasContext } from "./context_mod_map";
 // import Hydration from "lib/hydration";
 import useStore from "/lib/store";
 import { use } from "passport";
@@ -60,7 +60,7 @@ export function UpdateModules({ triggerUpdate }) {
         next: { tags: ["modules"] },
       });
       const modData = await response.json();
-      console.log("Fetching and updating modules...");
+      console.log("Fetching and updating modules...", triggerUpdate);
       // Simulate fetching data
       const data = JSON.parse(modData);
       // Call setModules or similar function to update the state
@@ -92,6 +92,7 @@ export const ModMapWrapper = ({ children }) => {
   const plantRef = useRef(null);
   const modRef = useRef(null);
   const [triggerUpdate, setTriggerUpdate] = useState(false);
+  // const []
   const handleSomeUpdate = () => {
     // This function is called when you want to trigger the update in UpdateModules
     setTriggerUpdate((prev) => !prev); // Toggle the state to trigger useEffect in UpdateModules
@@ -106,13 +107,16 @@ export const ModMapWrapper = ({ children }) => {
       console.log("toggleCellSelection rect", id);
       const newCells = new Map(prevCells);
       if (newCells.has(key)) {
+        console.log("toggleCellSelection delete", key);
         id.strokeWidth(0.1);
         newCells.delete(key);
       } else {
+        console.log("toggleCellSelection add", key);
         newCells.set(key, { x, y, id });
         id.strokeWidth(6);
         id.moveToTop();
       }
+      console.log("toggleCellSelection newCells", newCells);
       return newCells;
     });
   };
@@ -195,7 +199,7 @@ export const CanvasBase = ({ children, width, height }) => {
   const [rotation, setRotation] = useState(0);
   const [modules, setModules] = useState({});
   const [triggerUpdateMod, setTriggerUpdateMod] = useState(false);
-
+  const [triggerModuleRefresh, setTriggerModuleRefresh] = useState(false);
   const [scale, setScale] = useState(1);
   const [cols, setCols] = useState(width); // Set initial value of cols to width
   const [rows, setRows] = useState(height); // Set initial value of rows to height
@@ -203,6 +207,10 @@ export const CanvasBase = ({ children, width, height }) => {
   useEffect(() => {
     setTriggerUpdateMod((prev) => !prev);
   }, [modules]);
+
+  useEffect(() => {
+    setTriggerModuleRefresh((prev) => !prev);
+  }, [triggerModuleRefresh]);
 
   const [containerSize, setContainerSize] = useState({
     width:
@@ -333,7 +341,7 @@ export const CanvasBase = ({ children, width, height }) => {
 
   // Create default context for context provider
   const [isFormOpen, setIsFormOpen] = useState(false);
-
+  console.log("mods", modules);
   const value = {
     plantRef,
     modRef,
@@ -358,24 +366,31 @@ export const CanvasBase = ({ children, width, height }) => {
     isCellSelected,
     triggerUpdate,
     handleSomeUpdate,
+    triggerUpdateMod,
 
     setIsFormOpen,
     cells,
     setCells,
-    triggerUpdate,
-    handleSomeUpdate,
   };
   if (!isClient) {
     console.log("isClient:", isClient);
     return null;
   }
+  const rectProps = {
+    cellWidth: cellWidth,
+    cellHeight: cellHeight,
+    rows: rows,
+    cols: cols,
+    modRef: modRef,
+    toggleCellSelection: toggleCellSelection,
+  };
+  console.log("CanvasBase:", cellWidth, cellHeight, rows, cols);
   return (
     <>
       <CanvasContext.Provider value={value}>
         <div>
           <UpdateModules triggerUpdate={triggerUpdate} />
           {/* <button onClick={handleSomeUpdate}>Update Modules</button> */}
-          <CreateRectLayer triggerUpdate={triggerUpdateMod} />
           <Stage
             ref={gridRef}
             width={containerSize.width}
@@ -386,7 +401,9 @@ export const CanvasBase = ({ children, width, height }) => {
             rotation={rotation}
             draggable
           >
+            {/* <CreateRectLayer {...rectProps} /> */}
             <Layer ref={modRef}></Layer>
+            <CreateRectLayer triggerUpdateMod={triggerUpdateMod} />
             {children}
           </Stage>
         </div>
@@ -422,47 +439,45 @@ export async function BaseGrid({ children, ...props }) {
   );
 }
 
-export function CreateRectLayer(props) {
-  const {
-    cellWidth,
-    cellHeight,
-    rows,
-    cols,
-    modRef,
-    modules,
-    toggleCellSelection,
-    selectedCell,
-    cells,
-    setCells,
-  } = useContext(CanvasContext);
+export function CreateRectLayer({ triggerUpdateMod }) {
+  // const { cellWidth, cellHeight, rows, cols };
+  // const cellWidth = props.cellWidth;
+  // const cellHeight = props.cellHeight;
+  // const rows = props.rows;
+  // const cols = props.cols;
+  // const { cellWidth, cellHeight, rows, cols, modRef, toggleCellSelection } =
+  // props;
+  // const { toggleModuleRefresh } = useContext(CanvasContext);
+  const { cellWidth, cellHeight, rows, cols, modRef, toggleCellSelection } =
+    useContext(CanvasContext);
   console.log(
     "CreateRectLayer:",
     cellWidth,
     cellHeight,
     rows,
     cols,
-    modRef
-    // modules
+    modRef,
+    triggerUpdateMod
   );
   // useMemo to calculate groups based on dependencies
-  const groups = useMemo(() => {
-    const newGroups = [];
-    for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
-      for (let colIndex = 0; colIndex < cols; colIndex++) {
-        let cellShape = CellGen({
-          x: rowIndex,
-          y: colIndex,
-          cellWidth,
-          cellHeight,
-          modules,
-          toggleCellSelection,
-        });
-        newGroups.push(cellShape);
-      }
+  // const groups = useMemo(() => {
+  const newGroups = [];
+  for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
+    for (let colIndex = 0; colIndex < cols; colIndex++) {
+      let cellShape = CellGen({
+        x: rowIndex,
+        y: colIndex,
+        cellWidth,
+        cellHeight,
+        // modules,
+        toggleCellSelection,
+      });
+      newGroups.push(cellShape);
     }
-    return newGroups;
-  }, [modules]); // Include modules in the dependency array
-  // rows, cols, cellWidth, cellHeight,
+  }
+  // return newGroups;
+  // }, [cellHeight, cellWidth, cols, rows, toggleCellSelection]); // Include modules in the dependency array
+  const groups = newGroups; // rows, cols, cellWidth, cellHeight,
   // useEffect to handle side effects, like updating the canvas
   useEffect(() => {
     const layer = modRef.current;
@@ -473,15 +488,33 @@ export function CreateRectLayer(props) {
     // Clear existing content
     // layer.clear();
 
-    // Add new groups to the layer
-    groups.forEach((group) => {
-      layer.add(group);
-      // setCells((prevCells) => {
-      //   const newCells = new Map(prevCells);
-      //   const key = `${group.x},${group.y}`;
-      //   newCells.set(key, group);
-      // });
+    // Example: Updating or adding shapes without clearing the layer
+    console.log("layerChilden:", layer.children);
+    groups.forEach((newShape) => {
+      // console.log("newShape:", `#${newShape.id()}`);
+      const existingShape = layer.findOne(`#${newShape.id()}`);
+      console.log("existingShape:", existingShape);
+      if (existingShape) {
+        // Update properties of the existing shape
+        console.log("existingShape:", existingShape);
+        // existingShape.setAttrs({
+        //   // update necessary properties
+        // });
+      } else {
+        // Shape does not exist, add the new shape
+        layer.add(newShape);
+      }
     });
+
+    // Add new groups to the layer
+    // groups.forEach((group) => {
+    //   layer.add(group);
+    // setCells((prevCells) => {
+    //   const newCells = new Map(prevCells);
+    //   const key = `${group.x},${group.y}`;
+    //   newCells.set(key, group);
+    // });
+    // });
 
     // layer.add(cells);
     // Redraw the layer to display the new content
@@ -500,23 +533,23 @@ export function CreateRectLayer(props) {
 
 export function CreateGridLayer({ initModules }) {
   const {
-    modRef,
-    modules,
-    setModules,
-    cellWidth,
-    cellHeight,
-    rows,
-    cols,
-    mode,
-    selectedCell,
+    // modRef,
+    // modules,
+    // setModules,
+    // cellWidth,
+    // cellHeight,
+    // rows,
+    // cols,
+    // mode,
+    // selectedCell,
     handleSomeUpdate,
     // setSelectedCell,
-    toggleCellSelection,
+    // toggleCellSelection,
     // setSelectedModule,
     // setCellWidth,
     // setCellHeight,
-    cells,
-    setCells,
+    // cells,
+    // setCells,
     // isCellSelected,
   } = useContext(CanvasContext);
   // useEffect(() => {

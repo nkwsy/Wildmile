@@ -165,65 +165,33 @@ export const ModuleGen = (config) => {
   }
 };
 // Generate a cell for a module
-
 export const CellGen = ({
   x,
   y,
   cellWidth,
   cellHeight,
   toggleCellSelection,
-  selectedCell,
-  modules,
-  // setSelectedModule,
 }) => {
-  // const changeSelectedCell = () => {
-  //   toggleCellSelection(x, y);
-  //   // console.log(x, y, "selected", isCellSelected(x, y));
-  // };
-  const isCellSelected = (x, y) => {
-    return selectedCell.has(`${x},${y}`);
-  };
-  // const [isSelected, setIsSelected] = useState(false);
-  let isSelected = false;
-  function toggleSelection(currentValue) {
-    return !currentValue;
-  }
-
-  const isModule = findItemInArray(modules, x, y);
-  // const isSelected = isCellSelected(x, y);
-  const stroke = isSelected ? "#1080dc" : "grey";
-  const strokeWidth = isSelected ? 2 : 0.1;
-  // const stroke = "grey";
-  // const strokeWidth = 0.1;
+  const stroke = "grey";
+  const strokeWidth = 0.1;
 
   // console.log("isModule:", isModule, x, y, isSelected, isCellSelected(x, y));
   let rect;
-  if (isModule) {
-    rect = ModuleGen({
-      module: isModule,
-      cellWidth,
-      cellHeight,
-      // setSelectedModule,
-      // isSelected,
-      // changeSelectedCell,
-      toggleCellSelection,
-    });
-  } else {
-    // Create a rectangle shape for the cell
-    rect = new Konva.Rect({
-      x: y * cellWidth,
-      y: x * cellHeight,
-      width: cellWidth,
-      height: cellHeight,
-      opacity: 0.5,
-      stroke: stroke,
-      strokeWidth: strokeWidth,
-      id: `${x},${y}`,
-    });
-  }
+  // Create a rectangle shape for the cell
+  rect = new Konva.Rect({
+    x: y * cellWidth,
+    y: x * cellHeight,
+    width: cellWidth,
+    height: cellHeight,
+    opacity: 0.5,
+    stroke: stroke,
+    strokeWidth: 0.1,
+    draggable: true,
+    id: `${x},${y}`,
+  });
   const changeSelectedCell = (e) => {
     // logs clicked Konva.Circle instance
-    toggleSelection(isSelected);
+    // toggleSelection(isSelected);
     toggleCellSelection(x, y, e.target);
     console.log("clicked cell", e.target, e.target.id());
   };
@@ -232,6 +200,74 @@ export const CellGen = ({
 
   return rect;
 };
+
+/// OLD CELLGEN
+// export const CellGen = ({
+//   x,
+//   y,
+//   cellWidth,
+//   cellHeight,
+//   toggleCellSelection,
+//   selectedCell,
+//   modules,
+//   // setSelectedModule,
+// }) => {
+//   // const changeSelectedCell = () => {
+//   //   toggleCellSelection(x, y);
+//   //   // console.log(x, y, "selected", isCellSelected(x, y));
+//   // };
+//   const isCellSelected = (x, y) => {
+//     return selectedCell.has(`${x},${y}`);
+//   };
+//   // const [isSelected, setIsSelected] = useState(false);
+//   let isSelected = false;
+//   function toggleSelection(currentValue) {
+//     return !currentValue;
+//   }
+
+//   const isModule = findItemInArray(modules, x, y);
+//   // const isSelected = isCellSelected(x, y);
+//   const stroke = isSelected ? "#1080dc" : "grey";
+//   const strokeWidth = isSelected ? 2 : 0.1;
+//   // const stroke = "grey";
+//   // const strokeWidth = 0.1;
+
+//   // console.log("isModule:", isModule, x, y, isSelected, isCellSelected(x, y));
+//   let rect;
+//   if (isModule) {
+//     rect = ModuleGen({
+//       module: isModule,
+//       cellWidth,
+//       cellHeight,
+//       // setSelectedModule,
+//       // isSelected,
+//       // changeSelectedCell,
+//       toggleCellSelection,
+//     });
+//   } else {
+//     // Create a rectangle shape for the cell
+//     rect = new Konva.Rect({
+//       x: y * cellWidth,
+//       y: x * cellHeight,
+//       width: cellWidth,
+//       height: cellHeight,
+//       opacity: 0.5,
+//       stroke: stroke,
+//       strokeWidth: strokeWidth,
+//       id: `${x},${y}`,
+//     });
+//   }
+//   const changeSelectedCell = (e) => {
+//     // logs clicked Konva.Circle instance
+//     // toggleSelection(isSelected);
+//     toggleCellSelection(x, y, e.target);
+//     console.log("clicked cell", e.target, e.target.id());
+//   };
+//   // Add click event listener
+//   rect.on("click", changeSelectedCell);
+
+//   return rect;
+// };
 
 // export const CellGen = ({
 //   x,

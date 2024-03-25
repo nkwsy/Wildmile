@@ -3,8 +3,10 @@
 
 // import React, { createContext, useContext, useState } from "react";
 import React from "react";
-const ClientContext = React.createContext();
-export default ClientContext;
+// const ClientContext = React.createContext();
+// export default ClientContext;
+const CanvasContext = React.createContext();
+export { CanvasContext };
 // export const useClient = () => useContext(ClientContext);
 
 // export const ClientProvider = ({ children }) => {

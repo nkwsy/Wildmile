@@ -40,7 +40,11 @@ import React from "react";
 const ModuleToolbar = dynamic(() => import("components/projects/module_form"), {
   ssr: false,
 });
-
+// import { ModMapWrapper } from "components/projects/ModMapWrapper";
+// import { CanvasBase } from "components/projects/CanvasBase";
+// import CreateGridLayer from "components/projects/CreateGridLayer";
+// import { CreateModuleLayer } from "components/projects/CreateModuleLayer";
+// import { CreateRectLayer } from "components/projects/canvas_base";
 // import ModMap from "components/projects/3_map";
 // import { string } from "yup";
 // import { stringify } from "postcss";
@@ -66,25 +70,7 @@ export default async function Page(context) {
   // const modules = JSON.parse(raw_modules.modules);
   const section = JSON.parse(raw_modules.section);
   console.log("Modules:", section);
-  // const modules = props.modules.map((module) => {
-  //   return {
-  //     icon: IconListDetails,
-  //     title: `Model: ${module.model} - Shape: ${module.shape} X: ${module.x}, Y: ${module.y}`,
-  //     href: `/projects/${router.query.id}/modules/${module._id}`,
-  //     description: module.notes,
-  //   };
-  // });
-  // const mod_form = useForm({
-  //   initialValues: {
-  //     model: "",
-  //     size: {
-  //       x: 0,
-  //       y: 0,
-  //     },
-  //     notes: "",
-  //     dateInstalled: new Date(),
-  //   },
-  // });
+
   return (
     <>
       <Title
@@ -95,14 +81,9 @@ export default async function Page(context) {
       <Portal>
         <ModMapWrapper>
           <Box sx={{ position: "relative", width: "100%", height: "500px" }}>
-            {/* <Box
-            // component="canvas"
-            width="100%"
-            height="500"
-            sx={{ display: "block", width: "100%", height: "100%" }}
-          > */}
             <CanvasBase width={section.size.width} height={section.size.length}>
               <CreateGridLayer />
+              {/* <CreateModuleLayer /> */}
               {/* <CreateModuleLayer modules={modules} /> */}
             </CanvasBase>
             {/* </Box> */}

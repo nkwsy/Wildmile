@@ -40,7 +40,7 @@ import { DateTimePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { useContext, Suspense, useState, useEffect } from "react";
-import CanvasContext from "./context_mod_map";
+import { CanvasContext } from "./context_mod_map";
 const ModuleForm = dynamic(() => import("components/projects/mf.js"));
 // const MultiModuleForm = dynamic(() => import("components/projects/mfs.js"));
 import MultiModuleForm from "components/projects/mfs.js";
@@ -107,7 +107,7 @@ export default function ModuleToolbar() {
           <Group justify="space-between">
             <Group justify="space-between">{sliderz()}</Group>
             <Text fw={500}>
-              Module: {selectedModule.x}, {selectedModule.y}
+              {/* Module: {selectedModule.x}, {selectedModule.y} */}
             </Text>
           </Group>
         </CardSection>
