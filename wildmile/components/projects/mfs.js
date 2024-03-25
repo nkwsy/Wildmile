@@ -1,5 +1,11 @@
 "use client";
-import { useContext, Suspense, useState, useEffect, useFormState } from "react";
+import React, {
+  useContext,
+  Suspense,
+  useState,
+  useEffect,
+  useFormState,
+} from "react";
 import { useFormStatus } from "react-dom";
 
 import { insertModules } from "/app/actions";
@@ -18,6 +24,7 @@ import {
 import { useForm } from "@mantine/form";
 import { useParams, useRouter, useFetch, usePathname } from "next/navigation";
 
+import ClientProvider from "components/projects/context_mod_map";
 import { IconTrash } from "@tabler/icons-react";
 
 export default function MultiModuleForm({ returnSelectedCells }) {
@@ -26,6 +33,7 @@ export default function MultiModuleForm({ returnSelectedCells }) {
   const pathname = usePathname();
   const params = useParams();
 
+  const { newModules, setNewModules } = useContext(ClientProvider);
   console.log("Params:", params);
   const locations = [];
 
@@ -64,10 +72,14 @@ export default function MultiModuleForm({ returnSelectedCells }) {
       });
       console.log("Locations:", locations);
       form.values.locations = locations;
-      const result = await insertModules(form.values);
+      const rawResult = await insertModules(form.values);
+      const result = await JSON.parse(rawResult);
       console.log("Result:", result);
 
       if (result.success === true) {
+        console.log("success");
+        setNewModules(result.data);
+
         return result;
       }
     } catch (error) {

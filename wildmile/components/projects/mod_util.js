@@ -191,10 +191,10 @@ export const CellGen = ({
 
   const isModule = findItemInArray(modules, x, y);
   // const isSelected = isCellSelected(x, y);
-  const stroke = isSelected ? "#1080dc" : "grey";
-  const strokeWidth = isSelected ? 2 : 0.1;
-  // const stroke = "grey";
-  // const strokeWidth = 0.1;
+  // const stroke = isSelected ? "#1080dc" : "grey";
+  // const strokeWidth = isSelected ? 2 : 0.1;
+  const stroke = "grey";
+  const strokeWidth = 0.1;
 
   // console.log("isModule:", isModule, x, y, isSelected, isCellSelected(x, y));
   let rect;
@@ -223,14 +223,15 @@ export const CellGen = ({
   }
   const changeSelectedCell = (e) => {
     // logs clicked Konva.Circle instance
-    toggleSelection(isSelected);
+    // toggleSelection(isSelected);
     toggleCellSelection(x, y, e.target);
     console.log("clicked cell", e.target, e.target.id());
   };
   // Add click event listener
+  // if (rect) {
   rect.on("click", changeSelectedCell);
-
   return rect;
+  // }
 };
 
 // export const CellGen = ({

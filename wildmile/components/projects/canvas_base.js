@@ -103,6 +103,7 @@ export const ModMapWrapper = ({ children }) => {
       const key = `${x},${y}`;
       const rect_id = `#${id}`;
       // const rect = modRef.current.find(id);
+      console.log("New Modules:", newModules);
       console.log("toggleCellSelection rect", id);
       const newCells = new Map(prevCells);
       if (newCells.has(key)) {
@@ -135,6 +136,7 @@ export const ModMapWrapper = ({ children }) => {
   const returnSelectedCells = () => {
     return selectedCell;
   };
+
   //
   // Allows user to click to add to cell or remove from cell
   //
@@ -159,6 +161,8 @@ export const ModMapWrapper = ({ children }) => {
     gridRef,
     plantRef,
     modRef,
+    setNewModules,
+    newModules,
   };
   return (
     // <div>
@@ -190,10 +194,12 @@ export const CanvasBase = ({ children, width, height }) => {
     gridRef,
     plantRef,
     modRef,
+    newModules,
+    setNewModules,
   } = useContext(CanvasContext);
 
   const [rotation, setRotation] = useState(0);
-  const [modules, setModules] = useState({});
+  const [modules, setModules] = useState([]);
   const [triggerUpdateMod, setTriggerUpdateMod] = useState(false);
 
   const [scale, setScale] = useState(1);
@@ -203,6 +209,12 @@ export const CanvasBase = ({ children, width, height }) => {
   useEffect(() => {
     setTriggerUpdateMod((prev) => !prev);
   }, [modules]);
+
+  // handle updating the new modules
+  useEffect(() => {
+    console.log("New Modules:", newModules, modules);
+    setModules((prevModules) => [...prevModules, ...newModules]);
+  }, [newModules]);
 
   const [containerSize, setContainerSize] = useState({
     width:
@@ -375,7 +387,6 @@ export const CanvasBase = ({ children, width, height }) => {
         <div>
           <UpdateModules triggerUpdate={triggerUpdate} />
           {/* <button onClick={handleSomeUpdate}>Update Modules</button> */}
-          <CreateRectLayer triggerUpdate={triggerUpdateMod} />
           <Stage
             ref={gridRef}
             width={containerSize.width}
@@ -386,6 +397,7 @@ export const CanvasBase = ({ children, width, height }) => {
             rotation={rotation}
             draggable
           >
+            <CreateRectLayer triggerUpdate={triggerUpdateMod} />
             <Layer ref={modRef}></Layer>
             {children}
           </Stage>

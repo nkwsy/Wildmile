@@ -22,7 +22,7 @@ export async function insertModules(formData) {
   const result = await updateOrInsertModules(rawFormData, formData.locations);
 
   console.log("Result: newEditSection", result);
-  return result;
+  return JSON.stringify(result);
 }
 
 export const LoadMods = () => {
