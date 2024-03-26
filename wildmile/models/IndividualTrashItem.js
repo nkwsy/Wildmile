@@ -33,6 +33,6 @@ const individualTrashItemSchema = new Schema(
     toObject: { virtuals: true },
   }
 );
-IndividualTrashItemSchema.plugin(mongoose_delete, { overrideMethods: "all" });
+individualTrashItemSchema.plugin(mongoose_delete, { overrideMethods: "all" });
 export default mongoose.models.IndividualTrashItem ||
   mongoose.model("IndividualTrashItem", individualTrashItemSchema);

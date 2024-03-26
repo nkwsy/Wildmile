@@ -7,7 +7,7 @@ const individualPlantSchema = Schema(
     plant: { type: Schema.Types.ObjectId, ref: "Plant" },
     x: Number,
     y: Number,
-    module: { type: Schema.Types.ObjectId, ref: "Mod" },
+    module: { type: Schema.Types.ObjectId, ref: "Module" },
     supplier: String,
     datePlanted: Date,
     sponsor: { type: Schema.Types.ObjectId, ref: "User" },
@@ -15,6 +15,6 @@ const individualPlantSchema = Schema(
   { timestamps: true }
 );
 
-IndividualPlantSchema.plugin(mongoose_delete, { overrideMethods: "all" });
+individualPlantSchema.plugin(mongoose_delete, { overrideMethods: "all" });
 export default mongoose.models.IndividualPlant ||
   mongoose.model("IndividualPlant", individualPlantSchema);

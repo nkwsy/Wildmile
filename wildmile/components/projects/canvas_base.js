@@ -85,6 +85,7 @@ export const ModMapWrapper = ({ children }) => {
   const [newModules, setNewModules] = useState([]);
   const [removedModules, setRemovedModules] = useState([]);
   const [selectedCell, setSelectedCell] = useState(new Map());
+  const [selectedPlantCell, setSelectedPlantCell] = useState(new Map());
   const [cells, setCells] = useState(new Map());
   // Sets the exploration mode of the map
   const [mode, setMode] = useState("plants");
@@ -93,7 +94,7 @@ export const ModMapWrapper = ({ children }) => {
   const selectedCellRef = useRef(null);
   const plantRef = useRef(null);
   const [plants, setPlants] = useState([]);
-
+  const [individualPlants, setIndividualPlants] = useState([]);
   const modRef = useRef(null);
   const [triggerUpdate, setTriggerUpdate] = useState(false);
   const handleSomeUpdate = () => {
@@ -125,7 +126,7 @@ export const ModMapWrapper = ({ children }) => {
   const updateSelectedCellStrokeWidth = () => {
     selectedCell.forEach((cell) => {
       // console.log("updateSelectedCellStrokeWidth", cell.x);
-      cell.id.strokeWidth(0.1);
+      cell.id.strokeWidth(0.2);
     });
   };
   // clears the selected cells
@@ -141,6 +142,51 @@ export const ModMapWrapper = ({ children }) => {
 
   // utility to return the selected cells
   const returnSelectedCells = () => {
+    return selectedCell;
+  };
+
+  // Toggle Plant Cell Selection
+
+  // Handle the toggle for the cell selection
+  const togglePlantCellSelection = (x, y, id) => {
+    setSelectedCell((prevCells) => {
+      const key = `${x},${y}`;
+      const rect_id = `#${id}`;
+      // const rect = modRef.current.find(id);
+      console.log("toggleCellSelection rect", id);
+      const newCells = new Map(prevCells);
+      if (newCells.has(key)) {
+        id.strokeWidth(0.1);
+        newCells.delete(key);
+      } else {
+        newCells.set(key, { x, y, id });
+        id.strokeWidth(6);
+        id.moveToTop();
+      }
+      return newCells;
+    });
+  };
+
+  // updates the stroke width of selected cell
+  const updateSelectedPlantCellStrokeWidth = () => {
+    selectedCell.forEach((cell) => {
+      // console.log("updateSelectedCellStrokeWidth", cell.x);
+      cell.id.strokeWidth(0.2);
+    });
+  };
+  // clears the selected cells
+  const clearSelectedPlantCells = () => {
+    console.log("clearSelectedCells");
+    updateSelectedCellStrokeWidth();
+    setSelectedCell(new Map());
+  };
+  // utility to check if cell is selected
+  const isPlantCellSelected = (x, y) => {
+    return selectedCells.has(`${x},${y}`);
+  };
+
+  // utility to return the selected cells
+  const returnSelectedPlantCells = () => {
     return selectedCell;
   };
 
@@ -175,6 +221,14 @@ export const ModMapWrapper = ({ children }) => {
     removedModules,
     setPlants,
     plants,
+    setIndividualPlants,
+    individualPlants,
+    togglePlantCellSelection,
+    selectedPlantCell,
+    setSelectedPlantCell,
+    clearSelectedPlantCells,
+    isPlantCellSelected,
+    returnSelectedPlantCells,
   };
   return (
     // <div>
@@ -210,6 +264,16 @@ export const CanvasBase = ({ children, width, height }) => {
     setNewModules,
     removedModules,
     setRemovedModules,
+    setPlants,
+    plants,
+    setIndividualPlants,
+    individualPlants,
+    togglePlantCellSelection,
+    selectedPlantCell,
+    setSelectedPlantCell,
+    clearSelectedPlantCells,
+    isPlantCellSelected,
+    returnSelectedPlantCells,
   } = useContext(CanvasContext);
 
   const [rotation, setRotation] = useState(0);
@@ -415,6 +479,16 @@ export const CanvasBase = ({ children, width, height }) => {
     setCells,
     triggerUpdate,
     handleSomeUpdate,
+    setPlants,
+    plants,
+    setIndividualPlants,
+    individualPlants,
+    togglePlantCellSelection,
+    selectedPlantCell,
+    setSelectedPlantCell,
+    clearSelectedPlantCells,
+    isPlantCellSelected,
+    returnSelectedPlantCells,
   };
   if (!isClient) {
     console.log("isClient:", isClient);
@@ -437,6 +511,7 @@ export const CanvasBase = ({ children, width, height }) => {
             draggable
           >
             <CreateRectLayer triggerUpdate={triggerUpdateMod} />
+            <Layer ref={plantRef}></Layer>
             <Layer ref={modRef}></Layer>
             {children}
           </Stage>

@@ -15,14 +15,10 @@ import {
   Affix,
   Portal,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import { IconListDetails } from "@tabler/icons-react";
-import { Router, useRouter } from "next/navigation";
-import { useUser } from "/lib/hooks";
+
 import dbConnect from "/lib/db/setup";
 import Section from "/models/Section";
 import Module from "/models/Module";
-import { cardStyles, IconCardGrid } from "/components/icon_card_grid";
 import { get } from "mongoose";
 import { ClientProvider, useClient } from "components/projects/context_mod_map";
 // import ModuleGrid from "components/projects/mod_util";

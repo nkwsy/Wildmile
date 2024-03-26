@@ -194,7 +194,7 @@ export const CellGen = ({
   // const stroke = isSelected ? "#1080dc" : "grey";
   // const strokeWidth = isSelected ? 2 : 0.1;
   const stroke = "grey";
-  const strokeWidth = 0.1;
+  const strokeWidth = 0.2;
 
   // console.log("isModule:", isModule, x, y, isSelected, isCellSelected(x, y));
   let rect;
@@ -232,6 +232,94 @@ export const CellGen = ({
   rect.on("click", changeSelectedCell);
   return rect;
   // }
+};
+
+export class PlantCell {
+  constructor(
+    module_id,
+    x,
+    y,
+    plant_id,
+    module_location_x,
+    module_location_y,
+    shape,
+    attrs
+  ) {
+    this.module_id = module_id;
+    this.x = x; // This could represent the module's own x position if different from module_location's x
+    this.y = y; // This could represent the module's own y position if different from module_location's y
+    this.plant_id = plant_id;
+    this.module_location = {
+      x: module_location_x,
+      y: module_location_y,
+    };
+    this.konva_object = shape; // Assuming 'shape' is a Konva shape instance
+    this.attrs = attrs; // Additional attributes for the cell
+  }
+
+  // You might want to add methods here to interact with the PlantCell
+}
+
+export const PlantCellGen = ({
+  cellWidth,
+  cellHeight,
+  togglePlantCellSelection,
+  modules,
+  // setSelectedModule,
+}) => {
+  const rows = 10;
+  const columns = 4;
+  const plantCellWidth = cellWidth / columns;
+  const plantCellHeight = cellHeight / rows;
+
+  const stroke = "grey";
+  const strokeWidth = 0.1;
+  const opacity = 0.2;
+  const plantCells = [];
+  for (module of modules) {
+    // Code inside the for loop
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 10; j++) {
+        let rect;
+        const x = module.y * cellWidth + plantCellWidth * i;
+        const y = module.x * cellHeight + plantCellHeight * j;
+        console.log("x:", x, "y:", y, "module:", module);
+        // Create a rectangle shape for the cell
+        rect = new Konva.Rect({
+          x: x,
+          y: y,
+          width: plantCellWidth,
+          height: plantCellHeight,
+          opacity: opacity,
+          stroke: stroke,
+          strokeWidth: strokeWidth,
+          // TODO: Add unique id for each cell, prob module.x * i or some global value
+          // id: `${module.x},${y}`,
+          // visible: false,
+        });
+
+        const changeSelectedCell = (e) => {
+          togglePlantCellSelection(x, y, e.target);
+          console.log("clicked cell", e.target, e.target.id());
+        };
+        // Add click event listener
+        // if (rect) {
+        rect.on("click", changeSelectedCell);
+        let plantCell = new PlantCell(
+          module.id,
+          module.x,
+          module.y,
+          module.plant_id,
+          module.x,
+          module.y,
+          rect,
+          {}
+        );
+        plantCells.push(plantCell);
+      }
+    }
+  }
+  return plantCells;
 };
 
 // export const CellGen = ({

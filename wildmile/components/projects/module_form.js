@@ -28,6 +28,7 @@ import {
   MenuTarget,
   MenuDropdown,
   SegmentedControl,
+  Switch,
 } from "@mantine/core";
 import {
   IconDots,
@@ -73,6 +74,19 @@ export function sliderz() {
     </>
   );
 }
+// switch to turn on edit mode
+function EditModeSwitch() {
+  const { editMode, setEditMode } = useContext(CanvasContext);
+  return (
+    <Switch
+      checked={editMode}
+      onChange={(event) => setEditMode(event.currentTarget.checked)}
+      size="md"
+      onLabel="EDIT"
+      offLabel="BROWSE"
+    />
+  );
+}
 
 // export const LoadMods = () => {
 //   return fetch("/your-api-endpoint")
@@ -107,35 +121,29 @@ export default function ModuleToolbar() {
         <CardSection withBorder inheritPadding py="xs">
           <Group justify="space-between">
             <Group justify="space-between">{sliderz()}</Group>
-            <Text fw={500}>
-              Module: {selectedModule.x}, {selectedModule.y}
-            </Text>
+            <EditModeSwitch />
           </Group>
         </CardSection>
 
         {mode === "edit" && (
           <CardSection withBorder inheritPadding py="xs">
-            {/* <Group>
-              <ModuleForm key={selectedModule._id} props={selectedModule} />
-            </Group> */}
-            <RemoveModuleForm returnSelectedCells={returnSelectedCells} />
-            {/* <Button color="red" variant="light" radius="md"> */}
-            {/* <IconTrash /> */}
-            {/* </Button> */}
-            <Button
-              // onClick={() =>
-              // setSelectedModule({ ...selectedModule, x: "", y: "", _id: "" })
-              // }
-              onClick={clearSelectedCells}
-              color="yellow"
-              variant="light"
-              radius="md"
-            >
-              Clear
-            </Button>
-            <Button color="blue" variant="light" radius="md">
-              Select Modules
-            </Button>
+            <Group>
+              <RemoveModuleForm returnSelectedCells={returnSelectedCells} />
+              <Button
+                // onClick={() =>
+                // setSelectedModule({ ...selectedModule, x: "", y: "", _id: "" })
+                // }
+                onClick={clearSelectedCells}
+                color="yellow"
+                variant="light"
+                radius="md"
+              >
+                Clear
+              </Button>
+              {/* <Button color="blue" variant="light" radius="md">
+                Select Modules
+              </Button> */}
+            </Group>
             {/* <ActionIcon
               onClick={() => {
                 LoadMods().then((data) => setModules(data));

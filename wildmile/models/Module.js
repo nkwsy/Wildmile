@@ -26,5 +26,5 @@ const ModuleSchema = new mongoose.Schema(
   { collection: "mods", timestamps: true }
 );
 
-export default mongoose.models.Module || mongoose.model("Module", ModuleSchema);
 ModuleSchema.plugin(mongoose_delete, { overrideMethods: "all" });
+export default mongoose.models.Module || mongoose.model("Module", ModuleSchema);
