@@ -4,11 +4,12 @@ module.exports = {
       poll: 1000,
       aggregateTimeout: 300,
     }),
-      (config.resolve.alias = {
-        ...config.resolve.alias,
+      (config.externals = [...config.externals, "canvas"]);
+    // (config.resolve.alias = {
+    //   ...config.resolve.alias,
 
-        canvas: false,
-      });
+    //   canvas: false,
+    // });
 
     return config;
   },

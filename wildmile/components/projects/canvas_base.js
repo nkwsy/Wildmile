@@ -16,7 +16,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 
 useStrictMode(true);
 
-import { CellGen, ModuleGen } from "./mod_util";
+import CellGen from "./mod_util";
 // export const CanvasContext = React.createContext();
 import CanvasContext from "./context_mod_map";
 // import Hydration from "lib/hydration";
