@@ -92,6 +92,7 @@ export const ModMapWrapper = ({ children }) => {
   const [mode, setMode] = useState("edit");
   const [editMode, setEditMode] = useState(false);
   const [plantsVisible, setPlantsVisible] = useState(true);
+  const [modsVisible, setModsVisible] = useState(true);
   const gridRef = useRef(null);
   const selectedCellRef = useRef(null);
   const plantRef = useRef(null);
@@ -107,41 +108,44 @@ export const ModMapWrapper = ({ children }) => {
   // useEffect to switch plant visibility
   useEffect(() => {
     console.log("Plants Visible:", plantsVisible);
+    if (!gridRef.current) {
+      return;
+    }
     if (mode === "plants") {
       setPlantsVisible(true);
-      if (!gridRef.current) {
-        return;
-      }
-      const children = gridRef.current.children;
-      // Convert children NodeList to an array to use array methods like find, splice
-      const childrenArray = Array.from(gridRef.current.children);
-
-      // Find the child with the specific id
-      const child = childrenArray.find((c) => c.id() === "plantCells"); // Assuming id() is a method that gets the ID
-
-      if (child) {
-        // Find the index of the child to be removed
-        const index = childrenArray.indexOf(child);
-
-        // Remove the child from its current position
-        childrenArray.splice(index, 1);
-
-        // Add the child back to the end of the array
-        childrenArray.push(child);
-        // children = childrenArray;
-      }
-      while (gridRef.current.firstChild) {
-        gridRef.current.removeChild(gridRef.current.firstChild);
-      }
-
-      // Assuming childrenArray contains the updated list of child elements
-      childrenArray.forEach((child) => {
-        gridRef.current.appendChild(child);
-      });
+      // setModsVisible(false);
+    }
+    if (mode === "modules" || mode === "edit") {
+      setPlantsVisible(false);
+      setModsVisible(true);
     } else {
       setPlantsVisible(false);
     }
   }, [mode]);
+  // attempt to order the layers
+  // const children = gridRef.current.children;
+  // // Convert children NodeList to an array to use array methods like find, splice
+  // const childrenArray = Array.from(gridRef.current.children);
+  // // Find the child with the specific id
+  // const child = childrenArray.find((c) => c.id() === "plantCells"); // Assuming id() is a method that gets the ID
+
+  // if (child) {
+  //   // Find the index of the child to be removed
+  //   const index = childrenArray.indexOf(child);
+  //   // Remove the child from its current position
+  //   childrenArray.splice(index, 1);
+  //   // Add the child back to the end of the array
+  //   childrenArray.push(child);
+  //   // children = childrenArray;
+  // }
+  // while (gridRef.current.firstChild) {
+  //   gridRef.current.removeChild(gridRef.current.firstChild);
+  // }
+
+  // // Assuming childrenArray contains the updated list of child elements
+  // childrenArray.forEach((child) => {
+  //   gridRef.current.appendChild(child);
+  // });
 
   // Handle the toggle for the cell selection
   const toggleCellSelection = (x, y, id) => {
@@ -271,6 +275,7 @@ export const ModMapWrapper = ({ children }) => {
     isPlantCellSelected,
     returnSelectedPlantCells,
     plantsVisible,
+    modsVisible,
   };
   return (
     // <div>
@@ -541,7 +546,7 @@ export const CanvasBase = ({ children, width, height }) => {
   // Konva specific variables
   useStrictMode(true);
 
-  const { plantsVisible } = useClient();
+  const { plantsVisible, modsVisible } = useClient();
   return (
     <>
       <CanvasContext.Provider value={value}>
@@ -564,7 +569,7 @@ export const CanvasBase = ({ children, width, height }) => {
               visible={plantsVisible}
               id={"plantCells"}
             ></Layer>
-            <Layer ref={modRef} id={"modCells"}></Layer>
+            <Layer ref={modRef} visible={modsVisible} id={"modCells"}></Layer>
             {children}
           </Stage>
         </div>

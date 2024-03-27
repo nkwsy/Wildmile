@@ -65,7 +65,7 @@ export function sliderz() {
         value={mode}
         onChange={setMode}
         data={[
-          { label: "Modules", value: "Modules" },
+          { label: "Modules", value: "modules" },
           { label: "Plants", value: "plants" },
           { label: "Edit", value: "edit" },
           { label: "Svelte", value: "svelte" },
