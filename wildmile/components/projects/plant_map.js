@@ -1,13 +1,12 @@
 "use client";
 import React, { useState, useEffect, useRef, useContext, useMemo } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import CanvasContext from "./context_mod_map";
+import CanvasContext, { useClient } from "./context_mod_map";
 import { PlantCellGen } from "./mod_util";
 
 export function UpdateIndividualPlants({ triggerUpdate }) {
   const { setIndividualPlants } = useContext(CanvasContext);
   //   const router = useRouter();
-  console.log("UpdatePlants: ", triggerUpdate);
   //   const params = useParams();
   const pathname = usePathname();
   const [searchParams] = useSearchParams();
@@ -50,7 +49,7 @@ export function PlantMap({ children }) {
 
 export function CreatePlantCellLayer(props) {
   const { cellWidth, cellHeight, modules, plantRef, togglePlantCellSelection } =
-    useContext(CanvasContext);
+    useClient();
 
   // useMemo to calculate groups based on dependencies
   const groups = useMemo(() => {

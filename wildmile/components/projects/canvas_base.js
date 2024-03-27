@@ -18,7 +18,7 @@ useStrictMode(true);
 
 import CellGen from "./mod_util";
 // export const CanvasContext = React.createContext();
-import CanvasContext from "./context_mod_map";
+import CanvasContext, { useClient } from "./context_mod_map";
 // import Hydration from "lib/hydration";
 import useStore from "/lib/store";
 import { use } from "passport";
@@ -88,8 +88,10 @@ export const ModMapWrapper = ({ children }) => {
   const [selectedPlantCell, setSelectedPlantCell] = useState(new Map());
   const [cells, setCells] = useState(new Map());
   // Sets the exploration mode of the map
-  const [mode, setMode] = useState("plants");
+  // Modes
+  const [mode, setMode] = useState("edit");
   const [editMode, setEditMode] = useState(false);
+  const [plantsVisible, setPlantsVisible] = useState(true);
   const gridRef = useRef(null);
   const selectedCellRef = useRef(null);
   const plantRef = useRef(null);
@@ -101,6 +103,45 @@ export const ModMapWrapper = ({ children }) => {
     // This function is called when you want to trigger the update in UpdateModules
     setTriggerUpdate((prev) => !prev); // Toggle the state to trigger useEffect in UpdateModules
   };
+
+  // useEffect to switch plant visibility
+  useEffect(() => {
+    console.log("Plants Visible:", plantsVisible);
+    if (mode === "plants") {
+      setPlantsVisible(true);
+      if (!gridRef.current) {
+        return;
+      }
+      const children = gridRef.current.children;
+      // Convert children NodeList to an array to use array methods like find, splice
+      const childrenArray = Array.from(gridRef.current.children);
+
+      // Find the child with the specific id
+      const child = childrenArray.find((c) => c.id() === "plantCells"); // Assuming id() is a method that gets the ID
+
+      if (child) {
+        // Find the index of the child to be removed
+        const index = childrenArray.indexOf(child);
+
+        // Remove the child from its current position
+        childrenArray.splice(index, 1);
+
+        // Add the child back to the end of the array
+        childrenArray.push(child);
+        // children = childrenArray;
+      }
+      while (gridRef.current.firstChild) {
+        gridRef.current.removeChild(gridRef.current.firstChild);
+      }
+
+      // Assuming childrenArray contains the updated list of child elements
+      childrenArray.forEach((child) => {
+        gridRef.current.appendChild(child);
+      });
+    } else {
+      setPlantsVisible(false);
+    }
+  }, [mode]);
 
   // Handle the toggle for the cell selection
   const toggleCellSelection = (x, y, id) => {
@@ -229,6 +270,7 @@ export const ModMapWrapper = ({ children }) => {
     clearSelectedPlantCells,
     isPlantCellSelected,
     returnSelectedPlantCells,
+    plantsVisible,
   };
   return (
     // <div>
@@ -240,7 +282,6 @@ export const ModMapWrapper = ({ children }) => {
 };
 
 export const CanvasBase = ({ children, width, height }) => {
-  console.log("CanvasBase", width, height);
   const {
     selectedModule,
     setSelectedModule,
@@ -276,6 +317,7 @@ export const CanvasBase = ({ children, width, height }) => {
     returnSelectedPlantCells,
   } = useContext(CanvasContext);
 
+  console.log("CanvasBase", width, height);
   const [rotation, setRotation] = useState(0);
   const [modules, setModules] = useState([]);
   const [triggerUpdateMod, setTriggerUpdateMod] = useState(false);
@@ -284,6 +326,7 @@ export const CanvasBase = ({ children, width, height }) => {
   const [cols, setCols] = useState(width); // Set initial value of cols to width
   const [rows, setRows] = useState(height); // Set initial value of rows to height
 
+  console.log("CanvasBase", width, height);
   useEffect(() => {
     setTriggerUpdateMod((prev) => !prev);
   }, [modules]);
@@ -494,6 +537,11 @@ export const CanvasBase = ({ children, width, height }) => {
     console.log("isClient:", isClient);
     return null;
   }
+
+  // Konva specific variables
+  useStrictMode(true);
+
+  const { plantsVisible } = useClient();
   return (
     <>
       <CanvasContext.Provider value={value}>
@@ -511,8 +559,12 @@ export const CanvasBase = ({ children, width, height }) => {
             draggable
           >
             <CreateRectLayer triggerUpdate={triggerUpdateMod} />
-            <Layer ref={plantRef}></Layer>
-            <Layer ref={modRef}></Layer>
+            <Layer
+              ref={plantRef}
+              visible={plantsVisible}
+              id={"plantCells"}
+            ></Layer>
+            <Layer ref={modRef} id={"modCells"}></Layer>
             {children}
           </Stage>
         </div>

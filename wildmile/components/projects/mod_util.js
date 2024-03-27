@@ -346,7 +346,6 @@ export const PlantCellGen = ({
         let rect;
         const x = module.y * cellWidth + plantCellWidth * i;
         const y = module.x * cellHeight + plantCellHeight * j;
-        console.log("x:", x, "y:", y, "module:", module);
         // Create a rectangle shape for the cell
         rect = new Konva.Rect({
           x: x,
