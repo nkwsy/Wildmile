@@ -23,6 +23,7 @@
     "@mantine/hooks": "^7.3.1",
     "@mantine/modals": "^7.3.1",
     "@multiavatar/multiavatar": "^1.0.7",
+    "@next/bundle-analyzer": "^14.1.4",
     "@react-three/drei": "^9.99.7",
     "@react-three/fiber": "^8.15.19",
     "@tabler/icons-react": "^2.30.0",

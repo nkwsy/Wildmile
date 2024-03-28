@@ -1,35 +1,41 @@
 "use client";
 // In CanvasBase.js
-import React, { useState, useEffect, useRef, useContext, useMemo } from "react";
-import {
-  Stage,
-  Layer,
-  Rect,
-  Text,
-  Group,
-  Line,
-  useStrictMode,
-} from "react-konva";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+  useMemo,
+  useReducer,
+} from "react";
+// import {
+//   Stage,
+//   Layer,
+//   Rect,
+//   Text,
+//   Group,
+//   Line,
+//   useStrictMode,
+// } from "react-konva";
 import useSWR from "swr";
 import { usePathname, useSearchParams } from "next/navigation";
 // import { UpdatePlants } from "./plant_map";
 
-useStrictMode(true);
-
 import CellGen from "./mod_util";
 // export const CanvasContext = React.createContext();
-import CanvasContext, { useClient } from "./context_mod_map";
+import CanvasContext, { useClient, cellReducer } from "./context_mod_map";
 // import Hydration from "lib/hydration";
 import useStore from "/lib/store";
 import { use } from "passport";
 // import { ModuleFormModal } from "./module_form";
 import { useMediaQuery } from "@mantine/hooks";
 import { set } from "mongoose";
-const Component = () => {
-  const { key, updateKey } = useStore();
+import CanvasComponent from "./CanvasComponent";
+// const Component = () => {
+//   const { key, updateKey } = useStore();
 
-  // Use the state and actions in your component
-};
+//   // Use the state and actions in your component
+// };
 
 // export function LoadMods({ newMods }) {
 //   useEffect(() => {
@@ -85,6 +91,8 @@ export const ModMapWrapper = ({ children }) => {
   const [newModules, setNewModules] = useState([]);
   const [removedModules, setRemovedModules] = useState([]);
   const [selectedCell, setSelectedCell] = useState(new Map());
+  // const [selectedCells, dispatch] = useReducer(cellReducer, new Map());
+
   const [selectedPlantCell, setSelectedPlantCell] = useState(new Map());
   const [cells, setCells] = useState(new Map());
   // Sets the exploration mode of the map
@@ -94,16 +102,31 @@ export const ModMapWrapper = ({ children }) => {
   const [plantsVisible, setPlantsVisible] = useState(true);
   const [modsVisible, setModsVisible] = useState(true);
   const gridRef = useRef(null);
-  const selectedCellRef = useRef(null);
+  const modRef = useRef(null);
   const plantRef = useRef(null);
+
+  const selectedCellRef = useRef(null);
   const [plants, setPlants] = useState([]);
   const [individualPlants, setIndividualPlants] = useState([]);
-  const modRef = useRef(null);
   const [triggerUpdate, setTriggerUpdate] = useState(false);
+
+  const [layers, setLayers] = useState([
+    { id: "modCells", visible: modsVisible, ref: modRef },
+    { id: "plantCells", visible: plantsVisible, ref: plantRef },
+  ]);
   const handleSomeUpdate = () => {
     // This function is called when you want to trigger the update in UpdateModules
     setTriggerUpdate((prev) => !prev); // Toggle the state to trigger useEffect in UpdateModules
   };
+
+  function moveToTop(id) {
+    const items = layers.slice();
+    const item = items.find((i) => i.id === id);
+    const index = items.indexOf(item);
+    items.splice(index, 1);
+    items.push(item);
+    setLayers(items);
+  }
 
   // useEffect to switch plant visibility
   useEffect(() => {
@@ -112,42 +135,29 @@ export const ModMapWrapper = ({ children }) => {
       return;
     }
     if (mode === "plants") {
-      setPlantsVisible(true);
+      moveToTop("plantCells");
+      // setPlantsVisible(true);
       // setModsVisible(false);
     }
-    if (mode === "modules" || mode === "edit") {
-      setPlantsVisible(false);
-      setModsVisible(true);
+    if (mode === "modules") {
+      moveToTop("modCells");
+      // setPlantsVisible(false);
+      // setModsVisible(true);
     } else {
       setPlantsVisible(false);
     }
   }, [mode]);
-  // attempt to order the layers
-  // const children = gridRef.current.children;
-  // // Convert children NodeList to an array to use array methods like find, splice
-  // const childrenArray = Array.from(gridRef.current.children);
-  // // Find the child with the specific id
-  // const child = childrenArray.find((c) => c.id() === "plantCells"); // Assuming id() is a method that gets the ID
-
-  // if (child) {
-  //   // Find the index of the child to be removed
-  //   const index = childrenArray.indexOf(child);
-  //   // Remove the child from its current position
-  //   childrenArray.splice(index, 1);
-  //   // Add the child back to the end of the array
-  //   childrenArray.push(child);
-  //   // children = childrenArray;
-  // }
-  // while (gridRef.current.firstChild) {
-  //   gridRef.current.removeChild(gridRef.current.firstChild);
-  // }
-
-  // // Assuming childrenArray contains the updated list of child elements
-  // childrenArray.forEach((child) => {
-  //   gridRef.current.appendChild(child);
-  // });
-
   // Handle the toggle for the cell selection
+
+  // Attempt to use useReducer for cell selection
+  // const toggleCellSelection = (x, y, id) => {
+  //   dispatch({ type: "TOGGLE_CELL_SELECTION", payload: { x, y, id } });
+  // };
+
+  // const clearSelectedCells = () => {
+  //   dispatch({ type: "CLEAR_CELLS" });
+  // };
+
   const toggleCellSelection = (x, y, id) => {
     setSelectedCell((prevCells) => {
       const key = `${x},${y}`;
@@ -160,8 +170,8 @@ export const ModMapWrapper = ({ children }) => {
         newCells.delete(key);
       } else {
         newCells.set(key, { x, y, id });
-        id.strokeWidth(6);
-        id.moveToTop();
+        id.strokeWidth(2);
+        // id.moveToTop();
       }
       return newCells;
     });
@@ -276,6 +286,7 @@ export const ModMapWrapper = ({ children }) => {
     returnSelectedPlantCells,
     plantsVisible,
     modsVisible,
+    layers,
   };
   return (
     // <div>
@@ -320,6 +331,7 @@ export const CanvasBase = ({ children, width, height }) => {
     clearSelectedPlantCells,
     isPlantCellSelected,
     returnSelectedPlantCells,
+    layers,
   } = useContext(CanvasContext);
 
   console.log("CanvasBase", width, height);
@@ -521,6 +533,7 @@ export const CanvasBase = ({ children, width, height }) => {
     isCellSelected,
     triggerUpdate,
     handleSomeUpdate,
+    handleWheel,
 
     setIsFormOpen,
     cells,
@@ -537,14 +550,21 @@ export const CanvasBase = ({ children, width, height }) => {
     clearSelectedPlantCells,
     isPlantCellSelected,
     returnSelectedPlantCells,
+    containerSize,
+    rotation,
+    gridRef,
+    scale,
+    setScale,
+    layers,
   };
   if (!isClient) {
     console.log("isClient:", isClient);
     return null;
   }
+  console.log("containerSize:", containerSize);
 
   // Konva specific variables
-  useStrictMode(true);
+  // useStrictMode(true);
 
   const { plantsVisible, modsVisible } = useClient();
   return (
@@ -553,7 +573,7 @@ export const CanvasBase = ({ children, width, height }) => {
         <div>
           <UpdateModules triggerUpdate={triggerUpdate} />
           {/* <button onClick={handleSomeUpdate}>Update Modules</button> */}
-          <Stage
+          {/* <Stage
             ref={gridRef}
             width={containerSize.width}
             height={containerSize.height}
@@ -562,16 +582,18 @@ export const CanvasBase = ({ children, width, height }) => {
             onWheel={handleWheel}
             rotation={rotation}
             draggable
-          >
-            <CreateRectLayer triggerUpdate={triggerUpdateMod} />
-            <Layer
+          > */}
+          <CanvasComponent>
+            {/* <CreateRectLayer triggerUpdate={triggerUpdateMod} /> */}
+            {/* <Layer
               ref={plantRef}
               visible={plantsVisible}
               id={"plantCells"}
-            ></Layer>
-            <Layer ref={modRef} visible={modsVisible} id={"modCells"}></Layer>
-            {children}
-          </Stage>
+            ></Layer> */}
+          </CanvasComponent>
+          {/* <Layer ref={modRef} visible={modsVisible} id={"modCells"}></Layer> */}
+          {children}
+          {/* </Stage> */}
         </div>
       </CanvasContext.Provider>
     </>
@@ -624,8 +646,8 @@ export function CreateRectLayer(props) {
     cellHeight,
     rows,
     cols,
-    modRef
-    // modules
+    modRef,
+    modules
   );
   // useMemo to calculate groups based on dependencies
   const groups = useMemo(() => {

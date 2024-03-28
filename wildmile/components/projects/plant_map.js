@@ -34,8 +34,41 @@ export function UpdateIndividualPlants({ triggerUpdate }) {
 }
 
 export function PlantMap({ children }) {
-  const { individualPlants, plantRef, mode, triggerUpdate } =
-    useContext(CanvasContext);
+  const clientValues = useClient();
+  const {
+    individualPlants,
+    plantRef,
+    mode,
+    triggerUpdate,
+    modRef,
+    gridRef,
+    modules,
+  } = clientValues;
+  console.log("PlantMap client values: ", clientValues);
+  const [isReady, setIsReady] = useState(false);
+
+  // Function to check if all required values are valid
+  const areValuesValid = () => {
+    // Add any additional checks as necessary
+    return (
+      plantRef !== undefined &&
+      mode !== undefined &&
+      modRef?.current &&
+      plantRef?.current &&
+      gridRef?.current &&
+      modules !== null
+    );
+  };
+
+  useEffect(() => {
+    // Check if all values are valid and update the state accordingly
+    setIsReady(areValuesValid());
+  }, [clientValues]); // Depend on the entire clientValues object
+
+  // Early return if not all values are valid
+  if (!isReady) {
+    return <div>Loading...</div>; // Or return null if you don't want to render anything
+  }
   return (
     <>
       {/* <CanvasContext.Provider> */}

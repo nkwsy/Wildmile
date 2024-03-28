@@ -41,13 +41,13 @@ import { DateTimePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { useContext, Suspense, useState, useEffect } from "react";
-import CanvasContext from "./context_mod_map";
+import CanvasContext, { useClient } from "./context_mod_map";
 const ModuleForm = dynamic(() => import("components/projects/mf.js"));
 // const MultiModuleForm = dynamic(() => import("components/projects/mfs.js"));
 import MultiModuleForm from "components/projects/mfs.js";
 import RemoveModuleForm from "./mf_delete";
 import { usePathname, useSearchParams } from "next/navigation";
-
+import { PlantCards } from "components/projects/PlantCards";
 // const [visible, handlers] = useDisclosure(false);
 
 // const [errorMsg, setErrorMsg] = useState('')
@@ -124,7 +124,13 @@ export default function ModuleToolbar() {
             <EditModeSwitch />
           </Group>
         </CardSection>
-
+        {mode === "plants" && (
+          <CardSection withBorder inheritPadding py="xs">
+            <Group>
+              <PlantCards />
+            </Group>
+          </CardSection>
+        )}
         {mode === "edit" && (
           <CardSection withBorder inheritPadding py="xs">
             <Group>

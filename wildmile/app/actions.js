@@ -5,6 +5,8 @@ import {
   updateOrInsertModules,
   deleteModules,
 } from "/lib/db/projects";
+
+// To Insert Modules
 export async function insertModules(formData) {
   console.log("Data:", formData);
   const rawFormData = {
@@ -76,4 +78,25 @@ export async function newEditSection(formData) {
   const result = await createSection(rawFormData);
   console.log("Result: newEditSection", result);
   return result;
+}
+
+// To Load Plants
+import { getAllPlants } from "/lib/db/plants";
+
+export async function PlantHandler() {
+  try {
+    const raw_result = await getAllPlants();
+
+    const result = await JSON.parse(rawResult);
+    console.log("Result:", result);
+
+    //   if (result.success === true) {
+    //     console.log("success");
+    // setNewModules(result.data);
+
+    return result;
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    // Handle the error as needed
+  }
 }

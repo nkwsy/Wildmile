@@ -10,9 +10,20 @@ import {
   useStrictMode,
 } from "react-konva";
 
+import dynamic from "next/dynamic";
+
+const CellGen = dynamic(() => import("./mod_util"), {
+  ssr: false,
+});
+const createRectLayer = dynamic(() => import("./CreateRectLayer"), {
+  ssr: false,
+});
+
 import { useClient } from "./context_mod_map";
+import { CreateRectLayer } from "./canvas_base";
 
 const CanvasComponent = ({ children }) => {
+  useStrictMode(true);
   const clientValues = useClient();
   const {
     cellWidth,
@@ -26,8 +37,11 @@ const CanvasComponent = ({ children }) => {
     scale,
     rotation,
     handleWheel,
+    plantsVisible,
+    modsVisible,
+    layers,
   } = clientValues;
-
+  console.log("CanvasComponent: ", clientValues);
   // State to trigger re-renders
   const [isReady, setIsReady] = useState(false);
 
@@ -39,14 +53,15 @@ const CanvasComponent = ({ children }) => {
       cellHeight !== undefined &&
       rows !== undefined &&
       cols !== undefined &&
-      modRef?.current &&
-      plantRef?.current &&
-      gridRef?.current &&
+      //   modRef?.current &&
+      //   plantRef?.current &&
+      //   gridRef?.current &&
       containerSize &&
       containerSize.width !== undefined &&
       containerSize.height !== undefined &&
       scale !== undefined &&
       rotation !== undefined &&
+      layers !== undefined &&
       typeof handleWheel === "function"
     );
   };
@@ -54,13 +69,14 @@ const CanvasComponent = ({ children }) => {
   useEffect(() => {
     // Check if all values are valid and update the state accordingly
     setIsReady(areValuesValid());
+    console.log("CanvasComponent isReady: ", isReady);
   }, [clientValues]); // Depend on the entire clientValues object
 
   // Early return if not all values are valid
   if (!isReady) {
     return <div>Loading...</div>; // Or return null if you don't want to render anything
   }
-
+  console.log("layers", layers);
   // Render your component if all values are valid
   return (
     <>
@@ -74,9 +90,16 @@ const CanvasComponent = ({ children }) => {
         rotation={rotation}
         draggable
       >
-        <Layer ref={plantRef}></Layer>
-        <Layer ref={modRef}></Layer>
+        {layers.map((layer) => (
+          <Layer key={layer.id} ref={layer.ref} visible={layer.visible}></Layer>
+        ))}
+
+        {/* <Layer ref={plantRef} visible={plantsVisible} id={"plantCells"}></Layer> */}
+        {/* <Layer ref={modRef} visible={modsVisible} id={"modCells"}></Layer> */}
+        {/* <Layer ref={plantRef}></Layer>
+        <Layer ref={modRef}></Layer> */}
         {children}
+        <CreateRectLayer />
       </Stage>
     </>
   );
