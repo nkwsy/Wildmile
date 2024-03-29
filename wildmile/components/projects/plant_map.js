@@ -6,8 +6,6 @@ import { PlantCellGen } from "./mod_util";
 
 export function UpdateIndividualPlants({ triggerUpdate }) {
   const { setIndividualPlants } = useContext(CanvasContext);
-  //   const router = useRouter();
-  //   const params = useParams();
   const pathname = usePathname();
   const [searchParams] = useSearchParams();
   //   const { project, section } = router.query;
@@ -16,7 +14,7 @@ export function UpdateIndividualPlants({ triggerUpdate }) {
     async function fetchData() {
       // Fetch and update logic here
       // const mods = searchParams.get("");
-      const response = await fetch(`${pathname}/plants/individual-plants`, {
+      const response = await fetch(`${pathname}/plants/plants`, {
         next: { tags: ["plants"] },
       });
       console.log("Fetching and updating plants...");
@@ -29,6 +27,35 @@ export function UpdateIndividualPlants({ triggerUpdate }) {
 
     fetchData();
   }, [triggerUpdate, searchParams, pathname, setIndividualPlants]); // triggerUpdate is now a dependency
+
+  return null; // This component doesn't render anything
+}
+
+export function GetAllPlants({ triggerUpdate }) {
+  const { setPlants } = useContext(CanvasContext);
+  //   const router = useRouter();
+  //   const params = useParams();
+  const pathname = usePathname();
+  const [searchParams] = useSearchParams();
+  //   const { project, section } = router.query;
+  console.log("UpdatePlants: ", pathname, searchParams);
+  useEffect(() => {
+    async function fetchData() {
+      // Fetch and update logic here
+      // const mods = searchParams.get("");
+      const response = await fetch(`${pathname}/plants/plants`, {
+        next: { tags: ["individualPlants"] },
+      });
+      console.log("Fetching and updating plants...");
+      const raw_response = await response.json();
+      // Simulate fetching data
+      const data = JSON.parse(raw_response);
+      // Call oleetModules or similar function to update the state
+      setPlants(data);
+    }
+
+    fetchData();
+  }, [triggerUpdate, searchParams, pathname, setPlants]); // triggerUpdate is now a dependency
 
   return null; // This component doesn't render anything
 }
@@ -72,6 +99,7 @@ export function PlantMap({ children }) {
   return (
     <>
       {/* <CanvasContext.Provider> */}
+      <GetAllPlants triggerUpdate={triggerUpdate} />
       <UpdateIndividualPlants triggerUpdate={triggerUpdate} />
       {children}
       <CreatePlantCellLayer />

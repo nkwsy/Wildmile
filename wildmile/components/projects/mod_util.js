@@ -335,7 +335,7 @@ export const PlantCellGen = ({
   const plantCellWidth = cellWidth / columns;
   const plantCellHeight = cellHeight / rows;
 
-  const stroke = "grey";
+  const stroke = "white";
   const strokeWidth = 0.1;
   const opacity = 0.2;
   const plantCells = [];

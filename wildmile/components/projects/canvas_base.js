@@ -80,6 +80,30 @@ export function UpdateModules({ triggerUpdate }) {
   return null; // This component doesn't render anything
 }
 
+export function AllPlants() {
+  // const { setModules } = useContext(CanvasContext);
+  const pathname = usePathname();
+  // const [searchParams] = useSearchParams();
+
+  async function fetchData() {
+    // Fetch and update logic here
+    // const mods = searchParams.get("");
+    const response = await fetch(`/api/plants/getAll`, {
+      next: { tags: ["plants"] },
+    });
+    const modData = response.json();
+    console.log("Fetching and updating plants...");
+    // Simulate fetching data
+    const data = JSON.parse(modData);
+    // Call setModules or similar function to update the state
+    setModules(data);
+  }
+
+  return fetchData();
+
+  return null; // This component doesn't render anything
+}
+
 ///
 /// ModMapWrapper
 ///
@@ -107,6 +131,7 @@ export const ModMapWrapper = ({ children }) => {
 
   const selectedCellRef = useRef(null);
   const [plants, setPlants] = useState([]);
+  const [selectedPlants, setSelectedPlants] = useState([]);
   const [individualPlants, setIndividualPlants] = useState([]);
   const [triggerUpdate, setTriggerUpdate] = useState(false);
 
@@ -212,10 +237,12 @@ export const ModMapWrapper = ({ children }) => {
       const newCells = new Map(prevCells);
       if (newCells.has(key)) {
         id.strokeWidth(0.1);
+        id.opacity(0.2);
         newCells.delete(key);
       } else {
         newCells.set(key, { x, y, id });
-        id.strokeWidth(6);
+        id.strokeWidth(1);
+        id.opacity(1);
         id.moveToTop();
       }
       return newCells;
@@ -287,6 +314,8 @@ export const ModMapWrapper = ({ children }) => {
     plantsVisible,
     modsVisible,
     layers,
+    selectedPlants,
+    setSelectedPlants,
   };
   return (
     // <div>
@@ -569,7 +598,7 @@ export const CanvasBase = ({ children, width, height }) => {
   const { plantsVisible, modsVisible } = useClient();
   return (
     <>
-      <CanvasContext.Provider value={value}>
+      <CanvasContext.Provider value={{ ...value }}>
         <div>
           <UpdateModules triggerUpdate={triggerUpdate} />
           {/* <button onClick={handleSomeUpdate}>Update Modules</button> */}

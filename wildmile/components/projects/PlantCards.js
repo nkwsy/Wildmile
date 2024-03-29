@@ -28,8 +28,10 @@ import classes from "/styles/plantcard.module.css";
 import { PlantHandler } from "/app/actions/PlantActions";
 import { set } from "mongoose";
 import PlantAccordian from "./PlantAccordian";
+import ClientContext, { useClient } from "./context_mod_map";
 
 export function PlantCards(props) {
+  const { plants, selectedPlants } = useClient();
   const [cardPlants, setCardPlants] = useState([]);
   const [isReady, setReady] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -37,8 +39,10 @@ export function PlantCards(props) {
   // const { isOpen, close, toggle } = useDisclosure();
   useEffect(() => {
     async function handlePlantSearch() {
-      const raw_plants = await PlantHandler();
-      const plants = JSON.parse(raw_plants);
+      // const raw_plants = await PlantHandler();
+      const use_plants = plants || selectedPlants;
+      // const raw_plants = await AllPlants();
+      // const plants = JSON.parse(raw_plants);
       console.log("Plants:", plants);
 
       const plant_values = plants.map((plant) => ({
@@ -46,13 +50,14 @@ export function PlantCards(props) {
         subtitle: plant.scientificName || plant.scientific_name,
         image: plant.thumbnail,
         description: plant.notes,
-        tags: plant.synonyms.slice(0, 4),
+        // tags: plant.tags.slice(0, 4),
       }));
       setCardPlants(plant_values);
       setReady(true);
     }
+
     handlePlantSearch();
-  }, []);
+  }, [plants]);
   if (!isReady) {
     return (
       <Container>
