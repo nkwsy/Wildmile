@@ -21,6 +21,7 @@ const createRectLayer = dynamic(() => import("./CreateRectLayer"), {
 
 import { useClient } from "./context_mod_map";
 import { CreateRectLayer } from "./canvas_base";
+import { PlantMap } from "./plant_map";
 
 const CanvasComponent = ({ children }) => {
   useStrictMode(true);
@@ -100,6 +101,7 @@ const CanvasComponent = ({ children }) => {
         <Layer ref={modRef}></Layer> */}
         {children}
         <CreateRectLayer />
+        <PlantMap />
       </Stage>
     </>
   );

@@ -13,6 +13,10 @@ export const useClient = () => {
   }
   return context;
 };
+// export const useClient = (selector) => {
+//   const { state } = useContext(ClientContext);
+//   return selector(state);
+// };
 
 // Define the initial state
 const initialState = {
@@ -20,16 +24,18 @@ const initialState = {
   newModules: [],
   removedModules: [],
   selectedCell: new Map(),
-  selectedPlantCell: new Map(),
   cells: new Map(),
   mode: "edit",
   editMode: false,
   plantsVisible: true,
   modsVisible: true,
   plants: [],
+  plantCells: [],
+  selectedPlantCell: new Map(),
+  selectedPlants: [],
   individualPlants: [],
   triggerUpdate: false,
-  // Add other state variables as needed
+  layers: [],
 };
 
 export function moveToTop(id) {
@@ -65,6 +71,29 @@ export const cellReducer = (state, action) => {
   }
 };
 
+export const plantCellReducer = (state, action) => {
+  switch (action.type) {
+    case "setPlantCells":
+      const groups = action.payload;
+      const newCells = new Map();
+      groups.forEach((group, index) => {
+        // Assuming each group has a unique identifier, like an index or id
+        newCells.set(index, group);
+      });
+      console.log("PlantCells: ", newCells);
+      return newCells;
+
+    case "CLEAR_PLANT_CELLS":
+      // Create a new Map to clear the cells, side effects should be handled outside
+      return new Map();
+
+    default:
+      return state;
+  }
+};
+
+// export const plantReducer = (state = initialState, action) => {};
+
 // Define the reducer function
 function reducer(state, action) {
   switch (action.type) {
@@ -82,6 +111,7 @@ function reducer(state, action) {
       throw new Error("Unhandled action type: " + action.type);
   }
 }
+
 // export const ClientProvider = ({ children }) => {
 //   const [client, setClient] = useState({}); // Initial client state
 //   //   const gridRef = useRef(null);

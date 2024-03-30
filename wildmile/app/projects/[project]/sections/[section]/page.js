@@ -21,6 +21,8 @@ import Section from "/models/Section";
 import Module from "/models/Module";
 import { get } from "mongoose";
 import { ClientProvider, useClient } from "components/projects/context_mod_map";
+import dynamic from "next/dynamic";
+
 // import ModuleGrid from "components/projects/mod_util";
 import {
   // BaseGrid,
@@ -30,31 +32,27 @@ import {
   ModMapWrapper,
 } from "components/projects/canvas_base";
 import { PlantMap } from "components/projects/plant_map";
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
 
 import "passport";
-import React from "react";
+import React, { Children } from "react";
 const ModuleToolbar = dynamic(() => import("components/projects/module_form"), {
   ssr: false,
 });
 
-// import ModMap from "components/projects/3_map";
-// import { string } from "yup";
-// import { stringify } from "postcss";
-// import { BaseGrid, createRectLayer } from "components/projects/base_grid";
-// const CreateGridLayer = dynamic(
-//   () => import("components/projects/canvas_base"),
+// const CanvasComponent = dynamic(
+//   () => import("components/projects/CanvasComponent"),
 //   {
-//     // ssr: false,
+//     ssr: false,
 //   }
 // );
-// const CanvasBase = dynamic(() => import("components/projects/canvas_base"), {
-//   // ssr: false,
-// });
 
-// const ModMapWrapper = dynamic(() => import("components/projects/canvas_base"), {
-//   // ssr: false,
-// });
+// const CreateRectLayer = dynamic(
+//   () => import("components/projects/CreateRectLayer"),
+//   {
+//     ssr: false,
+//   }
+// );
 
 // import { addModule } from "components/projects/mod_map";
 
@@ -63,25 +61,7 @@ export default async function Page(context) {
   // const modules = JSON.parse(raw_modules.modules);
   const section = JSON.parse(raw_modules.section);
   console.log("Modules:", section);
-  // const modules = props.modules.map((module) => {
-  //   return {
-  //     icon: IconListDetails,
-  //     title: `Model: ${module.model} - Shape: ${module.shape} X: ${module.x}, Y: ${module.y}`,
-  //     href: `/projects/${router.query.id}/modules/${module._id}`,
-  //     description: module.notes,
-  //   };
-  // });
-  // const mod_form = useForm({
-  //   initialValues: {
-  //     model: "",
-  //     size: {
-  //       x: 0,
-  //       y: 0,
-  //     },
-  //     notes: "",
-  //     dateInstalled: new Date(),
-  //   },
-  // });
+
   return (
     <>
       <Title
@@ -100,7 +80,7 @@ export default async function Page(context) {
           > */}
             <CanvasBase width={section.size.width} height={section.size.length}>
               <CreateGridLayer />
-              <PlantMap />
+              {/* <PlantMap /> */}
               {/* <CreateModuleLayer modules={modules} /> */}
             </CanvasBase>
             {/* </Box> */}
@@ -124,30 +104,6 @@ export default async function Page(context) {
   );
 }
 
-{
-  /* // <ModMapWrapper> */
-}
-//   {/* <Grid justify="flex-end" overflow="hidden" maw="100%">
-//       <GridCol span={4} pos={"fixed"} justify="flex-end" flex miw={200}> */}
-//   <Flex
-//     mih={10}
-//     gap="md"
-//     justify="flex-end"
-//     align="flex-start"
-//     direction={{ base: "column", sm: "row" }}
-//     wrap="wrap"
-//   >
-//     <ModuleToolbar />
-//     {/* </GridCol> */}
-//     <CanvasBase width={12} height={200}>
-//       {/* <CreateGridLayer /> */}
-//       <CreateModuleLayer modules={modules} />
-//     </CanvasBase>
-//   </Flex>
-//   {/* </Grid> */}
-// </ModMapWrapper>
-// {/* </Container> */}
-
 /* Retrieves plant(s) data from mongodb database */
 export async function getModules(context) {
   const section_name = context.params.section;
@@ -156,18 +112,8 @@ export async function getModules(context) {
   if (section_name === "new") {
     return { props: { modules: [] } };
   }
-
   const section = await Section.findOne({ name: section_name }).lean();
-  // const result = await Module.find({ sectionId: section._id }).lean();
-
-  // const modules = JSON.stringify(result);
   const section_json = JSON.stringify(section);
-  // const modules = result.map((doc) => {
-  //   const module = doc.toObject();
-  //   module._id = String(module._id);
-  //   module.section = String(module.section);
-  //   return module;
-  // });
   const returns = {
     // modules: modules,
     section: section_json,

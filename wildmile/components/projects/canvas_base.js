@@ -23,13 +23,26 @@ import { usePathname, useSearchParams } from "next/navigation";
 
 import CellGen from "./mod_util";
 // export const CanvasContext = React.createContext();
-import CanvasContext, { useClient, cellReducer } from "./context_mod_map";
+import CanvasContext, {
+  useClient,
+  cellReducer,
+  plantCellReducer,
+} from "./context_mod_map";
 // import Hydration from "lib/hydration";
 import useStore from "/lib/store";
 import { use } from "passport";
 // import { ModuleFormModal } from "./module_form";
 import { useMediaQuery } from "@mantine/hooks";
 import { set } from "mongoose";
+import dynamic from "next/dynamic";
+
+// const CanvasComponent = dynamic(
+//   () => import("components/projects/CanvasComponent"),
+//   {
+//     ssr: false,
+//   }
+// );
+
 import CanvasComponent from "./CanvasComponent";
 // const Component = () => {
 //   const { key, updateKey } = useStore();
@@ -119,7 +132,9 @@ export const ModMapWrapper = ({ children }) => {
 
   const [selectedPlantCell, setSelectedPlantCell] = useState(new Map());
   const [cells, setCells] = useState(new Map());
-  // Sets the exploration mode of the map
+  // const [plantCells, setPlantCells] = useState([]);
+  const [plantCells, dispatch] = useReducer(plantCellReducer, new Map());
+  const [selectedPlants, setSelectedPlants] = useState([]); // Sets the exploration mode of the map
   // Modes
   const [mode, setMode] = useState("edit");
   const [editMode, setEditMode] = useState(false);
@@ -131,7 +146,7 @@ export const ModMapWrapper = ({ children }) => {
 
   const selectedCellRef = useRef(null);
   const [plants, setPlants] = useState([]);
-  const [selectedPlants, setSelectedPlants] = useState([]);
+
   const [individualPlants, setIndividualPlants] = useState([]);
   const [triggerUpdate, setTriggerUpdate] = useState(false);
 
@@ -144,6 +159,13 @@ export const ModMapWrapper = ({ children }) => {
     setTriggerUpdate((prev) => !prev); // Toggle the state to trigger useEffect in UpdateModules
   };
 
+  const setPlantCells = (groups) => {
+    dispatch({ type: "setPlantCells", payload: groups });
+  };
+
+  // useEffect to map the
+  // setPlantCells(["test"]);
+  // Function to move layer to top
   function moveToTop(id) {
     const items = layers.slice();
     const item = items.find((i) => i.id === id);
@@ -168,8 +190,12 @@ export const ModMapWrapper = ({ children }) => {
       moveToTop("modCells");
       // setPlantsVisible(false);
       // setModsVisible(true);
-    } else {
-      setPlantsVisible(false);
+    }
+    // if (mode === "edit") {
+    //   moveToTop("modCells");
+    // }
+    else {
+      // setPlantsVisible(false);
     }
   }, [mode]);
   // Handle the toggle for the cell selection
@@ -183,7 +209,7 @@ export const ModMapWrapper = ({ children }) => {
   //   dispatch({ type: "CLEAR_CELLS" });
   // };
 
-  const toggleCellSelection = (x, y, id) => {
+  const toggleCellSelection = (x, y, id, plantCell) => {
     setSelectedCell((prevCells) => {
       const key = `${x},${y}`;
       const rect_id = `#${id}`;
@@ -227,8 +253,9 @@ export const ModMapWrapper = ({ children }) => {
 
   // Toggle Plant Cell Selection
 
-  // Handle the toggle for the cell selection
-  const togglePlantCellSelection = (x, y, id) => {
+  // Handle the toggle for the plant cell selection
+  const togglePlantCellSelection = (x, y, id, plantCell) => {
+    console.log("togglePlantCellSelection", x, y, id);
     setSelectedCell((prevCells) => {
       const key = `${x},${y}`;
       const rect_id = `#${id}`;
@@ -316,6 +343,9 @@ export const ModMapWrapper = ({ children }) => {
     layers,
     selectedPlants,
     setSelectedPlants,
+    plantCells,
+    setPlantCells,
+    dispatch,
   };
   return (
     // <div>
@@ -326,6 +356,9 @@ export const ModMapWrapper = ({ children }) => {
   );
 };
 
+/////
+///// CanvasBase
+/////   This is the main component for the canvas, it calls the CanvasComponent from another file which should be rendered w/o server side rendering
 export const CanvasBase = ({ children, width, height }) => {
   const {
     selectedModule,
@@ -361,6 +394,8 @@ export const CanvasBase = ({ children, width, height }) => {
     isPlantCellSelected,
     returnSelectedPlantCells,
     layers,
+    setPlantCells,
+    dispatch,
   } = useContext(CanvasContext);
 
   console.log("CanvasBase", width, height);
@@ -585,42 +620,21 @@ export const CanvasBase = ({ children, width, height }) => {
     scale,
     setScale,
     layers,
+    setPlantCells,
+    dispatch,
   };
   if (!isClient) {
     console.log("isClient:", isClient);
     return null;
   }
   console.log("containerSize:", containerSize);
-
-  // Konva specific variables
-  // useStrictMode(true);
-
-  const { plantsVisible, modsVisible } = useClient();
+  // const { plantsVisible, modsVisible } = useClient();
   return (
     <>
       <CanvasContext.Provider value={{ ...value }}>
         <div>
           <UpdateModules triggerUpdate={triggerUpdate} />
-          {/* <button onClick={handleSomeUpdate}>Update Modules</button> */}
-          {/* <Stage
-            ref={gridRef}
-            width={containerSize.width}
-            height={containerSize.height}
-            scaleX={scale}
-            scaleY={scale}
-            onWheel={handleWheel}
-            rotation={rotation}
-            draggable
-          > */}
-          <CanvasComponent>
-            {/* <CreateRectLayer triggerUpdate={triggerUpdateMod} /> */}
-            {/* <Layer
-              ref={plantRef}
-              visible={plantsVisible}
-              id={"plantCells"}
-            ></Layer> */}
-          </CanvasComponent>
-          {/* <Layer ref={modRef} visible={modsVisible} id={"modCells"}></Layer> */}
+          <CanvasComponent></CanvasComponent>
           {children}
           {/* </Stage> */}
         </div>
@@ -766,3 +780,5 @@ export function useWindow() {
   return window.innerWidth;
 }
 export const useCanvas = () => React.useContext(CanvasContext);
+
+export default ModMapWrapper;

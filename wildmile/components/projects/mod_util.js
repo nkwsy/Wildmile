@@ -1,6 +1,14 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { Stage, Layer, Rect, Text, Group, Line } from "react-konva";
+import {
+  Stage,
+  Layer,
+  Rect,
+  Text,
+  Group,
+  Line,
+  useStrictMode,
+} from "react-konva";
 import { Grid } from "@mantine/core";
 import { Button } from "@mantine/core";
 import useSWR from "swr";
@@ -244,6 +252,7 @@ export class PlantCell {
     module_location_x,
     module_location_y,
     shape,
+    shape_key,
     attrs
   ) {
     this.module_id = module_id;
@@ -255,6 +264,7 @@ export class PlantCell {
       y: module_location_y,
     };
     this.konva_object = shape; // Assuming 'shape' is a Konva shape instance
+    this.shape_key = shape_key; // Unique identifier for the shape
     this.attrs = attrs; // Additional attributes for the cell
   }
 
@@ -336,7 +346,7 @@ export const PlantCellGen = ({
   const plantCellHeight = cellHeight / rows;
 
   const stroke = "white";
-  const strokeWidth = 0.1;
+  const strokeWidth = 0.2;
   const opacity = 0.2;
   const plantCells = [];
   for (module of modules) {
@@ -360,13 +370,8 @@ export const PlantCellGen = ({
           // visible: false,
         });
 
-        const changeSelectedCell = (e) => {
-          togglePlantCellSelection(x, y, e.target);
-          console.log("clicked cell", e.target, e.target.id());
-        };
         // Add click event listener
         // if (rect) {
-        rect.on("click", changeSelectedCell);
         let plantCell = new PlantCell(
           module.id,
           module.x,
@@ -374,9 +379,15 @@ export const PlantCellGen = ({
           module.plant_id,
           module.x,
           module.y,
-          rect,
+          rect, // Unsure if I should pass the exact konva object
+          rect.id(),
           {}
         );
+        const changeSelectedCell = (e) => {
+          togglePlantCellSelection(x, y, e.target, plantCell);
+          console.log("clicked cell", e.target, e.target.id(), plantCell);
+        };
+        rect.on("click", changeSelectedCell);
         plantCells.push(plantCell);
       }
     }

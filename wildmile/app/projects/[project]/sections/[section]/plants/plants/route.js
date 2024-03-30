@@ -11,7 +11,7 @@ export async function GET(request, { params, query, res }) {
   try {
     const result = await Plant.find().lean().exec();
 
-    console.log("Plants:", result);
+    // console.log("Plants:", result);
 
     // Send a 200 OK response with the result as JSON
     return Response.json(JSON.stringify(result));
