@@ -8,12 +8,14 @@ import React, {
   useMemo,
 } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import CanvasContext, { useClient } from "./context_mod_map";
+import CanvasContext, { useClient, plantCellReducer } from "./context_mod_map";
 import { PlantCellGen } from "./mod_util";
 import { set } from "mongoose";
 
 export function UpdateIndividualPlants({ triggerUpdate }) {
-  const { setIndividualPlants } = useContext(CanvasContext);
+  // const { setIndividualPlants } = useContext(CanvasContext);
+
+  const { dispatch } = useClient();
   const pathname = usePathname();
   const [searchParams] = useSearchParams();
   //   const { project, section } = router.query;
@@ -22,7 +24,7 @@ export function UpdateIndividualPlants({ triggerUpdate }) {
     async function fetchData() {
       // Fetch and update logic here
       // const mods = searchParams.get("");
-      const response = await fetch(`${pathname}/plants/plants`, {
+      const response = await fetch(`${pathname}/plants/individual-plants`, {
         next: { tags: ["plants"] },
       });
       console.log("Fetching and updating plants...");
@@ -30,11 +32,13 @@ export function UpdateIndividualPlants({ triggerUpdate }) {
       // Simulate fetching data
       const data = JSON.parse(raw_response);
       // Call oleetModules or similar function to update the state
-      setIndividualPlants(data);
+
+      dispatch({ type: "ADD_INDIVIDUAL_PLANTS", payload: data });
+      // setIndividualPlants(data);
     }
 
     fetchData();
-  }, [triggerUpdate, searchParams, pathname, setIndividualPlants]); // triggerUpdate is now a dependency
+  }, [triggerUpdate, searchParams, pathname]); // triggerUpdate is now a dependency
 
   return null; // This component doesn't render anything
 }

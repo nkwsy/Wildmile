@@ -271,68 +271,6 @@ export class PlantCell {
   // You might want to add methods here to interact with the PlantCell
 }
 
-// export const PlantCellGen = ({
-//   cellWidth,
-//   cellHeight,
-//   togglePlantCellSelection,
-//   modules,
-//   // setSelectedModule,
-// }) => {
-//   const rows = 10;
-//   const columns = 4;
-//   const plantCellWidth = cellWidth / columns;
-//   const plantCellHeight = cellHeight / rows;
-
-//   const stroke = "grey";
-//   const strokeWidth = 0.1;
-//   const opacity = 0.2;
-//   const plantCells = [];
-//   for (module of modules) {
-//     // Code inside the for loop
-//     for (let i = 0; i < 4; i++) {
-//       for (let j = 0; j < 10; j++) {
-//         let rect;
-//         const x = module.y * cellWidth + plantCellWidth * i;
-//         const y = module.x * cellHeight + plantCellHeight * j;
-//         console.log("x:", x, "y:", y, "module:", module);
-//         // Create a rectangle shape for the cell
-//         rect = new Konva.Rect({
-//           x: x,
-//           y: y,
-//           width: plantCellWidth,
-//           height: plantCellHeight,
-//           opacity: opacity,
-//           stroke: stroke,
-//           strokeWidth: strokeWidth,
-//           // TODO: Add unique id for each cell, prob module.x * i or some global value
-//           // id: `${module.x},${y}`,
-//           // visible: false,
-//         });
-
-//         const changeSelectedCell = (e) => {
-//           togglePlantCellSelection(x, y, e.target);
-//           console.log("clicked cell", e.target, e.target.id());
-//         };
-//         // Add click event listener
-//         // if (rect) {
-//         rect.on("click", changeSelectedCell);
-//         let plantCell = new PlantCell(
-//           module.id,
-//           module.x,
-//           module.y,
-//           module.plant_id,
-//           module.x,
-//           module.y,
-//           rect,
-//           {}
-//         );
-//         plantCells.push(plantCell);
-//       }
-//     }
-//   }
-//   return plantCells;
-// };
-
 export const PlantCellGen = ({
   cellWidth,
   cellHeight,
@@ -373,9 +311,9 @@ export const PlantCellGen = ({
         // Add click event listener
         // if (rect) {
         let plantCell = new PlantCell(
-          module.id,
-          module.x,
-          module.y,
+          module._id,
+          j,
+          i,
           module.plant_id,
           module.x,
           module.y,

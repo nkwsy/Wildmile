@@ -121,6 +121,25 @@ export function AllPlants() {
 /// ModMapWrapper
 ///
 export const ModMapWrapper = ({ children }) => {
+  const initialState = {
+    // selectedModule: { _id: false, module: "none" },
+    // newModules: [],
+    // removedModules: [],
+    // selectedCell: new Map(),
+    // cells: new Map(),
+    // mode: "edit",
+    // editMode: false,
+    // plantsVisible: true,
+    // modsVisible: true,
+    // plants: [],
+    plantCells: [],
+    selectedPlantCell: new Map(),
+    // selectedPlants: [],
+    individualPlants: new Map(),
+    // triggerUpdate: false,
+    // layers: [],
+  };
+  const [state, dispatch] = useReducer(plantCellReducer, initialState);
   const [selectedModule, setSelectedModule] = useState({
     _id: false,
     module: "none",
@@ -133,7 +152,7 @@ export const ModMapWrapper = ({ children }) => {
   const [selectedPlantCell, setSelectedPlantCell] = useState(new Map());
   const [cells, setCells] = useState(new Map());
   // const [plantCells, setPlantCells] = useState([]);
-  const [plantCells, dispatch] = useReducer(plantCellReducer, new Map());
+  // const [plantCells, dispatch] = useReducer(plantCellReducer, new Map());
   const [selectedPlants, setSelectedPlants] = useState([]); // Sets the exploration mode of the map
   // Modes
   const [mode, setMode] = useState("edit");
@@ -260,7 +279,7 @@ export const ModMapWrapper = ({ children }) => {
       const key = `${x},${y}`;
       const rect_id = `#${id}`;
       // const rect = modRef.current.find(id);
-      console.log("toggleCellSelection rect", id);
+      console.log("toggleCellSelection rect", plantCell);
       const newCells = new Map(prevCells);
       if (newCells.has(key)) {
         id.strokeWidth(0.1);
@@ -343,8 +362,10 @@ export const ModMapWrapper = ({ children }) => {
     layers,
     selectedPlants,
     setSelectedPlants,
-    plantCells,
-    setPlantCells,
+    // plantCells,
+    // setPlantCells,
+
+    state,
     dispatch,
   };
   return (

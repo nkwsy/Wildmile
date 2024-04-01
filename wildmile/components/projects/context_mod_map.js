@@ -1,4 +1,5 @@
 "use client";
+// import plants from "pages/api/plants";
 // contexts/ClientContext.js
 
 import { createContext, useContext, useState, useReducer } from "react";
@@ -81,11 +82,36 @@ export const plantCellReducer = (state, action) => {
         newCells.set(index, group);
       });
       console.log("PlantCells: ", newCells);
-      return newCells;
+      return { ...state, plantCells: newCells };
 
     case "CLEAR_PLANT_CELLS":
       // Create a new Map to clear the cells, side effects should be handled outside
-      return new Map();
+      return { ...state, plantCells: new Map() };
+
+    case "TOGGLE_PLANT_CELL_SELECTION":
+      return state;
+
+    case "ADD_INDIVIDUAL_PLANTS":
+      const individual_plants = action.payload;
+      const updatedIndividualPlants = new Map(state.individualPlants);
+      individual_plants.forEach((plant) => {
+        const key = plant._id;
+        updatedIndividualPlants.set(key, plant);
+        // state.plantCells
+        Array.from(state.plantCells.values())
+
+          .filter(
+            (cell) =>
+              cell.module_id === plant.module &&
+              cell.x === plant.x &&
+              cell.y === plant.y
+          )
+          .forEach((cell) => {
+            cell.plant_id = plant._id;
+          });
+      });
+
+      return { ...state, individualPlants: updatedIndividualPlants };
 
     default:
       return state;
