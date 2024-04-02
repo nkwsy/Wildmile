@@ -14,11 +14,10 @@ export async function GET(request, { params }) {
   const result = await Module.find({
     sectionId: section._id,
     deleted: { $ne: true },
-  }).populate("individualPlants");
+  });
+  // .populate("individualPlants");
   // .lean();
 
-  const testres = await Module.find().populate("individualPlants");
-  console.log("Test Result:", testres);
   const modules = JSON.stringify(result);
   return Response.json(modules);
 }

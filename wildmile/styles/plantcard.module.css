@@ -1,5 +1,5 @@
 .title {
-  font-size: 1rem;
+  font-size: 3rem;
   font-weight: 900;
 }
 
@@ -50,13 +50,13 @@
   background-color: var(--mantine-gray-0);
 }
 
-.cardTitle {
+.card-title {
   text-decoration: none;
   font-size: 1rem;
   color: var(--mantine-color-white);
 }
 
-.cardTitle::after {
+.card-title::after {
   content: "";
   display: block;
   background-color: var(--mantine-color-white);
@@ -96,10 +96,40 @@
   grid-column: 1 / 1;
 }
 
+.box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: var(--mantine-spacing-xs);
+  border-color: #6c3e3e;
+  border-width: 0.1rem;
+  box-shadow: none;
+  border-radius: var(--mantine-radius-sm);
+}
+.box:hover {
+  background: #6c3e3e;
+}
+.box:active {
+  background-color: var(--mantine-gray-0);
+}
+
+.box.selected {
+  background-color: var(
+    --mantine-primary
+  ); /* Change color for selected state */
+  /* Add more styles if needed */
+}
+
 .scrollable {
-  overflow-x: auto;
+  overflow-y: auto;
   white-space: nowrap;
   display: flex;
-  gap: 1rem;
-  padding: 1rem;
+  gap: 0;
+  padding: 0rem;
+  border-radius: var(--mantine-radius-sm);
+}
+
+.scroll-item {
+  flex: 0 0 auto;
+  max-height: 100%;
 }

@@ -71,7 +71,25 @@ export const cellReducer = (state, action) => {
       return state;
   }
 };
+// use to generate key based on stuff. Helpful for looking up items in a map
 export const generateKey = (arr) => arr.join("-");
+
+const mapPlantCells = (state) => {
+  const plant_cells = state.plantCells;
+  const map_individual_plants = state.individualPlants;
+  const updatedPlantCells = new Map(state.plantCells);
+  map_individual_plants.forEach((plant) => {
+    const key = generateKey([plant.module.x, plant.module.y, plant.x, plant.y]);
+    const cell = plant_cells.get(key);
+    if (cell) {
+      // Make sure the cell exists before trying to modify it
+      cell.plant_id = plant.plant;
+      cell.individual_plant_id = plant._id;
+      updatedPlantCells.set(key, cell);
+    }
+  });
+  return updatedPlantCells;
+};
 
 export const plantCellReducer = (state, action) => {
   switch (action.type) {
@@ -89,8 +107,13 @@ export const plantCellReducer = (state, action) => {
         // Assuming each group has a unique identifier, like an index or id
         // newCells.set(index, group);
       });
+      const updatedPlantCellsAfterSetting = mapPlantCells({
+        ...state,
+        plantCells: newCells,
+      });
+
       console.log("PlantCells: ", newCells);
-      return { ...state, plantCells: newCells };
+      return { ...state, plantCells: updatedPlantCellsAfterSetting };
 
     case "CLEAR_PLANT_CELLS":
       // Create a new Map to clear the cells, side effects should be handled outside
@@ -105,19 +128,20 @@ export const plantCellReducer = (state, action) => {
       individual_plants.forEach((plant) => {
         const key = plant._id;
         updatedIndividualPlants.set(key, plant);
-        // Array.from(state.plantCells.values())
-        //   .filter(
-        //     (cell) =>
-        //       cell.module_id === plant.module &&
-        //       cell.x === plant.x &&
-        //       cell.y === plant.y
-        //   )
-        //   .forEach((cell) => {
-        //     cell.plant_id = plant._id;
-        //   });
       });
 
-      return { ...state, individualPlants: updatedIndividualPlants };
+      // Call the common function to map plant cells after adding individual plants
+      const updatedPlantCellsAfterAddition = mapPlantCells({
+        ...state,
+        individualPlants: updatedIndividualPlants,
+      });
+
+      return {
+        ...state,
+        individualPlants: updatedIndividualPlants,
+        plantCells: updatedPlantCellsAfterAddition,
+      };
+
     case "REMOVE_INDIVIDUAL_PLANTS":
       const removed_plants = action.payload;
       const removedIndividualPlants = new Map(state.individualPlants);
@@ -138,23 +162,20 @@ export const plantCellReducer = (state, action) => {
     //     newCells.set(key, { x, y, id });
     //   }
     //   return newCells;
+    case "TOGGLE_PLANT_SELECTION":
+      const plant_id = action.payload;
+      const newPlants = new Map(state.selectedPlants);
+      if (newPlants.has(plant_id)) {
+        newPlants.delete(plant_id);
+      } else {
+        newPlants.set(plant_id, plant_id);
+      }
+      return { ...state, selectedPlants: newPlants };
     case "MAP_PLANT_CELLS":
-      const plant_cells = state.plantCells;
-      const map_individual_plants = state.individualPlants;
-      const updatedPlantCells = new Map(state.plantCells);
-      map_individual_plants.forEach((plant) => {
-        const key = generateKey([
-          plant.module.x,
-          plant.module.y,
-          plant.x,
-          plant.y,
-        ]);
-        const cell = plant_cells.get(key);
-        cell.plant_id = plant.plant;
-        cell.individual_plant_id = plant._id;
-        updatedPlantCells.set(key, cell);
-      });
+      // Now simply call the common function for MAP_PLANT_CELLS
+      const updatedPlantCells = mapPlantCells(state);
       return { ...state, plantCells: updatedPlantCells };
+
     default:
       return state;
   }

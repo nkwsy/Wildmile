@@ -18,38 +18,51 @@ import {
   Group,
   Avatar,
   Accordion,
+  Autocomplete,
+  Combobox,
+  useCombobox,
+  Stack,
 } from "@mantine/core";
+import SearchableMultiSelect from "./SearchBox";
 // import dbConnect from "../../lib/db/setup";
 // import Plant from "../../models/Plant";
 import { useStyles } from "../image_card_grid";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import classes from "/styles/plantcard.module.css";
 // import PlantHandler from "../../app/actions/PlantActions";
 import { PlantHandler } from "/app/actions/PlantActions";
 import { set } from "mongoose";
 import PlantAccordian from "./PlantAccordian";
+import PlantSelectCards from "./PlantSelectCard";
 import ClientContext, { useClient } from "./context_mod_map";
 
 export function PlantCards(props) {
-  const { plants, selectedPlants } = useClient();
+  const { plants, dispatch, state } = useClient();
   const [cardPlants, setCardPlants] = useState([]);
   const [isReady, setReady] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   // const { isOpen, close, toggle } = useDisclosure();
+
   useEffect(() => {
     async function handlePlantSearch() {
       // const raw_plants = await PlantHandler();
-      const use_plants = plants || selectedPlants;
       // const raw_plants = await AllPlants();
       // const plants = JSON.parse(raw_plants);
       console.log("Plants:", plants);
 
       const plant_values = plants.map((plant) => ({
+        id: plant._id,
         title: plant.commonName || plant.common_name || plant.scientificName,
         subtitle: plant.scientificName || plant.scientific_name,
         image: plant.thumbnail,
         description: plant.notes,
+        onClick: () => {
+          console.log("Plant clicked:", plant);
+          dispatch({ type: "TOGGLE_PLANT_SELECTION", payload: plant._id });
+          // setSelectedPlant(plant);
+          // toggle();
+        },
         // tags: plant.tags.slice(0, 4),
       }));
       setCardPlants(plant_values);
@@ -65,8 +78,19 @@ export function PlantCards(props) {
       </Container>
     );
   } else {
-    return <PlantAccordian cardPlants={cardPlants} />;
+    return (
+      <>
+        <Stack variant="contained">
+          <SearchableMultiSelect itemsMap={cardPlants} />
 
+          <PlantSelectCards
+            cardPlants={cardPlants}
+            selectedPlants={state.selectedPlants}
+          />
+        </Stack>
+      </>
+    );
+    // return <PlantAccordian cardPlants={cardPlants} />;
     // return (
     //   <>
     //     <ScrollArea.Autosize type="hover" h="100%">

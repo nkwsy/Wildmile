@@ -132,9 +132,9 @@ export const ModMapWrapper = ({ children }) => {
     // plantsVisible: true,
     // modsVisible: true,
     // plants: [],
-    plantCells: [],
+    plantCells: new Map(),
     selectedPlantCell: new Map(),
-    // selectedPlants: [],
+    selectedPlants: new Map(),
     individualPlants: new Map(),
     // triggerUpdate: false,
     // layers: [],
@@ -276,6 +276,20 @@ export const ModMapWrapper = ({ children }) => {
   };
 
   // Toggle Plant Cell Selection
+  useEffect(() => {
+    updateSelectedPlantCellStrokeWidth();
+    let cells = state.plantCells;
+    cells.forEach((cell) => {
+      if (state.selectedPlants.has(cell.plant_id)) {
+        cell.konva_object.strokeWidth(2);
+        cell.konva_object.opacity(1);
+        // cell.rect.moveToTop();
+      } else {
+        cell.konva_object.strokeWidth(0.1);
+        cell.konva_object.opacity(0.2);
+      }
+    });
+  }, [state.selectedPlants]);
 
   // Handle the toggle for the plant cell selection
   const togglePlantCellSelection = (x, y, id, plantCell) => {
