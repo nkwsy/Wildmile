@@ -129,7 +129,6 @@ export function CreatePlantCellLayer(props) {
     modules,
     plantRef,
     togglePlantCellSelection,
-    setPlantCells,
     dispatch,
   } = useClient();
   // useMemo to calculate groups based on dependencies

@@ -1,5 +1,7 @@
 import Module from "models/Module";
 import Section from "models/Section";
+import IndividualPlant from "models/IndividualPlant";
+import Plant from "models/Plant";
 import mongoose from "mongoose";
 import dbConnect from "lib/db/setup";
 
@@ -12,8 +14,11 @@ export async function GET(request, { params }) {
   const result = await Module.find({
     sectionId: section._id,
     deleted: { $ne: true },
-  }).lean();
+  }).populate("individualPlants");
+  // .lean();
 
+  const testres = await Module.find().populate("individualPlants");
+  console.log("Test Result:", testres);
   const modules = JSON.stringify(result);
   return Response.json(modules);
 }

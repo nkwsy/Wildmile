@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+// import IndividualPlant from "./IndividualPlant";
 const mongoose_delete = require("mongoose-delete");
 
 const ModuleSchema = new mongoose.Schema(
@@ -23,8 +24,29 @@ const ModuleSchema = new mongoose.Schema(
     decommisioned: Boolean,
     sponsor: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
-  { collection: "mods", timestamps: true }
+  {
+    collection: "mods",
+    timestamps: true,
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true },
+    strictPopulate: false,
+  },
+  {
+    virtuals: {
+      individualPlants: {
+        ref: "IndividualPlant", // the name of the IndividualPlant model
+        localField: "_id",
+        foreignField: "module", // replace with the name of the field in the IndividualPlant model that references the Module model
+      },
+    },
+  }
 );
+
+// ModuleSchema.virtual("individualPlants", {
+//   ref: "IndividualPlant", // the name of the IndividualPlant model
+//   localField: "_id",
+//   foreignField: "module", // replace with the name of the field in the IndividualPlant model that references the Module model
+// });
 
 ModuleSchema.plugin(mongoose_delete, { overrideMethods: "all" });
 export default mongoose.models.Module || mongoose.model("Module", ModuleSchema);

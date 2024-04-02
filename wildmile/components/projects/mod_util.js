@@ -248,17 +248,18 @@ export class PlantCell {
     module_id,
     x,
     y,
-    plant_id,
     module_location_x,
     module_location_y,
     shape,
     shape_key,
-    attrs
+    attrs,
+    plant_id,
+    individual_plant_id
   ) {
     this.module_id = module_id;
     this.x = x; // This could represent the module's own x position if different from module_location's x
     this.y = y; // This could represent the module's own y position if different from module_location's y
-    this.plant_id = plant_id;
+
     this.module_location = {
       x: module_location_x,
       y: module_location_y,
@@ -266,6 +267,9 @@ export class PlantCell {
     this.konva_object = shape; // Assuming 'shape' is a Konva shape instance
     this.shape_key = shape_key; // Unique identifier for the shape
     this.attrs = attrs; // Additional attributes for the cell
+    this.individual_plant_id =
+      individual_plant_id !== undefined ? individual_plant_id : null;
+    this.plant_id = plant_id !== undefined ? plant_id : null;
   }
 
   // You might want to add methods here to interact with the PlantCell
@@ -314,7 +318,6 @@ export const PlantCellGen = ({
           module._id,
           j,
           i,
-          module.plant_id,
           module.x,
           module.y,
           rect, // Unsure if I should pass the exact konva object

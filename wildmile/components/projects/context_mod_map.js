@@ -71,6 +71,7 @@ export const cellReducer = (state, action) => {
       return state;
   }
 };
+export const generateKey = (arr) => arr.join("-");
 
 export const plantCellReducer = (state, action) => {
   switch (action.type) {
@@ -78,8 +79,15 @@ export const plantCellReducer = (state, action) => {
       const groups = action.payload;
       const newCells = new Map();
       groups.forEach((group, index) => {
+        const key = generateKey([
+          group.module_location.x,
+          group.module_location.y,
+          group.x,
+          group.y,
+        ]);
+        newCells.set(key, group);
         // Assuming each group has a unique identifier, like an index or id
-        newCells.set(index, group);
+        // newCells.set(index, group);
       });
       console.log("PlantCells: ", newCells);
       return { ...state, plantCells: newCells };
@@ -97,22 +105,56 @@ export const plantCellReducer = (state, action) => {
       individual_plants.forEach((plant) => {
         const key = plant._id;
         updatedIndividualPlants.set(key, plant);
-        // state.plantCells
-        Array.from(state.plantCells.values())
-
-          .filter(
-            (cell) =>
-              cell.module_id === plant.module &&
-              cell.x === plant.x &&
-              cell.y === plant.y
-          )
-          .forEach((cell) => {
-            cell.plant_id = plant._id;
-          });
+        // Array.from(state.plantCells.values())
+        //   .filter(
+        //     (cell) =>
+        //       cell.module_id === plant.module &&
+        //       cell.x === plant.x &&
+        //       cell.y === plant.y
+        //   )
+        //   .forEach((cell) => {
+        //     cell.plant_id = plant._id;
+        //   });
       });
 
       return { ...state, individualPlants: updatedIndividualPlants };
-
+    case "REMOVE_INDIVIDUAL_PLANTS":
+      const removed_plants = action.payload;
+      const removedIndividualPlants = new Map(state.individualPlants);
+      removed_plants.forEach((plant) => {
+        removedIndividualPlants.delete(plant._id);
+      });
+      return { ...state, individualPlants: removedIndividualPlants };
+    // case "SET_SELECTED_PLANT_CELL":
+    //   const { x, y, id } = action.payload;
+    //   const key = `${x},${y}`;
+    //   const newCells = new Map(state);
+    //   if (newCells.has(key)) {
+    //     id.strokeWidth(0.1); // Consider moving side effects out of the reducer
+    //     newCells.delete(key);
+    //   } else {
+    //     id.strokeWidth(6); // Consider moving side effects out of the reducer
+    //     id.moveToTop(); // Consider moving side effects out of the reducer
+    //     newCells.set(key, { x, y, id });
+    //   }
+    //   return newCells;
+    case "MAP_PLANT_CELLS":
+      const plant_cells = state.plantCells;
+      const map_individual_plants = state.individualPlants;
+      const updatedPlantCells = new Map(state.plantCells);
+      map_individual_plants.forEach((plant) => {
+        const key = generateKey([
+          plant.module.x,
+          plant.module.y,
+          plant.x,
+          plant.y,
+        ]);
+        const cell = plant_cells.get(key);
+        cell.plant_id = plant.plant;
+        cell.individual_plant_id = plant._id;
+        updatedPlantCells.set(key, cell);
+      });
+      return { ...state, plantCells: updatedPlantCells };
     default:
       return state;
   }

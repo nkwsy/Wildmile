@@ -194,6 +194,10 @@ export const ModMapWrapper = ({ children }) => {
     setLayers(items);
   }
 
+  // useEffect to update plant cells if individual plants are updated
+  useEffect(() => {
+    dispatch({ type: "MAP_PLANT_CELLS" });
+  }, [individualPlants]);
   // useEffect to switch plant visibility
   useEffect(() => {
     console.log("Plants Visible:", plantsVisible);
@@ -202,6 +206,7 @@ export const ModMapWrapper = ({ children }) => {
     }
     if (mode === "plants") {
       moveToTop("plantCells");
+      dispatch({ type: "MAP_PLANT_CELLS" });
       // setPlantsVisible(true);
       // setModsVisible(false);
     }

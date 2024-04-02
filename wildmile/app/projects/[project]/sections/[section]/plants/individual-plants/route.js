@@ -55,10 +55,11 @@ export async function GET(request, { params, query, res }) {
       })
       .exec();
 
-    console.log("Individual Plants:", result);
+    // Filter out invalid references
+    const filteredResult = result.filter((plant) => plant.module !== null);
 
-    // Send a 200 OK response with the result as JSON
-    return Response.json(JSON.stringify(result));
+    // Send a 200 OK response with the filtered result as JSON
+    return Response.json(JSON.stringify(filteredResult));
   } catch (error) {
     console.error(error);
     // In case of any error, send a 500 Internal Server Error response
