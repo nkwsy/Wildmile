@@ -114,10 +114,18 @@
 }
 
 .box.selected {
-  background-color: var(
-    --mantine-primary
-  ); /* Change color for selected state */
-  /* Add more styles if needed */
+  background-color: var(--mantine-primary);
+}
+
+.selectedBox {
+  background-color: #8a8585; /* or any other style you want */
+}
+.chip {
+  display: inline-block;
+  border-radius: var(--mantine-radius-sm);
+  color: var(--mantine-color-red-filled);
+  font-size: 8px;
+  font-weight: 400;
 }
 
 .scrollable {

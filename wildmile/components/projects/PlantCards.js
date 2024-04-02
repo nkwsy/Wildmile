@@ -26,7 +26,7 @@ import {
 import SearchableMultiSelect from "./SearchBox";
 // import dbConnect from "../../lib/db/setup";
 // import Plant from "../../models/Plant";
-import { useStyles } from "../image_card_grid";
+// import { useStyles } from "../image_card_grid";
 import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import classes from "/styles/plantcard.module.css";
 // import PlantHandler from "../../app/actions/PlantActions";
@@ -34,7 +34,7 @@ import { PlantHandler } from "/app/actions/PlantActions";
 import { set } from "mongoose";
 import PlantAccordian from "./PlantAccordian";
 import PlantSelectCards from "./PlantSelectCard";
-import ClientContext, { useClient } from "./context_mod_map";
+import ClientContext, { useClient, useClientState } from "./context_mod_map";
 
 export function PlantCards(props) {
   const { plants, dispatch, state } = useClient();
@@ -43,7 +43,8 @@ export function PlantCards(props) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   // const { isOpen, close, toggle } = useDisclosure();
-
+  const selPlants = useClientState("selectedPlants");
+  console.log("Selected Plants:", selPlants);
   useEffect(() => {
     async function handlePlantSearch() {
       // const raw_plants = await PlantHandler();
@@ -57,16 +58,32 @@ export function PlantCards(props) {
         subtitle: plant.scientificName || plant.scientific_name,
         image: plant.thumbnail,
         description: plant.notes,
+        tags: [
+          ...(plant.tags ?? []),
+          plant.family,
+          plant.family_common_name ?? null,
+        ].filter(Boolean),
         onClick: () => {
           console.log("Plant clicked:", plant);
           dispatch({ type: "TOGGLE_PLANT_SELECTION", payload: plant._id });
           // setSelectedPlant(plant);
           // toggle();
         },
-        // tags: plant.tags.slice(0, 4),
+        // tags: plant.tags?.slice(0, 4),
       }));
       setCardPlants(plant_values);
       setReady(true);
+
+      const uniqueTags = plant_values.reduce((tags, plant) => {
+        plant.tags.forEach((tag) => {
+          if (!tags.includes(tag)) {
+            tags.push(tag);
+          }
+        });
+        return tags;
+      }, []);
+
+      console.log("Unique Tags:", uniqueTags);
     }
 
     handlePlantSearch();

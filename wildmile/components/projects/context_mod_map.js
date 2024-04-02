@@ -1,9 +1,6 @@
 "use client";
-// import plants from "pages/api/plants";
-// contexts/ClientContext.js
 
 import { createContext, useContext, useState, useReducer } from "react";
-// import React from "react";
 const ClientContext = createContext();
 export default ClientContext;
 
@@ -14,10 +11,10 @@ export const useClient = () => {
   }
   return context;
 };
-// export const useClient = (selector) => {
-//   const { state } = useContext(ClientContext);
-//   return selector(state);
-// };
+export const useClientState = (selector) => {
+  const { state } = useContext(ClientContext);
+  return selector(state);
+};
 
 // Define the initial state
 const initialState = {

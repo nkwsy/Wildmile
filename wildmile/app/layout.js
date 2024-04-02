@@ -22,6 +22,13 @@ export const metadata = {
 
 const theme = createTheme({
   /** Put your mantine theme override here */
+  lineHeights: {
+    xs: 0.7,
+    sm: 1,
+    md: 1.2,
+    lg: 1.5,
+    xl: 1.6,
+  },
 });
 
 import { WebVitals } from "./_components/web-vitals";
