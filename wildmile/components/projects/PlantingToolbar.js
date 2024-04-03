@@ -47,28 +47,36 @@ export default function PlantingToolbar() {
 
   return (
     <>
-      <Card shadow="xs" padding="lg" pl={8} radius="sm" withBorder>
+      <Card
+        shadow="xs"
+        padding="lg"
+        pl={8}
+        radius="sm"
+        withBorder
+        justify-content="flex-start"
+        align="flex-start"
+      >
         <CardSection withBorder inheritPadding py="xs">
           {[...selectedPlants.entries()].map(([id, item], index) => (
             <Box
               key={id}
               className={` ${
                 selectedPlantId === item.id ? classes.selectedBox : ""
-              } ${classes.box}`}
+              } `}
               value={String(index)}
               // key={item.id}
               onClick={setSelectedPlantId(item.id)}
             >
-              <Group wrap="nowrap" align="right">
-                <Indicator inline label={index + 1} size={16}>
-                  <Avatar src={item.image} radius="sm" size="xl" />
-                </Indicator>
-              </Group>
-              <Group align="top" direction="column">
+              <Indicator inline label={index + 1} size={16}>
+                <Avatar src={item.image} radius="sm" size="xl" />
+              </Indicator>
+              <Group align="right" direction="column">
                 <Text size="xs" className={classes.title}>
                   {item.title}
                 </Text>
-                <Text size="sm" color="dimmed" fw={400}>
+              </Group>
+              <Group align="right" direction="column">
+                <Text size="xs" color="dimmed" fw={400}>
                   {item.subtitle}
                 </Text>
               </Group>

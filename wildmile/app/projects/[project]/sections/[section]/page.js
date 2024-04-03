@@ -87,6 +87,7 @@ export default async function Page(context) {
             <Affix position={{ top: 100, right: 20 }}>
               <Group
                 position="apart"
+                align="flex-start"
                 sx={{
                   position: "absolute",
                   top: 10, // Adjust the position as needed
