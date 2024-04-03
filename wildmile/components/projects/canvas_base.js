@@ -296,6 +296,7 @@ export const ModMapWrapper = ({ children }) => {
   // Handle the toggle for the plant cell selection
   const togglePlantCellSelection = (x, y, id, plantCell) => {
     console.log("togglePlantCellSelection", x, y, id);
+    // update to use reducer
     setSelectedCell((prevCells) => {
       const key = `${x},${y}`;
       const rect_id = `#${id}`;
