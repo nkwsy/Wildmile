@@ -1,7 +1,7 @@
 import Plant from "/models/Plant";
 
 export async function getAllPlants() {
-  return await Plant.find({}, [
+  const result = await Plant.find({}, [
     "_id",
     "commonName",
     "common_name",
@@ -11,6 +11,7 @@ export async function getAllPlants() {
     "notes",
     "synonyms",
   ]);
+  return result;
 }
 
 export async function getPlantByID(id) {
