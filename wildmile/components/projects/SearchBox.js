@@ -36,8 +36,10 @@ export default function SearchableMultiSelect({ itemsMap }) {
   ));
 
   const options = Array.from(itemsMap.entries())
-    .filter(([key, item]) =>
-      item.title.toLowerCase().includes(search.trim().toLowerCase())
+    .filter(
+      ([key, item]) =>
+        item.title.toLowerCase().includes(search.trim().toLowerCase()) ||
+        item.subtitle.toLowerCase().includes(search.trim().toLowerCase())
     )
     .map(([key, item]) => (
       <Combobox.Option value={key} key={key} active={value.includes(key)}>
@@ -83,7 +85,7 @@ export default function SearchableMultiSelect({ itemsMap }) {
       </Combobox.DropdownTarget>
 
       <Combobox.Dropdown>
-        <Combobox.Options>
+        <Combobox.Options mah={400} style={{ overflowY: "auto" }}>
           {options.length > 0 ? (
             options
           ) : (

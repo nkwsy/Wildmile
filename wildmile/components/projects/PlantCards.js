@@ -34,17 +34,25 @@ import { PlantHandler } from "/app/actions/PlantActions";
 import { set } from "mongoose";
 import PlantAccordian from "./PlantAccordian";
 import PlantSelectCards from "./PlantSelectCard";
+import PlantSelectTable from "./PlantSelectTable";
 import ClientContext, { useClient, useClientState } from "./context_mod_map";
 
 export function PlantCards(props) {
   const { plants, dispatch, state } = useClient();
   const [cardPlants, setCardPlants] = useState([]);
   const [isReady, setReady] = useState(false);
+  const [showAvatar, setShowAvatar] = useState(true);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   // const { isOpen, close, toggle } = useDisclosure();
   const selPlants = useClientState("selectedPlants");
   console.log("Selected Plants:", selPlants);
+
+  const toggleAvatar = () => {
+    setShowAvatar(!showAvatar);
+  };
+
   useEffect(() => {
     async function handlePlantSearch() {
       // const raw_plants = await PlantHandler();
@@ -64,10 +72,24 @@ export function PlantCards(props) {
           plant.family_common_name ?? null,
         ].filter(Boolean),
         onClick: () => {
+          const plantMap = {
+            id: plant._id,
+            title:
+              plant.commonName || plant.common_name || plant.scientificName,
+            subtitle: plant.scientificName || plant.scientific_name,
+            image: plant.thumbnail,
+            description: plant.notes,
+            tags: [
+              ...(plant.tags ?? []),
+              plant.family,
+              plant.family_common_name ?? null,
+            ].filter(Boolean),
+          };
+          dispatch({
+            type: "TOGGLE_PLANT_SELECTION",
+            payload: plantMap,
+          });
           console.log("Plant clicked:", plant);
-          dispatch({ type: "TOGGLE_PLANT_SELECTION", payload: plant._id });
-          // setSelectedPlant(plant);
-          // toggle();
         },
         // tags: plant.tags?.slice(0, 4),
       }));
@@ -98,12 +120,17 @@ export function PlantCards(props) {
     return (
       <>
         <Stack variant="contained">
+          <Button onClick={toggleAvatar}>
+            {showAvatar ? "Hide Avatar" : "Show Avatar"}
+          </Button>
           <SearchableMultiSelect itemsMap={cardPlants} />
-
-          <PlantSelectCards
-            cardPlants={cardPlants}
-            selectedPlants={state.selectedPlants}
-          />
+          {showAvatar && (
+            <PlantSelectCards
+              cardPlants={cardPlants}
+              selectedPlants={state.selectedPlants}
+            />
+          )}
+          {!showAvatar && <PlantSelectTable cardPlants={cardPlants} />}
         </Stack>
       </>
     );

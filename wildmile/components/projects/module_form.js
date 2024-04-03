@@ -29,6 +29,7 @@ import {
   MenuDropdown,
   SegmentedControl,
   Switch,
+  Flex,
 } from "@mantine/core";
 import {
   IconDots,
@@ -48,6 +49,7 @@ import MultiModuleForm from "components/projects/mfs.js";
 import RemoveModuleForm from "./mf_delete";
 import { usePathname, useSearchParams } from "next/navigation";
 import { PlantCards } from "components/projects/PlantCards";
+import PlantingToolbar from "./PlantingToolbar";
 // const [visible, handlers] = useDisclosure(false);
 
 // const [errorMsg, setErrorMsg] = useState('')
@@ -105,18 +107,20 @@ export default function ModuleToolbar() {
     setSelectedModule,
     mode,
     setMode,
+    editMode,
     setSelectedCell,
     selectedCell,
     modules,
     setModules,
     clearSelectedCells,
     returnSelectedCells,
-  } = useContext(CanvasContext);
+  } = useClient(CanvasContext);
   // const [selectedModule, setSelectedModule] = useState(null);
   // console.log("CanvasContext:", selectedModule);
 
   return (
     <>
+      {editMode && mode === "plants" && <PlantingToolbar />}
       <Card shadow="xs" padding="lg" pl={8} radius="sm" withBorder>
         <CardSection withBorder inheritPadding py="xs">
           <Group justify="space-between">
@@ -124,6 +128,7 @@ export default function ModuleToolbar() {
             <EditModeSwitch />
           </Group>
         </CardSection>
+
         {mode === "plants" && (
           <CardSection withBorder inheritPadding py="xs">
             <Group>
@@ -131,14 +136,11 @@ export default function ModuleToolbar() {
             </Group>
           </CardSection>
         )}
-        {mode === "edit" && (
+        {editMode && mode === "modules" && (
           <CardSection withBorder inheritPadding py="xs">
             <Group>
               <RemoveModuleForm returnSelectedCells={returnSelectedCells} />
               <Button
-                // onClick={() =>
-                // setSelectedModule({ ...selectedModule, x: "", y: "", _id: "" })
-                // }
                 onClick={clearSelectedCells}
                 color="yellow"
                 variant="light"
@@ -150,14 +152,6 @@ export default function ModuleToolbar() {
                 Select Modules
               </Button> */}
             </Group>
-            {/* <ActionIcon
-              onClick={() => {
-                LoadMods().then((data) => setModules(data));
-              }}
-              color="blue"
-            >
-              <IconRefresh />
-            </ActionIcon> */}
             {selectedCell.size >= 1 && (
               <Group>
                 <MultiModuleForm returnSelectedCells={returnSelectedCells} />

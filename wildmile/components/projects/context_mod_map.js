@@ -11,30 +11,59 @@ export const useClient = () => {
   }
   return context;
 };
-export const useClientState = (selector) => {
-  const { state } = useContext(ClientContext);
-  return selector(state);
+// only grab selected state
+// use like   const selectedModule = useClient('selectedModule');
+export const useClientState = (propertyName) => {
+  const context = useContext(ClientContext);
+  if (context === undefined) {
+    throw new Error("useClientState must be used within its Provider");
+  }
+  // Directly access the 'state' object and then the property
+  const stateValue = context.state[propertyName];
+  if (stateValue === undefined) {
+    throw new Error(
+      `The property "${propertyName}" does not exist in the state`
+    );
+  }
+  return stateValue;
+};
+
+export const useClientStatePath = (path) => {
+  const context = useContext(ClientContext);
+  if (context === undefined) {
+    throw new Error("useClientState must be used within its Provider");
+  }
+
+  // Split the path and reduce it to the nested value
+  const stateValue = path.split(".").reduce((acc, part) => {
+    if (acc && acc[part] !== undefined) {
+      return acc[part];
+    }
+    throw new Error(`The path "${path}" could not be resolved in the context`);
+  }, context);
+
+  return stateValue;
 };
 
 // Define the initial state
-const initialState = {
-  selectedModule: { _id: false, module: "none" },
-  newModules: [],
-  removedModules: [],
-  selectedCell: new Map(),
-  cells: new Map(),
-  mode: "edit",
-  editMode: false,
-  plantsVisible: true,
-  modsVisible: true,
-  plants: [],
-  plantCells: [],
-  selectedPlantCell: new Map(),
-  selectedPlants: [],
-  individualPlants: [],
-  triggerUpdate: false,
-  layers: [],
-};
+// const initialState = {
+//   selectedModule: { _id: false, module: "none" },
+//   newModules: [],
+//   removedModules: [],
+//   selectedCell: new Map(),
+//   cells: new Map(),
+//   mode: "edit",
+//   editMode: false,
+//   plantsVisible: true,
+//   modsVisible: true,
+//   plants: [],
+//   plantCells: [],
+//   selectedPlantCell: new Map(),
+//   selectedPlants: [],
+//   individualPlants: [],
+//   triggerUpdate: false,
+//   layers: [],
+// };
 
 export function moveToTop(id) {
   const items = layers.slice();
@@ -162,12 +191,19 @@ export const plantCellReducer = (state, action) => {
     case "TOGGLE_PLANT_SELECTION":
       const plant_id = action.payload;
       const newPlants = new Map(state.selectedPlants);
-      if (newPlants.has(plant_id)) {
-        newPlants.delete(plant_id);
+      if (newPlants.has(plant_id.id)) {
+        newPlants.delete(plant_id.id);
       } else {
-        newPlants.set(plant_id, plant_id);
+        newPlants.set(plant_id.id, plant_id);
       }
       return { ...state, selectedPlants: newPlants };
+    case "TOGGLE_SELECTED_PLANT":
+      const targetSelectedPlandId = action.payload;
+      const oldSelectedPlantId = state.selectedPlantId;
+      if (oldSelectedPlantId === targetSelectedPlandId) {
+        return { ...state, selectedPlantId: null };
+      }
+      return { ...state, selectedPlantId: targetSelectedPlandId };
     case "MAP_PLANT_CELLS":
       // Now simply call the common function for MAP_PLANT_CELLS
       const updatedPlantCells = mapPlantCells(state);

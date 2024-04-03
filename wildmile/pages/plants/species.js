@@ -53,6 +53,7 @@ export default function Species(props) {
     form.setFieldValue('notes', plant.notes)
   }
 
+
   async function updatePlant(e) {
     let body = form.values
     const id = body._id
@@ -89,6 +90,13 @@ export default function Species(props) {
               Update
             </Button>
           </form>
+              <Image
+      radius="md"
+      h={200}
+      w="auto"
+      fit="contain"
+      src={...form.getInputProps('image_url')}
+    />
         </Modal>
         <SimpleGrid 
         mt={40} 

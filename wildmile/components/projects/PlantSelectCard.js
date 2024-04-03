@@ -12,27 +12,31 @@ import {
   Button,
   AccordianItem,
   Chip,
+  Table,
 } from "@mantine/core";
+import { useClientState } from "./context_mod_map";
 
 export default function PlantSelectCards(props) {
   const [showAvatar, setShowAvatar] = useState(true);
 
   const cardPlants = props.cardPlants;
-  const selectedPlants = props.selectedPlants;
+  const selectedPlants = useClientState("selectedPlants");
 
   const toggleAvatar = () => {
     setShowAvatar(!showAvatar);
   };
   return (
     <>
-      <Button onClick={toggleAvatar}>
-        {showAvatar ? "Hide Avatar" : "Show Avatar"}
-      </Button>
       <ScrollArea.Autosize className={classes.scrollItem} mah={1200}>
         {cardPlants.map((item, index) => (
-          <Box
+          <Paper
             //   component="button"
-            className={classes.box}
+            className={` ${
+              selectedPlants instanceof Map && selectedPlants.has(item.id)
+                ? classes.selectedBox
+                : ""
+            } ${classes.box}`}
+            withBorder
             value={String(index)}
             key={item.id}
             onClick={item.onClick}
@@ -63,7 +67,7 @@ export default function PlantSelectCards(props) {
               </div>
             </Group>
             {/* <Group align="right" direction="column"> */}
-          </Box>
+          </Paper>
         ))}
       </ScrollArea.Autosize>
     </>

@@ -101,16 +101,16 @@
   flex-wrap: wrap;
   gap: 1rem;
   padding: var(--mantine-spacing-xs);
-  border-color: #6c3e3e;
+  border-color: var(--mantine-color-gray-4);
   border-width: 0.1rem;
   box-shadow: none;
   border-radius: var(--mantine-radius-sm);
 }
 .box:hover {
-  background: #6c3e3e;
+  background: var(--mantine-color-gray-1);
 }
 .box:active {
-  background-color: var(--mantine-gray-0);
+  background-color: var(--mantine-color-gray-4);
 }
 
 .box.selected {
@@ -118,8 +118,15 @@
 }
 
 .selectedBox {
-  background-color: #8a8585; /* or any other style you want */
+  background-color: var(
+    --mantine-color-gray-3
+  ); /* or any other style you want */
 }
+
+.selectedRow {
+  background-color: var(--mantine-color-gray-3);
+}
+
 .chip {
   display: inline-block;
   border-radius: var(--mantine-radius-sm);
