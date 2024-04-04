@@ -45,6 +45,7 @@ import dynamic from "next/dynamic";
 // );
 
 import CanvasComponent from "./CanvasComponent";
+import { toggleCellFill, toggleCellOff, toggleCellOn } from "./drawing_utils";
 // const Component = () => {
 //   const { key, updateKey } = useStore();
 
@@ -297,24 +298,14 @@ export const ModMapWrapper = ({ children }) => {
   const togglePlantCellSelection = (x, y, id, plantCell) => {
     console.log("togglePlantCellSelection", x, y, id);
     // update to use reducer
-    setSelectedCell((prevCells) => {
-      const key = `${x},${y}`;
-      const rect_id = `#${id}`;
-      // const rect = modRef.current.find(id);
-      console.log("toggleCellSelection rect", plantCell);
-      const newCells = new Map(prevCells);
-      if (newCells.has(key)) {
-        id.strokeWidth(0.1);
-        id.opacity(0.2);
-        newCells.delete(key);
-      } else {
-        newCells.set(key, { x, y, id });
-        id.strokeWidth(1);
-        id.opacity(1);
-        id.moveToTop();
-      }
-      return newCells;
-    });
+    const key = `${x},${y}`;
+    if (state.selectedPlantCell.has(key)) {
+      toggleCellOff(plantCell);
+    } else {
+      toggleCellOn(plantCell);
+      // id.moveToTop();
+    }
+    dispatch({ type: "TOGGLE_PLANT_CELL_SELECTION", payload: plantCell });
   };
 
   // updates the stroke width of selected cell

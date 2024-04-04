@@ -146,7 +146,20 @@ export const plantCellReducer = (state, action) => {
       return { ...state, plantCells: new Map() };
 
     case "TOGGLE_PLANT_CELL_SELECTION":
-      return state;
+      const plantCell = action.payload;
+      const key = generateKey([
+        plantCell.module_location.x,
+        plantCell.module_location.y,
+        plantCell.x,
+        plantCell.y,
+      ]);
+      const newPlantCells = new Map(state.selectedPlantCell);
+      if (newPlantCells.has(key)) {
+        newPlantCells.delete(key);
+      } else {
+        newPlantCells.set(key, plantCell);
+      }
+      return { ...state, selectedPlantCell: newPlantCells };
 
     case "ADD_INDIVIDUAL_PLANTS":
       const individual_plants = action.payload;
