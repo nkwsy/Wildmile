@@ -257,6 +257,7 @@ export class PlantCell {
     individual_plant_id
   ) {
     this.module_id = module_id;
+    this.location_key = `${module_location_x}-${module_location_y}-${x}-${y}`;
     this.x = x; // This could represent the module's own x position if different from module_location's x
     this.y = y; // This could represent the module's own y position if different from module_location's y
 

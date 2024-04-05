@@ -73,30 +73,7 @@ export function moveToTop(id) {
   items.push(item);
   setLayers(items);
 }
-export const cellReducer = (state, action) => {
-  switch (action.type) {
-    case "TOGGLE_CELL_SELECTION":
-      const { x, y, id } = action.payload;
-      const key = `${x},${y}`;
-      const newCells = new Map(state);
-      if (newCells.has(key)) {
-        id.strokeWidth(0.1); // Consider moving side effects out of the reducer
-        newCells.delete(key);
-      } else {
-        id.strokeWidth(6); // Consider moving side effects out of the reducer
-        id.moveToTop(); // Consider moving side effects out of the reducer
-        newCells.set(key, { x, y, id });
-      }
-      return newCells;
 
-    case "CLEAR_CELLS":
-      state.forEach((cell) => cell.id.strokeWidth(0.2)); // Consider moving side effects out of the reducer
-      return new Map();
-
-    default:
-      return state;
-  }
-};
 // use to generate key based on stuff. Helpful for looking up items in a map
 export const generateKey = (arr) => arr.join("-");
 
@@ -153,12 +130,22 @@ export const plantCellReducer = (state, action) => {
         plantCell.x,
         plantCell.y,
       ]);
-      const newPlantCells = new Map(state.selectedPlantCell);
+
+      const current_selected_plant_cells = state.selectedPlantCell;
+      const newPlantCells = new Map(current_selected_plant_cells);
+      // Check if the key already exists
       if (newPlantCells.has(key)) {
+        // If you want to update the existing entry with new data, you can do it here.
+        // For example, to update you can uncomment the next line:
+        // newPlantCells.set(key, plantCell); // This updates the existing entry with the new plantCell data
+
+        // If you just want to remove the existing entry, keep the delete operation.
         newPlantCells.delete(key);
       } else {
+        // The key doesn't exist, so insert the new entry
         newPlantCells.set(key, plantCell);
       }
+
       return { ...state, selectedPlantCell: newPlantCells };
 
     case "ADD_INDIVIDUAL_PLANTS":
@@ -246,6 +233,31 @@ function reducer(state, action) {
       throw new Error("Unhandled action type: " + action.type);
   }
 }
+
+// export const cellReducer = (state, action) => {
+//   switch (action.type) {
+//     case "TOGGLE_CELL_SELECTION":
+//       const { x, y, id } = action.payload;
+//       const key = `${x},${y}`;
+//       const newCells = new Map(state);
+//       if (newCells.has(key)) {
+//         id.strokeWidth(0.1); // Consider moving side effects out of the reducer
+//         newCells.delete(key);
+//       } else {
+//         id.strokeWidth(6); // Consider moving side effects out of the reducer
+//         id.moveToTop(); // Consider moving side effects out of the reducer
+//         newCells.set(key, { x, y, id });
+//       }
+//       return newCells;
+
+//     case "CLEAR_CELLS":
+//       state.forEach((cell) => cell.id.strokeWidth(0.2)); // Consider moving side effects out of the reducer
+//       return new Map();
+
+//     default:
+//       return state;
+//   }
+// };
 
 // export const ClientProvider = ({ children }) => {
 //   const [client, setClient] = useState({}); // Initial client state

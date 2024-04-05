@@ -36,7 +36,7 @@ import PlantAccordian from "./PlantAccordian";
 import PlantSelectCards from "./PlantSelectCard";
 import PlantSelectTable from "./PlantSelectTable";
 import ClientContext, { useClient, useClientState } from "./context_mod_map";
-
+import { KonvaGrid } from "./ModuleTemplate";
 export function PlantCards(props) {
   const { plants, dispatch, state } = useClient();
   const [cardPlants, setCardPlants] = useState([]);
@@ -119,6 +119,7 @@ export function PlantCards(props) {
   } else {
     return (
       <>
+        <KonvaGrid />
         <Stack variant="contained">
           <Button onClick={toggleAvatar}>
             {showAvatar ? "Hide Avatar" : "Show Avatar"}

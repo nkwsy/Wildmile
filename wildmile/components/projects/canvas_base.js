@@ -111,7 +111,7 @@ export function AllPlants() {
     // Simulate fetching data
     const data = JSON.parse(modData);
     // Call setModules or similar function to update the state
-    setModules(data);
+    // setModules(data);
   }
 
   return fetchData();
@@ -119,30 +119,37 @@ export function AllPlants() {
   return null; // This component doesn't render anything
 }
 
+/// State Management
+const defaultInitialState = {
+  // selectedModule: { _id: false, module: "none" },
+  // newModules: [],
+  // removedModules: [],
+  // selectedCell: new Map(),
+  // cells: new Map(),
+  // mode: "edit",
+  // editMode: false,
+  // plantsVisible: true,
+  // modsVisible: true,
+  // plants: [],
+  // triggerUpdate: false,
+  // layers: [],
+  plantCells: new Map(),
+  selectedPlantCell: new Map(),
+  selectedPlants: new Map(),
+  individualPlants: new Map(),
+  selectedPlantId: null,
+};
+
+const initializeState = (initialProps) => {
+  // You can modify the initial state based on props if needed
+  return { ...defaultInitialState };
+};
 ///
 /// ModMapWrapper
 ///
 export const ModMapWrapper = ({ children }) => {
-  const initialState = {
-    // selectedModule: { _id: false, module: "none" },
-    // newModules: [],
-    // removedModules: [],
-    // selectedCell: new Map(),
-    // cells: new Map(),
-    // mode: "edit",
-    // editMode: false,
-    // plantsVisible: true,
-    // modsVisible: true,
-    // plants: [],
-    plantCells: new Map(),
-    selectedPlantCell: new Map(),
-    selectedPlants: new Map(),
-    individualPlants: new Map(),
-    selectedPlantId: null,
-    // triggerUpdate: false,
-    // layers: [],
-  };
-  const [state, dispatch] = useReducer(plantCellReducer, initialState);
+  const [state, dispatch] = useReducer(plantCellReducer, {}, initializeState);
+
   const [selectedModule, setSelectedModule] = useState({
     _id: false,
     module: "none",
@@ -278,34 +285,53 @@ export const ModMapWrapper = ({ children }) => {
     return selectedCell;
   };
 
-  // Toggle Plant Cell Selection
+  // Toggle Plant Cell Selection with plant species's
   useEffect(() => {
     updateSelectedPlantCellStrokeWidth();
     let cells = state.plantCells;
     cells.forEach((cell) => {
       if (state.selectedPlants.has(cell.plant_id)) {
-        cell.konva_object.strokeWidth(2);
-        cell.konva_object.opacity(1);
+        toggleCellOn(cell);
         // cell.rect.moveToTop();
       } else {
-        cell.konva_object.strokeWidth(0.1);
-        cell.konva_object.opacity(0.2);
+        toggleCellOff(cell);
       }
     });
   }, [state.selectedPlants]);
+
+  // Toggle plant cell selection by clicking on cell to select
+  useEffect(() => {
+    // updateSelectedPlantCellStrokeWidth();
+    let cells = state.plantCells;
+    cells.forEach((cell) => {
+      if (state.selectedPlantCell.has(cell.location_key)) {
+        toggleCellOn(cell);
+        // cell.rect.moveToTop();
+      } else {
+        toggleCellOff(cell);
+      }
+    });
+  }, [state.selectedPlantCell]);
+
+  // const updateSelectedPlantCellStrokeWidth = (key, plantCell) => {
+  //   if (state.selectedPlantCell.has(key)) {
+  //     toggleCellOff(plantCell);
+  //   } else {
+  //     toggleCellOn(plantCell);
+  //   }
+  // };
 
   // Handle the toggle for the plant cell selection
   const togglePlantCellSelection = (x, y, id, plantCell) => {
     console.log("togglePlantCellSelection", x, y, id);
     // update to use reducer
-    const key = `${x},${y}`;
-    if (state.selectedPlantCell.has(key)) {
-      toggleCellOff(plantCell);
-    } else {
-      toggleCellOn(plantCell);
-      // id.moveToTop();
-    }
-    dispatch({ type: "TOGGLE_PLANT_CELL_SELECTION", payload: plantCell });
+    console.log("current state", state);
+    const key = `${plantCell.module_location.x}-${plantCell.module_location.y}-${plantCell.x}-${plantCell.y}`;
+    // updateSelectedPlantCellStrokeWidth(key, plantCell);
+    dispatch({
+      type: "TOGGLE_PLANT_CELL_SELECTION",
+      payload: plantCell,
+    });
   };
 
   // updates the stroke width of selected cell
