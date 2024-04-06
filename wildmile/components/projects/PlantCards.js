@@ -37,6 +37,7 @@ import PlantSelectCards from "./PlantSelectCard";
 import PlantSelectTable from "./PlantSelectTable";
 import ClientContext, { useClient, useClientState } from "./context_mod_map";
 import { KonvaGrid } from "./ModuleTemplate";
+
 export function PlantCards(props) {
   const { plants, dispatch, state } = useClient();
   const [cardPlants, setCardPlants] = useState([]);
@@ -45,6 +46,10 @@ export function PlantCards(props) {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+
+  // Modal logic
+  const [opened, { open, close }] = useDisclosure(false);
+
   // const { isOpen, close, toggle } = useDisclosure();
   const selPlants = useClientState("selectedPlants");
   console.log("Selected Plants:", selPlants);
@@ -119,8 +124,11 @@ export function PlantCards(props) {
   } else {
     return (
       <>
-        <KonvaGrid />
         <Stack variant="contained">
+          <Modal opened={opened} onClose={close} title="Planting Template">
+            <KonvaGrid />
+          </Modal>
+          <Button onClick={open}>Create Template</Button>
           <Button onClick={toggleAvatar}>
             {showAvatar ? "Hide Avatar" : "Show Avatar"}
           </Button>
