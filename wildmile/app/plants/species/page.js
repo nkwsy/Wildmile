@@ -11,15 +11,44 @@ import {
   Textarea,
   Button
 } from '@mantine/core'
-import dbConnect from '../../lib/db/setup'
-import Plant from '../../models/Plant'
-import { useStyles } from '../../components/image_card_grid'
+import dbConnect from '../../../lib/db/setup'
+import Plant from '../../../models/Plant'
+import { useStyles } from '../../../components/image_card_grid'
 import { useDisclosure } from '@mantine/hooks'
 import { useForm } from '@mantine/form'
 import classes from '/styles/imagecard.module.css'
+import plants from 'pages/api/plants'
+import { get } from 'mongoose'
 
-export default function Species(props) {
-  const [opened, { open, close }] = useDisclosure(false)
+
+/* Retrieves plant(s) data from mongodb database */
+export async function getPlants() {
+  await dbConnect()
+
+  /* find all the data in our database */
+  const result = await Plant.find({}, ['-createdAt', '-updatedAt'])
+  const plants = result.map((doc) => {
+    const plant = doc.toObject()
+    plant._id = String(plant._id)
+    return plant
+  })
+  plants.sort(((a, b) => {
+    const nameA = (a.scientific_name || a.scientificName).toUpperCase() // ignore upper and lowercase
+    const nameB = (b.scientific_name || b.scientificName).toUpperCase() // ignore upper and lowercase
+    if (nameA < nameB) {
+      return -1
+    }
+    if (nameA > nameB) {
+      return 1
+    }
+
+    // names must be equal
+    return 0
+  }))
+  return {plants: plants } 
+}
+export function Species() {
+  // const [opened, { open, close }] = useDisclosure(false)
 
   const form = useForm({
     initialValues: {
@@ -33,8 +62,10 @@ export default function Species(props) {
     validate: {
     },
   })
+  
+  const fetched_plants = getPlants()
 
-  const mappedPlantProps = props.plants.map((plant) => {
+  const mappedPlantProps = fetched_plants.map((plant) => {
     return {
       ...plant,
       title: plant.commonName || plant.common_name || plant.scientificName,
@@ -134,29 +165,10 @@ export default function Species(props) {
   )
 }
 
-/* Retrieves plant(s) data from mongodb database */
-export async function getStaticProps() {
-  await dbConnect()
+export default function Page() {
 
-  /* find all the data in our database */
-  const result = await Plant.find({}, ['-createdAt', '-updatedAt'])
-  const plants = result.map((doc) => {
-    const plant = doc.toObject()
-    plant._id = String(plant._id)
-    return plant
-  })
-  plants.sort(((a, b) => {
-    const nameA = (a.scientific_name || a.scientificName).toUpperCase() // ignore upper and lowercase
-    const nameB = (b.scientific_name || b.scientificName).toUpperCase() // ignore upper and lowercase
-    if (nameA < nameB) {
-      return -1
-    }
-    if (nameA > nameB) {
-      return 1
-    }
+  return(
+    <Species />
 
-    // names must be equal
-    return 0
-  }))
-  return { props: { plants: plants } }
+  )
 }
