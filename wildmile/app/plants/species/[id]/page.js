@@ -18,7 +18,6 @@ import Plant from "/models/Plant";
 import { useForm } from "@mantine/form";
 import classes from "/styles/imagecard.module.css";
 import PlantDetails from "components/plants/PlantPage";
-// import plants from "pages/api/plants";
 
 export async function getPlant(id) {
   await dbConnect();

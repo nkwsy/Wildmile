@@ -115,8 +115,6 @@ export function AllPlants() {
   }
 
   return fetchData();
-
-  return null; // This component doesn't render anything
 }
 
 /// State Management
