@@ -1,4 +1,4 @@
-"use server";
+// "use server";
 import { getAllPlants } from "/lib/db/plants";
 
 export async function GET(req, res) {

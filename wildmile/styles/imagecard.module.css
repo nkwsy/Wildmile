@@ -1,5 +1,5 @@
 .title {
-  font-size: 1.4rem;
+  font-size: 3rem;
   font-weight: 900;
 }
 
@@ -14,13 +14,19 @@
   }
 }
 
+.subtitle {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: var(--mantine-color-grey[0]);
+}
+
 .description {
   max-width: 600px;
   margin: auto;
   text-decoration: none;
 }
 
-.description::after {
+/* .description::after {
   content: "";
   display: block;
   background-color: var(--mantine-primary);
@@ -29,13 +35,12 @@
   margin-top: var(--mantine-spacing-sm);
   margin-left: auto;
   margin-right: auto;
-}
+} */
 .mantine-card {
   border: 1rem solid var(--mantine-dark-5);
   background-color: var(--mantine-dark-6);
 }
 .card {
-    
   border: 0.3rem solid var(--mantine-dark-5);
   background-color: var(--mantine-dark-6);
 }
