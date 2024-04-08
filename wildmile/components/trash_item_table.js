@@ -1,3 +1,4 @@
+"use client";
 import { useState, useCallback, useRef } from "react";
 import {
   Button,
@@ -8,6 +9,7 @@ import {
   Table,
   ScrollArea,
   rem,
+  NumberInputHandlers,
 } from "@mantine/core";
 import cx from "clsx";
 import classes from "/styles/table.module.css";

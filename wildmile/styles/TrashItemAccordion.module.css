@@ -1,0 +1,45 @@
+.accordionContainer {
+  /* Style for the overall accordion container */
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.accordionItem {
+  /* Style for each accordion item */
+  /* border-bottom: 1px solid #e0e0e0;
+  &:last-child {
+    border-bottom: none;
+  } */
+}
+
+.accordionControl {
+  /* Style for the accordion control elements */
+  font-size: 1.2rem;
+  font-weight: 1200;
+  background-color: var(--mantine-color-gray-0);
+}
+
+.accordionPanel {
+  /* Style for the accordion panel content */
+  padding: 1rem;
+  background-color: #ffffff;
+}
+
+.group {
+  /* Style for the group container inside each accordion panel */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.text {
+  /* Style for the text elements inside each group */
+  font-size: 0.9rem;
+  color: #333333;
+}
+
+.numberInput {
+  /* Style for the number input fields */
+  max-width: 100px;
+}
