@@ -1,17 +1,17 @@
-import Plant from "/models/Plant";
+"use server";
+import Plant from "models/Plant";
 
-export async function getAllPlants() {
-  const result = await Plant.find({}, [
-    "_id",
-    "commonName",
-    "common_name",
-    "scientificName",
-    "scientific_name",
-    "thumbnail",
-    "notes",
-    "synonyms",
-  ]);
-  return result;
+export async function getAllPlants(req) {
+  try {
+    console.log("Getting all plants");
+    const result = await Plant.find().lean();
+    console.log("Result:", result);
+
+    return result;
+  } catch (error) {
+    console.error("Error getting plants:", error);
+    throw error;
+  }
 }
 
 export async function getPlantByID(id) {
