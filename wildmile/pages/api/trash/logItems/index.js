@@ -1,12 +1,12 @@
 import { createRouter } from "next-connect";
-import auth from "/middleware/auth";
+import auth from "middleware/auth";
 import {
   getAllLogs,
   createLog,
   getFilteredLogs,
   updateLogItems,
-} from "/lib/db/trash";
-import { NextConnectOptions } from "/config/nextconnect";
+} from "lib/db/trash";
+import { NextConnectOptions } from "config/nextconnect";
 
 const router = createRouter(NextConnectOptions);
 

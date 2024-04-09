@@ -15,7 +15,7 @@ const pointSchema = new Schema({
   },
 });
 
-const individualTrashItemSchema = new Schema(
+const IndividualTrashItemSchema = new Schema(
   {
     itemId: { type: Schema.Types.ObjectId, ref: "TrashItem" },
     logId: { type: Schema.Types.ObjectId, ref: "TrashLog" },
@@ -33,6 +33,6 @@ const individualTrashItemSchema = new Schema(
     toObject: { virtuals: true },
   }
 );
-individualTrashItemSchema.plugin(mongoose_delete, { overrideMethods: "all" });
+IndividualTrashItemSchema.plugin(mongoose_delete, { overrideMethods: "all" });
 export default mongoose.models.IndividualTrashItem ||
-  mongoose.model("IndividualTrashItem", individualTrashItemSchema);
+  mongoose.model("IndividualTrashItem", IndividualTrashItemSchema);
