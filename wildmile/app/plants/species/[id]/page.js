@@ -37,20 +37,9 @@ export default async function Page({ params }) {
 
   return (
     <>
-      {/* <Container maxwidth="95%" my="5rem">
-        <Title order={2} align="left" mt="sm">
-          {plant.commonName || plant.common_name || plant.scientificName}
-        </Title>
-        <Text
-          color="dimmed"
-          className={classes.description}
-          align="left"
-          mt="md"
-        >
-          {plant.scientificName || plant.scientific_name}
-        </Text> */}
-      <PlantDetails plant={plant} />
-      {/* </Container> */}
+      <Suspense>
+        <PlantDetails plant={plant} />
+      </Suspense>
     </>
   );
 }

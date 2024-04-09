@@ -10,7 +10,6 @@ router.use(auth).post(passport.authenticate("local"), (req, res) => {
   const profile = {
     name: "",
     website: "",
-    gender: "",
     location: "",
   };
   return res.json({

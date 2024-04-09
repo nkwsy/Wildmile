@@ -20,6 +20,7 @@ import Link from "next/link";
 import classes from "/styles/imagecard.module.css";
 import { useForm } from "@mantine/form";
 import dbConnect from "/lib/db/setup";
+import { useUser } from "lib/hooks";
 import { PlantHandler } from "app/actions/PlantActions";
 import Plant from "/models/Plant";
 // Assuming this function is defined correctly and works as intended

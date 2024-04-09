@@ -17,7 +17,7 @@
 .subtitle {
   font-size: 0.8rem;
   font-weight: 300;
-  color: var(--mantine-color-grey[0]);
+  color: var(--mantine-color-grey-0);
 }
 
 .description {

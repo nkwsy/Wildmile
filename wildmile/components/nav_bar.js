@@ -1,3 +1,4 @@
+"use client";
 import {
   Header,
   Image,
@@ -22,6 +23,7 @@ import { useUser } from "../lib/hooks";
 import Router from "next/router";
 import cx from "clsx";
 import classes from "/styles/nav.module.css";
+import { Children, useState } from "react";
 const nav_tabs = [
   {
     label: "Home",
@@ -62,7 +64,7 @@ const nav_tabs = [
   },
 ];
 
-export function HeaderNav() {
+export function HeaderNav({ children }) {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
@@ -123,138 +125,141 @@ export function HeaderNav() {
   }
 
   return (
-    <Box pb={10}>
-      <header className={classes.header}>
-        <Group justify="space-between" h="100%">
-          {user && user ? (
-            <Link href="/home">
-              <Image
-                src="/logo.png"
-                alt="Urban River Logo"
-                h="3.8rem"
-                w="auto"
-                mt="0.5rem"
-                mb="-1rem"
-              />
-            </Link>
-          ) : (
-            <Link href="/">
-              <Image
-                src="/logo.png"
-                alt="Urban River Logo"
-                h="3.8rem"
-                w="auto"
-                mt="0.5rem"
-                mb="-1rem"
-              />
-            </Link>
-          )}
-
-          <Group
-            h="100%"
-            mt="1rem"
-            gap={0}
-            visibleFrom="sm"
-            className={classes.hiddenMobile}
-          >
-            {user && user ? items : null}
-          </Group>
-
-          <Group className={classes.hiddenMobile}>
+    <>
+      <Box pb={10}>
+        <header className={classes.header}>
+          <Group justify="space-between" h="100%">
             {user && user ? (
-              <Menu
-                width={260}
-                position="bottom-end"
-                transitionProps={{ transition: "pop-top-right" }}
-                onClose={() => setUserMenuOpened(false)}
-                onOpen={() => setUserMenuOpened(true)}
-                withinPortal
-                mt="0.5rem"
-              >
-                <Menu.Target>
-                  <UnstyledButton
-                    className={cx(classes.user, {
-                      [classes.userActive]: userMenuOpened,
-                    })}
-                  >
-                    <Group spacing={7}>
-                      <Avatar
-                        src={photoSrc}
-                        alt={
-                          user.profile
-                            ? user.profile.name || "Username"
-                            : "Username"
-                        }
-                        radius="xl"
-                        size={40}
-                      />
-                      <Text fw={500} size="sm" lh={1} mr={3}>
-                        {user.profile
-                          ? user.profile.name || "Username"
-                          : "Username"}
-                      </Text>
-                      <IconChevronDown size={15} stroke={2.5} />
-                    </Group>
-                  </UnstyledButton>
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Link href="/profile">
-                    <Menu.Item
-                      icon={<IconSettings size="0.8rem" stroke={1.5} />}
-                    >
-                      Account settings
-                    </Menu.Item>
-                  </Link>
-                  <Menu.Item
-                    icon={<IconLogout size="0.9rem" stroke={1.5} />}
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
+              <Link href="/home">
+                <Image
+                  src="/logo.png"
+                  alt="Urban River Logo"
+                  h="3.8rem"
+                  w="auto"
+                  mt="0.5rem"
+                  mb="-1rem"
+                />
+              </Link>
             ) : (
-              <>
-                <Link href="/login">
-                  <Button variant="default">Log in</Button>
-                </Link>
-                <Link href="/signup">
-                  <Button>Sign up</Button>
-                </Link>
-              </>
+              <Link href="/">
+                <Image
+                  src="/logo.png"
+                  alt="Urban River Logo"
+                  h="3.8rem"
+                  w="auto"
+                  mt="0.5rem"
+                  mb="-1rem"
+                />
+              </Link>
             )}
+
+            <Group
+              h="100%"
+              mt="1rem"
+              gap={0}
+              visibleFrom="sm"
+              className={classes.hiddenMobile}
+            >
+              {user && user ? items : null}
+            </Group>
+
+            <Group className={classes.hiddenMobile}>
+              {user && user ? (
+                <Menu
+                  width={260}
+                  position="bottom-end"
+                  transitionProps={{ transition: "pop-top-right" }}
+                  onClose={() => setUserMenuOpened(false)}
+                  onOpen={() => setUserMenuOpened(true)}
+                  withinPortal
+                  mt="0.5rem"
+                >
+                  <Menu.Target>
+                    <UnstyledButton
+                      className={cx(classes.user, {
+                        [classes.userActive]: userMenuOpened,
+                      })}
+                    >
+                      <Group spacing={7}>
+                        <Avatar
+                          src={photoSrc}
+                          alt={
+                            user.profile
+                              ? user.profile.name || "Username"
+                              : "Username"
+                          }
+                          radius="xl"
+                          size={40}
+                        />
+                        <Text fw={500} size="sm" lh={1} mr={3}>
+                          {user.profile
+                            ? user.profile.name || "Username"
+                            : "Username"}
+                        </Text>
+                        <IconChevronDown size={15} stroke={2.5} />
+                      </Group>
+                    </UnstyledButton>
+                  </Menu.Target>
+                  <Menu.Dropdown>
+                    <Link href="/profile">
+                      <Menu.Item
+                        icon={<IconSettings size="0.8rem" stroke={1.5} />}
+                      >
+                        Account settings
+                      </Menu.Item>
+                    </Link>
+                    <Menu.Item
+                      icon={<IconLogout size="0.9rem" stroke={1.5} />}
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+              ) : (
+                <>
+                  <Link href="/login">
+                    <Button variant="default">Log in</Button>
+                  </Link>
+                  <Link href="/signup">
+                    <Button>Sign up</Button>
+                  </Link>
+                </>
+              )}
+            </Group>
+
+            <Burger
+              opened={drawerOpened}
+              onClick={toggleDrawer}
+              className={classes.hiddenDesktop}
+            />
           </Group>
+        </header>
 
-          <Burger
-            opened={drawerOpened}
-            onClick={toggleDrawer}
-            className={classes.hiddenDesktop}
-          />
-        </Group>
-      </header>
+        <Drawer
+          opened={drawerOpened}
+          onClose={closeDrawer}
+          size="100%"
+          padding="md"
+          title="Navigation"
+          className={classes.hiddenDesktop}
+          zIndex={1000000}
+        >
+          <ScrollArea h={`calc(100vh - ${rem(60)})`} mx="-md">
+            <Divider my="sm" color={"dark"} />
 
-      <Drawer
-        opened={drawerOpened}
-        onClose={closeDrawer}
-        size="100%"
-        padding="md"
-        title="Navigation"
-        className={classes.hiddenDesktop}
-        zIndex={1000000}
-      >
-        <ScrollArea h={`calc(100vh - ${rem(60)})`} mx="-md">
-          <Divider my="sm" color={"dark"} />
+            {user && user ? items : null}
 
-          {user && user ? items : null}
+            <Divider my="sm" color={"dark"} />
 
-          <Divider my="sm" color={"dark"} />
-
-          <Group position="center" grow pb="xl" px="md">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
-          </Group>
-        </ScrollArea>
-      </Drawer>
-    </Box>
+            <Group position="center" grow pb="xl" px="md">
+              <Button variant="default">Log in</Button>
+              <Button>Sign up</Button>
+            </Group>
+          </ScrollArea>
+        </Drawer>
+      </Box>
+      {children}
+    </>
   );
 }

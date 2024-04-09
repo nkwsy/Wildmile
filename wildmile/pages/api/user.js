@@ -1,7 +1,7 @@
 import { createRouter } from "next-connect";
-import userValidationSchema from "/validation/user";
-import auth from "/middleware/auth";
-import { createUser, findUserByEmail, updateUserByEmail } from "/lib/db/user";
+import userValidationSchema from "validation/user";
+import auth from "middleware/auth";
+import { createUser, findUserByEmail, updateUserByEmail } from "lib/db/user";
 import { NextConnectOptions } from "/config/nextconnect";
 
 const router = createRouter(NextConnectOptions);
@@ -55,13 +55,12 @@ router
     }
   })
   .put((req, res) => {
-    const { email, password, name, gender, location, picture } = req.body;
+    const { email, password, name, location, picture } = req.body;
     const user = updateUserByEmail(req, req.user.email, {
       email: email,
       password: password,
       profile: {
         name: name,
-        gender: gender,
         location: location,
         picture: picture,
       },

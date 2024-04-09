@@ -52,7 +52,7 @@
 }
 
 .synonymsList {
-  list-style: inside square;
+  list-style: square;
   font-size: 0.9rem;
   color: #606060; /* Dark gray */
 }
