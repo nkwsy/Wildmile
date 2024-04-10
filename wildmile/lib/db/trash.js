@@ -1,6 +1,6 @@
 import TrashLog from "../../models/Trash";
-import IndividualTrashItem from "../../models/IndividualTrashItem";
 import TrashItem from "../../models/TrashItem";
+import IndividualTrashItem from "../../models/IndividualTrashItem";
 
 export async function getAllLogs() {
   return await TrashLog.find({}, ["-_id", "-__v"]);
@@ -59,6 +59,8 @@ export async function createLog({
   wind,
   cloud,
   notes,
+  weight,
+
   items = {},
 }) {
   // Here you should insert the Log into the database
@@ -72,6 +74,7 @@ export async function createLog({
     wind: wind,
     cloud: cloud,
     notes: notes,
+    weight: weight,
   });
 
   return log;
@@ -89,6 +92,7 @@ export async function updateLogByID(req, id, update) {
     wind: update.wind,
     cloud: update.cloud,
     notes: update.notes,
+    weight: update.weight,
   });
 
   log.items = [];
@@ -96,30 +100,35 @@ export async function updateLogByID(req, id, update) {
   return log;
 }
 export async function updateLogItems(items, logId) {
-  if (!items) {
-    throw new Error(
-      "Request body is missing or does not contain an items property"
-    );
-  }
-
-  for (const [key, value] of Object.entries(items)) {
-    if (value.quantity > 0) {
-      const trash_item = await TrashItem.findOne({ _id: value._id });
-      const indItem = await IndividualTrashItem.findOneAndUpdate(
-        {
-          itemId: trash_item._id,
-          logId: logId,
-        },
-        {
-          quantity: value.quantity,
-        },
-        { upsert: true, new: true }
+  try {
+    if (!items) {
+      throw new Error(
+        "Request body is missing or does not contain an items property"
       );
-      // log.items.push(indItem)
     }
+
+    for (const [key, value] of Object.entries(items)) {
+      if (value.quantity > 0) {
+        const trash_item = await TrashItem.findOne({ _id: value._id });
+        const indItem = await IndividualTrashItem.findOneAndUpdate(
+          {
+            itemId: trash_item._id,
+            logId: logId,
+          },
+          {
+            quantity: value.quantity,
+          },
+          { upsert: true, new: true }
+        );
+        // log.items.push(indItem)
+      }
+    }
+    // await log.save()
+    return items;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
-  // await log.save()
-  return items;
 }
 // export async function updateLogItems(items, log) {
 //     if (!items) {

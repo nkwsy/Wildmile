@@ -259,7 +259,7 @@ export function HeaderNav({ children }) {
           </ScrollArea>
         </Drawer>
       </Box>
-      {children}
+      {/* {children} */}
     </>
   );
 }

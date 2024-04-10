@@ -111,7 +111,7 @@ export default function CreateLog(props) {
         <Title mb={30} align="center">
           Create a new trash log
         </Title>
-          <TrashForm form={form} />
+        <TrashForm form={form} />
         <Group justify="right" mt="xl">
           <Button onClick={createLog}>Submit</Button>
         </Group>
@@ -130,7 +130,7 @@ export async function getStaticProps() {
     "-__v",
     "-createdAt",
     "-updatedAt",
-    "-deleted",
+    // "-deleted",
   ]);
   const items = result.map((doc) => {
     return doc.toObject();
