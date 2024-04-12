@@ -1,4 +1,5 @@
 "use server";
+import Plant from "models/Plant";
 import { getAllPlants } from "lib/db/plants";
 
 export async function PlantHandler() {
@@ -46,6 +47,19 @@ export async function getPlant(id) {
 
   // plant._id = String(plant._id);
   return plant;
+}
+
+// Update Plant data
+export async function updatePlant(formData) {
+  console.log("PlantActions- updatePlant:", formData);
+  const rawFormData = {
+    name: formData.scientificName,
+    notes: formData.notes,
+  };
+  console.log("Raw Form Data:", rawFormData);
+
+  const result = await Plant.findByIdAndUpdate(formData._id, formData);
+  return JSON.stringify(result);
 }
 
 // Load Plant data from Trefle API

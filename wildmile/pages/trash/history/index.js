@@ -110,7 +110,7 @@ export default function TrashHistory(props) {
               justify="center"
               fullWidth
               component={Link}
-              href={`/trash/history/${row._id}`}
+              href={`/trash/edit/${row._id}`}
               leftSection={<IconPencil />}
             >
               Edit

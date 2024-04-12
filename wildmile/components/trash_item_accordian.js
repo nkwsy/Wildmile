@@ -1,5 +1,5 @@
 import { Group, Stack, NumberInput, Text, Accordion } from "@mantine/core";
-import classes from "/styles/TrashItemAccordion.module.css";
+import classes from "styles/TrashItemAccordion.module.css";
 // todo: may want to use mantine nested features https://mantine.dev/form/nested/
 
 function TrashItemAccordian(props) {

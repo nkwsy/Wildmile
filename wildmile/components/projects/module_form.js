@@ -41,6 +41,8 @@ import {
 import { DateTimePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
+import { useUser } from "lib/hooks";
+
 import { useContext, Suspense, useState, useEffect } from "react";
 import CanvasContext, { useClient } from "./context_mod_map";
 const ModuleForm = dynamic(() => import("components/projects/mf.js"));
@@ -79,6 +81,11 @@ export function sliderz() {
 // switch to turn on edit mode
 function EditModeSwitch() {
   const { editMode, setEditMode } = useContext(CanvasContext);
+  const [user, { loading }] = useUser();
+  if (loading) return <LoadingOverlay visible />;
+  if (!user) return <Text>Please log in to edit</Text>;
+  console.log("EditModeSwitch:", user.admin);
+  if (user.admin == false) return;
   return (
     <Switch
       checked={editMode}

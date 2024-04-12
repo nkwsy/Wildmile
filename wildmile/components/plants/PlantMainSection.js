@@ -1,6 +1,6 @@
 "use client";
 // import React from "react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   Card,
@@ -18,21 +18,32 @@ import {
 } from "@mantine/core";
 import classes from "/styles/PlantDetails.module.css"; // Adjust the path to your CSS module
 import PlantEditForm from "./PlantEditForm"; // Adjust the import path as needed
-// import { useUser } from "lib/hooks";
+import { useUser } from "lib/hooks";
 
-export default function PlantMainSection({ plant }) {
+export function PlantEditMode({ plant }) {
   const [editMode, setEditMode] = useState(false);
-  //   const [user, { mutate }] = useUser();
-  //   console.log("User Role:", user);
+  const [user, { loading }] = useUser();
+  // Effect to handle role-based access after user data is loaded
+  useEffect(() => {
+    if (loading || !user) {
+      return;
+    }
+    console.log("EditModeSwitch:", user.admin);
+    if (user.admin === false) {
+    }
+  }, [user, loading]); // Include loading in the dependency array
+
   const saveChanges = (updatedPlant) => {
-    // Here you would typically send the updated plant details to your backend
     console.log(updatedPlant);
     setEditMode(false);
   };
-  console.log("Plantmain:", plant);
+  if (loading) {
+    // Render a loading state or a placeholder to ensure consistency during hydration
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
-      {/* {user && user.admin && ( */}
       <Grid>
         <GridCol span={12}>
           {editMode ? (
@@ -43,12 +54,26 @@ export default function PlantMainSection({ plant }) {
             />
           ) : (
             <>
-              <Button onClick={() => setEditMode(true)}>Edit</Button>
+              {/* Ensure the button is only shown when user data is fully loaded and user is an admin */}
+              {user && user.admin && (
+                <Button onClick={() => setEditMode(true)}>Edit</Button>
+              )}
             </>
           )}
         </GridCol>
       </Grid>
-      {/* )} */}
+    </>
+  );
+}
+
+export default function PlantMainSection({ plant }) {
+  //   const [user, { mutate }] = useUser();
+  //   console.log("User Role:", user);
+
+  console.log("Plantmain:", plant);
+  return (
+    <>
+      <PlantEditMode plant={plant} />
 
       <Grid>
         <GridCol span={6}>

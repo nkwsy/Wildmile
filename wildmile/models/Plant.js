@@ -13,6 +13,11 @@ const PlantSchema = new mongoose.Schema(
     synonyms: Array,
     year: Number,
     links: Object,
+    color: {
+      main: { type: String, default: "" },
+      accent: { type: String, default: "" },
+      swatches: { type: Array, default: [] },
+    },
   },
   { timestamps: true }
 );
