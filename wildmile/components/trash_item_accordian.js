@@ -1,10 +1,29 @@
-import { Group, Stack, NumberInput, Text, Accordion } from "@mantine/core";
+"use client";
+import {
+  Group,
+  Stack,
+  NumberInput,
+  Text,
+  Accordion,
+  AccordianItem,
+  AccordionChevron,
+  AccordionPanel,
+} from "@mantine/core";
 import classes from "styles/TrashItemAccordion.module.css";
+import TrashInputCounter from "./trash/TrashInputCounter";
+import { getItemsFromLog } from "app/actions/TrashActions";
+// import { useParams } from "next/navigation";
+
 // todo: may want to use mantine nested features https://mantine.dev/form/nested/
 
-function TrashItemAccordian(props) {
+function TrashItemAccordian({ logId }) {
+  const props = getItemsFromLog(logId);
+  const items = props.items;
+  // const params = useParams();
+
   // set the item data to an array
-  const dataArray = Object.values(props.items);
+  // const dataArray = items;
+  const dataArray = Object.values(items);
 
   // Sort on category
   // const sortedItems = props.items.sort(((a, b) => {
@@ -52,31 +71,41 @@ function TrashItemAccordian(props) {
       itemRows.push(
         <Group key={item._id} justify="space-between">
           <Text>{item.name}</Text>
-          <NumberInput
-            {...props.form.getInputProps(`items.${item._id}.quantity`)}
-            allowNegative={false}
-          />
+          {/* <TrashInputCounter props={...props.form.getInputProps(`items.${item._id}.quantity`)} /> */}
+          {/* <TrashInputCounter
+            initialTrash={item.quantity}
+            itemId={item._id}
+            logId={logId}
+          /> */}
+          {/* use in App Router
+          <TrashInputCounter
+            initialTrash={item.quantity}
+            itemId={item._id}
+            logId={params.Id}
+          /> */}
           {/* <input type="number" {...props.form.getInputProps(`items.${item._id}.quantity`)} /> */}
         </Group>
       );
     });
 
     accordionItems.push(
-      <Accordion.Item key={material} value={material}>
-        <Accordion.Control className={classes.accordionControl}>
+      <AccordionItem key={material} value={material}>
+        <AccordionControl className={classes.accordionControl}>
           {material}
-        </Accordion.Control>
-        <Accordion.Panel>
+        </AccordionControl>
+        <AccordionPanel>
           <Stack>{itemRows}</Stack>
-        </Accordion.Panel>
-      </Accordion.Item>
+        </AccordionPanel>
+      </AccordionItem>
     );
   }
 
   return (
-    <Accordion className={classes.accordionContainer}>
-      {accordionItems}
-    </Accordion>
+    <>
+      <Accordion className={classes.accordionContainer}>
+        {accordionItems}
+      </Accordion>
+    </>
   );
 }
 
