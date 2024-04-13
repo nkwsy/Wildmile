@@ -1,6 +1,5 @@
 "use client";
 import {
-  Header,
   Image,
   Group,
   Button,
@@ -23,7 +22,7 @@ import { useUser } from "../lib/hooks";
 // import Router from "next/navigation";
 import cx from "clsx";
 import classes from "/styles/nav.module.css";
-import { Children, useState } from "react";
+import { useState } from "react";
 const nav_tabs = [
   {
     label: "Home",

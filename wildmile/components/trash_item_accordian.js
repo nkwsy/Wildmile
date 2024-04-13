@@ -10,7 +10,7 @@ import {
   AccordionTitle,
   AccordionChevron,
   AccordionPanel,
-  Divider,
+  Tooltip,
 } from "@mantine/core";
 import classes from "styles/TrashItemAccordion.module.css";
 import TrashInputCounter from "./trash/TrashInputCounter";
@@ -71,21 +71,25 @@ function TrashItemAccordian({ props }) {
     const itemRows = [];
     items.forEach((item) => {
       itemRows.push(
-        <>
-          <Group key={item._id}>
-            <Box className={classes.item} key={item._id}>
-              <Group>
-                <Text className={classes.title}>{item.name}</Text>
-                <Text className={classes.catagory}>{item.catagory} lbs</Text>
-                <TrashInputCounter
-                  initialTrash={item.quantity}
-                  itemId={item._id}
-                  logId={props.logId}
-                />
-              </Group>
-            </Box>
-          </Group>
-        </>
+        <div key={item._id}>
+          {/* <Group> */}
+          <Box className={classes.item} w="100%">
+            <Group>
+              <Tooltip label={item.name} openDelay={500}>
+                <Text className={`${classes.title} ${classes.truncateText}`}>
+                  {item.name}
+                </Text>
+              </Tooltip>
+              <Text className={classes.catagory}>{item.catagory}</Text>
+              <TrashInputCounter
+                initialTrash={item.quantity}
+                itemId={item._id}
+                logId={props.logId}
+              />
+            </Group>
+          </Box>
+          {/* </Group> */}
+        </div>
       );
     });
 
