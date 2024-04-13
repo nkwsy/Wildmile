@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal, Button } from "@mantine/core";
 import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
-import ReactDOM from "react-dom";
 
 console.log("mapboxgl.accessToken", mapboxgl.accessToken);
 console.log("process.env.MAPBOX_KEY", process.env.MAPBOX_KEY);
