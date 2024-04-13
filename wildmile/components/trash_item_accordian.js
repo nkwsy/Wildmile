@@ -72,19 +72,19 @@ function TrashItemAccordian({ props }) {
     items.forEach((item) => {
       itemRows.push(
         <>
-          {/* <Group key={item._id}> */}
-          <Box className={classes.item} key={item._id}>
-            <Group>
-              <Text className={classes.title}>{item.name}</Text>
-              <Text className={classes.catagory}>{item.catagory} lbs</Text>
-              <TrashInputCounter
-                initialTrash={item.quantity}
-                itemId={item._id}
-                logId={props.logId}
-              />
-            </Group>
-          </Box>
-          {/* </Group> */}
+          <Group key={item._id}>
+            <Box className={classes.item} key={item._id}>
+              <Group>
+                <Text className={classes.title}>{item.name}</Text>
+                <Text className={classes.catagory}>{item.catagory} lbs</Text>
+                <TrashInputCounter
+                  initialTrash={item.quantity}
+                  itemId={item._id}
+                  logId={props.logId}
+                />
+              </Group>
+            </Box>
+          </Group>
         </>
       );
     });

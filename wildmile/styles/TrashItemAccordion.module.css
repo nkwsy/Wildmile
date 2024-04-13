@@ -27,7 +27,7 @@
 .item {
   border: 1px solid var(--mantine-color-gray-4);
   border-radius: var(--mantine-radius-sm);
-  padding: 1rem;
+  padding: 0.5rem;
 }
 .material {
   /* Style for the item name inside each group */
