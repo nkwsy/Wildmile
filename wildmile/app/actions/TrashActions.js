@@ -4,13 +4,14 @@ import IndividualTrashItem from "models/IndividualTrashItem";
 
 export async function updateTrashCount(itemId, logId, quantity) {
   const item = await IndividualTrashItem.findOneAndUpdate(
-    { _id: itemId, logId: logId }, // find a document with these properties
+    { itemId: itemId, logId: logId }, // find a document with these properties
     { quantity: quantity }, // update the count property
     {
       new: true, // return the updated document
       upsert: true, // create a new document if no match is found
     }
   );
+  console.log("Updated item: ", item);
   return item.count;
 }
 
@@ -29,7 +30,7 @@ export async function getItemsFromLog(logId) {
       path: "individualTrashItem",
       match: { logId: id },
       model: "IndividualTrashItem",
-      select: "-__v -createdAt -updatedAt -deleted -creator",
+      select: "quantity",
     })
     .lean();
 
@@ -40,15 +41,11 @@ export async function getItemsFromLog(logId) {
     // Initialize quantity for each item
     item.quantity = 0;
 
+    console.log("IndividualTrashItem found for item: ", item);
     // If an IndividualTrashItem was found, accumulate its quantity
     if (item.individualTrashItem) {
       // Ensure correct data types and aggregate quantity
-      item.individualTrashItem.forEach((trashItem) => {
-        trashItem._id = trashItem._id.toString();
-        trashItem.itemId = trashItem.itemId.toString();
-        trashItem.logId = trashItem.logId.toString();
-        item.quantity += trashItem.quantity; // Accumulate quantities
-      });
+      item.quantity += item.individualTrashItem.quantity; // Accumulate quantities
     }
 
     // Log for debugging

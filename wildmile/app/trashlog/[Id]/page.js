@@ -18,7 +18,7 @@ import TrashItemAccordian from "components/trash_item_accordian";
 import TrashItem from "models/TrashItem";
 // import dbConnect from "/lib/db/setup";
 import { Suspense } from "react";
-// import { getItemsFromLog } from "/actions/TrashActions";
+import { getItemsFromLog } from "app/actions/TrashActions";
 // import { use } from "passport";
 
 // export async function getProps(logId) {
@@ -78,7 +78,7 @@ import { Suspense } from "react";
 // }
 
 export default async function page({ params }) {
-  //   const props = await getItemsFromLog(params.Id);
+  const props = await getItemsFromLog(params.Id);
   //   console.log(props);
   return (
     <>
@@ -88,7 +88,7 @@ export default async function page({ params }) {
             Create a new trash log
           </Title>
           {/* <Suspense fallback={<LoadingOverlay visible />}> */}
-          <TrashItemAccordian logId={params.Id} />
+          <TrashItemAccordian props={props} />
           {/* </Suspense> */}
 
           {/* <TrashItemAccordian items={props.items} form={form}/> */}

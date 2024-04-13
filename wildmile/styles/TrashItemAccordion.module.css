@@ -4,18 +4,10 @@
   margin-bottom: 1rem;
 }
 
-.accordionItem {
-  /* Style for each accordion item */
-  /* border-bottom: 1px solid #e0e0e0;
-  &:last-child {
-    border-bottom: none;
-  } */
-}
-
 .accordionControl {
   /* Style for the accordion control elements */
   font-size: 1.2rem;
-  font-weight: 1200;
+  font-weight: 900;
   background-color: var(--mantine-color-gray-0);
 }
 
@@ -31,6 +23,30 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.5rem;
+}
+.item {
+  border: 1px solid var(--mantine-color-gray-4);
+  border-radius: var(--mantine-radius-sm);
+  padding: 1rem;
+}
+.material {
+  /* Style for the item name inside each group */
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #333333;
+}
+.title {
+  /* Style for the item name inside each group */
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333333;
+}
+
+.catagory {
+  /* Style for the item name inside each group */
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--mantine-color-gray-6);
 }
 
 .text {

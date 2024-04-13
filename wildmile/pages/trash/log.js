@@ -87,7 +87,7 @@ export default function CreateLog(props) {
     const id = data._id;
 
     // Navigate to the trash/edit/[id].js page
-    Router.push(`/trash/edit/${id}`);
+    Router.push(`/trashlog//${id}`);
   }
 
   return (
