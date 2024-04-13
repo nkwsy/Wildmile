@@ -87,26 +87,11 @@ export default function CreateLog(props) {
     const id = data._id;
 
     // Navigate to the trash/edit/[id].js page
-    Router.push(`/trash/edit/${id}`);
+    Router.push(`/trashlog//${id}`);
   }
 
-  const nextStep = () => {
-    scrollToTop();
-    setActive((current) => {
-      if (form.validate().hasErrors) {
-        return current;
-      }
-      return current < 2 ? current + 1 : current;
-    });
-  };
-
-  const prevStep = () => {
-    scrollToTop();
-    setActive((current) => (current > 0 ? current - 1 : current));
-  };
-
   return (
-    <Container visibleFrom="md" maw="95%" my="6rem">
+    <Container my="6rem">
       <Paper withBorder shadow="md" py={"md"} px={"xl"} mt={30} radius="md">
         <Title mb={30} align="center">
           Create a new trash log

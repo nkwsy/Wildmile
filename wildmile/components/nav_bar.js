@@ -20,7 +20,7 @@ import { IconLogout, IconSettings, IconChevronDown } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useUser } from "../lib/hooks";
-import Router from "next/router";
+// import Router from "next/navigation";
 import cx from "clsx";
 import classes from "/styles/nav.module.css";
 import { Children, useState } from "react";
@@ -121,7 +121,6 @@ export function HeaderNav({ children }) {
   async function handleLogout() {
     await fetch("/api/logout");
     mutate({ user: null });
-    Router.push("/");
   }
 
   return (

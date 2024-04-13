@@ -17,7 +17,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { DateTimePicker } from "@mantine/dates";
 import Router from "next/router";
 // import TrashItemTable from '../../components/trash_item_table'
-import TrashItemAccordian from "/components/trash_item_accordian";
+// import TrashItemAccordian from "/components/trash_item_accordian";
 // import IndividualTrashItem from "models/IndividualTrashItem";
 import TrashItem from "/models/TrashItem";
 import dbConnect from "/lib/db/setup";

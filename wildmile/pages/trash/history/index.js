@@ -106,26 +106,28 @@ export default function TrashHistory(props) {
         <Table.Td>{truncateString(row.notes, 60)}</Table.Td>
         <Table.Td>
           <Group justify="center" position="apart" spacing={3}>
-            <Button
-              justify="center"
-              fullWidth
-              component={Link}
-              href={`/trash/edit/${row._id}`}
-              leftSection={<IconPencil />}
-            >
-              Edit
-            </Button>
-            <Button
-              onClick={() => {
-                // Handle Delete Logic Here
-              }}
-              justify="center"
-              fullWidth
-              leftSection={<IconTrash />}
-              color="red" // Optional, if you want to give a different color to delete button
-            >
-              Delete
-            </Button>
+            <Button.Group>
+              <Button
+                justify="center"
+                fullWidth
+                component={Link}
+                href={`/trashlog//${row._id}`}
+                leftSection={<IconPencil />}
+              >
+                Edit
+              </Button>
+              <Button
+                onClick={() => {
+                  // Handle Delete Logic Here
+                }}
+                justify="center"
+                fullWidth
+                leftSection={<IconTrash />}
+                color="red" // Optional, if you want to give a different color to delete button
+              >
+                Delete
+              </Button>
+            </Button.Group>
           </Group>
         </Table.Td>
       </Table.Tr>
