@@ -1,64 +1,52 @@
 "use client";
-// import { updateTrashCount } from "app/actions/TrashActions";
-// import { useState } from "react";
-// import { NumberInput } from "@mantine/core";
-
-// export default function TrashInputCounter({ initialTrash, itemId, logId }) {
-//   const [count, setCount] = useState(initialTrash);
-
-//   return (
-//     <>
-//       <NumberInput
-//         allowNegative={false}
-//         value={count}
-//         onChange={async (e) => {
-//           const updatedCount = await updateTrashCount(
-//             itemId,
-//             logId,
-//             e.target.value
-//           );
-//           setCount(updatedCount);
-//         }}
-//       />
-//     </>
-//   );
-// }
-
-// use in app router
-// ("use client");
 import { updateTrashCount } from "app/actions/TrashActions";
 import { useState, useRef } from "react";
-import { NumberInput, NumberInputHandlers, Button } from "@mantine/core";
-
+import {
+  NumberInput,
+  NumberInputHandlers,
+  Button,
+  ActionIcon,
+} from "@mantine/core";
+import { IconPlus, IconMinus } from "@tabler/icons-react";
+import classes from "styles/TrashItemAccordion.module.css";
 export default function TrashInputCounter({ initialTrash, itemId, logId }) {
-  const [count, setCount] = useState(initialTrash);
   const handlersRef = useRef(null);
-
+  console.log("initialTrash", initialTrash);
+  //   const [count, setCount] = useState(initialTrash);
+  //   console.log("count", count);
   return (
     <>
       <NumberInput
+        className={classes.numberInput}
         maxLength={3}
         handlersRef={handlersRef}
         allowNegative={false}
-        value={count}
-        onChange={async (e) => {
-          const updatedCount = await updateTrashCount(itemId, logId, e);
-          setCount(updatedCount);
+        hideControls
+        defaultValue={initialTrash}
+        onValueChange={async (e) => {
+          const updatedCount = await updateTrashCount(
+            itemId,
+            logId,
+            e.floatValue
+          );
+          //   setCount(await updatedCount);
         }}
       />
-      <Button
+      <ActionIcon
+        onClick={async () => {
+          handlersRef.current?.increment();
+        }}
+        variant="default"
+      >
+        <IconPlus />
+      </ActionIcon>
+
+      <ActionIcon
         onClick={() => handlersRef.current?.decrement()}
         variant="default"
       >
-        +
-      </Button>
-
-      <Button
-        onClick={() => handlersRef.current?.increment()}
-        variant="default"
-      >
-        -
-      </Button>
+        <IconMinus />
+      </ActionIcon>
     </>
   );
 }

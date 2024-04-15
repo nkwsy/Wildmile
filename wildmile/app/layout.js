@@ -32,7 +32,7 @@ const theme = createTheme({
   },
 });
 
-import { WebVitals } from "./_components/web-vitals";
+// import { WebVitals } from "./_components/web-vitals";
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
         <ColorSchemeScript />
       </head>
       <body>
-        <WebVitals />
+        {/* <WebVitals /> */}
 
         {/* <Hydration /> */}
 

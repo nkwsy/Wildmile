@@ -1,8 +1,6 @@
 import { SimpleGrid, Title, Text, Container, Card, rem } from "@mantine/core";
 import { IconListDetails, IconPlus } from "@tabler/icons-react";
 import Link from "next/link";
-import { useUser } from "/lib/hooks";
-import { useRouter, usePathname } from "next/navigation";
 import dbConnect from "/lib/db/setup";
 import Project from "/models/Project";
 import Section from "/models/Section";

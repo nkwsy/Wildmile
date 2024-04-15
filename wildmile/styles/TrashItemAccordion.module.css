@@ -29,6 +29,22 @@
   border-radius: var(--mantine-radius-sm);
   padding: 0.5rem;
 }
+.icon {
+  /* Style for the icon elements inside each group */
+  margin-right: 0.5rem;
+  color: var(--mantine-color-gray-6);
+}
+.numberInput {
+  /* Style for the number input fields */
+  max-width: 3rem;
+}
+.truncateText {
+  width: 200px; /* Adjust width as needed */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .material {
   /* Style for the item name inside each group */
   font-size: 1.2rem;
