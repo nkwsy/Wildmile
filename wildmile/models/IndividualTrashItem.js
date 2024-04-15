@@ -19,10 +19,7 @@ const IndividualTrashItemSchema = new Schema(
   {
     itemId: { type: Schema.Types.ObjectId, ref: "TrashItem" },
     logId: { type: Schema.Types.ObjectId, ref: "TrashLog" },
-    quantity: {
-      type: Number,
-      // min: 0,
-    },
+    quantity: Number,
     notes: String,
     location: pointSchema,
     tags: Array,

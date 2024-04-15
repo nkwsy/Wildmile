@@ -30,7 +30,7 @@ export async function getItemsFromLog(logId) {
       path: "individualTrashItem",
       match: { logId: id },
       model: "IndividualTrashItem",
-      select: "quantity",
+      select: "-__v -createdAt -updatedAt -deleted -creator",
     })
     .lean();
 
@@ -40,7 +40,6 @@ export async function getItemsFromLog(logId) {
 
     // Initialize quantity for each item
     item.quantity = 0;
-
     console.log("IndividualTrashItem found for item: ", item);
     // If an IndividualTrashItem was found, accumulate its quantity
     if (item.individualTrashItem) {

@@ -55,7 +55,7 @@ export async function createModule(req) {
   }
   const { name, description, dateInstalled, notes, size, projectId } = req.body;
   try {
-    const module = await Module.create({
+    const newModule = await Module.create({
       name,
       description,
       dateInstalled,
@@ -64,7 +64,7 @@ export async function createModule(req) {
       projectId,
     });
     console.log("createModule Module:", module);
-    return module;
+    return newModule;
   } catch (error) {
     console.error("Error creating module:", error);
     throw error;

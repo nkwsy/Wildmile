@@ -94,14 +94,16 @@ function TrashItemAccordian({ props }) {
     });
 
     accordionItems.push(
-      <AccordionItem key={material} value={material}>
-        <AccordionControl className={classes.accordionControl}>
-          <Text className={classes.material}> {material}</Text>
-        </AccordionControl>
-        <AccordionPanel>
-          <Stack>{itemRows}</Stack>
-        </AccordionPanel>
-      </AccordionItem>
+      <div key={material}>
+        <AccordionItem key={material} value={material}>
+          <AccordionControl className={classes.accordionControl}>
+            <Text className={classes.material}> {material}</Text>
+          </AccordionControl>
+          <AccordionPanel>
+            <Stack>{itemRows}</Stack>
+          </AccordionPanel>
+        </AccordionItem>
+      </div>
     );
   }
 
