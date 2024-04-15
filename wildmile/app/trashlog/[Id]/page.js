@@ -82,7 +82,7 @@ export default async function page({ params }) {
   //   console.log(props);
   return (
     <>
-      <Container maw="95%" my="6rem">
+      <Container>
         <Paper withBorder shadow="md" py={"md"} px={"xl"} mt={30} radius="md">
           <Title mb={30} align="center">
             Create a new trash log

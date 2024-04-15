@@ -21,7 +21,7 @@ import Link from "next/link";
 import { useUser } from "../lib/hooks";
 // import Router from "next/navigation";
 import cx from "clsx";
-import classes from "/styles/nav.module.css";
+import classes from "styles/nav.module.css";
 import { useState } from "react";
 const nav_tabs = [
   {
@@ -257,7 +257,7 @@ export function HeaderNav({ children }) {
           </ScrollArea>
         </Drawer>
       </Box>
-      {/* {children} */}
+      {children}
     </>
   );
 }

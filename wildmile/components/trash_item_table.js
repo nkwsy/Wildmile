@@ -111,7 +111,7 @@ function TrashItemTable(props) {
               />
             </td>
             <td>{item.material}</td>
-            <td size="xxs" maw="100">
+            <td size="xxs" maw="100px">
               {item.description}
             </td>
             <td>{item.catagory}</td>
