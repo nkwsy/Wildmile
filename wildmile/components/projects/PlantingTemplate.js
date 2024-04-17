@@ -40,7 +40,6 @@ export const PlantingTemplate = () => {
 
   useEffect(() => {
     const newColors = new Set(); // Create a new set to hold unique colors with IDs
-
     // Traverse through the selectedTemplate data to find unique colors with their IDs
     Object.values(selectedTemplate?.data || {}).forEach((cell) => {
       // Check each cell for a color and ensure it isn't already added
@@ -52,12 +51,15 @@ export const PlantingTemplate = () => {
           (c) => c.color === cell.color
         );
         if (colorEntry) {
-          newColors.add({ color: cell.color, id: colorEntry.id }); // Store the color and the ID
+          newColors.add({ color: cell.color, id: colorEntry.id, plant: null }); // Store the color and the ID
         }
       }
     });
-
     setUniqueColors(Array.from(newColors)); // Convert the set to an array and update the state
+    dispatch({
+      type: "SET_PLANT_TEMPLATE_OPTIONS",
+      payload: Array.from(newColors),
+    });
   }, [selectedTemplate]); // This effect runs whenever selectedTemplate changes
 
   //   useEffect(() => {
@@ -70,6 +72,7 @@ export const PlantingTemplate = () => {
   //     setUniqueColors([...newColors]);
   //   }, [selectedTemplate]);
 
+  // initial fetching of all the templates
   useEffect(() => {
     async function fetchTemplates() {
       const res = await getPlantingTemplate();
@@ -85,6 +88,8 @@ export const PlantingTemplate = () => {
     }
     fetchTemplates();
   }, []);
+
+  // update cells if template is selected
   useEffect(() => {
     if (selectedTemplate) {
       console.log("Selected Template:", selectedTemplate); // Debugging log
@@ -99,13 +104,15 @@ export const PlantingTemplate = () => {
         }
       );
       setSelectedCells(newCells);
-      dispatch({ type: "SET_SELECTED_TEMPLATE", payload: newCells });
+      dispatch({ type: "SET_PLANTING_TEMPLATE", payload: newCells });
     }
   }, [selectedTemplate]);
 
   useEffect(() => {
     dispatch({ type: "ADD_PLANT_TO_TEMPLATE", payload: selectedColor });
   }, [selectedColor]);
+
+  // function to change the template via select
   const handleTemplateChange = (templateId) => {
     const template = templates.find((t) => t.value === templateId);
     setSelectedTemplate(template);

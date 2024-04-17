@@ -56,7 +56,10 @@ const ModuleToolbar = dynamic(() => import("components/projects/module_form"), {
 
 // import { addModule } from "components/projects/mod_map";
 
+import { cookies } from "next/headers";
 export default async function Page(context) {
+  const cookieStore = cookies();
+  console.log("Cookies:", cookieStore.getAll());
   const raw_modules = await getModules(context);
   // const modules = JSON.parse(raw_modules.modules);
   const section = JSON.parse(raw_modules.section);
@@ -72,18 +75,11 @@ export default async function Page(context) {
       <Portal>
         <ModMapWrapper>
           <Box sx={{ position: "relative", width: "100%", height: "500px" }}>
-            {/* <Box
-            // component="canvas"
-            width="100%"
-            height="500"
-            sx={{ display: "block", width: "100%", height: "100%" }}
-          > */}
             <CanvasBase width={section.size.width} height={section.size.length}>
               <CreateGridLayer />
               {/* <PlantMap /> */}
               {/* <CreateModuleLayer modules={modules} /> */}
             </CanvasBase>
-            {/* </Box> */}
             <Affix position={{ top: 100, right: 20 }}>
               <Group
                 position="apart"

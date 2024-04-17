@@ -10,10 +10,6 @@ import { useFormStatus } from "react-dom";
 
 import { removeModules } from "/app/actions";
 import {
-  TextInput,
-  NumberInput,
-  VisuallyHidden,
-  Checkbox,
   Button,
   Group,
   Box,

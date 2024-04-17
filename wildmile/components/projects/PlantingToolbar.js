@@ -17,6 +17,7 @@ import {
 import { useClient, useClientState } from "./context_mod_map";
 import { set } from "mongoose";
 import { PlantingTemplate } from "./PlantingTemplate";
+import PlantTemplateChip from "./PlantTemplateChip";
 
 export default function PlantingToolbar() {
   const selectedPlants = useClientState("selectedPlants");
@@ -82,6 +83,7 @@ export default function PlantingToolbar() {
                   {item.subtitle}
                 </Text>
               </Group>
+              <PlantTemplateChip plantId={item.id} />
             </Box>
           ))}
         </CardSection>
