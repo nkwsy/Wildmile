@@ -96,6 +96,40 @@ const mapPlantCells = (state) => {
 
 export const plantCellReducer = (state, action) => {
   switch (action.type) {
+    //2: {"2,1" => Object}  key:'2,1' value: {id: 1, color: 'blue', x: 2, y: 1}
+    case "SET_PLANTING_TEMPLATE":
+      const planting_template = action.payload;
+      return { ...state, plantingTemplate: planting_template };
+
+    // TODO finish
+    case "SET_PLANT_TEMPLATE_OPTIONS":
+      const planting_template_options = action.payload;
+      return { ...state, plantingTemplateOptions: planting_template_options };
+
+    case "ADD_PLANT_TO_TEMPLATE":
+      const planting_template_color = action.payload;
+      const current_planting_for_template = state.selectedPlantId;
+      const set_planting_to_template = state.plantingTemplateOptions;
+      const current_planting_template = state.plantingTemplate;
+      if (
+        !set_planting_to_template ||
+        !current_planting_template ||
+        !planting_template_color
+      ) {
+        return state;
+      }
+      const updatedPlantingTemplateOptions = set_planting_to_template.map(
+        (option) => {
+          if (option.id === planting_template_color.id) {
+            return { ...option, plant: current_planting_for_template };
+          }
+          return option;
+        }
+      );
+      return {
+        ...state,
+        plantingTemplateOptions: updatedPlantingTemplateOptions,
+      };
     case "setPlantCells":
       const groups = action.payload;
       const newCells = new Map();

@@ -136,6 +136,8 @@ const defaultInitialState = {
   selectedPlants: new Map(),
   individualPlants: new Map(),
   selectedPlantId: null,
+  plantingTemplateOptions: null,
+  plantingTemplate: null,
 };
 
 const initializeState = (initialProps) => {

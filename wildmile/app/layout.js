@@ -1,5 +1,5 @@
 // import { Html, Main, NextScript } from "next/document";
-
+import "@mantine/core/styles/global.css";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 // import Hydration from "/lib/hydration"; // (c)
@@ -13,7 +13,7 @@ import {
   DirectionProvider,
 } from "@mantine/core";
 
-// import { HeaderNav } from "/components/nav";
+import { HeaderNav } from "/components/nav_bar";
 // import Footer from "../components/footer";
 
 export const metadata = {
@@ -44,7 +44,10 @@ export default function RootLayout({ children }) {
 
         {/* <Hydration /> */}
 
-        <MantineProvider>{children}</MantineProvider>
+        <MantineProvider>
+          {/* <HeaderNav /> */}
+          {children}
+        </MantineProvider>
       </body>
     </html>
   );

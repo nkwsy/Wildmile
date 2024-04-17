@@ -11,7 +11,6 @@ import { IconPlus, IconMinus } from "@tabler/icons-react";
 import classes from "styles/TrashItemAccordion.module.css";
 export default function TrashInputCounter({ initialTrash, itemId, logId }) {
   const handlersRef = useRef(null);
-  console.log("initialTrash", initialTrash);
   //   const [count, setCount] = useState(initialTrash);
   //   console.log("count", count);
   return (

@@ -43,7 +43,7 @@ export async function createUser({
 export async function findUserByEmail(email) {
   // Here you find the user based on id/email in the database
   return await User.findOne({ email: email.toLowerCase() }, [
-    "-_id",
+    // "-_id",
     "-__v",
     "-createdAt",
     "-updatedAt",

@@ -1,7 +1,6 @@
 import {
   TextInput,
   NumberInput,
-  VisuallyHidden,
   Checkbox,
   Button,
   Group,

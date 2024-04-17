@@ -18,7 +18,6 @@ export async function updateTrashCount(itemId, logId, quantity) {
 export async function getItemsFromLog(logId) {
   //   await dbConnect();
   const id = logId; // Get the id from the request parameters
-  console.log("id" + id);
 
   const result = await TrashItem.find({}, [
     "-creator",
@@ -40,16 +39,11 @@ export async function getItemsFromLog(logId) {
 
     // Initialize quantity for each item
     item.quantity = 0;
-    console.log("IndividualTrashItem found for item: ", item);
     // If an IndividualTrashItem was found, accumulate its quantity
     if (item.individualTrashItem) {
       // Ensure correct data types and aggregate quantity
       item.quantity += item.individualTrashItem.quantity; // Accumulate quantities
     }
-
-    // Log for debugging
-    console.log("Processed item: ", item);
-
     // Remove the individualTrashItem property to clean up the final output
     delete item.individualTrashItem;
 
@@ -58,6 +52,5 @@ export async function getItemsFromLog(logId) {
     return acc;
   }, {});
 
-  console.log("Final aggregated items:", items);
   return { items: items, logId: id };
 }
