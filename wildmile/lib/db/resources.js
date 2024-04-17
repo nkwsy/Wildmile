@@ -1,5 +1,5 @@
 "use server";
-import Resource from "models/resources";
+import Resource from "models/Resources";
 
 export async function createPlantingTemplate(req) {
   const { description, name, planting_template } = req;

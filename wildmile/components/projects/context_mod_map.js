@@ -96,6 +96,20 @@ const mapPlantCells = (state) => {
 
 export const plantCellReducer = (state, action) => {
   switch (action.type) {
+    //2: {"2,1" => Object}  key:'2,1' value: {id: 1, color: 'blue', x: 2, y: 1}
+    case "SET_PLANTING_TEMPLATE":
+      const planting_template = action.payload;
+      return { ...state, planting_template };
+    case "SET_PLANTING_TEMPLATE_COLOR":
+      const planting_template_color = action.payload;
+      return { ...state, planting_template_color };
+    // TODO finish
+    case "ADD_PLANT_TO_TEMPLATE":
+      const current_template_color = action.payload;
+      const new_template = state.planting_template;
+      const current_selected_plant = state.selectedPlantId;
+      const new_template_color = new Map(current_template_color);
+
     case "setPlantCells":
       const groups = action.payload;
       const newCells = new Map();

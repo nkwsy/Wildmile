@@ -16,6 +16,7 @@ router
   })
   .get((req, res) => {
     if (req.user) {
+      console.log("user", req.user);
       const { email, ranger, admin, profile } = req.user;
       return res.json({
         user: { email, ranger: ranger || false, admin, profile },
