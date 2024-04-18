@@ -138,6 +138,8 @@ const defaultInitialState = {
   selectedPlantId: null,
   plantingTemplateOptions: null,
   plantingTemplate: null,
+  plantingTemplateDeploy: false,
+  modLayerSelectable: null,
 };
 
 const initializeState = (initialProps) => {
@@ -208,6 +210,7 @@ export const ModMapWrapper = ({ children }) => {
   useEffect(() => {
     dispatch({ type: "MAP_PLANT_CELLS" });
   }, [individualPlants]);
+
   // useEffect to switch plant visibility
   useEffect(() => {
     console.log("Plants Visible:", plantsVisible);
@@ -225,6 +228,7 @@ export const ModMapWrapper = ({ children }) => {
       // setPlantsVisible(false);
       // setModsVisible(true);
     }
+
     // if (mode === "edit") {
     //   moveToTop("modCells");
     // }
@@ -232,6 +236,20 @@ export const ModMapWrapper = ({ children }) => {
       // setPlantsVisible(false);
     }
   }, [mode]);
+
+  // useEffect to update the plant layer visibility
+  useEffect(() => {
+    if (state.modLayerSelectable === true) {
+      console.log("Plants Visible:", plantsVisible);
+      if (!plantRef.current) {
+        return;
+      }
+      moveToTop("modCells");
+    }
+    if (state.modLayerSelectable === false) {
+      moveToTop("plantCells");
+    }
+  }, [state.modLayerSelectable]);
   // Handle the toggle for the cell selection
 
   // Attempt to use useReducer for cell selection

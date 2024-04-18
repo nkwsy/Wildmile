@@ -38,8 +38,8 @@ export async function createSection(req) {
       projectId: project._id,
     });
     console.log("createSection Section:", section);
-    result = await { success: true, data: section };
-    return result;
+    const result = await { success: true, data: section };
+    return JSON.stringify(result);
   } catch (error) {
     console.error("Error creating section:", error);
     throw error;

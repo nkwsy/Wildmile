@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Stage, Layer, Rect } from "react-konva";
-import { Paper, Group, Chip, Select } from "@mantine/core";
+import { Paper, Group, Chip, Select, Button } from "@mantine/core";
 import { getPlantingTemplate } from "app/actions/ResourceActions";
 import { useClient } from "./context_mod_map";
 import ColorSelectionButtons from "./ColorSelectionButtons";
@@ -62,16 +62,6 @@ export const PlantingTemplate = () => {
     });
   }, [selectedTemplate]); // This effect runs whenever selectedTemplate changes
 
-  //   useEffect(() => {
-  //     const newColors = new Set();
-  //     Object.values(selectedTemplate?.data || {}).forEach((cell) => {
-  //       if (cell.color && !newColors.has(cell.color)) {
-  //         newColors.add(cell.color);
-  //       }
-  //     });
-  //     setUniqueColors([...newColors]);
-  //   }, [selectedTemplate]);
-
   // initial fetching of all the templates
   useEffect(() => {
     async function fetchTemplates() {
@@ -117,7 +107,12 @@ export const PlantingTemplate = () => {
     const template = templates.find((t) => t.value === templateId);
     setSelectedTemplate(template);
   };
-
+  const UseTemplateOnModules = () => {
+    dispatch({ type: "MOD_LAYER_SELECTABLE", payload: true });
+  };
+  const SaveEditedModules = () => {
+    dispatch({ type: "MOD_LAYER_SELECTABLE", payload: false });
+  };
   const squares = [];
   for (let y = 0; y < gridSize.height; y++) {
     for (let x = 0; x < gridSize.width; x++) {
@@ -134,17 +129,23 @@ export const PlantingTemplate = () => {
   return (
     <>
       <Paper padding="md" shadow="xs" radius="md">
+        <Group>
+          <Button onClick={UseTemplateOnModules}>Deploy</Button>
+          <Button onClick={SaveEditedModules}>Save</Button>
+        </Group>
         <Select
           data={templates}
           placeholder="Select a template"
           onChange={handleTemplateChange}
         />
-        <Stage
-          width={gridSize.width * squareSize}
-          height={gridSize.height * squareSize}
-        >
-          <Layer>{squares}</Layer>
-        </Stage>
+        {selectedTemplate && (
+          <Stage
+            width={gridSize.width * squareSize}
+            height={gridSize.height * squareSize}
+          >
+            <Layer>{squares}</Layer>
+          </Stage>
+        )}
         (selectedTemplate){" "}
         {
           <ColorSelectionButtons
@@ -159,173 +160,3 @@ export const PlantingTemplate = () => {
 };
 
 export default PlantingTemplate;
-
-// import React, { useState, useRef, useEffect } from "react";
-// import { Stage, Layer, Rect } from "react-konva";
-// // import { createPlantingTemplate } from "lib/db/resources";
-
-// import {
-//   Button,
-//   Group,
-//   SegmentedControl,
-//   Chip,
-//   darken,
-//   lighten,
-//   getThemeColor,
-//   useMantineTheme,
-//   Paper,
-//   Column,
-//   TextInput, // Added TextInput component
-//   Select,
-// } from "@mantine/core";
-// import { useClient, useClientState } from "./context_mod_map";
-// import { getPlantingTemplate } from "app/actions/ResourceActions";
-// import { set } from "mongoose";
-// import { use } from "passport";
-
-// export const selectionColors = {
-//   1: { color: "blue", id: 1 },
-//   2: { color: "yellow", id: 2 },
-//   3: { color: "green", id: 3 },
-//   4: { color: "grape", id: 4 },
-//   5: { color: "red", id: 5 },
-//   6: { color: "cyan", id: 6 },
-//   7: { color: "pink", id: 7 },
-//   // Add more if needed
-// };
-
-// function GetColor(color) {
-//   const theme = useMantineTheme();
-//   const useColor =
-//     typeof color === "string"
-//       ? theme.colors[color][6] || theme.colors.grey[5]
-//       : undefined;
-//   return useColor;
-// }
-// const GridSquare = ({ x, y, size, onSquareClick, color }) => {
-//   return (
-//     <Rect
-//       x={x * size}
-//       y={y * size}
-//       width={size}
-//       height={size}
-//       fill={color || "grey"}
-//       stroke="black"
-//       onClick={() => onSquareClick(x, y)}
-//     />
-//   );
-// };
-// export const data = async (setSelectTemplate) => {
-//   const { dispatch } = useClient();
-
-//   const res = await getPlantingTemplate();
-//   //   setPlantingTemplate(res);
-//   const templates = [];
-//   const templateSet = {}; // Change from [] to {}
-//   console.log("Data:", res);
-//   const raw_templates = JSON.parse(res);
-//   for (let i = 0; i < raw_templates.length; i++) {
-//     templates.push({
-//       value: raw_templates[i]["_id"],
-//       label: raw_templates[i]["metadata"]["title"],
-//     });
-//     templateSet[raw_templates[i]["_id"]] = raw_templates[i]; // Change to object assignment
-//   }
-//   //   dispatch({ type: "SET_PLANTING_TEMPLATES", payload: templateSet });
-//   return <Select data={templates} onChange={setSelectTemplate} />;
-// };
-// export const PlantingTemplate = () => {
-//   const gridSize = { width: 4, height: 10 };
-//   const squareSize = 40; // Each square is 40x40 pixels
-//   const [selection, setSelection] = useState("1"); // Default selection
-//   const [selectedCells, setSelectedCells] = useState(new Map()); //{"1,3" => "pink"}
-//   const [isSubmitted, setIsSubmitted] = useState(false);
-//   const [plantingTemplate, setPlantingTemplate] = useState(null);
-//   const [selectTemplate, setSelectTemplate] = useState(null);
-
-//   const initialValues = {
-//     // Added missing const keyword
-//     description: "",
-//     name: "",
-//     planting_template: null,
-//   };
-
-//   const handleSquareClick = (x, y) => {
-//     const key = `${x},${y}`;
-//     setSelectedCells((prevCells) => {
-//       const newCells = new Map(prevCells);
-//       if (newCells.get(key)) {
-//         newCells.delete(key);
-//       } else {
-//         newCells.set(key, { ...selectionColors[selection], x, y });
-//       }
-//       return newCells;
-//     });
-//   };
-
-//   const squares = [];
-//   for (let y = 0; y < gridSize.height; y++) {
-//     for (let x = 0; x < gridSize.width; x++) {
-//       const key = `${x},${y}`;
-//       const cell = selectedCells.get(key);
-//       const color = cell ? cell.color : undefined;
-//       //   const color = GetColor(raw_color);
-//       squares.push(
-//         <GridSquare
-//           key={key}
-//           x={x}
-//           y={y}
-//           size={squareSize}
-//           onSquareClick={handleSquareClick}
-//           color={color}
-//         />
-//       );
-//     }
-//   }
-
-//   return (
-//     <>
-//       <Paper padding="md" shadow="xs" radius="md">
-//         {data(setSelectTemplate)}
-//         <Group>
-//           <Chip.Group value={selection} onChange={setSelection}>
-//             <Group justify="center">
-//               <div style={{ display: "flex", flexDirection: "row" }}>
-//                 {Object.entries(selectionColors).map(([value, item]) => (
-//                   <Chip
-//                     key={value}
-//                     value={value}
-//                     color={item.color} // This sets the text color and border color for the chip
-//                     styles={(theme) => ({
-//                       root: {
-//                         backgroundColor:
-//                           selection === value
-//                             ? theme.colors[item.color][6]
-//                             : theme.colors[item.color][2],
-//                         "&:hover": {
-//                           backgroundColor: theme.colors[item.color][5],
-//                         },
-//                       },
-//                     })}
-//                   >
-//                     {value}
-//                   </Chip>
-//                 ))}
-//               </div>
-//             </Group>
-//           </Chip.Group>
-//         </Group>
-//         <Group>
-//           <Stage
-//             width={gridSize.width * squareSize}
-//             height={gridSize.height * squareSize}
-//           >
-//             <Layer>{squares}</Layer>
-//           </Stage>
-//         </Group>
-//       </Paper>
-//     </>
-//   );
-// };
-
-// export default PlantingTemplate;

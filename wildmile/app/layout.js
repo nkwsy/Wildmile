@@ -1,7 +1,8 @@
 // import { Html, Main, NextScript } from "next/document";
-import "@mantine/core/styles/global.css";
+// import "@mantine/core/styles/global.css";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
+
 // import Hydration from "/lib/hydration"; // (c)
 
 // import Head from "next/head";

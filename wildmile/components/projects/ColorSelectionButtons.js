@@ -9,9 +9,10 @@ function ColorSelectionButtons({
 }) {
   // Toggle color selection, can be adjusted to toggle by ID or color
   const toggleColorSelection = (colorInfo) => {
-    setSelectedColor((current) =>
-      current?.color === colorInfo.color ? null : colorInfo
-    );
+    setSelectedColor(colorInfo);
+    // setSelectedColor((current) =>
+    // current?.color === colorInfo.color ? null : colorInfo
+    // );
   };
 
   if (!uniqueColors || uniqueColors.length === 0) {
