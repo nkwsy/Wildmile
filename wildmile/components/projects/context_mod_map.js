@@ -96,6 +96,12 @@ const mapPlantCells = (state) => {
 
 export const plantCellReducer = (state, action) => {
   switch (action.type) {
+    // Set the mode for plants
+    // options: "editPlantCells", "editPlantTemplate", "harvest"
+    case "SET_EDIT_MODE":
+      const new_mode = action.payload;
+      return { ...state, editMode: new_mode };
+
     //2: {"2,1" => Object}  key:'2,1' value: {id: 1, color: 'blue', x: 2, y: 1}
     case "SET_PLANTING_TEMPLATE":
       const planting_template = action.payload;
@@ -168,6 +174,7 @@ export const plantCellReducer = (state, action) => {
       // Create a new Map to clear the cells, side effects should be handled outside
       return { ...state, plantCells: new Map() };
 
+    // Logs plant cells which are clicked by user
     case "TOGGLE_PLANT_CELL_SELECTION":
       const plantCell = action.payload;
       const key = generateKey([
@@ -178,22 +185,34 @@ export const plantCellReducer = (state, action) => {
       ]);
 
       const current_selected_plant_cells = state.selectedPlantCell;
+      const current_plant_cells_to_edit = state.selectedPlantCellsToEdit;
+      const toggle_in_edit_mode = state.editMode;
+      const current_selected_plantId = state.selectedPlantId;
+      const newPlantCellsToEdit = new Map(current_plant_cells_to_edit);
       const newPlantCells = new Map(current_selected_plant_cells);
+      // if in edit mode and plant selected, add to selectedPlantCellsToEdit
+      if (current_selected_plantId && toggle_in_edit_mode) {
+        if (newPlantCellsToEdit.has(key)) {
+          plantCell.new_plant_id = null;
+          newPlantCellsToEdit.delete(key);
+        } else {
+          plantCell.new_plant_id = current_selected_plantId;
+          newPlantCellsToEdit.set(key, plantCell);
+        }
+        return { ...state, selectedPlantCellsToEdit: newPlantCellsToEdit };
+      }
       // Check if the key already exists
+      // The key doesn't exist, so insert the new entry
       if (newPlantCells.has(key)) {
-        // If you want to update the existing entry with new data, you can do it here.
-        // For example, to update you can uncomment the next line:
-        // newPlantCells.set(key, plantCell); // This updates the existing entry with the new plantCell data
-
-        // If you just want to remove the existing entry, keep the delete operation.
         newPlantCells.delete(key);
       } else {
-        // The key doesn't exist, so insert the new entry
         newPlantCells.set(key, plantCell);
       }
-
       return { ...state, selectedPlantCell: newPlantCells };
-
+    case "CLEAR_SELECTED_PLANT_CELLS_TO_EDIT":
+      return { ...state, selectedPlantCellsToEdit: new Map() };
+    case "CLEAR_PLANT_CELL_SELECTIONS":
+      return { ...state, selectedPlantCell: new Map() };
     case "ADD_INDIVIDUAL_PLANTS":
       const individual_plants = action.payload;
       const updatedIndividualPlants = new Map(state.individualPlants);
@@ -243,6 +262,8 @@ export const plantCellReducer = (state, action) => {
         newPlants.set(plant_id.id, plant_id);
       }
       return { ...state, selectedPlants: newPlants };
+
+    // Single ID for a plant that is the focus
     case "TOGGLE_SELECTED_PLANT":
       const targetSelectedPlandId = action.payload;
       const oldSelectedPlantId = state.selectedPlantId;
