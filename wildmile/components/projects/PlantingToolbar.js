@@ -67,12 +67,13 @@ export default function PlantingToolbar() {
                 selectedPlantId === item.id ? classes.selectedBox : ""
               } `}
               value={String(index)}
-              // key={item.id}
               onClick={setSelectedPlantId(item.id)}
             >
               <Indicator inline label={index + 1} size={16}>
                 <Avatar src={item.image} radius="sm" size="xl" />
               </Indicator>
+              {/* Chip insert for plant selection */}
+              <PlantTemplateChip plantId={item.id} />
               <Group align="right" direction="column">
                 <Text size="xs" className={classes.title}>
                   {item.title}
@@ -83,7 +84,6 @@ export default function PlantingToolbar() {
                   {item.subtitle}
                 </Text>
               </Group>
-              <PlantTemplateChip plantId={item.id} />
             </Box>
           ))}
         </CardSection>

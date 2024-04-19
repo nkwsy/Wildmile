@@ -118,9 +118,16 @@ export const plantCellReducer = (state, action) => {
       ) {
         return state;
       }
+
+      // iterate through current planting template.
+      //  if the plant is the same as the current plant, set the color to null, else change it to the current plant
       const updatedPlantingTemplateOptions = set_planting_to_template.map(
         (option) => {
           if (option.id === planting_template_color.id) {
+            if (option.plant === current_planting_for_template) {
+              return { ...option, color: null };
+            } else {
+            }
             return { ...option, plant: current_planting_for_template };
           }
           return option;
@@ -130,6 +137,11 @@ export const plantCellReducer = (state, action) => {
         ...state,
         plantingTemplateOptions: updatedPlantingTemplateOptions,
       };
+    // Make planting layer visible so you can deploy the templates
+    case "MOD_LAYER_SELECTABLE":
+      const modLayerSelectable_ = action.payload;
+
+      return { ...state, modLayerSelectable: modLayerSelectable_ };
     case "setPlantCells":
       const groups = action.payload;
       const newCells = new Map();

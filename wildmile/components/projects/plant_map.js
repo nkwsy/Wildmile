@@ -106,9 +106,9 @@ export function PlantMap({ children }) {
   }, [clientValues]); // Depend on the entire clientValues object
 
   // Early return if not all values are valid
-  if (!isReady) {
-    return null; // Or return null if you don't want to render anything
-  }
+  // if (!isReady) {
+  // return null; // Or return null if you don't want to render anything
+  // }
 
   return (
     <>
