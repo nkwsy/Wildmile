@@ -1,0 +1,35 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach to Docker",
+      "port": 9229,
+      "address": "localhost",
+      "localRoot": "${workspaceFolder}/wildmile",
+      "remoteRoot": "/usr/app/",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Attach to Chrome",
+      "url": "http://localhost:8080",
+      "request": "launch",
+      "type": "chrome",
+      "webRoot": "${workspaceFolder}/wildmile"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/wildmile/components/projects/plant_map.js"
+    },
+    {
+      "type": "node-terminal",
+      "name": "JavaScript Debug Terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}

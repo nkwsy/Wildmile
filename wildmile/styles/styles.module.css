@@ -1,0 +1,30 @@
+/* styles.module.css */
+.footer {
+  background-color: var(--mantine-primary-color-background);
+  border-top: var(--mantine-1-rem-border-width) solid
+    var(--mantine-border-color);
+}
+
+.inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--mantine-spacing-md) var(--mantine-spacing-md);
+}
+
+@media (max-width: var(--mantine-breakpoint-sm)) {
+  .inner {
+    flex-direction: column;
+  }
+}
+
+.links {
+  /* Empty, customize as needed */
+}
+
+@media (max-width: var(--mantine-breakpoint-sm)) {
+  .links {
+    margin-top: var(--mantine-spacing-lg);
+    margin-bottom: var(--mantine-spacing-sm);
+  }
+}

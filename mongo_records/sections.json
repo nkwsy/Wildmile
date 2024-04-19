@@ -1,0 +1,19 @@
+[
+  {
+    "_id": {
+      "$oid": "64bb07cd7830c0dea702adff"
+    },
+    "name": "Board walk",
+    "description": "All one section",
+    "project": {
+      "$oid": "64bb07cd7830c0dea702adef"
+    },
+    "createdAt": {
+      "$date": "2023-07-21T22:33:49.426Z"
+    },
+    "updatedAt": {
+      "$date": "2023-07-21T22:33:49.426Z"
+    },
+    "__v": 0
+  }
+]

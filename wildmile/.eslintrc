@@ -1,0 +1,33 @@
+// {
+//   "extends": [
+//     // "airbnb-base",
+//     "next",
+//     // "prettier",
+//     "next/core-web-vitals",
+//     "plugin:react/recommended",
+//     "plugin:react-hooks/recommended",
+//     "plugin:react/jsx-runtime"
+//   ],
+//   "env": {
+//     "node": true,
+//     "mocha": true,
+//     "es6": true
+//   },
+//   "plugins": ["chai-friendly", "react-hooks"],
+//   "rules": {
+//     "comma-dangle": 0,
+//     "consistent-return": 0,
+//     "function-paren-newline": "off",
+//     "implicit-arrow-linebreak": ["off"],
+//     "no-param-reassign": 0,
+//     "no-underscore-dangle": 0,
+//     "no-shadow": 0,
+//     "no-console": 0,
+//     "no-plusplus": 0,
+//     "no-unused-expressions": 0,
+//     "no-unused-vars": "off", // Set to "off" to ignore
+//     "react/prop-types": "off",
+
+//     "chai-friendly/no-unused-expressions": 2
+//   }
+// }

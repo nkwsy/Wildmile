@@ -1,0 +1,150 @@
+.title {
+  font-size: 3rem;
+  font-weight: 900;
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  font-weight: 900;
+  color: var(--mantine-color-white);
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 1rem;
+  }
+}
+@media (min-width: 100px) {
+  .title {
+    font-size: 1rem;
+  }
+}
+
+.description {
+  max-width: 600px;
+  margin: auto;
+  text-decoration: none;
+}
+
+.description::after {
+  content: "";
+  display: block;
+  background-color: var(--mantine-primary);
+  width: 45%;
+  height: 0.2rem;
+  margin-top: var(--mantine-spacing-sm);
+  margin-left: auto;
+  margin-right: auto;
+}
+.mantine-card {
+  border: 1rem solid var(--mantine-dark-5);
+  background-color: var(--mantine-dark-6);
+  /* width: 10%; */
+}
+.card {
+  border: 0.3rem solid var(--mantine-dark-5);
+  background-color: var(--mantine-dark-6);
+}
+
+.card:hover {
+  background-color: var(--mantine-gray-0);
+}
+
+.card-title {
+  text-decoration: none;
+  font-size: 1rem;
+  color: var(--mantine-color-white);
+}
+
+.card-title::after {
+  content: "";
+  display: block;
+  background-color: var(--mantine-color-white);
+  background: transparent;
+  /* width: 15%; */
+  height: 0.2rem;
+  margin-top: var(--mantine-spacing-sm);
+}
+/* styles.module.css */
+.squareCard {
+  width: 100%; /* or any percentage you prefer */
+  position: relative;
+}
+
+.squareCardContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.square-card {
+  display: grid;
+}
+
+.square-card::before {
+  content: "";
+  width: 1px;
+  margin-left: -1px;
+  grid-row: 1 / 1;
+  grid-column: 1 / 1;
+  padding-top: 100%; /* Aspect ratio 1:1 */
+}
+.square-card-content {
+  grid-row: 1 / 1;
+  grid-column: 1 / 1;
+}
+
+.box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: var(--mantine-spacing-xs);
+  border-color: var(--mantine-color-gray-4);
+  border-width: 0.1rem;
+  box-shadow: none;
+  border-radius: var(--mantine-radius-sm);
+}
+.box:hover {
+  background: var(--mantine-color-gray-1);
+}
+.box:active {
+  background-color: var(--mantine-color-gray-4);
+}
+
+.box.selected {
+  background-color: var(--mantine-primary);
+}
+
+.selectedBox {
+  background-color: var(
+    --mantine-color-gray-3
+  ); /* or any other style you want */
+}
+
+.selectedRow {
+  background-color: var(--mantine-color-gray-3);
+}
+
+.chip {
+  display: inline-block;
+  border-radius: var(--mantine-radius-sm);
+  color: var(--mantine-color-red-filled);
+  font-size: 8px;
+  font-weight: 400;
+}
+
+.scrollable {
+  overflow-y: auto;
+  white-space: nowrap;
+  display: flex;
+  gap: 0;
+  padding: 0rem;
+  border-radius: var(--mantine-radius-sm);
+}
+
+.scroll-item {
+  flex: 0 0 auto;
+  max-height: 100%;
+}

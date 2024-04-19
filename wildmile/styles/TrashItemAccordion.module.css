@@ -1,0 +1,77 @@
+.accordionContainer {
+  /* Style for the overall accordion container */
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.accordionControl {
+  /* Style for the accordion control elements */
+  font-size: 1.2rem;
+  font-weight: 900;
+  background-color: var(--mantine-color-gray-0);
+}
+
+.accordionPanel {
+  /* Style for the accordion panel content */
+  padding: 1rem;
+  background-color: #ffffff;
+}
+
+.group {
+  /* Style for the group container inside each accordion panel */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.item {
+  border: 1px solid var(--mantine-color-gray-4);
+  border-radius: var(--mantine-radius-sm);
+  padding: 0.5rem;
+}
+.icon {
+  /* Style for the icon elements inside each group */
+  margin-right: 0.5rem;
+  color: var(--mantine-color-gray-6);
+}
+.numberInput {
+  /* Style for the number input fields */
+  max-width: 3rem;
+}
+.truncateText {
+  width: 200px; /* Adjust width as needed */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.material {
+  /* Style for the item name inside each group */
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #333333;
+}
+.title {
+  /* Style for the item name inside each group */
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333333;
+}
+
+.catagory {
+  /* Style for the item name inside each group */
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--mantine-color-gray-6);
+}
+
+.text {
+  /* Style for the text elements inside each group */
+  font-size: 0.9rem;
+  color: #333333;
+}
+
+.numberInput {
+  /* Style for the number input fields */
+  max-width: 100px;
+}

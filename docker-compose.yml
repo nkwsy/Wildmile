@@ -1,20 +1,21 @@
-version: '3'
+version: "3"
 services:
   mongo:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile.mongo
     ports:
-     - "27016:27017"
+      - "27016:27017"
   web:
     build: .
     ports:
-     - "8080:8080"
+      - "8080:3000"
+      - "9229:9230"
     env_file:
       - .env
-    depends_on: 
-     - mongo 
+    depends_on:
+      - mongo
     volumes:
-     - ./:/usr/app
-     - /usr/app/node_modules
-     
+      - ./wildmile:/usr/app
+      - /usr/app/node_modules
+      - /usr/app/.next

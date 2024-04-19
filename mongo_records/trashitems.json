@@ -1760,26 +1760,6 @@
 },
 {
   "_id": {
-    "$oid": "5fc7ee51ddec8abc721828bb"
-  },
-  "deleted": false,
-  "name": "Packing Materials",
-  "material": "Plastic",
-  "catagory": "Dumping",
-  "description": "Baskets, crates, trash bags",
-  "creator": {
-    "$oid": "64bb07cd7830c0dea702f85b"
-  },
-  "createdAt": {
-    "$date": "2020-12-02T19:40:27.405Z"
-  },
-  "updatedAt": {
-    "$date": "2020-12-02T19:40:27.405Z"
-  },
-  "__v": 0
-},
-{
-  "_id": {
     "$oid": "5fc92ca1e308b20017c3e46a"
   },
   "deleted": false,
