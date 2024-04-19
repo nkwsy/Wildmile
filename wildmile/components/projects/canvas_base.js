@@ -45,7 +45,12 @@ import dynamic from "next/dynamic";
 // );
 
 import CanvasComponent from "./CanvasComponent";
-import { toggleCellFill, toggleCellOff, toggleCellOn } from "./drawing_utils";
+import {
+  toggleCellFill,
+  toggleCellOff,
+  toggleCellOn,
+  setCellOnStroke,
+} from "./drawing_utils";
 // const Component = () => {
 //   const { key, updateKey } = useStore();
 
@@ -125,7 +130,7 @@ const defaultInitialState = {
   // selectedCell: new Map(),
   // cells: new Map(),
   // mode: "edit",
-  // editMode: false,
+  editMode: false,
   // plantsVisible: true,
   // modsVisible: true,
   // plants: [],
@@ -133,6 +138,7 @@ const defaultInitialState = {
   // layers: [],
   plantCells: new Map(),
   selectedPlantCell: new Map(),
+  selectedPlantCellsToEdit: new Map(),
   selectedPlants: new Map(),
   individualPlants: new Map(),
   selectedPlantId: null,
@@ -168,7 +174,7 @@ export const ModMapWrapper = ({ children }) => {
   const [selectedPlants, setSelectedPlants] = useState([]); // Sets the exploration mode of the map
   // Modes
   const [mode, setMode] = useState("edit");
-  const [editMode, setEditMode] = useState(false);
+  // const [editMode, setEditMode] = useState(false);
   const [plantsVisible, setPlantsVisible] = useState(true);
   const [modsVisible, setModsVisible] = useState(true);
   const gridRef = useRef(null);
@@ -331,6 +337,17 @@ export const ModMapWrapper = ({ children }) => {
     });
   }, [state.selectedPlantCell]);
 
+  // Toggle plant Cell Selection in edit mode
+  useEffect(() => {
+    let cells = state.plantCells;
+    cells.forEach((cell) => {
+      if (state.selectedPlantCellsToEdit.has(cell.location_key)) {
+        setCellOnStroke(cell, "blue");
+      } else {
+        toggleCellOff(cell);
+      }
+    });
+  }, [state.selectedPlantCellsToEdit]);
   // const updateSelectedPlantCellStrokeWidth = (key, plantCell) => {
   //   if (state.selectedPlantCell.has(key)) {
   //     toggleCellOff(plantCell);
@@ -391,8 +408,8 @@ export const ModMapWrapper = ({ children }) => {
     setCells,
     mode,
     setMode,
-    editMode,
-    setEditMode,
+    // editMode,
+    // setEditMode,
     isCellSelected,
     clearSelectedCells,
     triggerUpdate,
@@ -446,8 +463,8 @@ export const CanvasBase = ({ children, width, height }) => {
     setCells,
     mode,
     setMode,
-    editMode,
-    setEditMode,
+    // editMode,
+    // setEditMode,
     isCellSelected,
     clearSelectedCells,
     triggerUpdate,
@@ -573,8 +590,8 @@ export const CanvasBase = ({ children, width, height }) => {
     clearSelectedCells,
     mode,
     setMode,
-    editMode,
-    setEditMode,
+    // editMode,
+    // setEditMode,
     isCellSelected,
     triggerUpdate,
     handleSomeUpdate,

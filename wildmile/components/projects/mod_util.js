@@ -254,7 +254,8 @@ export class PlantCell {
     shape_key,
     attrs,
     plant_id,
-    individual_plant_id
+    individual_plant_id,
+    new_plant_id
   ) {
     this.module_id = module_id;
     this.location_key = `${module_location_x}-${module_location_y}-${x}-${y}`;
@@ -271,6 +272,7 @@ export class PlantCell {
     this.individual_plant_id =
       individual_plant_id !== undefined ? individual_plant_id : null;
     this.plant_id = plant_id !== undefined ? plant_id : null;
+    this.new_plant_id = new_plant_id !== undefined ? new_plant_id : null;
   }
 
   // You might want to add methods here to interact with the PlantCell

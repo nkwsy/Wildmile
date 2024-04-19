@@ -13,6 +13,7 @@ import {
   Avatar,
   Indicator,
   Box,
+  Button,
 } from "@mantine/core";
 import { useClient, useClientState } from "./context_mod_map";
 import { set } from "mongoose";
@@ -58,6 +59,13 @@ export default function PlantingToolbar() {
         justify-content="flex-start"
         align="flex-start"
       >
+        <Button
+          onClick={() => dispatch({ type: "CLEAR_PLANT_CELL_SELECTIONS" })}
+          color="yellow"
+        >
+          Clear Selections
+        </Button>
+
         <PlantingTemplate />
         <CardSection withBorder inheritPadding py="xs">
           {[...selectedPlants.entries()].map(([id, item], index) => (

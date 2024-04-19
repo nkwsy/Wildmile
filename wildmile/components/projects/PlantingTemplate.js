@@ -137,6 +137,7 @@ export const PlantingTemplate = () => {
           data={templates}
           placeholder="Select a template"
           onChange={handleTemplateChange}
+          clearable
         />
         {selectedTemplate && (
           <Stage
