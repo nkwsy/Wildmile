@@ -15,6 +15,7 @@ import {
   Box,
   Button,
 } from "@mantine/core";
+import { getIndexColor } from "./drawing_utils";
 import { useClient, useClientState } from "./context_mod_map";
 import { set } from "mongoose";
 import { PlantingTemplate } from "./PlantingTemplate";
@@ -77,7 +78,15 @@ export default function PlantingToolbar() {
               value={String(index)}
               onClick={setSelectedPlantId(item.id)}
             >
-              <Indicator inline label={index + 1} size={16}>
+              <Indicator
+                color={getIndexColor(index)}
+                inline
+                withBorder
+                offset={-7}
+                label={index + 1}
+                position="middle-end"
+                size={45}
+              >
                 <Avatar src={item.image} radius="sm" size="xl" />
               </Indicator>
               {/* Chip insert for plant selection */}

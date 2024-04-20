@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useReducer } from "react";
 const ClientContext = createContext();
 export default ClientContext;
+import { getIndexColor } from "./drawing_utils";
 
 export const useClient = () => {
   const context = useContext(ClientContext);
@@ -96,6 +97,16 @@ const mapPlantCells = (state) => {
   return updatedPlantCells;
 };
 
+// get the color for the index when editing
+function updatePlantsIndexColor(newPlants) {
+  let index = 0;
+  newPlants.forEach((plant, plantId) => {
+    plant.selectionColor = getIndexColor(index);
+    newPlants.set(plantId, plant);
+    index++;
+  });
+  return newPlants;
+}
 export const plantCellReducer = (state, action) => {
   switch (action.type) {
     // Set the mode for plants
@@ -257,12 +268,14 @@ export const plantCellReducer = (state, action) => {
     //   return newCells;
     case "TOGGLE_PLANT_SELECTION":
       const plant_id = action.payload;
-      const newPlants = new Map(state.selectedPlants);
+      let newPlants = new Map(state.selectedPlants);
       if (newPlants.has(plant_id.id)) {
         newPlants.delete(plant_id.id);
       } else {
         newPlants.set(plant_id.id, plant_id);
       }
+      newPlants = updatePlantsIndexColor(newPlants);
+
       return { ...state, selectedPlants: newPlants };
 
     // Single ID for a plant that is the focus

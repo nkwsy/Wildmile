@@ -21,7 +21,6 @@ import useSWR from "swr";
 import { usePathname, useSearchParams } from "next/navigation";
 // import { UpdatePlants } from "./plant_map";
 
-import CellGen from "./mod_util";
 // export const CanvasContext = React.createContext();
 import CanvasContext, {
   useClientState,
@@ -30,6 +29,7 @@ import CanvasContext, {
   plantCellReducer,
 } from "./context_mod_map";
 // import Hydration from "lib/hydration";
+import CellGen from "./mod_util";
 import useStore from "/lib/store";
 import { use } from "passport";
 // import { ModuleFormModal } from "./module_form";
@@ -43,37 +43,6 @@ import dynamic from "next/dynamic";
 //     ssr: false,
 //   }
 // );
-
-import CanvasComponent from "./CanvasComponent";
-import {
-  setCellPlantFill,
-  toggleCellFill,
-  toggleCellOff,
-  toggleCellOn,
-  setCellOnStroke,
-} from "./drawing_utils";
-// const Component = () => {
-//   const { key, updateKey } = useStore();
-
-//   // Use the state and actions in your component
-// };
-
-// export function LoadMods({ newMods }) {
-//   useEffect(() => {
-//     async function fetchData() {
-//       const pathname = usePathname();
-//       const searchParams = useSearchParams("");
-//       const setModules = useContext(CanvasContext);
-//       const mods = searchParams.get("");
-//       const response = await fetch(`${pathname}/edit`);
-//       const data = await response.json();
-//       console.log("LoadMods", data);
-//       newMods(data);
-//     }
-//     newMods();
-//   }, [fetchData]);
-//   return null;
-// }
 
 export function UpdateModules({ triggerUpdate }) {
   const { setModules } = useContext(CanvasContext);
@@ -154,6 +123,16 @@ const initializeState = (initialProps) => {
   // You can modify the initial state based on props if needed
   return { ...defaultInitialState };
 };
+
+import CanvasComponent from "./CanvasComponent";
+import {
+  setCellPlantFill,
+  toggleCellFill,
+  toggleCellOff,
+  toggleCellOn,
+  setCellOnStroke,
+} from "./drawing_utils";
+
 ///
 /// ModMapWrapper
 ///
@@ -345,13 +324,21 @@ export const ModMapWrapper = ({ children }) => {
     let cells = state.plantCells;
     cells.forEach((cell) => {
       if (state.selectedPlantCellsToEdit.has(cell.location_key)) {
-        setCellOnStroke(cell, "blue");
+        const stroke_color = state.selectedPlantCellsToEdit.get(
+          cell.location_key
+        );
+        setCellOnStroke(cell, stroke_color.selectionColor);
       } else {
         toggleCellOff(cell);
       }
     });
   }, [state.selectedPlantCellsToEdit]);
 
+  // state.selectedPlantCellsToEdit.forEach((stroke_color, location_key) => {
+  //     const cell = state.plantCells.find((cell) => cell.location_key === location_key);
+  //     if (cell) {
+  //       setCellOnStroke(cell, stroke_color.selectionColor);
+  //     }
   // update cell colors
   useEffect(() => {
     let cells = state.plantCells;
