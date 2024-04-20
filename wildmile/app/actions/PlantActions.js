@@ -53,12 +53,27 @@ export async function getPlant(id) {
 export async function updatePlant(formData) {
   console.log("PlantActions- updatePlant:", formData);
   const rawFormData = {
-    name: formData.scientificName,
+    commonName: formData.commonName,
+    scientificName: formData.scientificName,
+    family: formData.family,
+    tags: formData.tags,
     notes: formData.notes,
+    color: formData.color,
   };
   console.log("Raw Form Data:", rawFormData);
 
   const result = await Plant.findByIdAndUpdate(formData._id, formData);
+  return JSON.stringify(result);
+}
+
+// Update Plant Family data
+export async function updatePlantFamily(family, color) {
+  console.log("PlantActions- updatePlantFamily:", family, color);
+  const result = await Plant.updateMany(
+    { family: family },
+    { $set: { "color.family": color } }
+  );
+  console.log("updated plant family:", result);
   return JSON.stringify(result);
 }
 

@@ -79,6 +79,7 @@ export const generateKey = (arr) => arr.join("-");
 
 const mapPlantCells = (state) => {
   const plant_cells = state.plantCells;
+  const plants = state.plants;
   const map_individual_plants = state.individualPlants;
   const updatedPlantCells = new Map(state.plantCells);
   map_individual_plants.forEach((plant) => {
@@ -88,6 +89,7 @@ const mapPlantCells = (state) => {
       // Make sure the cell exists before trying to modify it
       cell.plant_id = plant.plant;
       cell.individual_plant_id = plant._id;
+      // cell.attrs = plants.get(plant._id).colors;
       updatedPlantCells.set(key, cell);
     }
   });
@@ -271,6 +273,14 @@ export const plantCellReducer = (state, action) => {
         return { ...state, selectedPlantId: null };
       }
       return { ...state, selectedPlantId: targetSelectedPlandId };
+    case "ADD_PLANTS":
+      const plants = action.payload;
+      const updatedPlants = new Map(state.plants);
+      plants.forEach((plant) => {
+        const key = plant._id;
+        updatedPlants.set(key, plant);
+      });
+      return { ...state, plants: updatedPlants };
     case "MAP_PLANT_CELLS":
       // Now simply call the common function for MAP_PLANT_CELLS
       const updatedPlantCells = mapPlantCells(state);

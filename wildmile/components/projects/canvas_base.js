@@ -46,6 +46,7 @@ import dynamic from "next/dynamic";
 
 import CanvasComponent from "./CanvasComponent";
 import {
+  setCellPlantFill,
   toggleCellFill,
   toggleCellOff,
   toggleCellOn,
@@ -136,6 +137,7 @@ const defaultInitialState = {
   // plants: [],
   // triggerUpdate: false,
   // layers: [],
+  plants: new Map(),
   plantCells: new Map(),
   selectedPlantCell: new Map(),
   selectedPlantCellsToEdit: new Map(),
@@ -226,6 +228,7 @@ export const ModMapWrapper = ({ children }) => {
     if (mode === "plants") {
       moveToTop("plantCells");
       dispatch({ type: "MAP_PLANT_CELLS" });
+      // TODO integrate plants into context
       // setPlantsVisible(true);
       // setModsVisible(false);
     }
@@ -348,6 +351,19 @@ export const ModMapWrapper = ({ children }) => {
       }
     });
   }, [state.selectedPlantCellsToEdit]);
+
+  // update cell colors
+  useEffect(() => {
+    let cells = state.plantCells;
+    let use_plants = state.plants;
+    cells.forEach((cell) => {
+      let plant_data = use_plants.get(cell.plant_id);
+      if (plant_data) {
+        setCellPlantFill(cell, plant_data);
+      }
+    });
+    // moveToTop("plantCells");
+  }, [state.individualPlants]);
   // const updateSelectedPlantCellStrokeWidth = (key, plantCell) => {
   //   if (state.selectedPlantCell.has(key)) {
   //     toggleCellOff(plantCell);

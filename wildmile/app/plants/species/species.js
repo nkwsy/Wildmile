@@ -59,6 +59,8 @@ export function PlantCards(plants) {
     image: plant.thumbnail,
     description: plant.notes,
     family: plant.family,
+    color: plant.color,
+
     // tags: plant.family, plant.family_common_name ?? null.filter(Boolean),
   }));
   return plant_values;
@@ -102,9 +104,12 @@ export default async function Species() {
               >
                 {plant.subtitle}
               </Text>
-              <Text size="sm" color="dimmed" className={classes.description}>
+              {/* <Text size="sm" color="dimmed" className={classes.description}>
                 {plant.family}
-              </Text>
+              </Text> */}
+              <Badge variant="light" color={plant.color.family}>
+                {plant.family}
+              </Badge>
             </div>
           </Group>
         </Card>
