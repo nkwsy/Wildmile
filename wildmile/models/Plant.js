@@ -16,6 +16,7 @@ const PlantSchema = new mongoose.Schema(
     color: {
       main: { type: String, default: "" },
       accent: { type: String, default: "" },
+      family: { type: String, default: "" },
       swatches: { type: Array, default: [] },
     },
   },

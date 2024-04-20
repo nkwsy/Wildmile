@@ -134,7 +134,13 @@
   font-size: 8px;
   font-weight: 400;
 }
-
+.badge {
+  display: inline-block;
+  border-radius: var(--mantine-radius-sm);
+  /* background-color: var(--mantine-color-gray-2); */
+  font-size: 10px;
+  font-weight: 600;
+}
 .scrollable {
   overflow-y: auto;
   white-space: nowrap;

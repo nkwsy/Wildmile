@@ -71,6 +71,7 @@ export function PlantCards(props) {
         subtitle: plant.scientificName || plant.scientific_name,
         image: plant.thumbnail,
         description: plant.notes,
+        color: plant.color,
         tags: [
           ...(plant.tags ?? []),
           plant.family,
@@ -83,6 +84,7 @@ export function PlantCards(props) {
               plant.commonName || plant.common_name || plant.scientificName,
             subtitle: plant.scientificName || plant.scientific_name,
             image: plant.thumbnail,
+            color: plant.color,
             description: plant.notes,
             tags: [
               ...(plant.tags ?? []),

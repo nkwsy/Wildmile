@@ -4,6 +4,7 @@ import classes from "styles/plantcard.module.css";
 import {
   Box,
   Paper,
+  Badge,
   Stack,
   Text,
   Group,
@@ -54,14 +55,14 @@ export default function PlantSelectCards(props) {
                 </Text>
                 <Chip.Group>
                   {item.tags.map((tag, index) => (
-                    <Chip
+                    <Badge
                       key={tag + String(index)}
-                      //   color="blue"
+                      className={classes.badge}
+                      color={item.color && item.color.family} // Add a conditional check before accessing the family property
                       radius="lg"
-                      className={classes.chip}
                     >
                       {tag}
-                    </Chip>
+                    </Badge>
                   ))}
                 </Chip.Group>
               </div>
