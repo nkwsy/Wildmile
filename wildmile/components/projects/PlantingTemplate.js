@@ -95,6 +95,12 @@ export const PlantingTemplate = () => {
       );
       setSelectedCells(newCells);
       dispatch({ type: "SET_PLANTING_TEMPLATE", payload: newCells });
+      dispatch({ type: "MOD_LAYER_SELECTABLE", payload: true });
+    }
+    if (!selectedTemplate) {
+      setSelectedCells(new Map());
+      dispatch({ type: "SET_PLANTING_TEMPLATE", payload: new Map() });
+      dispatch({ type: "MOD_LAYER_SELECTABLE", payload: false });
     }
   }, [selectedTemplate]);
 
@@ -127,9 +133,6 @@ export const PlantingTemplate = () => {
   return (
     <>
       <Paper padding="md" shadow="xs" radius="md">
-        <Group>
-          <Button onClick={UseTemplateOnModules}>Deploy</Button>
-        </Group>
         <Select
           data={templates}
           placeholder="Select a template"

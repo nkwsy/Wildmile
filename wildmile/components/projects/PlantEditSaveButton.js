@@ -13,6 +13,7 @@ const PlantEditSaveButton = ({ plantCells, reason }) => {
 
   useEffect(() => {
     if (!triggerSave) return;
+    if (plantCells.length === 0) return;
 
     // Function to handle saving logic
     const handleSave = async () => {

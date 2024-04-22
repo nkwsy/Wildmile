@@ -75,23 +75,23 @@ export default function PlantingToolbar() {
         justify-content="flex-start"
         align="flex-start"
       >
-        <Button
-          onClick={() =>
-            dispatch(
-              { type: "CLEAR_PLANT_CELL_SELECTIONS" },
-              dispatch({ type: "CLEAR_SELECTED_PLANT_CELLS_TO_EDIT" })
-            )
-          }
-          color="yellow"
-        >
-          Clear Selections
-        </Button>
-        {PlantEditSaveButton({
-          plantCells: selectedPlantCellsToEdit,
-          reason: "edit",
-        })}
-        <Button onClick={setSave}>Save</Button>
-
+        <Group>
+          <Button
+            onClick={() =>
+              dispatch(
+                { type: "CLEAR_PLANT_CELL_SELECTIONS" },
+                dispatch({ type: "CLEAR_SELECTED_PLANT_CELLS_TO_EDIT" })
+              )
+            }
+            color="yellow"
+          >
+            Clear Selections
+          </Button>
+          {PlantEditSaveButton({
+            plantCells: selectedPlantCellsToEdit,
+            reason: "edit",
+          })}
+        </Group>
         <PlantingTemplate />
         <CardSection withBorder inheritPadding py="xs">
           {[...selectedPlants.entries()].map(([id, item], index) => (
