@@ -20,10 +20,13 @@ import { useClient, useClientState } from "./context_mod_map";
 import { set } from "mongoose";
 import { PlantingTemplate } from "./PlantingTemplate";
 import PlantTemplateChip from "./PlantTemplateChip";
+import PlantEditSaveButton from "./PlantEditSaveButton";
 
 export default function PlantingToolbar() {
+  const [save, setSave] = useState(false);
   const selectedPlants = useClientState("selectedPlants");
   const selectedPlantId = useClientState("selectedPlantId");
+  const selectedPlantCellsToEdit = useClientState("selectedPlantCellsToEdit");
   const { dispatch } = useClient();
 
   // const handleKeyPress = (event) => {
@@ -34,11 +37,18 @@ export default function PlantingToolbar() {
   //         setSelectedPlantId(plant.id);
   //     }
   // };
-  const SaveEditedModules = () => {
-    dispatch({ type: "SAVE_PLANT_INPUT" });
-    console.log("Save Edited Modules");
-    return;
-  };
+  function triggerSave() {
+    setSave(true);
+  }
+  useEffect(() => {
+    async function saveData() {
+      if (save) {
+        console.log("Saving data...");
+        dispatch({ type: "SAVE_PLANT_INPUT" });
+      }
+    }
+    saveData();
+  }, [save]);
   const setSelectedPlantId = (id) => () => {
     dispatch({ type: "TOGGLE_SELECTED_PLANT", payload: id });
   };
@@ -76,7 +86,11 @@ export default function PlantingToolbar() {
         >
           Clear Selections
         </Button>
-        <Button onClick={SaveEditedModules}>Save</Button>
+        {PlantEditSaveButton({
+          plantCells: selectedPlantCellsToEdit,
+          reason: "edit",
+        })}
+        <Button onClick={setSave}>Save</Button>
 
         <PlantingTemplate />
         <CardSection withBorder inheritPadding py="xs">

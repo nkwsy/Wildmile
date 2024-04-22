@@ -112,9 +112,33 @@ export async function getIndividualPlants() {
 // Create Plants
 export async function savePlantInputs(PlantList) {
   console.log("PlantActions- savePlantInputs:", PlantList);
-  const result = await IndividualPlant.create(PlantList);
-  return JSON.stringify(result);
+
+  // Create all the plants
+  const newPlants = await Promise.all(
+    PlantList.map((plant) => IndividualPlant.create(plant))
+  );
+
+  // Then populate all the plants
+  const populatedPlants = await Promise.all(
+    newPlants.map((plant) =>
+      IndividualPlant.findById(plant._id).populate({
+        path: "module",
+        select: "x y",
+      })
+    )
+  );
+
+  return JSON.stringify(populatedPlants);
 }
+// export async function savePlantInputs(PlantList) {
+//   console.log("PlantActions- savePlantInputs:", PlantList);
+//   const result = await IndividualPlant.create(PlantList).populate({
+//     path: "module",
+//     // match: { sectionId: section._id },
+//     select: "x y",
+//   });
+//   return JSON.stringify(result);
+// }
 
 export async function removeIndividualPlants({ individualPlantIds, reason }) {
   console.log("PlantActions- removeIndividualPlants:", individualPlantIds);
@@ -127,5 +151,6 @@ export async function removeIndividualPlants({ individualPlantIds, reason }) {
     { _id: { $in: individualPlantIds } },
     { $set: { deleted: true, deleteReason: reason } }
   );
+  console.log("Removed plants:", result);
   return JSON.stringify(result);
 }
