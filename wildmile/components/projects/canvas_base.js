@@ -295,14 +295,16 @@ export const ModMapWrapper = ({ children }) => {
   useEffect(() => {
     updateSelectedPlantCellStrokeWidth();
     let cells = state.plantCells;
-    cells.forEach((cell) => {
-      if (state.selectedPlants.has(cell.plant_id)) {
-        toggleCellOn(cell);
-        // cell.rect.moveToTop();
-      } else {
-        toggleCellOff(cell);
-      }
-    });
+    if (!state.editMode) {
+      cells.forEach((cell) => {
+        if (state.selectedPlants.has(cell.plant_id)) {
+          toggleCellOn(cell);
+          // cell.rect.moveToTop();
+        } else {
+          toggleCellOff(cell);
+        }
+      });
+    }
   }, [state.selectedPlants]);
 
   // Toggle plant cell selection by clicking on cell to select
@@ -327,7 +329,7 @@ export const ModMapWrapper = ({ children }) => {
         const stroke_color = state.selectedPlantCellsToEdit.get(
           cell.location_key
         );
-        setCellOnStroke(cell, stroke_color.selectionColor);
+        // setCellOnStroke(cell, stroke_color.selectionColor);
       } else {
         toggleCellOff(cell);
       }

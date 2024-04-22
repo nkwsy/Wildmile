@@ -34,6 +34,11 @@ export default function PlantingToolbar() {
   //         setSelectedPlantId(plant.id);
   //     }
   // };
+  const SaveEditedModules = () => {
+    dispatch({ type: "SAVE_PLANT_INPUT" });
+    console.log("Save Edited Modules");
+    return;
+  };
   const setSelectedPlantId = (id) => () => {
     dispatch({ type: "TOGGLE_SELECTED_PLANT", payload: id });
   };
@@ -61,11 +66,17 @@ export default function PlantingToolbar() {
         align="flex-start"
       >
         <Button
-          onClick={() => dispatch({ type: "CLEAR_PLANT_CELL_SELECTIONS" })}
+          onClick={() =>
+            dispatch(
+              { type: "CLEAR_PLANT_CELL_SELECTIONS" },
+              dispatch({ type: "CLEAR_SELECTED_PLANT_CELLS_TO_EDIT" })
+            )
+          }
           color="yellow"
         >
           Clear Selections
         </Button>
+        <Button onClick={SaveEditedModules}>Save</Button>
 
         <PlantingTemplate />
         <CardSection withBorder inheritPadding py="xs">

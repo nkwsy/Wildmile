@@ -4,6 +4,9 @@ import { createContext, useContext, useState, useReducer } from "react";
 const ClientContext = createContext();
 export default ClientContext;
 import { getIndexColor } from "./drawing_utils";
+// import plants from "pages/api/plants";
+
+import { SaveEditedPlantCells } from "./PlantEditingFunctions";
 
 export const useClient = () => {
   const context = useContext(ClientContext);
@@ -97,6 +100,12 @@ const mapPlantCells = (state) => {
   return updatedPlantCells;
 };
 
+export function selectPlantCell(plantCell, color) {
+  const cell = plantCell.konva_object;
+  cell.strokeWidth(1);
+  cell.stroke(color);
+  cell.opacity(1);
+}
 // get the color for the index when editing
 function updatePlantsIndexColor(newPlants) {
   let index = 0;
@@ -201,6 +210,7 @@ export const plantCellReducer = (state, action) => {
       const current_plant_cells_to_edit = state.selectedPlantCellsToEdit;
       const toggle_in_edit_mode = state.editMode;
       const current_selected_plantId = state.selectedPlantId;
+      const current_selected_plants = state.selectedPlants;
       const newPlantCellsToEdit = new Map(current_plant_cells_to_edit);
       const newPlantCells = new Map(current_selected_plant_cells);
       // if in edit mode and plant selected, add to selectedPlantCellsToEdit
@@ -211,6 +221,10 @@ export const plantCellReducer = (state, action) => {
         } else {
           plantCell.new_plant_id = current_selected_plantId;
           newPlantCellsToEdit.set(key, plantCell);
+          let plant_selection = current_selected_plants.get(
+            current_selected_plantId
+          );
+          selectPlantCell(plantCell, plant_selection.selectionColor);
         }
         return { ...state, selectedPlantCellsToEdit: newPlantCellsToEdit };
       }
@@ -226,6 +240,14 @@ export const plantCellReducer = (state, action) => {
       return { ...state, selectedPlantCellsToEdit: new Map() };
     case "CLEAR_PLANT_CELL_SELECTIONS":
       return { ...state, selectedPlantCell: new Map() };
+    case "SAVE_PLANT_INPUT":
+      const selectedPlantCellsToSave = state.selectedPlantCellsToEdit;
+      const saving = SaveEditedPlantCells({
+        plantCells: selectedPlantCellsToSave,
+      });
+      console.log("Saving:", saving);
+      return { ...state, selectedPlantCellsToEdit: new Map() };
+
     case "ADD_INDIVIDUAL_PLANTS":
       const individual_plants = action.payload;
       const updatedIndividualPlants = new Map(state.individualPlants);

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const PlantSchema = new mongoose.Schema(
   {
-    scientific_name: { type: String, unique: true },
+    scientific_name: { type: String, unique: true, required: true },
     common_name: String,
     family: String,
     family_common_name: String,
