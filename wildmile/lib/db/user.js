@@ -40,9 +40,9 @@ export async function createUser({
   return user;
 }
 
-export async function findUserByEmail(email) {
+export async function findUserByEmail(user) {
   // Here you find the user based on id/email in the database
-  return await User.findOne({ email: email.toLowerCase() }, [
+  return await User.findOne({ email: user.email.toLowerCase() }, [
     // "-_id",
     "-__v",
     "-createdAt",
@@ -52,7 +52,7 @@ export async function findUserByEmail(email) {
 
 export async function updateUserByEmail(req, email, update) {
   // Updating requires the _id which we filter out of results in other places so lets
-  const user = await User.findOne({ email: email.toLowerCase() });
+  const user = await User.findOne({ email: email });
 
   if (update.email && update.email != user.email) {
     user.email = update.email;

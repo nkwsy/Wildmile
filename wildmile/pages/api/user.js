@@ -17,9 +17,9 @@ router
   .get((req, res) => {
     if (req.user) {
       console.log("user", req.user);
-      const { email, ranger, admin, profile } = req.user;
+      const { email, ranger, admin, profile, _id } = req.user;
       return res.json({
-        user: { email, ranger: ranger || false, admin, profile },
+        user: { email, ranger: ranger || false, admin, profile, _id },
       });
     }
     return res.json({});

@@ -95,6 +95,12 @@ export const PlantingTemplate = () => {
       );
       setSelectedCells(newCells);
       dispatch({ type: "SET_PLANTING_TEMPLATE", payload: newCells });
+      dispatch({ type: "MOD_LAYER_SELECTABLE", payload: true });
+    }
+    if (!selectedTemplate) {
+      setSelectedCells(new Map());
+      dispatch({ type: "SET_PLANTING_TEMPLATE", payload: new Map() });
+      dispatch({ type: "MOD_LAYER_SELECTABLE", payload: false });
     }
   }, [selectedTemplate]);
 
@@ -110,9 +116,7 @@ export const PlantingTemplate = () => {
   const UseTemplateOnModules = () => {
     dispatch({ type: "MOD_LAYER_SELECTABLE", payload: true });
   };
-  const SaveEditedModules = () => {
-    dispatch({ type: "MOD_LAYER_SELECTABLE", payload: false });
-  };
+
   const squares = [];
   for (let y = 0; y < gridSize.height; y++) {
     for (let x = 0; x < gridSize.width; x++) {
@@ -129,10 +133,6 @@ export const PlantingTemplate = () => {
   return (
     <>
       <Paper padding="md" shadow="xs" radius="md">
-        <Group>
-          <Button onClick={UseTemplateOnModules}>Deploy</Button>
-          <Button onClick={SaveEditedModules}>Save</Button>
-        </Group>
         <Select
           data={templates}
           placeholder="Select a template"

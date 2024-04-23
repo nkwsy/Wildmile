@@ -6,7 +6,7 @@ import { NextConnectOptions } from "../../config/nextconnect";
 const router = createRouter(NextConnectOptions);
 
 router.use(auth).post(passport.authenticate("local"), (req, res) => {
-  const { email, ranger, admin, user_profile } = req.user;
+  const { email, ranger, admin, user_profile, _id } = req.user;
   const profile = {
     name: "",
     website: "",
@@ -14,6 +14,7 @@ router.use(auth).post(passport.authenticate("local"), (req, res) => {
   };
   return res.json({
     user: {
+      _id,
       email,
       ranger: ranger || false,
       admin,

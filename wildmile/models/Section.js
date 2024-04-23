@@ -14,6 +14,8 @@ const SectionSchema = new mongoose.Schema(
       length: Number,
     },
     projectId: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
+    creator: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    authorizedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );

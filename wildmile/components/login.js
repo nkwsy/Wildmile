@@ -93,7 +93,7 @@ export default function Login() {
             <Text size="sm" color="red">
               {errorMsg}
             </Text>
-            <Anchor component="button" size="sm">
+            <Anchor component={Link} href="/forgot-password" size="sm">
               Forgot password?
             </Anchor>
           </Group>
