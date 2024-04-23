@@ -3,6 +3,7 @@ import { Title, Text, Container } from "@mantine/core";
 import { IconPlant2 } from "@tabler/icons-react";
 import { IconCardGrid } from "../../components/icon_card_grid";
 import classes from "/styles/card.module.css";
+import { getLoginSession } from "lib/auth";
 
 import { cookies, headers } from "next/headers";
 
@@ -44,7 +45,8 @@ export function PlantLanding() {
   );
 }
 
-export default async function Page() {
+export default async function Page(context) {
+  // const session = await getLoginSession(process.env.SECRET, );
   // const session = await getSession();
   // const userRole = session?.user?.role; // Assuming 'role' is part of the session object
   // console.log("User Role: ", userRole);
