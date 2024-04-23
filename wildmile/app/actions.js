@@ -6,8 +6,10 @@ import {
   deleteModules,
 } from "/lib/db/projects";
 
+import { getSession } from "components/getSession";
 // To Insert Modules
 export async function insertModules(formData) {
+  const session = await getSession();
   console.log("Data:", formData);
   const rawFormData = {
     model: formData.model,
@@ -21,6 +23,7 @@ export async function insertModules(formData) {
     shape: formData.shape,
     tag: formData.tag,
     tags: formData.tags,
+    creator: session.user._id,
   };
   const result = await updateOrInsertModules(rawFormData, formData.locations);
 
@@ -54,11 +57,14 @@ export const LoadMods = () => {
 // To Add or Edit Project
 //TODO Allow to Edit project
 export async function newEditProject(formData) {
+  const session = await getSession();
   console.log("newEditProject:", formData);
   const rawFormData = {
     name: formData.name,
     description: formData.description,
     notes: formData.notes,
+    creator: session.user._id,
+    // authorizedUsers: formData.authorizedUsers,
   };
   console.log("Raw Form Data:", rawFormData);
   const result = await createProject(rawFormData);
@@ -66,6 +72,7 @@ export async function newEditProject(formData) {
 }
 
 export async function newEditSection(formData) {
+  const session = await getSession();
   console.log("newEditSection:", formData);
   const rawFormData = {
     name: formData.name,
@@ -73,6 +80,8 @@ export async function newEditSection(formData) {
     notes: formData.notes,
     size: formData.size,
     project_name: formData.project_name,
+
+    creator: session.user._id,
   };
   console.log("Raw Form Data:", rawFormData);
   const result = await createSection(rawFormData);

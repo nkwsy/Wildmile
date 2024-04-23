@@ -13,6 +13,7 @@ auth
   })
   .use(
     session({
+      name: "session",
       resave: true,
       saveUninitialized: true,
       secret: process.env.TOKEN_SECRET,

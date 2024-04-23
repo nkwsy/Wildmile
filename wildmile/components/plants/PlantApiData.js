@@ -1,5 +1,5 @@
 "use server";
-import { Image, Grid, GridCol, Text } from "@mantine/core";
+import { Image, Grid, GridCol } from "@mantine/core";
 import { loadTrefleData } from "app/actions/PlantActions";
 import { getPlantByID } from "lib/db/plants";
 import classes from "/styles/PlantDetails.module.css";
@@ -20,7 +20,6 @@ export async function renderImages(imagesData) {
         alt={`Plant Image ${index + 1}`}
         className={classes.galleryImage}
       />
-      <Text>{image.key}</Text>
     </GridCol>
   ));
 }

@@ -44,7 +44,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useUser } from "lib/hooks";
 
 import { useContext, Suspense, useState, useEffect } from "react";
-import CanvasContext, { useClient } from "./context_mod_map";
+import CanvasContext, { useClient, useClientState } from "./context_mod_map";
 const ModuleForm = dynamic(() => import("components/projects/mf.js"));
 // const MultiModuleForm = dynamic(() => import("components/projects/mfs.js"));
 import MultiModuleForm from "components/projects/mfs.js";
@@ -80,8 +80,16 @@ export function sliderz() {
 }
 // switch to turn on edit mode
 function EditModeSwitch() {
-  const { editMode, setEditMode } = useContext(CanvasContext);
+  const editMode = useClientState("editMode");
+  const { dispatch } = useClient("dispatch");
+  const setEditMode = (value) => {
+    dispatch({
+      type: "SET_EDIT_MODE",
+      payload: value,
+    });
+  };
   const [user, { loading }] = useUser();
+
   if (loading) return <LoadingOverlay visible />;
   if (!user) return <Text>Please log in to edit</Text>;
   console.log("EditModeSwitch:", user.admin);
@@ -114,7 +122,7 @@ export default function ModuleToolbar() {
     setSelectedModule,
     mode,
     setMode,
-    editMode,
+    // editMode,
     setSelectedCell,
     selectedCell,
     modules,
@@ -122,6 +130,7 @@ export default function ModuleToolbar() {
     clearSelectedCells,
     returnSelectedCells,
   } = useClient(CanvasContext);
+  const editMode = useClientState("editMode");
   // const [selectedModule, setSelectedModule] = useState(null);
   // console.log("CanvasContext:", selectedModule);
 

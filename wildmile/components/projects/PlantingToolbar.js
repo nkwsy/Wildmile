@@ -13,15 +13,20 @@ import {
   Avatar,
   Indicator,
   Box,
+  Button,
 } from "@mantine/core";
+import { getIndexColor } from "./drawing_utils";
 import { useClient, useClientState } from "./context_mod_map";
 import { set } from "mongoose";
 import { PlantingTemplate } from "./PlantingTemplate";
 import PlantTemplateChip from "./PlantTemplateChip";
+import PlantEditSaveButton from "./PlantEditSaveButton";
 
 export default function PlantingToolbar() {
+  const [save, setSave] = useState(false);
   const selectedPlants = useClientState("selectedPlants");
   const selectedPlantId = useClientState("selectedPlantId");
+  const selectedPlantCellsToEdit = useClientState("selectedPlantCellsToEdit");
   const { dispatch } = useClient();
 
   // const handleKeyPress = (event) => {
@@ -32,6 +37,18 @@ export default function PlantingToolbar() {
   //         setSelectedPlantId(plant.id);
   //     }
   // };
+  function triggerSave() {
+    setSave(true);
+  }
+  useEffect(() => {
+    async function saveData() {
+      if (save) {
+        console.log("Saving data...");
+        dispatch({ type: "SAVE_PLANT_INPUT" });
+      }
+    }
+    saveData();
+  }, [save]);
   const setSelectedPlantId = (id) => () => {
     dispatch({ type: "TOGGLE_SELECTED_PLANT", payload: id });
   };
@@ -58,6 +75,23 @@ export default function PlantingToolbar() {
         justify-content="flex-start"
         align="flex-start"
       >
+        <Group>
+          <Button
+            onClick={() =>
+              dispatch(
+                { type: "CLEAR_PLANT_CELL_SELECTIONS" },
+                dispatch({ type: "CLEAR_SELECTED_PLANT_CELLS_TO_EDIT" })
+              )
+            }
+            color="yellow"
+          >
+            Clear Selections
+          </Button>
+          {PlantEditSaveButton({
+            plantCells: selectedPlantCellsToEdit,
+            reason: "edit",
+          })}
+        </Group>
         <PlantingTemplate />
         <CardSection withBorder inheritPadding py="xs">
           {[...selectedPlants.entries()].map(([id, item], index) => (
@@ -69,7 +103,15 @@ export default function PlantingToolbar() {
               value={String(index)}
               onClick={setSelectedPlantId(item.id)}
             >
-              <Indicator inline label={index + 1} size={16}>
+              <Indicator
+                color={getIndexColor(index)}
+                inline
+                withBorder
+                offset={-7}
+                label={index + 1}
+                position="middle-end"
+                size={45}
+              >
                 <Avatar src={item.image} radius="sm" size="xl" />
               </Indicator>
               {/* Chip insert for plant selection */}

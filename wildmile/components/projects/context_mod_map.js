@@ -3,6 +3,10 @@
 import { createContext, useContext, useState, useReducer } from "react";
 const ClientContext = createContext();
 export default ClientContext;
+import { getIndexColor } from "./drawing_utils";
+// import plants from "pages/api/plants";
+
+import { SaveEditedPlantCells } from "./PlantEditingFunctions";
 
 export const useClient = () => {
   const context = useContext(ClientContext);
@@ -79,6 +83,7 @@ export const generateKey = (arr) => arr.join("-");
 
 const mapPlantCells = (state) => {
   const plant_cells = state.plantCells;
+  const plants = state.plants;
   const map_individual_plants = state.individualPlants;
   const updatedPlantCells = new Map(state.plantCells);
   map_individual_plants.forEach((plant) => {
@@ -88,14 +93,37 @@ const mapPlantCells = (state) => {
       // Make sure the cell exists before trying to modify it
       cell.plant_id = plant.plant;
       cell.individual_plant_id = plant._id;
+      // cell.attrs = plants.get(plant._id).colors;
       updatedPlantCells.set(key, cell);
     }
   });
   return updatedPlantCells;
 };
 
+export function selectPlantCell(plantCell, color) {
+  const cell = plantCell.konva_object;
+  cell.strokeWidth(1);
+  cell.stroke(color);
+  cell.opacity(1);
+}
+// get the color for the index when editing
+function updatePlantsIndexColor(newPlants) {
+  let index = 0;
+  newPlants.forEach((plant, plantId) => {
+    plant.selectionColor = getIndexColor(index);
+    newPlants.set(plantId, plant);
+    index++;
+  });
+  return newPlants;
+}
 export const plantCellReducer = (state, action) => {
   switch (action.type) {
+    // Set the mode for plants
+    // options: "editPlantCells", "editPlantTemplate", "harvest"
+    case "SET_EDIT_MODE":
+      const new_mode = action.payload;
+      return { ...state, editMode: new_mode };
+
     //2: {"2,1" => Object}  key:'2,1' value: {id: 1, color: 'blue', x: 2, y: 1}
     case "SET_PLANTING_TEMPLATE":
       const planting_template = action.payload;
@@ -168,6 +196,7 @@ export const plantCellReducer = (state, action) => {
       // Create a new Map to clear the cells, side effects should be handled outside
       return { ...state, plantCells: new Map() };
 
+    // Logs plant cells which are clicked by user
     case "TOGGLE_PLANT_CELL_SELECTION":
       const plantCell = action.payload;
       const key = generateKey([
@@ -178,21 +207,46 @@ export const plantCellReducer = (state, action) => {
       ]);
 
       const current_selected_plant_cells = state.selectedPlantCell;
+      const current_plant_cells_to_edit = state.selectedPlantCellsToEdit;
+      const toggle_in_edit_mode = state.editMode;
+      const current_selected_plantId = state.selectedPlantId;
+      const current_selected_plants = state.selectedPlants;
+      const newPlantCellsToEdit = new Map(current_plant_cells_to_edit);
       const newPlantCells = new Map(current_selected_plant_cells);
+      // if in edit mode and plant selected, add to selectedPlantCellsToEdit
+      if (current_selected_plantId && toggle_in_edit_mode) {
+        if (newPlantCellsToEdit.has(key)) {
+          plantCell.new_plant_id = null;
+          newPlantCellsToEdit.delete(key);
+        } else {
+          plantCell.new_plant_id = current_selected_plantId;
+          newPlantCellsToEdit.set(key, plantCell);
+          let plant_selection = current_selected_plants.get(
+            current_selected_plantId
+          );
+          selectPlantCell(plantCell, plant_selection.selectionColor);
+        }
+        return { ...state, selectedPlantCellsToEdit: newPlantCellsToEdit };
+      }
       // Check if the key already exists
+      // The key doesn't exist, so insert the new entry
       if (newPlantCells.has(key)) {
-        // If you want to update the existing entry with new data, you can do it here.
-        // For example, to update you can uncomment the next line:
-        // newPlantCells.set(key, plantCell); // This updates the existing entry with the new plantCell data
-
-        // If you just want to remove the existing entry, keep the delete operation.
         newPlantCells.delete(key);
       } else {
-        // The key doesn't exist, so insert the new entry
         newPlantCells.set(key, plantCell);
       }
-
       return { ...state, selectedPlantCell: newPlantCells };
+    case "CLEAR_SELECTED_PLANT_CELLS_TO_EDIT":
+      return { ...state, selectedPlantCellsToEdit: new Map() };
+    case "CLEAR_PLANT_CELL_SELECTIONS":
+      return { ...state, selectedPlantCell: new Map() };
+    case "SAVE_PLANT_INPUT":
+      const selectedPlantCellsToSave = state.selectedPlantCellsToEdit;
+      const saving = SaveEditedPlantCells({
+        plantCells: selectedPlantCellsToSave,
+      });
+      console.log("Saving:", saving);
+      return { ...state, selectedPlantCellsToEdit: new Map() };
 
     case "ADD_INDIVIDUAL_PLANTS":
       const individual_plants = action.payload;
@@ -236,13 +290,17 @@ export const plantCellReducer = (state, action) => {
     //   return newCells;
     case "TOGGLE_PLANT_SELECTION":
       const plant_id = action.payload;
-      const newPlants = new Map(state.selectedPlants);
+      let newPlants = new Map(state.selectedPlants);
       if (newPlants.has(plant_id.id)) {
         newPlants.delete(plant_id.id);
       } else {
         newPlants.set(plant_id.id, plant_id);
       }
+      newPlants = updatePlantsIndexColor(newPlants);
+
       return { ...state, selectedPlants: newPlants };
+
+    // Single ID for a plant that is the focus
     case "TOGGLE_SELECTED_PLANT":
       const targetSelectedPlandId = action.payload;
       const oldSelectedPlantId = state.selectedPlantId;
@@ -250,6 +308,14 @@ export const plantCellReducer = (state, action) => {
         return { ...state, selectedPlantId: null };
       }
       return { ...state, selectedPlantId: targetSelectedPlandId };
+    case "ADD_PLANTS":
+      const plants = action.payload;
+      const updatedPlants = new Map(state.plants);
+      plants.forEach((plant) => {
+        const key = plant._id;
+        updatedPlants.set(key, plant);
+      });
+      return { ...state, plants: updatedPlants };
     case "MAP_PLANT_CELLS":
       // Now simply call the common function for MAP_PLANT_CELLS
       const updatedPlantCells = mapPlantCells(state);

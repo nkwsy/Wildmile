@@ -21,7 +21,6 @@ import useSWR from "swr";
 import { usePathname, useSearchParams } from "next/navigation";
 // import { UpdatePlants } from "./plant_map";
 
-import CellGen from "./mod_util";
 // export const CanvasContext = React.createContext();
 import CanvasContext, {
   useClientState,
@@ -30,6 +29,7 @@ import CanvasContext, {
   plantCellReducer,
 } from "./context_mod_map";
 // import Hydration from "lib/hydration";
+import CellGen from "./mod_util";
 import useStore from "/lib/store";
 import { use } from "passport";
 // import { ModuleFormModal } from "./module_form";
@@ -43,31 +43,6 @@ import dynamic from "next/dynamic";
 //     ssr: false,
 //   }
 // );
-
-import CanvasComponent from "./CanvasComponent";
-import { toggleCellFill, toggleCellOff, toggleCellOn } from "./drawing_utils";
-// const Component = () => {
-//   const { key, updateKey } = useStore();
-
-//   // Use the state and actions in your component
-// };
-
-// export function LoadMods({ newMods }) {
-//   useEffect(() => {
-//     async function fetchData() {
-//       const pathname = usePathname();
-//       const searchParams = useSearchParams("");
-//       const setModules = useContext(CanvasContext);
-//       const mods = searchParams.get("");
-//       const response = await fetch(`${pathname}/edit`);
-//       const data = await response.json();
-//       console.log("LoadMods", data);
-//       newMods(data);
-//     }
-//     newMods();
-//   }, [fetchData]);
-//   return null;
-// }
 
 export function UpdateModules({ triggerUpdate }) {
   const { setModules } = useContext(CanvasContext);
@@ -125,14 +100,16 @@ const defaultInitialState = {
   // selectedCell: new Map(),
   // cells: new Map(),
   // mode: "edit",
-  // editMode: false,
+  editMode: false,
   // plantsVisible: true,
   // modsVisible: true,
   // plants: [],
   // triggerUpdate: false,
   // layers: [],
+  plants: new Map(),
   plantCells: new Map(),
   selectedPlantCell: new Map(),
+  selectedPlantCellsToEdit: new Map(),
   selectedPlants: new Map(),
   individualPlants: new Map(),
   selectedPlantId: null,
@@ -146,6 +123,16 @@ const initializeState = (initialProps) => {
   // You can modify the initial state based on props if needed
   return { ...defaultInitialState };
 };
+
+import CanvasComponent from "./CanvasComponent";
+import {
+  setCellPlantFill,
+  toggleCellFill,
+  toggleCellOff,
+  toggleCellOn,
+  setCellOnStroke,
+} from "./drawing_utils";
+
 ///
 /// ModMapWrapper
 ///
@@ -168,7 +155,7 @@ export const ModMapWrapper = ({ children }) => {
   const [selectedPlants, setSelectedPlants] = useState([]); // Sets the exploration mode of the map
   // Modes
   const [mode, setMode] = useState("edit");
-  const [editMode, setEditMode] = useState(false);
+  // const [editMode, setEditMode] = useState(false);
   const [plantsVisible, setPlantsVisible] = useState(true);
   const [modsVisible, setModsVisible] = useState(true);
   const gridRef = useRef(null);
@@ -220,6 +207,7 @@ export const ModMapWrapper = ({ children }) => {
     if (mode === "plants") {
       moveToTop("plantCells");
       dispatch({ type: "MAP_PLANT_CELLS" });
+      // TODO integrate plants into context
       // setPlantsVisible(true);
       // setModsVisible(false);
     }
@@ -307,14 +295,16 @@ export const ModMapWrapper = ({ children }) => {
   useEffect(() => {
     updateSelectedPlantCellStrokeWidth();
     let cells = state.plantCells;
-    cells.forEach((cell) => {
-      if (state.selectedPlants.has(cell.plant_id)) {
-        toggleCellOn(cell);
-        // cell.rect.moveToTop();
-      } else {
-        toggleCellOff(cell);
-      }
-    });
+    if (!state.editMode) {
+      cells.forEach((cell) => {
+        if (state.selectedPlants.has(cell.plant_id)) {
+          toggleCellOn(cell);
+          // cell.rect.moveToTop();
+        } else {
+          toggleCellOff(cell);
+        }
+      });
+    }
   }, [state.selectedPlants]);
 
   // Toggle plant cell selection by clicking on cell to select
@@ -331,6 +321,38 @@ export const ModMapWrapper = ({ children }) => {
     });
   }, [state.selectedPlantCell]);
 
+  // Toggle plant Cell Selection in edit mode
+  useEffect(() => {
+    let cells = state.plantCells;
+    cells.forEach((cell) => {
+      if (state.selectedPlantCellsToEdit.has(cell.location_key)) {
+        const stroke_color = state.selectedPlantCellsToEdit.get(
+          cell.location_key
+        );
+        // setCellOnStroke(cell, stroke_color.selectionColor);
+      } else {
+        toggleCellOff(cell);
+      }
+    });
+  }, [state.selectedPlantCellsToEdit]);
+
+  // state.selectedPlantCellsToEdit.forEach((stroke_color, location_key) => {
+  //     const cell = state.plantCells.find((cell) => cell.location_key === location_key);
+  //     if (cell) {
+  //       setCellOnStroke(cell, stroke_color.selectionColor);
+  //     }
+  // update cell colors
+  useEffect(() => {
+    let cells = state.plantCells;
+    let use_plants = state.plants;
+    cells.forEach((cell) => {
+      let plant_data = use_plants.get(cell.plant_id);
+      if (plant_data) {
+        setCellPlantFill(cell, plant_data);
+      }
+    });
+    // moveToTop("plantCells");
+  }, [state.individualPlants]);
   // const updateSelectedPlantCellStrokeWidth = (key, plantCell) => {
   //   if (state.selectedPlantCell.has(key)) {
   //     toggleCellOff(plantCell);
@@ -391,8 +413,8 @@ export const ModMapWrapper = ({ children }) => {
     setCells,
     mode,
     setMode,
-    editMode,
-    setEditMode,
+    // editMode,
+    // setEditMode,
     isCellSelected,
     clearSelectedCells,
     triggerUpdate,
@@ -446,8 +468,8 @@ export const CanvasBase = ({ children, width, height }) => {
     setCells,
     mode,
     setMode,
-    editMode,
-    setEditMode,
+    // editMode,
+    // setEditMode,
     isCellSelected,
     clearSelectedCells,
     triggerUpdate,
@@ -573,8 +595,8 @@ export const CanvasBase = ({ children, width, height }) => {
     clearSelectedCells,
     mode,
     setMode,
-    editMode,
-    setEditMode,
+    // editMode,
+    // setEditMode,
     isCellSelected,
     triggerUpdate,
     handleSomeUpdate,

@@ -98,7 +98,9 @@ export default function PlantMainSection({ plant }) {
           {plant.notes && <Text className={classes.notes}>{plant.notes}</Text>}
 
           <Group spacing="xs">
-            {plant.family && <Badge>{plant.family}</Badge>}
+            {plant.family && (
+              <Badge color={plant.color.family}>{plant.family}</Badge>
+            )}
             {plant.family_common_name && (
               <Badge>{plant.family_common_name}</Badge>
             )}

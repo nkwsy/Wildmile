@@ -14,6 +14,7 @@ const individualPlantSchema = Schema(
   },
   { timestamps: true }
 );
+individualPlantSchema.index({ x: 1, y: 1, module: 1 }, { unique: true });
 
 individualPlantSchema.plugin(mongoose_delete, { overrideMethods: "all" });
 export default mongoose.models.IndividualPlant ||

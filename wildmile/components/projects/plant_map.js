@@ -45,6 +45,12 @@ export function UpdateIndividualPlants({ triggerUpdate }) {
 
 export function GetAllPlants({ triggerUpdate }) {
   const { setPlants } = useContext(CanvasContext);
+  const { dispatch } = useClient();
+  const setPlantsToUse = (data) => {
+    dispatch({ type: "ADD_PLANTS", payload: data });
+    setPlants(data);
+  };
+
   //   const router = useRouter();
   //   const params = useParams();
   const pathname = usePathname();
@@ -63,7 +69,7 @@ export function GetAllPlants({ triggerUpdate }) {
       // Simulate fetching data
       const data = JSON.parse(raw_response);
       // Call oleetModules or similar function to update the state
-      setPlants(data);
+      setPlantsToUse(data);
     }
 
     fetchData();
