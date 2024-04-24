@@ -1,6 +1,6 @@
 import { getLoginSession } from "lib/auth";
 import { cookies, headers } from "next/headers";
-import User from "models/user";
+import User from "models/User";
 
 export async function getSession() {
   const cookieStore = cookies();
