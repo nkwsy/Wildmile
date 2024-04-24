@@ -32,7 +32,6 @@ export async function createUser({
     password: password,
     profile: {
       name: name,
-      website: website,
       location: location,
       picture: picture,
     },
@@ -40,9 +39,11 @@ export async function createUser({
   return user;
 }
 
-export async function findUserByEmail(user) {
+export async function findUserByEmail(email) {
+  console.log("findUserByEmail", email);
+
   // Here you find the user based on id/email in the database
-  return await User.findOne({ email: user.email.toLowerCase() }, [
+  return await User.findOne({ email: email.toLowerCase() }, [
     // "-_id",
     "-__v",
     "-createdAt",
@@ -64,7 +65,6 @@ export async function updateUserByEmail(req, email, update) {
     // Not all users have default values set so at least have empty values rather than null ones
     const profile_props = {
       name: "",
-      website: "",
       location: "",
       picture: "",
     };

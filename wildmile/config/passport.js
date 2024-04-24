@@ -3,7 +3,7 @@ import LocalStrategy from "passport-local";
 import { findUserByEmail } from "../lib/db/user";
 
 passport.serializeUser((user, done) => {
-  done(null, { email: user.email, _id: user._id });
+  done(null, user.email);
 });
 
 passport.deserializeUser(function (email, done) {

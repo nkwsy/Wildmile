@@ -9,7 +9,6 @@ router.use(auth).post(passport.authenticate("local"), (req, res) => {
   const { email, ranger, admin, user_profile, _id } = req.user;
   const profile = {
     name: "",
-    website: "",
     location: "",
   };
   return res.json({

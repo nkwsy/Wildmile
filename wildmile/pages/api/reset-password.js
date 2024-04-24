@@ -9,21 +9,22 @@ const router = createRouter(NextConnectOptions);
 router.post(async (req, res) => {
   const { token, password } = req.body;
   const user = await User.findOne({
-    resetPasswordToken: token,
-    resetPasswordExpires: { $gt: Date.now() },
+    passwordResetToken: token,
+    passwordResetExpires: { $gt: Date.now() },
   });
-
   if (!user) {
     return res
       .status(400)
       .json({ message: "Password reset token is invalid or has expired." });
   }
 
-  user.password = password; // Ensure password is hashed according to your user model's specifications
-  user.resetPasswordToken = undefined;
-  user.resetPasswordExpires = undefined;
+  console.log("user", user);
+  user.password = password;
+  user.markModified("password"); // Add this line
+  user.passwordResetToken = null;
+  user.passwordResetExpires = null;
+  console.log("user", user);
   await user.save();
-
   res.json({ message: "Your password has been changed successfully." });
 });
 
