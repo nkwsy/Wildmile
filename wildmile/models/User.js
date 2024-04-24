@@ -18,7 +18,6 @@ const UserSchema = new mongoose.Schema(
       location: String,
       zipcode: String,
       phone: String,
-      website: String,
       picture: Buffer,
     },
   },

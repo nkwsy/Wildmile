@@ -3,6 +3,7 @@ import Plant from "models/Plant";
 import IndividualPlant from "models/IndividualPlant";
 import { getAllPlants } from "lib/db/plants";
 
+import { getSession } from "components/getSession";
 export async function PlantHandler() {
   try {
     const result = await getAllPlants();

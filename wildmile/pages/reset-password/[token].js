@@ -71,10 +71,7 @@ export default function ResetPassword() {
           </form>
         ) : (
           <Group position="center" mt="md">
-            Password successfully changed.{" "}
-            <Link href="/login">
-              <a>Log in</a>
-            </Link>
+            Password successfully changed. <Link href="/login">Log in</Link>
           </Group>
         )}
       </Paper>
