@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
-
+import PlantImageUpload from "./PlantImageUpload";
 import { updatePlant, updatePlantFamily } from "/app/actions/PlantActions";
 
 const default_swatches = [
@@ -62,54 +62,60 @@ const PlantEditForm = ({ plant, onSave, onCancel }) => {
   };
 
   return (
-    <form onSubmit={form.onSubmit((values) => updatePlantOnClick(values))}>
-      <Group>
-        <TextInput label="Common Name" {...form.getInputProps("commonName")} />
-        <TextInput
-          label="Scientific Name"
-          {...form.getInputProps("scientificName")}
-        />
-        <TextInput
-          label="Family"
-          description="Changes all plants in this family"
-          {...form.getInputProps("family")}
-        />
-        <TagsInput
-          label="Press Enter to submit a tag"
-          placeholder="Enter tag"
-          {...form.getInputProps("tags")}
-        />
-      </Group>
-      <Textarea label="Notes" {...form.getInputProps("notes")} />
-      <Group>
-        <ColorInput
-          label="Main Color"
-          format="hex"
-          swatches={default_swatches}
-          {...form.getInputProps("color.main")}
-        />
-        <ColorInput
-          label="Accent Color"
-          format="hex"
-          swatches={default_swatches}
-          {...form.getInputProps("color.accent")}
-        />
-        <ColorInput
-          label="Family Color"
-          format="hex"
-          swatches={default_swatches}
-          {...form.getInputProps("color.family")}
-        />
-      </Group>
-      <Group position="right" mt="md">
-        <Button type="submit" loading={loading}>
-          Save Changes
-        </Button>
-        <Button variant="outline" onClick={onCancel}>
-          Close
-        </Button>
-      </Group>
-    </form>
+    <>
+      <form onSubmit={form.onSubmit((values) => updatePlantOnClick(values))}>
+        <Group>
+          <TextInput
+            label="Common Name"
+            {...form.getInputProps("commonName")}
+          />
+          <TextInput
+            label="Scientific Name"
+            {...form.getInputProps("scientificName")}
+          />
+          <TextInput
+            label="Family"
+            description="Changes all plants in this family"
+            {...form.getInputProps("family")}
+          />
+          <TagsInput
+            label="Press Enter to submit a tag"
+            placeholder="Enter tag"
+            {...form.getInputProps("tags")}
+          />
+        </Group>
+        <Textarea label="Notes" {...form.getInputProps("notes")} />
+        <Group>
+          <ColorInput
+            label="Main Color"
+            format="hex"
+            swatches={default_swatches}
+            {...form.getInputProps("color.main")}
+          />
+          <ColorInput
+            label="Accent Color"
+            format="hex"
+            swatches={default_swatches}
+            {...form.getInputProps("color.accent")}
+          />
+          <ColorInput
+            label="Family Color"
+            format="hex"
+            swatches={default_swatches}
+            {...form.getInputProps("color.family")}
+          />
+        </Group>
+        <Group position="right" mt="md">
+          <Button type="submit" loading={loading}>
+            Save Changes
+          </Button>
+          <Button variant="outline" onClick={onCancel}>
+            Close
+          </Button>
+        </Group>
+      </form>
+      {/* <PlantImageUpload /> */}
+    </>
   );
 };
 
