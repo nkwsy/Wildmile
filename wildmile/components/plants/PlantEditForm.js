@@ -114,7 +114,7 @@ const PlantEditForm = ({ plant, onSave, onCancel }) => {
           </Button>
         </Group>
       </form>
-      {/* <PlantImageUpload /> */}
+      <PlantImageUpload />
     </>
   );
 };

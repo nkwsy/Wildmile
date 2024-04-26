@@ -1,5 +1,15 @@
 import mongoose from "mongoose";
 
+const ImageSchema = new mongoose.Schema({
+  url: String,
+  tags: { type: Array, default: [], required: false }, //flower, fruit, leaf, bark, habit, other, seed, root, stem, whole, drawing
+  description: String,
+  quality: { type: Number, min: 1, max: 5, default: 3 }, // Quality rating 1-5
+  original: Boolean,
+  copyright: String,
+  metadata: Object,
+});
+
 const PlantSchema = new mongoose.Schema(
   {
     scientific_name: { type: String, unique: true, required: true },
@@ -19,12 +29,13 @@ const PlantSchema = new mongoose.Schema(
       family: { type: String, default: "" },
       swatches: { type: Array, default: [] },
     },
+    images: [ImageSchema],
+    tags: Array,
   },
   { timestamps: true }
 );
 
 export default mongoose.models.Plant || mongoose.model("Plant", PlantSchema);
-
 // Basing off of https://docs.trefle.io/docs/advanced/plants-fields
 // image tag options: flower, fruit, leaf, bark, habit, other, seed, root, stem, whole, drawing
 
@@ -41,17 +52,17 @@ export default mongoose.models.Plant || mongoose.model("Plant", PlantSchema);
 //     notes: String,
 //     image_url: String,
 //     thumbnail: String,
-//     images: [
-//       {
-//         url: String,
-//         tags: { type: Array, default: [], required: false },
-//         description: String,
-//         quality: { type: Number, default: 3 },
-//         original: Boolean,
-//         copyright: String,
-//         metadata: Object,
-//       },
-//     ],
+// images: [
+//   {
+//     url: String,
+//     tags: { type: Array, default: [], required: false },
+//     description: String,
+//     quality: { type: Number, default: 3 },
+//     original: Boolean,
+//     copyright: String,
+//     metadata: Object,
+//   },
+// ],
 //     tags: Array,
 //     foliage: { texture: String, color: Array, leaf_retention: Boolean },
 //     flower: { color: Array, conspicuous: Boolean },
