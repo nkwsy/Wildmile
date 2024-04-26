@@ -3,7 +3,7 @@ import { Image, Grid, GridCol, Text } from "@mantine/core";
 import { loadTrefleData } from "app/actions/PlantActions";
 import { getPlantByID } from "lib/db/plants";
 import classes from "/styles/PlantDetails.module.css";
-import PlantInfoModal from "./PlantInfoModal";
+// import PlantInfoModal from "./PlantInfoModal";
 export async function renderImages(imagesData) {
   // Flatten the images object into an array of image objects
   console.log("Images Data:", imagesData);
@@ -53,7 +53,7 @@ export default async function PlantImageSection({ plantId }) {
   console.log("Trefle Data:", trefleData.images);
   return (
     <>
-      <PlantInfoModal plantData={trefleData} />
+      {/* <PlantInfoModal plantData={trefleData} /> */}
       <Grid>{renderImages(trefleData.images)}</Grid>
     </>
   );
