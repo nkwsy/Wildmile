@@ -2,7 +2,8 @@
 import Plant from "models/Plant";
 import IndividualPlant from "models/IndividualPlant";
 import { getAllPlants } from "lib/db/plants";
-
+import { S3Client } from "@aws-sdk/client-s3";
+import { uploadFile } from "./UploadActions";
 import { getSession } from "components/getSession";
 export async function PlantHandler() {
   try {
@@ -155,3 +156,32 @@ export async function removeIndividualPlants({ individualPlantIds, reason }) {
   console.log("Removed plants:", result);
   return JSON.stringify(result);
 }
+
+// S3 Config
+const s3Config = {
+  bucketName: process.env.AWS_BUCKET_NAME,
+  region: process.env.AWS_REGION,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+};
+
+export const UploadPlantImage = async (formData) => {
+  // console.log("UploadPlantImage:", formData);
+
+  try {
+    const res = uploadFile(formData);
+
+    // const file = formData.get("file");
+    // const folderName = "plants/";
+    // const s3 = new S3Client({
+    //   ...s3Config,
+    //   dirName: folderName,
+    // });
+    // const fileBuffer = Buffer.from(await file.arrayBuffer());
+    // const res = await s3.uploadFile(fileBuffer);
+    console.log("UploadPlantImage:", res);
+    return res;
+  } catch (e) {
+    return "Image Upload failed";
+  }
+};
