@@ -11,12 +11,13 @@ import {
   Group,
   Modal,
 } from "@mantine/core";
-import { UploadPlantImage } from "app/actions/PlantActions";
+import { CreatePlantImage } from "app/actions/PlantActions";
 
-export default function PlantImageUpload() {
+export default function PlantImageUpload({ plantId }) {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [fields, setFields] = useState({
+    url: "",
     description: "",
     quality: 3,
     isOriginal: false,
@@ -28,7 +29,7 @@ export default function PlantImageUpload() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!file) {
+    if (!file && !fields.url) {
       alert("Please select a file to upload.");
       return;
     }
@@ -36,15 +37,17 @@ export default function PlantImageUpload() {
     setUploading(true);
 
     const formData = new FormData();
+    formData.append("plantId", plantId);
     formData.append("file", file);
+    formData.append("url", fields.url);
     formData.append("description", fields.description);
-    formData.append("quality", fields.quality.toString());
-    formData.append("isOriginal", fields.isOriginal.toString());
-    formData.append("isMainImage", fields.isMainImage.toString());
-    formData.append("imageSubject", fields.imageSubject.join(", "));
+    formData.append("quality", fields.quality);
+    formData.append("isOriginal", String(fields.isOriginal));
+    formData.append("isMainImage", String(fields.isMainImage));
+    formData.append("imageSubject", fields.imageSubject);
 
-    const data = await UploadPlantImage(formData);
-    console.log(data);
+    const data = await CreatePlantImage(formData);
+    console.log("upload data", data);
 
     setUploading(false);
     close();
@@ -54,9 +57,18 @@ export default function PlantImageUpload() {
     <>
       <Modal opened={opened} onClose={close} title="Upload an Image" size="lg">
         <form onSubmit={handleSubmit}>
-          <FileButton onChange={setFile} accept="image/png, image/jpeg">
-            {(props) => <Button {...props}>Select image</Button>}
-          </FileButton>
+          <Group position="right" mt="md">
+            <FileButton onChange={setFile} accept="image/png, image/jpeg">
+              {(props) => <Button {...props}>Select image</Button>}
+            </FileButton>
+            or
+            <TextInput
+              placeholder="Paste image URL"
+              onChange={(value) =>
+                setFields((prev) => ({ ...prev, url: value }))
+              }
+            />
+          </Group>
           <MultiSelect
             label="Image Subject"
             description="Limit selections to the most relevant (usually only 1)."
@@ -90,37 +102,39 @@ export default function PlantImageUpload() {
               }))
             }
           />
-          <NumberInput
-            label="Image Quality"
-            description="1-5 on how good this image is."
-            defaultValue={3}
-            min={1}
-            max={5}
-            value={fields.quality}
-            onChange={(value) =>
-              setFields((prev) => ({ ...prev, quality: value }))
-            }
-          />
-          <Checkbox
-            label="Original"
-            checked={fields.isOriginal}
-            onChange={(event) =>
-              setFields((prev) => ({
-                ...prev,
-                isOriginal: event.currentTarget.checked,
-              }))
-            }
-          />
-          <Checkbox
-            label="Make Main Image"
-            checked={fields.isMainImage}
-            onChange={(event) =>
-              setFields((prev) => ({
-                ...prev,
-                isMainImage: event.currentTarget.checked,
-              }))
-            }
-          />
+          <Group spacing="md">
+            <NumberInput
+              label="Image Quality"
+              description="1-5 on how good this image is."
+              defaultValue={3}
+              min={1}
+              max={5}
+              value={fields.quality}
+              onChange={(value) =>
+                setFields((prev) => ({ ...prev, quality: value }))
+              }
+            />
+            <Checkbox
+              label="Original"
+              checked={fields.isOriginal}
+              onChange={(event) =>
+                setFields((prev) => ({
+                  ...prev,
+                  isOriginal: event.target.checked,
+                }))
+              }
+            />
+            <Checkbox
+              label="Make Main Image"
+              checked={fields.isMainImage}
+              onChange={(event) =>
+                setFields((prev) => ({
+                  ...prev,
+                  isMainImage: event.target.checked,
+                }))
+              }
+            />
+          </Group>
           <Group position="right" mt="md">
             <Button type="submit" disabled={uploading}>
               Upload

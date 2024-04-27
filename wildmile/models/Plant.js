@@ -1,14 +1,19 @@
+// "use server";
 import mongoose from "mongoose";
 
-const ImageSchema = new mongoose.Schema({
-  url: String,
-  tags: { type: Array, default: [], required: false }, //flower, fruit, leaf, bark, habit, other, seed, root, stem, whole, drawing
-  description: String,
-  quality: { type: Number, min: 1, max: 5, default: 3 }, // Quality rating 1-5
-  original: Boolean,
-  copyright: String,
-  metadata: Object,
-});
+const PlantImageSchema = new mongoose.Schema(
+  {
+    url: { type: String, default: "" },
+    tags: { type: Array, default: [] },
+    description: { type: String, required: false },
+    quality: { type: Number, min: 1, max: 5, default: 3 },
+    original: { type: Boolean, default: false },
+  }
+  // { _id: false }
+);
+// copyright: String,
+// metadata: Object,
+// });
 
 const PlantSchema = new mongoose.Schema(
   {
@@ -23,14 +28,24 @@ const PlantSchema = new mongoose.Schema(
     synonyms: Array,
     year: Number,
     links: Object,
+    thumbnail: String,
     color: {
       main: { type: String, default: "" },
       accent: { type: String, default: "" },
       family: { type: String, default: "" },
       swatches: { type: Array, default: [] },
     },
-    images: [ImageSchema],
-    tags: Array,
+    pics: [PlantImageSchema],
+    images: [
+      {
+        url: { type: String, default: "" },
+        tags: { type: Array, default: [] },
+        description: { type: String, required: false },
+        quality: { type: Number, min: 1, max: 5, default: 3 },
+        original: { type: Boolean, default: false },
+      },
+    ],
+    // tags: Array,
   },
   { timestamps: true }
 );
@@ -38,6 +53,7 @@ const PlantSchema = new mongoose.Schema(
 export default mongoose.models.Plant || mongoose.model("Plant", PlantSchema);
 // Basing off of https://docs.trefle.io/docs/advanced/plants-fields
 // image tag options: flower, fruit, leaf, bark, habit, other, seed, root, stem, whole, drawing
+// Other tag options for lifecycle stages: seedling, juvenile, budding, flowering, fruiting, seeding, dormant
 
 // import mongoose from "mongoose";
 

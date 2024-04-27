@@ -1,10 +1,13 @@
 "use server";
+import { revalidatePath } from "next/cache";
+import { ObjectId } from "mongodb"; // Or the equivalent from mongoose if using that.
+
 import Plant from "models/Plant";
 import IndividualPlant from "models/IndividualPlant";
 import { getAllPlants } from "lib/db/plants";
-import { S3Client } from "@aws-sdk/client-s3";
-import { uploadFile } from "./UploadActions";
+import { uploadFile, uploadFileToS3 } from "./UploadActions";
 import { getSession } from "components/getSession";
+import sharp from "sharp";
 export async function PlantHandler() {
   try {
     const result = await getAllPlants();
@@ -82,13 +85,12 @@ export async function updatePlantFamily(family, color) {
 
 // Load Plant data from Trefle API
 export async function loadTrefleData(link) {
-  console.log("Link load trefle data:", link);
+  // console.log("Link load trefle data:", link);
   try {
     const response = await fetch(
       `https://trefle.io${link}?token=${process.env.TREFLE_API_KEY}`
     );
     const data = await response.json();
-    console.log("Data:", data.data);
     return data.data;
   } catch (error) {
     console.error("Error loading Trefle data:", error);
@@ -157,31 +159,97 @@ export async function removeIndividualPlants({ individualPlantIds, reason }) {
   return JSON.stringify(result);
 }
 
-// S3 Config
-const s3Config = {
-  bucketName: process.env.AWS_BUCKET_NAME,
-  region: process.env.AWS_REGION,
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-};
+// Generate 4x3 thumbnail
+export async function generateThumbnail(file) {
+  const folderName = "plants/botanic_photo/4x3";
+  const fileName = `${file.name}`;
+  console.log("Generate Thumbnail:", file);
+  const fileBuffer = Buffer.from(await file.arrayBuffer());
 
-export const UploadPlantImage = async (formData) => {
-  // console.log("UploadPlantImage:", formData);
+  const resizedBuffer = await sharp(fileBuffer)
+    .jpeg({ quality: 90 })
+    .resize({
+      width: 560,
+      height: 420,
+      fit: sharp.fit.cover,
+      position: sharp.strategy.entropy,
+    })
+    .toBuffer();
+  const res = await uploadFileToS3(resizedBuffer, fileName, folderName);
+  return res;
+}
 
+// Add Plant Image to images array
+export async function CreatePlantImage(formData) {
+  console.log("CreatePlantImage:", formData);
   try {
-    const res = uploadFile(formData);
+    const fields = {
+      file: formData.get("file"),
+      url: formData.get("url"),
+      description: formData.get("description"),
+      quality: formData.get("quality"),
+      isOriginal: formData.get("isOriginal"),
+      isMainImage: formData.get("isMainImage"),
+      imageSubject: formData.get("imageSubject"),
+    };
+    let plant = Plant.findById(new ObjectId(fields.plantId));
+    console.log("Plant:", plant);
+    if (fields.file) {
+      const imageUrl = await UploadPlantImage(formData);
+      fields.url = imageUrl;
+    }
+    if (fields.isMainImage) {
+      const newThumbnail = await generateThumbnail(fields.file);
+      const updatedThumb = await Plant.findByIdAndUpdate(
+        fields.plantId,
+        {
+          thumbnail: newThumbnail,
+        },
+        { new: true }
+      );
+      console.log("Updated Thumbnail:", updatedThumb);
+    }
+    if (!fields.url || fields.url === "") {
+      return "Add image or URL";
+    }
+    const data = {
+      url: fields.url,
+      tags: fields.imageSubject.split(", "),
+      description: fields.description,
+      quality: parseInt(fields.quality),
+      original: fields.isOriginal === "true" ? true : false,
+    };
+    console.log("Data:", data);
+    await Plant.findOneAndUpdate(
+      { _id: fields.plantId },
+      { $push: { pics: data } },
+      { new: true }
+    );
+    // console.log("Updated Plant:", updatedPlant);
+    // revalidatePath("/");
 
-    // const file = formData.get("file");
-    // const folderName = "plants/";
-    // const s3 = new S3Client({
-    //   ...s3Config,
-    //   dirName: folderName,
-    // });
-    // const fileBuffer = Buffer.from(await file.arrayBuffer());
-    // const res = await s3.uploadFile(fileBuffer);
+    return "updatePlant";
+  } catch (error) {
+    console.error("Error uploading to database:", error);
+    return "Upload failed";
+  }
+}
+
+// Upload Plant Image to S3
+export const UploadPlantImage = async (formData) => {
+  const timestamp = Date.now();
+  try {
+    // const res = uploadFile(formData);
+    console.log("UploadPlantImage:");
+    const file = formData.get("file");
+    const folderName = "plants/images";
+    const fileName = `${timestamp}_${file.name}`;
+    const fileBuffer = Buffer.from(await file.arrayBuffer());
+    const res = await uploadFileToS3(fileBuffer, fileName, folderName);
     console.log("UploadPlantImage:", res);
     return res;
   } catch (e) {
+    console.error("Error uploading file:", e);
     return "Image Upload failed";
   }
 };

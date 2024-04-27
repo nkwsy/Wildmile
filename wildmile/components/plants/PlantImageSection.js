@@ -6,7 +6,6 @@ import classes from "/styles/PlantDetails.module.css";
 // import PlantInfoModal from "./PlantInfoModal";
 export async function renderImages(imagesData) {
   // Flatten the images object into an array of image objects
-  console.log("Images Data:", imagesData);
 
   const allImages = Object.entries(imagesData).flatMap(([section, images]) =>
     images.map((image) => ({ ...image, section }))
@@ -50,7 +49,7 @@ export default async function PlantImageSection({ plantId }) {
   if (!plant) return null;
   if (!plant.links) return null;
   const trefleData = await loadTrefleData(plant.links.self);
-  console.log("Trefle Data:", trefleData.images);
+  // console.log("Trefle Data:", trefleData.images);
   return (
     <>
       {/* <PlantInfoModal plantData={trefleData} /> */}
