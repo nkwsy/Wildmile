@@ -18,6 +18,7 @@ import {
 } from "@mantine/core";
 import classes from "/styles/PlantDetails.module.css"; // Adjust the path to your CSS module
 import PlantEditForm from "./PlantEditForm"; // Adjust the import path as needed
+import PlantImageUpload from "./PlantImageUpload"; // Adjust the import path as needed
 import { useUser } from "lib/hooks";
 
 export function PlantEditMode({ plant }) {
@@ -56,7 +57,11 @@ export function PlantEditMode({ plant }) {
             <>
               {/* Ensure the button is only shown when user data is fully loaded and user is an admin */}
               {user && user.admin && (
-                <Button onClick={() => setEditMode(true)}>Edit</Button>
+                <>
+                  <Button onClick={() => setEditMode(true)}>Edit</Button>
+
+                  <PlantImageUpload plantId={plant._id} />
+                </>
               )}
             </>
           )}

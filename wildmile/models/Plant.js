@@ -1,4 +1,19 @@
+// "use server";
 import mongoose from "mongoose";
+
+const PlantImageSchema = new mongoose.Schema(
+  {
+    url: { type: String, default: "" },
+    tags: { type: Array, default: [] },
+    description: { type: String, required: false, default: "" },
+    quality: { type: Number, min: 1, max: 5, default: 3 },
+    original: { type: Boolean, default: false },
+  }
+  // { _id: false }
+);
+// copyright: String,
+// metadata: Object,
+// });
 
 const PlantSchema = new mongoose.Schema(
   {
@@ -13,20 +28,34 @@ const PlantSchema = new mongoose.Schema(
     synonyms: Array,
     year: Number,
     links: Object,
+    thumbnail: String,
     color: {
       main: { type: String, default: "" },
       accent: { type: String, default: "" },
       family: { type: String, default: "" },
       swatches: { type: Array, default: [] },
     },
+    // pics: [PlantImageSchema],
+    images: { type: [PlantImageSchema], default: [] },
+
+    // images: [
+    //   {
+    //     url: { type: String, default: "" },
+    //     tags: { type: Array, default: [] },
+    //     description: { type: String, required: false },
+    //     // quality: { type: Number, min: 1, max: 5, default: 3 },
+    //     // original: { type: Boolean, default: false },
+    //   },
+    // ],
+    tags: Array,
   },
   { timestamps: true }
 );
 
 export default mongoose.models.Plant || mongoose.model("Plant", PlantSchema);
-
 // Basing off of https://docs.trefle.io/docs/advanced/plants-fields
 // image tag options: flower, fruit, leaf, bark, habit, other, seed, root, stem, whole, drawing
+// Other tag options for lifecycle stages: seedling, juvenile, budding, flowering, fruiting, seeding, dormant
 
 // import mongoose from "mongoose";
 
@@ -41,17 +70,17 @@ export default mongoose.models.Plant || mongoose.model("Plant", PlantSchema);
 //     notes: String,
 //     image_url: String,
 //     thumbnail: String,
-//     images: [
-//       {
-//         url: String,
-//         tags: { type: Array, default: [], required: false },
-//         description: String,
-//         quality: { type: Number, default: 3 },
-//         original: Boolean,
-//         copyright: String,
-//         metadata: Object,
-//       },
-//     ],
+// images: [
+//   {
+//     url: String,
+//     tags: { type: Array, default: [], required: false },
+//     description: String,
+//     quality: { type: Number, default: 3 },
+//     original: Boolean,
+//     copyright: String,
+//     metadata: Object,
+//   },
+// ],
 //     tags: Array,
 //     foliage: { texture: String, color: Array, leaf_retention: Boolean },
 //     flower: { color: Array, conspicuous: Boolean },

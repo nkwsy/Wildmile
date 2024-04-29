@@ -24,9 +24,10 @@ export async function getPlant(id) {
 
   /* find all the data in our database */
   const result = await Plant.findOne({ _id: id }, ["-createdAt", "-updatedAt"]);
-  const plant = result;
-  console.log("Plant:", result);
-
+  // const plant = result;
+  // console.log("Plant:", result);
+  const plant = result.toObject();
+  delete plant.__v;
   // plant._id = String(plant._id);
   return plant;
 }
