@@ -30,7 +30,7 @@ export default function PlantImageUpload({ plantId }) {
     e.preventDefault();
 
     if (!file && !fields.url) {
-      alert("Please select a file to upload.");
+      alert("Please select a file to upload or enter an image URL.");
       return;
     }
 
@@ -39,15 +39,21 @@ export default function PlantImageUpload({ plantId }) {
     const formData = new FormData();
     formData.append("plantId", plantId);
     formData.append("file", file);
-    formData.append("url", fields.url);
+    // formData.append("url", fields.url); // if URL is provided, use that. Does not currently work with uploading to S3
     formData.append("description", fields.description);
     formData.append("quality", fields.quality);
-    formData.append("isOriginal", String(fields.isOriginal));
-    formData.append("isMainImage", String(fields.isMainImage));
-    formData.append("imageSubject", fields.imageSubject);
+    formData.append("isOriginal", fields.isOriginal);
+    formData.append("isMainImage", fields.isMainImage);
+    formData.append("imageSubject", fields.imageSubject.join(","));
 
-    const data = await CreatePlantImage(formData);
-    console.log("upload data", data);
+    // Assuming CreatePlantImage is a function that handles the API request
+    try {
+      const response = await CreatePlantImage(formData);
+      console.log("Upload data", response);
+    } catch (error) {
+      console.error("Failed to upload image", error);
+      alert("Failed to upload image.");
+    }
 
     setUploading(false);
     close();
@@ -57,17 +63,18 @@ export default function PlantImageUpload({ plantId }) {
     <>
       <Modal opened={opened} onClose={close} title="Upload an Image" size="lg">
         <form onSubmit={handleSubmit}>
+          {/* <form action={CreatePlantImage}> */}
           <Group position="right" mt="md">
             <FileButton onChange={setFile} accept="image/png, image/jpeg">
               {(props) => <Button {...props}>Select image</Button>}
             </FileButton>
-            or
+            {/* or
             <TextInput
               placeholder="Paste image URL"
               onChange={(value) =>
                 setFields((prev) => ({ ...prev, url: value }))
               }
-            />
+            /> */}
           </Group>
           <MultiSelect
             label="Image Subject"

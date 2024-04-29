@@ -5,7 +5,7 @@ const PlantImageSchema = new mongoose.Schema(
   {
     url: { type: String, default: "" },
     tags: { type: Array, default: [] },
-    description: { type: String, required: false },
+    description: { type: String, required: false, default: "" },
     quality: { type: Number, min: 1, max: 5, default: 3 },
     original: { type: Boolean, default: false },
   }
@@ -35,17 +35,19 @@ const PlantSchema = new mongoose.Schema(
       family: { type: String, default: "" },
       swatches: { type: Array, default: [] },
     },
-    pics: [PlantImageSchema],
-    images: [
-      {
-        url: { type: String, default: "" },
-        tags: { type: Array, default: [] },
-        description: { type: String, required: false },
-        quality: { type: Number, min: 1, max: 5, default: 3 },
-        original: { type: Boolean, default: false },
-      },
-    ],
-    // tags: Array,
+    // pics: [PlantImageSchema],
+    images: { type: [PlantImageSchema], default: [] },
+
+    // images: [
+    //   {
+    //     url: { type: String, default: "" },
+    //     tags: { type: Array, default: [] },
+    //     description: { type: String, required: false },
+    //     // quality: { type: Number, min: 1, max: 5, default: 3 },
+    //     // original: { type: Boolean, default: false },
+    //   },
+    // ],
+    tags: Array,
   },
   { timestamps: true }
 );

@@ -8,6 +8,7 @@ import { getAllPlants } from "lib/db/plants";
 import { uploadFile, uploadFileToS3 } from "./UploadActions";
 import { getSession } from "components/getSession";
 import sharp from "sharp";
+import axios from "axios";
 export async function PlantHandler() {
   try {
     const result = await getAllPlants();
@@ -184,6 +185,7 @@ export async function CreatePlantImage(formData) {
   console.log("CreatePlantImage:", formData);
   try {
     const fields = {
+      plantId: formData.get("plantId"),
       file: formData.get("file"),
       url: formData.get("url"),
       description: formData.get("description"),
@@ -192,11 +194,22 @@ export async function CreatePlantImage(formData) {
       isMainImage: formData.get("isMainImage"),
       imageSubject: formData.get("imageSubject"),
     };
-    let plant = Plant.findById(new ObjectId(fields.plantId));
-    console.log("Plant:", plant);
-    if (fields.file) {
-      const imageUrl = await UploadPlantImage(formData);
-      fields.url = imageUrl;
+    console.log("Fields:", fields.file);
+    if (fields.url) {
+      try {
+        const response = await axios.get(fields.url, {
+          responseType: "arraybuffer",
+        });
+        // Create a Blob from the response data
+        const imageBlob = new Blob([response.data], { type: "image/jpeg" }); // Assuming you know the type or can detect it
+        const imageFile = new File([imageBlob], "downloadedImage.jpg", {
+          type: "image/jpeg", // Ensure correct MIME type
+          lastModified: new Date().getTime(), // Current timestamp as lastModified
+          name: "downloadedImage.jpg", // File name
+        });
+      } catch (error) {
+        console.error("Error downloading image:", error);
+      }
     }
     if (fields.isMainImage) {
       const newThumbnail = await generateThumbnail(fields.file);
@@ -209,6 +222,10 @@ export async function CreatePlantImage(formData) {
       );
       console.log("Updated Thumbnail:", updatedThumb);
     }
+    if (fields.file) {
+      const imageUrl = await UploadPlantImage(formData);
+      fields.url = imageUrl;
+    }
     if (!fields.url || fields.url === "") {
       return "Add image or URL";
     }
@@ -220,13 +237,13 @@ export async function CreatePlantImage(formData) {
       original: fields.isOriginal === "true" ? true : false,
     };
     console.log("Data:", data);
-    await Plant.findOneAndUpdate(
+    const newPlant = await Plant.findOneAndUpdate(
       { _id: fields.plantId },
-      { $push: { pics: data } },
+      { $push: { images: { data } } },
       { new: true }
     );
     // console.log("Updated Plant:", updatedPlant);
-    // revalidatePath("/");
+    revalidatePath("/");
 
     return "updatePlant";
   } catch (error) {
