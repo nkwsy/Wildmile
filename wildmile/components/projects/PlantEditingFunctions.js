@@ -33,3 +33,19 @@ export const SaveEditedPlantCells = ({ plantCells, reason = "edit" }) => {
   console.log("newPlants:", newPlants);
   return { newPlants, plantsToRemove };
 };
+
+export const DeletePlantCells = ({ plantCells, reason }) => {
+  const plantsToRemove = [];
+  plantCells.forEach((plantCell, key) => {
+    if (plantCell.individual_plant_id) {
+      plantsToRemove.push(plantCell.individual_plant_id);
+    }
+  });
+  if (plantsToRemove.length > 0) {
+    const removedPlants = removeIndividualPlants({
+      plant_ids: plantsToRemove,
+      reason: reason,
+    });
+    console.log("PlantsToRemove:", plantsToRemove, removedPlants);
+  }
+};
