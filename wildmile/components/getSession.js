@@ -9,6 +9,6 @@ export async function getSession() {
   if (!session) {
     return null;
   }
-  user = await User.findOne({ email: session.passport.user });
+  const user = await User.findOne({ email: session.passport.user });
   return user;
 }

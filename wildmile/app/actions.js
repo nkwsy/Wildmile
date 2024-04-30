@@ -10,6 +10,7 @@ import { getSession } from "components/getSession";
 // To Insert Modules
 export async function insertModules(formData) {
   const session = await getSession();
+  console.log("Session:", session);
   console.log("Data:", formData);
   const rawFormData = {
     model: formData.model,
@@ -23,7 +24,7 @@ export async function insertModules(formData) {
     shape: formData.shape,
     tag: formData.tag,
     tags: formData.tags,
-    creator: session.user._id,
+    creator: session._id,
   };
   const result = await updateOrInsertModules(rawFormData, formData.locations);
 

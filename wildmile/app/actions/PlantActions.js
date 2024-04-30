@@ -81,6 +81,8 @@ export async function updatePlantFamily(family, color) {
     { $set: { "color.family": color } }
   );
   console.log("updated plant family:", result);
+  revalidatePath("/");
+
   return JSON.stringify(result);
 }
 
@@ -132,6 +134,7 @@ export async function savePlantInputs(PlantList) {
       })
     )
   );
+  revalidatePath("/");
 
   return JSON.stringify(populatedPlants);
 }
