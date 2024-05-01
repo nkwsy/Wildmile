@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema(
 
     tokens: Array,
     admin: { type: Boolean, default: false },
-    ranger: Boolean,
+    ranger: { type: Boolean, default: false },
     projects: [{ type: mongoose.Schema.Types.ObjectId, ref: "Project" }],
 
     profile: {

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const { pointsSchema, polygonSchema } = require("./locationSchemas");
+const { PointSchema, PolygonSchema } = require("./locationSchemas");
 
 import slugify from "slugify";
 
@@ -9,7 +9,11 @@ const ProjectSchema = new mongoose.Schema(
     description: String,
     notes: String,
     decommisioned: Boolean,
+    locationBoundry: { type: PolygonSchema },
+    location: { type: PointSchema },
     deleted: { type: Boolean, default: false },
+    private: { type: Boolean, default: false },
+    authorizedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     creator: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }

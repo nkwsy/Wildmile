@@ -288,7 +288,11 @@ export const plantCellReducer = (state, action) => {
         removedIndividualPlants.delete(plant._id);
       });
       //
-      return { ...state, individualPlants: removedIndividualPlants };
+      return mapPlantCells({
+        ...state,
+        individualPlants: removedIndividualPlants,
+        selectedPlantCellsToEdit: new Map(),
+      });
     // case "SET_SELECTED_PLANT_CELL":
     //   const { x, y, id } = action.payload;
     //   const key = `${x},${y}`;

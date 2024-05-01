@@ -1,5 +1,5 @@
 "use client";
-import { Children, useState } from "react";
+import { Children, useState, useEffect } from "react";
 import {
   Stepper,
   Button,
@@ -12,28 +12,81 @@ import {
   Select,
   LoadingOverlay,
   Affix,
+  TagsInput,
   TextInput,
   Box,
+  Grid,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { DateTimePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useParams, useRouter, useFetch, usePathname } from "next/navigation";
-import { newEditProject } from "/app/actions";
+import { newEditProject, getProject } from "/app/actions";
+// import LocationModal from "./maps/LocationModal";
+import LocationMap from "./maps/LocationMap";
+import { get } from "mongoose";
 
 export default function ProjectForm(props) {
+  const [loading, { toggle }] = useDisclosure();
+  const [point, setPoint] = useState(null);
+  const [polygon, setPolygon] = useState(null);
   const router = useRouter();
-
   const pathname = usePathname();
   const params = useParams();
+  console.log("Pathname:", pathname, params);
+  // ...
+
   const form = useForm({
     initialValues: {
       name: "",
       description: "",
       notes: "",
+      authorizedUsers: [],
+      // location: {
+      //   type: "Point",
+      //   coordinates: [],
+      // },
+      // locationBoundry: {
+      //   type: "Polygon",
+      //   coordinates: [],
+      // },
     },
   });
 
+  useEffect(() => {
+    if (params.project) {
+      const fetchData = async () => {
+        const result = await getProject(params.project);
+        // if (result && result.data) {
+        console.log("Data loaded:", result);
+        form.setValues({
+          ...form.values, // Default values for the form
+          ...result.data, // Data fetched from the server
+        });
+        // } else {
+        //   console.error("Failed to fetch data or data is empty:", result);
+        // }
+      };
+
+      fetchData();
+    }
+  }, [params]); // Ensure to depend on params.project
+
   async function submitForm() {
+    // loading(true);
+    toggle();
+    if (point) {
+      form.values.location = {
+        type: "Point",
+        coordinates: [point],
+      };
+    }
+    if (polygon) {
+      form.values.locationBoundry = {
+        type: "Polygon",
+        coordinates: [polygon],
+      };
+    }
     console.log("Form state on submit:", form.values);
     const result = await newEditProject(form.values);
     console.log("Result:", result);
@@ -47,11 +100,12 @@ export default function ProjectForm(props) {
 
   function SubmitButton() {
     // const { pending } = useFormStatus();
-
     return (
-      <Button onClick={submitForm} color="blue">
-        Submit
-      </Button>
+      <>
+        <Button loading={loading} onClick={submitForm} color="blue">
+          Submit
+        </Button>
+      </>
     );
   }
   // const [visible, handlers] = useDisclosure(false);
@@ -60,16 +114,29 @@ export default function ProjectForm(props) {
 
   return (
     <>
-      <Box maw={340} mx="auto">
-        <div>
-          <TextInput label="Name" {...form.getInputProps("name")} />
-          <Textarea
-            label="Description"
-            {...form.getInputProps("description")}
-          />
-          <Textarea label="Notes" {...form.getInputProps("notes")} />
-          <SubmitButton />
-        </div>
+      <Box>
+        <Grid>
+          <Grid.Col span={4}>
+            <TextInput label="Name" {...form.getInputProps("name")} />
+            <Textarea
+              label="Description"
+              {...form.getInputProps("description")}
+            />
+            <Textarea label="Notes" {...form.getInputProps("notes")} />
+            <TagsInput
+              label="Collaborating Editors"
+              placeholder="Enter emails"
+              {...form.getInputProps("authorizedUsers")}
+            />
+            <SubmitButton />
+          </Grid.Col>
+          <Grid.Col span={8}>
+            <LocationMap
+              onPointSelect={setPoint}
+              onPolygonSelect={setPolygon}
+            />
+          </Grid.Col>
+        </Grid>
       </Box>
     </>
   );

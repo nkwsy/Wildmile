@@ -5,8 +5,9 @@ import {
   updateOrInsertModules,
   deleteModules,
 } from "/lib/db/projects";
-
-import { getSession } from "components/getSession";
+import Project from "models/Project";
+import User from "models/User";
+import { getSession } from "lib/getSession";
 // To Insert Modules
 export async function insertModules(formData) {
   const session = await getSession();
@@ -55,16 +56,28 @@ export const LoadMods = () => {
     .catch((error) => console.error("Error:", error));
 };
 
+// To Load Projects
+export async function getProject(projectName) {
+  const result = await Project.findOne({ name: projectName }, [
+    "-createdAt",
+    "-updatedAt",
+    "-v",
+  ]).lean();
+  console.log("Result:", result);
+  return result;
+}
 // To Add or Edit Project
 //TODO Allow to Edit project
 export async function newEditProject(formData) {
+  const useoo = await User.findOne({ email: "nick@urbanriv.org" }).exec();
+  console.log("useoo:", useoo);
   const session = await getSession();
-  console.log("newEditProject:", formData);
+  console.log("newEditProject:", formData, session);
   const rawFormData = {
     name: formData.name,
     description: formData.description,
     notes: formData.notes,
-    creator: session.user._id,
+    creator: session._id,
     // authorizedUsers: formData.authorizedUsers,
   };
   console.log("Raw Form Data:", rawFormData);
@@ -75,19 +88,24 @@ export async function newEditProject(formData) {
 export async function newEditSection(formData) {
   const session = await getSession();
   console.log("newEditSection:", formData);
-  const rawFormData = {
-    name: formData.name,
-    description: formData.description,
-    notes: formData.notes,
-    size: formData.size,
-    project_name: formData.project_name,
-
-    creator: session.user._id,
-  };
-  console.log("Raw Form Data:", rawFormData);
-  const result = await createSection(rawFormData);
-  console.log("Result: newEditSection", result);
-  return result;
+  try {
+    const rawFormData = {
+      name: formData.name,
+      description: formData.description,
+      notes: formData.notes,
+      size: formData.size,
+      project_name: formData.project_name,
+      authorizedUsers: formData.authorizedUsers,
+      creator: session._id,
+    };
+    console.log("Raw Form Data:", rawFormData);
+    const result = await createSection(rawFormData);
+    console.log("Result: newEditSection", result);
+    return result;
+  } catch (error) {
+    console.error("Error creating section:", error);
+    throw error;
+  }
 }
 
 // To Load Plants

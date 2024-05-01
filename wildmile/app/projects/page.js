@@ -1,10 +1,11 @@
 // "use client";
-import { Title, Text, Container } from "@mantine/core";
+import { Title, Text, Container, Button } from "@mantine/core";
 // import { useUser } from "../../lib/hooks";
 import Project from "../../models/Project";
 import dbConnect from "../../lib/db/setup";
 import { IconCardGrid } from "/components/icon_card_grid";
 import classes from "/styles/card.module.css";
+import Link from "next/link";
 import {
   IconTrash,
   IconPlant2,
@@ -72,8 +73,12 @@ export default async function Page() {
         <Text c="dimmed" ta="center" mt="md">
           Collecting and sharing data about Urban River's projects.
         </Text>
+
         <IconCardGrid cards={cards} />
         <IconCardGrid cards={projects} />
+        <Button component={Link} href="/projects/new">
+          New Project
+        </Button>
       </Container>
     </>
   );
