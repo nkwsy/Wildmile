@@ -6,7 +6,7 @@ import Plant from "models/Plant";
 import IndividualPlant from "models/IndividualPlant";
 import { getAllPlants } from "lib/db/plants";
 import { uploadFile, uploadFileToS3 } from "./UploadActions";
-import { getSession } from "components/getSession";
+import { getSession } from "lib/getSession";
 import sharp from "sharp";
 import axios from "axios";
 export async function PlantHandler() {
