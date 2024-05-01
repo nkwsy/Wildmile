@@ -211,6 +211,7 @@ export const plantCellReducer = (state, action) => {
       const toggle_in_edit_mode = state.editMode;
       const current_selected_plantId = state.selectedPlantId;
       const current_selected_plants = state.selectedPlants;
+      const plant_removal_tool = state.plantRemovalTool;
       const newPlantCellsToEdit = new Map(current_plant_cells_to_edit);
       const newPlantCells = new Map(current_selected_plant_cells);
       // if in edit mode and plant selected, add to selectedPlantCellsToEdit
@@ -232,10 +233,22 @@ export const plantCellReducer = (state, action) => {
       // The key doesn't exist, so insert the new entry
       if (newPlantCells.has(key)) {
         newPlantCells.delete(key);
+      }
+      if (plant_removal_tool) {
+        if (newPlantCellsToEdit.has(key)) {
+          plantCell.new_plant_id = null;
+          newPlantCellsToEdit.delete(key);
+        } else {
+          plantCell.new_plant_id = null;
+          newPlantCellsToEdit.set(key, plantCell);
+          selectPlantCell(plantCell, "red");
+        }
+        return { ...state, selectedPlantCellsToEdit: newPlantCellsToEdit };
       } else {
         newPlantCells.set(key, plantCell);
       }
       return { ...state, selectedPlantCell: newPlantCells };
+
     case "CLEAR_SELECTED_PLANT_CELLS_TO_EDIT":
       return { ...state, selectedPlantCellsToEdit: new Map() };
     case "CLEAR_PLANT_CELL_SELECTIONS":
@@ -274,7 +287,12 @@ export const plantCellReducer = (state, action) => {
       removed_plants.forEach((plant) => {
         removedIndividualPlants.delete(plant._id);
       });
-      return { ...state, individualPlants: removedIndividualPlants };
+      //
+      return mapPlantCells({
+        ...state,
+        individualPlants: removedIndividualPlants,
+        selectedPlantCellsToEdit: new Map(),
+      });
     // case "SET_SELECTED_PLANT_CELL":
     //   const { x, y, id } = action.payload;
     //   const key = `${x},${y}`;
@@ -288,6 +306,19 @@ export const plantCellReducer = (state, action) => {
     //     newCells.set(key, { x, y, id });
     //   }
     //   return newCells;
+    // Set up tool to remove plants
+    // Valid options: "delete", "herbivory", "disease", "nutrients", "enviormental", "harvest", "competition", "pests", "unknown",
+    // Set to False to clear the tool & selected plant cells
+    case "TOGGLE_PLANT_REMOVAL_TOOL":
+      const removal_type = action.payload;
+      if (!removal_type) {
+        return {
+          ...state,
+          plantRemovalTool: false,
+          selectedPlantCellsToEdit: new Map(),
+        };
+      }
+      return { ...state, plantRemovalTool: removal_type };
     case "TOGGLE_PLANT_SELECTION":
       const plant_id = action.payload;
       let newPlants = new Map(state.selectedPlants);
@@ -303,11 +334,16 @@ export const plantCellReducer = (state, action) => {
     // Single ID for a plant that is the focus
     case "TOGGLE_SELECTED_PLANT":
       const targetSelectedPlandId = action.payload;
+
       const oldSelectedPlantId = state.selectedPlantId;
       if (oldSelectedPlantId === targetSelectedPlandId) {
         return { ...state, selectedPlantId: null };
       }
-      return { ...state, selectedPlantId: targetSelectedPlandId };
+      return {
+        ...state,
+        selectedPlantId: targetSelectedPlandId,
+        plantRemovalTool: false,
+      };
     case "ADD_PLANTS":
       const plants = action.payload;
       const updatedPlants = new Map(state.plants);

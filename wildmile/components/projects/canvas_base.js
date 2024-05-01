@@ -116,6 +116,7 @@ const defaultInitialState = {
   plantingTemplateOptions: null,
   plantingTemplate: null,
   plantingTemplateDeploy: false,
+  plantRemovalTool: false,
   modLayerSelectable: null,
 };
 

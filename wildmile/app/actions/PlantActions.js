@@ -6,7 +6,7 @@ import Plant from "models/Plant";
 import IndividualPlant from "models/IndividualPlant";
 import { getAllPlants } from "lib/db/plants";
 import { uploadFile, uploadFileToS3 } from "./UploadActions";
-import { getSession } from "components/getSession";
+import { getSession } from "lib/getSession";
 import sharp from "sharp";
 import axios from "axios";
 export async function PlantHandler() {
@@ -150,16 +150,19 @@ export async function savePlantInputs(PlantList) {
 
 export async function removeIndividualPlants({ individualPlantIds, reason }) {
   console.log("PlantActions- removeIndividualPlants:", individualPlantIds);
-  if (reason == "edit") {
+  if (reason == "edit" || reason == "delete") {
     const result = await IndividualPlant.deleteMany({
       _id: { $in: individualPlantIds },
     });
+    console.log("Removed plants:", result);
+    return JSON.stringify(result);
   }
   const result = await IndividualPlant.updateMany(
     { _id: { $in: individualPlantIds } },
     { $set: { deleted: true, deleteReason: reason } }
   );
   console.log("Removed plants:", result);
+  revalidatePath("/");
   return JSON.stringify(result);
 }
 

@@ -12,9 +12,7 @@ import {
   LoadingOverlay,
   Affix,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import { useDisclosure } from "@mantine/hooks";
-// import Router from "next/router";
+
 import ProjectForm from "components/project_form";
 import dbConnect from "/lib/db/setup";
 import mapboxgl from "!mapbox-gl";
@@ -38,7 +36,7 @@ export default function Page() {
   return (
     <Container>
       <Title mb={30} align="center">
-        Create a new Project
+        Edit Project
       </Title>
       <ProjectForm />
     </Container>

@@ -1,22 +1,28 @@
 // components/LocationModal.js
-import { Modal } from "@mantine/core";
+import { Modal, Button } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import LocationMap from "./LocationMap";
 
-const LocationModal = ({ opened, setOpened, setLocation }) => {
+const LocationModal = ({ setLocation }) => {
+  const [opened, { open, close }] = useDisclosure(false);
+
   const handleLocationSelect = (location) => {
     setLocation(location);
-    setOpened(false);
   };
 
   return (
-    <Modal
-      opened={opened}
-      onClose={() => setOpened(false)}
-      title="Select a Location"
-      size="lg"
-    >
-      <LocationMap onLocationSelect={handleLocationSelect} />
-    </Modal>
+    <>
+      <Modal
+        opened={opened}
+        onClose={close}
+        title="Select a Location"
+        size="lg"
+      >
+        <LocationMap onLocationSelect={handleLocationSelect} />
+        <Button onClick={close}>Close</Button>
+      </Modal>
+      <Button onClick={open}>Location</Button>
+    </>
   );
 };
 

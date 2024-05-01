@@ -13,7 +13,7 @@ export async function createProject(req, res) {
       notes,
       decommisioned: false,
     });
-    result = await { success: true, data: project };
+    const result = await { success: true, data: project };
     return result;
   } catch (error) {
     console.error("Error creating section:", error);

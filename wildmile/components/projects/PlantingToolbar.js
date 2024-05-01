@@ -21,6 +21,7 @@ import { set } from "mongoose";
 import { PlantingTemplate } from "./PlantingTemplate";
 import PlantTemplateChip from "./PlantTemplateChip";
 import PlantEditSaveButton from "./PlantEditSaveButton";
+import PlantRemovalTool from "./PlantRemovalTool";
 
 export default function PlantingToolbar() {
   const [save, setSave] = useState(false);
@@ -92,6 +93,7 @@ export default function PlantingToolbar() {
             reason: "edit",
           })}
         </Group>
+        <PlantRemovalTool plantCells={selectedPlantCellsToEdit} />
         <PlantingTemplate />
         <CardSection withBorder inheritPadding py="xs">
           {[...selectedPlants.entries()].map(([id, item], index) => (
