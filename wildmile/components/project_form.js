@@ -37,6 +37,8 @@ export default function ProjectForm(props) {
   // ...
 
   const form = useForm({
+    mode: "uncontrolled",
+
     initialValues: {
       name: "",
       description: "",
@@ -117,15 +119,25 @@ export default function ProjectForm(props) {
       <Box>
         <Grid>
           <Grid.Col span={4}>
-            <TextInput label="Name" {...form.getInputProps("name")} />
+            <TextInput
+              label="Name"
+              // key={form.key("name")}
+              {...form.getInputProps("name")}
+            />
             <Textarea
               label="Description"
+              // key={form.key("description")}
               {...form.getInputProps("description")}
             />
-            <Textarea label="Notes" {...form.getInputProps("notes")} />
+            <Textarea
+              label="Notes"
+              // key={form.key("notes")}
+              {...form.getInputProps("notes")}
+            />
             <TagsInput
               label="Collaborating Editors"
               placeholder="Enter emails"
+              // key={form.key("authorizedUsers")}
               {...form.getInputProps("authorizedUsers")}
             />
             <SubmitButton />
