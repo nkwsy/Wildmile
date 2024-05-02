@@ -2,19 +2,26 @@
 import Project from "models/Project";
 import Section from "/models/Section";
 import Module from "/models/Module";
+import { convertEmailsToUserIds } from "lib/db/user";
 
 // PROJECTS
 export async function createProject(req, res) {
   try {
     const { name, description, notes, decommisioned } = req;
-    const project = await Project.create({
-      name,
-      description,
-      notes,
-      decommisioned: false,
-    });
+    if (req.authorizedUsers) {
+      req.authorizedUsers = await convertEmailsToUserIds(req.authorizedUsers);
+    }
+    console.log("createProject req:", req);
+    const project = await Project.create(
+      req
+      // name,
+      // description,
+      // notes,
+      // decommisioned: false,
+      // location:
+    );
     const result = await { success: true, data: project };
-    return result;
+    return JSON.stringify(result);
   } catch (error) {
     console.error("Error creating section:", error);
     throw error;

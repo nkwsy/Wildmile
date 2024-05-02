@@ -6,9 +6,9 @@ import slugify from "slugify";
 const ProjectSchema = new mongoose.Schema(
   {
     name: { type: String, unique: true, required: true },
-    description: String,
-    notes: String,
-    decommisioned: Boolean,
+    description: { type: String, default: "" },
+    notes: { type: String, default: "" },
+    decommisioned: { type: Boolean, default: false },
     locationBoundry: { type: PolygonSchema },
     location: { type: PointSchema },
     deleted: { type: Boolean, default: false },

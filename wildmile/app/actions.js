@@ -8,6 +8,7 @@ import {
 import Project from "models/Project";
 import User from "models/User";
 import { getSession } from "lib/getSession";
+import { cleanObject } from "lib/utils";
 // To Insert Modules
 export async function insertModules(formData) {
   const session = await getSession();
@@ -61,33 +62,39 @@ export async function getProject(projectName) {
   const result = await Project.findOne({ name: projectName }, [
     "-createdAt",
     "-updatedAt",
-    "-v",
-  ]).lean();
+    "-__v",
+  ])
+    .lean()
+    .exec();
   console.log("Result:", result);
-  return result;
+  return JSON.stringify(result);
 }
 // To Add or Edit Project
 //TODO Allow to Edit project
 export async function newEditProject(formData) {
-  const useoo = await User.findOne({ email: "nick@urbanriv.org" }).exec();
-  console.log("useoo:", useoo);
   const session = await getSession();
   console.log("newEditProject:", formData, session);
   const rawFormData = {
     name: formData.name,
     description: formData.description,
     notes: formData.notes,
+    authorizedUsers: formData.authorizedUsers,
     creator: session._id,
-    // authorizedUsers: formData.authorizedUsers,
+    location: formData.location,
+    locationBoundry: formData.locationBoundry,
+    authorizedUsers: formData.authorizedUsers,
   };
-  console.log("Raw Form Data:", rawFormData);
-  const result = await createProject(rawFormData);
+  const cleanedFormData = cleanObject(rawFormData);
+
+  console.log("Raw Form Data:", cleanedFormData);
+  const result = await createProject(cleanedFormData);
   return result;
 }
 
 export async function newEditSection(formData) {
   const session = await getSession();
   console.log("newEditSection:", formData);
+
   try {
     const rawFormData = {
       name: formData.name,
@@ -96,6 +103,7 @@ export async function newEditSection(formData) {
       size: formData.size,
       project_name: formData.project_name,
       authorizedUsers: formData.authorizedUsers,
+
       creator: session._id,
     };
     console.log("Raw Form Data:", rawFormData);

@@ -37,7 +37,7 @@ export default function ProjectForm(props) {
   // ...
 
   const form = useForm({
-    mode: "uncontrolled",
+    // mode: "uncontrolled",
 
     initialValues: {
       name: "",
@@ -58,12 +58,14 @@ export default function ProjectForm(props) {
   useEffect(() => {
     if (params.project) {
       const fetchData = async () => {
-        const result = await getProject(params.project);
+        const project_result = await getProject(params.project);
+        const result = JSON.parse(project_result);
         // if (result && result.data) {
         console.log("Data loaded:", result);
+        form.initialize(result);
         form.setValues({
-          ...form.values, // Default values for the form
-          ...result.data, // Data fetched from the server
+          // ...form.values, // Default values for the form
+          ...result, // Data fetched from the server
         });
         // } else {
         //   console.error("Failed to fetch data or data is empty:", result);
@@ -80,13 +82,13 @@ export default function ProjectForm(props) {
     if (point) {
       form.values.location = {
         type: "Point",
-        coordinates: [point],
+        coordinates: point,
       };
     }
     if (polygon) {
       form.values.locationBoundry = {
         type: "Polygon",
-        coordinates: [polygon],
+        coordinates: polygon,
       };
     }
     console.log("Form state on submit:", form.values);
@@ -121,23 +123,17 @@ export default function ProjectForm(props) {
           <Grid.Col span={4}>
             <TextInput
               label="Name"
-              // key={form.key("name")}
+              key="name"
               {...form.getInputProps("name")}
             />
             <Textarea
               label="Description"
-              // key={form.key("description")}
               {...form.getInputProps("description")}
             />
-            <Textarea
-              label="Notes"
-              // key={form.key("notes")}
-              {...form.getInputProps("notes")}
-            />
+            <Textarea label="Notes" {...form.getInputProps("notes")} />
             <TagsInput
               label="Collaborating Editors"
-              placeholder="Enter emails"
-              // key={form.key("authorizedUsers")}
+              placeholder="add email then click enter"
               {...form.getInputProps("authorizedUsers")}
             />
             <SubmitButton />
@@ -153,3 +149,25 @@ export default function ProjectForm(props) {
     </>
   );
 }
+
+// <TextInput
+//   label="Name"
+//   // key={form.key("name")}
+//   {...form.getInputProps("name")}
+// />
+// <Textarea
+//   label="Description"
+//   // key={form.key("description")}
+//   {...form.getInputProps("description")}
+// />
+// <Textarea
+//   label="Notes"
+//   // key={form.key("notes")}
+//   {...form.getInputProps("notes")}
+// />
+// <TagsInput
+//   label="Collaborating Editors"
+//   placeholder="Enter emails"
+//   // key={form.key("authorizedUsers")}
+//   {...form.getInputProps("authorizedUsers")}
+// />
