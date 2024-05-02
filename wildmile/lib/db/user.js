@@ -39,6 +39,27 @@ export async function createUser({
   return user;
 }
 
+export async function convertEmailsToUserIds(emails) {
+  try {
+    // Fetch all users that match the emails in the array
+    const users = await User.find({
+      email: { $in: emails },
+    }).select("_id email"); // Select only the _id and email fields
+
+    // Create a map of email to user ID
+    const emailToUserIdMap = users.reduce((acc, user) => {
+      acc[user.email] = user._id.toString();
+      return acc;
+    }, {});
+
+    // Transform the input emails to corresponding user IDs
+    return emails.map((email) => emailToUserIdMap[email] || null); // Return null if no user found for an email
+  } catch (error) {
+    console.error("Failed to convert emails to user IDs:", error);
+    throw error;
+  }
+}
+
 export async function findUserByEmail(email) {
   console.log("findUserByEmail", email);
 

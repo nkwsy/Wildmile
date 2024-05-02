@@ -13,11 +13,16 @@ import {
   Affix,
 } from "@mantine/core";
 
-import ProjectForm from "components/project_form";
+// import ProjectForm from "components/project_form";
 import dbConnect from "/lib/db/setup";
-import mapboxgl from "!mapbox-gl";
+// import mapboxgl from "!mapbox-gl";
+import dynamic from "next/dynamic";
 
-mapboxgl.accessToken = process.env.MAPBOX_KEY;
+const ProjectForm = dynamic(() => import("components/project_form"), {
+  ssr: false,
+});
+
+// mapboxgl.accessToken = process.env.MAPBOX_KEY;
 
 export default function Page() {
   // const [errorMsg, setErrorMsg] = useState("");
@@ -31,14 +36,14 @@ export default function Page() {
   //   window.scrollTo({ top: 0, behavior: "smooth" });
   // }
 
-  async function createProject(formData) {}
-
   return (
-    <Container>
-      <Title mb={30} align="center">
-        Edit Project
-      </Title>
-      <ProjectForm />
-    </Container>
+    <>
+      <Container>
+        <Title mb={30} align="center">
+          Edit Project
+        </Title>
+        <ProjectForm />
+      </Container>
+    </>
   );
 }
