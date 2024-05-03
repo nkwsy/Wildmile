@@ -15,6 +15,7 @@ import {
   GridCol,
 } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
+import classes from "styles/TrashItemAccordion.module.css";
 // const [visible, handlers] = useDisclosure(false)
 
 // const [errorMsg, setErrorMsg] = useState('')
@@ -26,6 +27,7 @@ export default function TrashForm(props) {
       <Group>
         <Select
           label="Site"
+          description="General unless your cleaning in a specific area."
           data={[
             { value: "General Wild Mile", label: "General Wild Mile" },
             { value: "Riverwalk", label: "Riverwalk" },
@@ -38,14 +40,18 @@ export default function TrashForm(props) {
           {...props.form.getInputProps("site")}
         />
         <NumberInput
+          className={classes.numberInput}
           defaultValue={1}
-          label="Number of Participants"
+          label="Participants"
+          description="Number of people"
           max={20}
           min={1}
           {...props.form.getInputProps("participants")}
         />
         <NumberInput
+          className={classes.numberInput}
           label="Weight"
+          description="Total weight in Lbs"
           min={0}
           suffix="lbs"
           {...props.form.getInputProps("weight")}
@@ -63,6 +69,8 @@ export default function TrashForm(props) {
       </Group>
       <Group>
         <NumberInput
+          // className={classes.numberInput}
+          description="Subjective measure of trashiness. 1 is clean, 12 is very dirty."
           defaultValue={1}
           label="Trash Level"
           max={12}
@@ -70,14 +78,18 @@ export default function TrashForm(props) {
           {...props.form.getInputProps("trashiness")}
         />
         <NumberInput
+          className={classes.numberInput}
           defaultValue={65}
-          label="Temp (F)"
+          label="Temperature"
+          description="in Fahrenheit"
           max={120}
           min={0}
           {...props.form.getInputProps("temp")}
         />
         <Select
+          className={classes.numberInput}
           label="Wind Speed"
+          description="How windy was it?"
           data={[
             { value: "0", label: "None" },
             { value: "1", label: "Barely Perceptible" },
@@ -90,6 +102,7 @@ export default function TrashForm(props) {
         />
         <Select
           label="Cloud Cover"
+          description="How cloudy was it?"
           data={[
             { value: "0", label: "Clear" },
             { value: "1", label: "Partly Cloudy" },
@@ -103,7 +116,11 @@ export default function TrashForm(props) {
           {...props.form.getInputProps("cloud")}
         />
       </Group>
-      <Textarea label="Notes" {...props.form.getInputProps("notes")} />
+      <Textarea
+        label="Notes"
+        description="Any fun things found? Issues or triumphs?"
+        {...props.form.getInputProps("notes")}
+      />
       {/* </Grid> */}
       {/* </div> */}
     </>
