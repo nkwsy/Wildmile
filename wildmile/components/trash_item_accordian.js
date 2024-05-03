@@ -11,7 +11,9 @@ import {
   AccordionChevron,
   AccordionPanel,
   Tooltip,
+  Button,
 } from "@mantine/core";
+import { useState } from "react";
 import classes from "styles/TrashItemAccordion.module.css";
 import TrashInputCounter from "./trash/TrashInputCounter";
 // import { getItemsFromLog } from "app/actions/TrashActions";
@@ -20,8 +22,14 @@ import TrashInputCounter from "./trash/TrashInputCounter";
 // todo: may want to use mantine nested features https://mantine.dev/form/nested/
 
 function TrashItemAccordian({ props }) {
+  const [value, setValue] = useState(null);
+  const all_materials = [];
   const dataArray = Object.values(props.items);
 
+  // Open all accordions
+  const openAll = () => {
+    setValue(all_materials);
+  };
   // Sort on category
   // const sortedItems = props.items.sort(((a, b) => {
   // if (Array.isArray(dataArray)) {
@@ -67,27 +75,28 @@ function TrashItemAccordian({ props }) {
   //   console.error("dataArray is not an array");
   // }
   for (const material in groupedByMaterial) {
+    all_materials.push(material);
     const items = groupedByMaterial[material];
     const itemRows = [];
     items.forEach((item) => {
       itemRows.push(
-        <div key={item._id}>
+        <div key={item._id} className={classes.item}>
           {/* <Group> */}
-          <Box className={classes.item} w="100%">
-            <Group>
-              <Tooltip label={item.name} openDelay={500}>
-                <Text className={`${classes.title} ${classes.truncateText}`}>
-                  {item.name}
-                </Text>
-              </Tooltip>
-              <Text className={classes.catagory}>{item.catagory}</Text>
-              <TrashInputCounter
-                initialTrash={item.quantity}
-                itemId={item._id}
-                logId={props.logId}
-              />
-            </Group>
-          </Box>
+          {/* <Box className={classes.item} w="100%"> */}
+          <Group justify="space-between">
+            <Tooltip label={item.name} openDelay={500}>
+              <Text className={`${classes.title} ${classes.truncateText}`}>
+                {item.name}
+              </Text>
+            </Tooltip>
+            <Text className={classes.catagory}>{item.catagory}</Text>
+            <TrashInputCounter
+              initialTrash={item.quantity}
+              itemId={item._id}
+              logId={props.logId}
+            />
+          </Group>
+          {/* </Box> */}
           {/* </Group> */}
         </div>
       );
@@ -95,12 +104,12 @@ function TrashItemAccordian({ props }) {
 
     accordionItems.push(
       <div key={material}>
-        <AccordionItem key={material} value={material}>
+        <AccordionItem key={material} value={material} onChange={setValue}>
           <AccordionControl className={classes.accordionControl}>
             <Text className={classes.material}> {material}</Text>
           </AccordionControl>
           <AccordionPanel>
-            <Stack>{itemRows}</Stack>
+            <Stack gap="0px">{itemRows}</Stack>
           </AccordionPanel>
         </AccordionItem>
       </div>
@@ -109,7 +118,20 @@ function TrashItemAccordian({ props }) {
 
   return (
     <>
-      <Accordion className={classes.accordionContainer}>
+      <Group>
+        <Button variant="light" onClick={openAll}>
+          Expand All
+        </Button>
+        <Button variant="light" onClick={() => setValue(null)}>
+          Collapse All
+        </Button>
+      </Group>
+      <Accordion
+        className={classes.accordionContainer}
+        value={value}
+        onChange={setValue}
+        multiple
+      >
         {accordionItems}
       </Accordion>
     </>

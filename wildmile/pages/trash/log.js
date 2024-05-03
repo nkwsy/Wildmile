@@ -76,18 +76,17 @@ export default function CreateLog(props) {
     });
 
     if (res.status === 201) {
-      Router.push("/trash");
+      // Get the _id from the server response
+      const data = await res.json();
+      const id = data._id;
+
+      // Navigate to the trash/edit/[id].js page
+      Router.push(`/trashlog//${id}`);
+      // Router.push("/trash");
     } else {
       handlers.close();
       setErrorMsg(await res.text());
     }
-
-    // Get the _id from the server response
-    const data = await res.json();
-    const id = data._id;
-
-    // Navigate to the trash/edit/[id].js page
-    Router.push(`/trashlog//${id}`);
   }
 
   return (

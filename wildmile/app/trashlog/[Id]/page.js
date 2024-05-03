@@ -19,6 +19,7 @@ import TrashItem from "models/TrashItem";
 // import dbConnect from "/lib/db/setup";
 import { Suspense } from "react";
 import { getItemsFromLog } from "app/actions/TrashActions";
+import Link from "next/link";
 // import { use } from "passport";
 
 // export async function getProps(logId) {
@@ -97,6 +98,9 @@ export default async function page({ params }) {
             {errorMsg && <p className="error">{errorMsg}</p>}
             <Button onClick={createLog}>Submit</Button>
           </Group> */}
+          <Button component={Link} href="/trash">
+            Done
+          </Button>
         </Paper>
       </Container>
     </>

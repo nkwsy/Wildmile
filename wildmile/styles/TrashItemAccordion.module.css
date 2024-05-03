@@ -26,8 +26,9 @@
 }
 .item {
   border: 1px solid var(--mantine-color-gray-4);
-  border-radius: var(--mantine-radius-sm);
+  /* border-radius: var(--mantine-radius-sm); */
   padding: 0.5rem;
+  margin: 0%;
 }
 .icon {
   /* Style for the icon elements inside each group */
