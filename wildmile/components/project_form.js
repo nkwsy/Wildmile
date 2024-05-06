@@ -92,7 +92,8 @@ export default function ProjectForm(props) {
       };
     }
     console.log("Form state on submit:", form.values);
-    const result = await newEditProject(form.values);
+    const raw_result = await newEditProject(form.values);
+    const result = JSON.parse(raw_result);
     console.log("Result:", result);
     if (result.success === true) {
       router.push(`/projects/${result.data.name}`);
