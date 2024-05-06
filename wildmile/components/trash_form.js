@@ -51,9 +51,9 @@ export default function TrashForm(props) {
         <NumberInput
           className={classes.numberInput}
           label="Weight"
-          description="Total weight in Lbs"
+          description="Total weight in Kg"
           min={0}
-          suffix="lbs"
+          suffix="Kg"
           {...props.form.getInputProps("weight")}
         />
       </Group>
@@ -87,7 +87,7 @@ export default function TrashForm(props) {
           {...props.form.getInputProps("temp")}
         />
         <Select
-          className={classes.numberInput}
+          // className={classes.numberInput}
           label="Wind Speed"
           description="How windy was it?"
           data={[
