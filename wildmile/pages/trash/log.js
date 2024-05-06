@@ -23,6 +23,7 @@ export default function CreateLog(props) {
   const [errorMsg, setErrorMsg] = useState("");
   const [active, setActive] = useState(0);
   const [visible, handlers] = useDisclosure(false);
+  const [loading, { toggle }] = useDisclosure();
 
   const isBrowser = () => typeof window !== "undefined"; //The approach recommended by Next.js
 
@@ -67,7 +68,9 @@ export default function CreateLog(props) {
   });
 
   async function createLog() {
+    toggle();
     handlers.open();
+
     console.log(form.values);
     const res = await fetch("/api/trash/logs", {
       method: "POST",
@@ -81,7 +84,7 @@ export default function CreateLog(props) {
       const id = data._id;
 
       // Navigate to the trash/edit/[id].js page
-      Router.push(`/trashlog//${id}`);
+      Router.push(`/trashlog/${id}`);
       // Router.push("/trash");
     } else {
       handlers.close();
@@ -97,7 +100,9 @@ export default function CreateLog(props) {
         </Title>
         <TrashForm form={form} />
         <Group justify="right" mt="xl">
-          <Button onClick={createLog}>Submit</Button>
+          <Button onClick={createLog} loading={loading}>
+            Submit
+          </Button>
         </Group>
       </Paper>
     </Container>

@@ -81,10 +81,13 @@ function TrashItemAccordian({ props }) {
     items.forEach((item) => {
       itemRows.push(
         <div key={item._id} className={classes.item}>
-          {/* <Group> */}
-          {/* <Box className={classes.item} w="100%"> */}
           <Group justify="space-between">
-            <Tooltip label={item.name} openDelay={500}>
+            <Tooltip
+              label={`${item.name}${
+                item.description ? ` - ${item.description}` : ""
+              }`}
+              openDelay={500}
+            >
               <Text className={`${classes.title} ${classes.truncateText}`}>
                 {item.name}
               </Text>
@@ -96,8 +99,6 @@ function TrashItemAccordian({ props }) {
               logId={props.logId}
             />
           </Group>
-          {/* </Box> */}
-          {/* </Group> */}
         </div>
       );
     });

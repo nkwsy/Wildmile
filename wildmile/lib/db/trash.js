@@ -1,7 +1,7 @@
 import TrashLog from "../../models/Trash";
 import TrashItem from "../../models/TrashItem";
 import IndividualTrashItem from "../../models/IndividualTrashItem";
-
+import { getSession } from "lib/getSession";
 export async function getAllLogs() {
   return await TrashLog.find({}, ["-_id", "-__v"]);
 }
@@ -60,9 +60,10 @@ export async function createLog({
   cloud,
   notes,
   weight,
-
+  creator,
   items = {},
 }) {
+  // const user = await getSession();
   // Here you should insert the Log into the database
   let log = await TrashLog.create({
     site: site,
@@ -75,6 +76,7 @@ export async function createLog({
     cloud: cloud,
     notes: notes,
     weight: weight,
+    creator: creator,
   });
 
   return log;

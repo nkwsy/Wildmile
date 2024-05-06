@@ -29,6 +29,7 @@ router
     if (!req.user) {
       res.status(401).send("unauthenticated");
     } else {
+      req.body.creator = req.user._id;
       await next();
     }
   })
