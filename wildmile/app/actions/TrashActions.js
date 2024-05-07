@@ -15,9 +15,9 @@ export async function updateTrashCount(itemId, logId, quantity) {
   return item.count;
 }
 
-export async function getItemsFromLog(logId) {
+export async function getItemsFromLog(useLogId) {
   //   await dbConnect();
-  const id = logId; // Get the id from the request parameters
+  const id = useLogId; // Get the id from the request parameters
 
   const result = await TrashItem.find({}, [
     "-creator",
@@ -32,7 +32,7 @@ export async function getItemsFromLog(logId) {
       select: "-__v -createdAt -updatedAt -deleted -creator",
     })
     .lean();
-
+  console.log("Result:", result);
   const items = result.reduce((acc, doc) => {
     const item = { ...doc }; // Clone the document to avoid mutating the original result
     item._id = item._id.toString();

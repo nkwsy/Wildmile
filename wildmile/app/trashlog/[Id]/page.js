@@ -15,7 +15,7 @@ import {
 // import TrashItemTable from '../../components/trash_item_table'
 import TrashItemAccordian from "components/trash_item_accordian";
 // import IndividualTrashItem from "models/IndividualTrashItem";
-import TrashItem from "models/TrashItem";
+// import TrashItem from "models/TrashItem";
 // import dbConnect from "/lib/db/setup";
 import { Suspense } from "react";
 import { getItemsFromLog } from "app/actions/TrashActions";
