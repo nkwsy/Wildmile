@@ -43,53 +43,66 @@ export async function getItemsFromLog(useLogId) {
   // .lean();
   // const result = await TrashItem.find({}, ).lean();
   /* find all the data in our database */
-  const trashLog = await TrashLog.findById(id)
-    .populate({
-      path: "items",
-      model: "IndividualTrashItem",
-      select: "-__v -createdAt -updatedAt -deleted -creator",
-    })
-    .lean()
-    .explain();
-  const trashLogItems = trashLog.items.reduce((acc, doc) => {
-    const item = { ...doc };
-    item._id = item._id.toString();
-    item.itemId = item.itemId.toString();
-    item.logId = item.logId.toString();
-    item.quantity = item.quantity;
-    acc[item.itemId] = item;
-    return acc;
-  }, {});
+  try {
+    const trashLogInfo = await TrashLog.findById(id, { maxTimeMS: 5000 })
+      .populate({
+        path: "items",
+        model: "IndividualTrashItem",
+        select: "-__v -createdAt -updatedAt -deleted -creator",
+      })
+      .lean()
+      .explain();
+    console.log("TrashLogInfo:", trashLogInfo);
 
-  const result = await TrashItem.find({ deleted: false }, [
-    // "-_id",
-    "-creator",
-    "-__v",
-    "-createdAt",
-    "-updatedAt",
-    // "-deleted",
-  ])
-    .lean()
-    .explain();
-  const items = result.reduce((acc, doc) => {
-    const item = { ...doc }; // Clone the document to avoid mutating the original result
-    item._id = item._id.toString();
-    item.quantity = 0;
-    item.values = {};
-    acc[item._id] = item;
-    return acc;
-  }, {});
-  for (const itemId of Object.keys(trashLogItems)) {
-    const updatedItem = items[itemId];
-    if (updatedItem) {
-      updatedItem.quantity = trashLogItems[itemId].quantity;
-      updatedItem.values = trashLogItems[itemId];
+    const trashLog = await TrashLog.findById(id)
+      .populate({
+        path: "items",
+        model: "IndividualTrashItem",
+        select: "-__v -createdAt -updatedAt -deleted -creator",
+      })
+      .lean();
+
+    const trashLogItems = trashLog.items.reduce((acc, doc) => {
+      const item = { ...doc };
+      item._id = item._id.toString();
+      item.itemId = item.itemId.toString();
+      item.logId = item.logId.toString();
+      item.quantity = item.quantity;
+      acc[item.itemId] = item;
+      return acc;
+    }, {});
+
+    const result = await TrashItem.find({ deleted: false }, [
+      // "-_id",
+      "-creator",
+      "-__v",
+      "-createdAt",
+      "-updatedAt",
+      // "-deleted",
+    ]).lean();
+    const items = result.reduce((acc, doc) => {
+      const item = { ...doc }; // Clone the document to avoid mutating the original result
+      item._id = item._id.toString();
+      item.quantity = 0;
+      item.values = {};
+      acc[item._id] = item;
+      return acc;
+    }, {});
+    for (const itemId of Object.keys(trashLogItems)) {
+      const updatedItem = items[itemId];
+      if (updatedItem) {
+        updatedItem.quantity = trashLogItems[itemId].quantity;
+        updatedItem.values = trashLogItems[itemId];
+      }
     }
-  }
-  // const items = result;
+    // const items = result;
 
-  console.log("TrashLog:", trashLog, items);
-  return { items: items, logId: id };
+    console.log("TrashLog:", trashLog, items);
+    return { items: items, logId: id };
+  } catch (error) {
+    console.error("Error looking for trash items from log:", error);
+  }
+
   // return { props: { items: items } };
   // }
   // .lean();

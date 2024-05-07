@@ -29,10 +29,10 @@ const TrashLogSchema = new Schema(
     notes: String,
     weight: Number,
     deleted: { type: Boolean, default: false },
-    trashiness: { type: Number, required: true },
-    temp: { type: Number, required: true },
-    wind: { type: Number, required: true },
-    cloud: { type: Number, required: true },
+    trashiness: { type: Number },
+    temp: { type: Number },
+    wind: { type: Number },
+    cloud: { type: Number },
     trashFound: { type: Array },
 
     //weather: String, TODO find API to calculate
