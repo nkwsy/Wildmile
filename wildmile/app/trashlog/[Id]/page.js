@@ -78,10 +78,14 @@ import Link from "next/link";
 //   return { items: items, logId: id };
 // }
 
+export async function renderAccordian(logId) {
+  const props = await getItemsFromLog(logId);
+  console.log("Props:", props);
+  return <TrashItemAccordian props={props} />;
+}
 export default async function page({ params }) {
   console.log("Params:", params);
-  const props = await getItemsFromLog(params.Id);
-  console.log(props);
+  // console.log(props);
   return (
     <>
       <Container>
@@ -89,9 +93,7 @@ export default async function page({ params }) {
           <Title mb={30} align="center">
             Create a new trash log
           </Title>
-          <Suspense>
-            <TrashItemAccordian props={props} />
-          </Suspense>
+          <Suspense>{renderAccordian(params.Id)}</Suspense>
 
           {/* <TrashItemAccordian items={props.items} form={form}/> */}
 
