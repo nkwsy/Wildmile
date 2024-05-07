@@ -81,6 +81,7 @@ export default function CreateLog(props) {
     if (res.status === 201) {
       // Get the _id from the server response
       const data = await res.json();
+      console.log(data._id);
       const id = data._id;
 
       // Navigate to the trash/edit/[id].js page
