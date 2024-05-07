@@ -93,6 +93,7 @@ export default function TrashHistory(props) {
   function convertDataToRows(data) {
     const starting_index = Math.max((totalPages - pageNum) * 10, 0);
     const page_data = data.slice(starting_index, starting_index + 10);
+
     return page_data.map((row, i) => (
       <Table.Tr key={row.timeEnd + i} className={classes.tr}>
         <Table.Td suppressHydrationWarning>
@@ -111,7 +112,7 @@ export default function TrashHistory(props) {
                 justify="center"
                 fullWidth
                 component={Link}
-                href={`/trashlog//${row._id}`}
+                href={`/trashlog/${row._id}`}
                 leftSection={<IconPencil />}
               >
                 Edit
