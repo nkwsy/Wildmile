@@ -49,7 +49,8 @@ export async function getItemsFromLog(useLogId) {
       model: "IndividualTrashItem",
       select: "-__v -createdAt -updatedAt -deleted -creator",
     })
-    .lean();
+    .lean()
+    .explain();
   const trashLogItems = trashLog.items.reduce((acc, doc) => {
     const item = { ...doc };
     item._id = item._id.toString();
@@ -67,7 +68,9 @@ export async function getItemsFromLog(useLogId) {
     "-createdAt",
     "-updatedAt",
     // "-deleted",
-  ]).lean();
+  ])
+    .lean()
+    .explain();
   const items = result.reduce((acc, doc) => {
     const item = { ...doc }; // Clone the document to avoid mutating the original result
     item._id = item._id.toString();
