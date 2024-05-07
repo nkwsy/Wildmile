@@ -81,7 +81,7 @@ import Link from "next/link";
 // }
 
 export async function renderAccordian(logId) {
-  revalidatePath("/trashlog/[Id]");
+  revalidatePath("/trashlog");
   const props = await getItemsFromLog(logId);
   console.log("Props:", props);
   return <TrashItemAccordian props={props} />;
