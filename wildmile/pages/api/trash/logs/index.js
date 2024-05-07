@@ -30,13 +30,12 @@ router
     }
   })
   .post(async (req, res) => {
-    // try {
-    //   await userValidationSchema.validate(req.body, { abortEarly: false })
-    // } catch (error) {
-    //   return res.status(400).send(error.message)
-    // }
-
-    return res.status(201).json(await createLog(req.body));
+    try {
+      const log = await createLog(req.body);
+    } catch (error) {
+      return res.status(400).send(error.message);
+    }
+    return res.status(201).json(log);
   });
 
 export default router.handler({
