@@ -14,7 +14,9 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
-import Router from "next/router";
+// import Router from "next/router";
+import { useRouter } from "next/router";
+
 import TrashForm from "components/trash_form";
 import TrashItem from "/models/TrashItem";
 import dbConnect from "/lib/db/setup";
@@ -24,6 +26,7 @@ export default function CreateLog(props) {
   const [active, setActive] = useState(0);
   const [visible, handlers] = useDisclosure(false);
   const [loading, { toggle }] = useDisclosure();
+  const Router = useRouter();
 
   const isBrowser = () => typeof window !== "undefined"; //The approach recommended by Next.js
 
@@ -32,11 +35,11 @@ export default function CreateLog(props) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  const trashFormVals = Object.fromEntries(
-    props.items.map((item) => {
-      return [item.name, 0];
-    })
-  );
+  // const trashFormVals = Object.fromEntries(
+  //   props.items.map((item) => {
+  //     return [item.name, 0];
+  //   })
+  // );
 
   const form = useForm({
     initialValues: {
@@ -49,7 +52,7 @@ export default function CreateLog(props) {
       wind: 1,
       cloud: 1,
       notes: "",
-      items: trashFormVals,
+      // items: trashFormVals,
     },
 
     validate: (values) => {
