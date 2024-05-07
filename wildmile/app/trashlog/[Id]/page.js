@@ -79,8 +79,9 @@ import Link from "next/link";
 // }
 
 export default async function page({ params }) {
+  console.log("Params:", params);
   const props = await getItemsFromLog(params.Id);
-  //   console.log(props);
+  console.log(props);
   return (
     <>
       <Container>
@@ -88,9 +89,9 @@ export default async function page({ params }) {
           <Title mb={30} align="center">
             Create a new trash log
           </Title>
-          {/* <Suspense fallback={<LoadingOverlay visible />}> */}
-          <TrashItemAccordian props={props} />
-          {/* </Suspense> */}
+          <Suspense>
+            <TrashItemAccordian props={props} />
+          </Suspense>
 
           {/* <TrashItemAccordian items={props.items} form={form}/> */}
 
