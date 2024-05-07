@@ -19,6 +19,8 @@ import TrashItemAccordian from "components/trash_item_accordian";
 // import dbConnect from "/lib/db/setup";
 import { Suspense } from "react";
 import { getItemsFromLog } from "app/actions/TrashActions";
+import { revalidatePath } from "next/cache";
+
 import Link from "next/link";
 // import { use } from "passport";
 
@@ -79,6 +81,7 @@ import Link from "next/link";
 // }
 
 export async function renderAccordian(logId) {
+  revalidatePath("/trashlog/[Id]");
   const props = await getItemsFromLog(logId);
   console.log("Props:", props);
   return <TrashItemAccordian props={props} />;
