@@ -1,6 +1,6 @@
 "use client";
-import { updateTrashCount } from "app/actions/TrashActions";
-import { useState, useRef } from "react";
+import { updateTrashCount, getTrashCount } from "app/actions/TrashActions";
+import { useState, useRef, useEffect } from "react";
 import {
   NumberInput,
   NumberInputHandlers,
@@ -11,7 +11,20 @@ import {
 import { IconPlus, IconMinus } from "@tabler/icons-react";
 import classes from "styles/TrashItemAccordion.module.css";
 export default function TrashInputCounter({ initialTrash, itemId, logId }) {
+  // export default function TrashInputCounter({ itemId, logId }) {
   const handlersRef = useRef(null);
+  // const [initialTrash, setInitialTrash] = useState(0);
+
+  // useEffect(() => {
+  //   // Replace this with your actual query
+  //   const fetchInitialTrash = async () => {
+  //     const response = await getTrashCount(itemId, logId);
+  //     setInitialTrash(response);
+  //   };
+
+  //   fetchInitialTrash();
+  // }, []); // Empty dependency array ensures this runs once on mount
+
   //   const [count, setCount] = useState(initialTrash);
   //   console.log("count", count);
   return (
