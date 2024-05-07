@@ -32,10 +32,10 @@ router
   .post(async (req, res) => {
     try {
       const log = await createLog(req.body);
+      return res.status(201).json(log);
     } catch (error) {
       return res.status(400).send(error.message);
     }
-    return res.status(201).json(log);
   });
 
 export default router.handler({
