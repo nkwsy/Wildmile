@@ -89,9 +89,9 @@ export default async function page({ params }) {
           <Title mb={30} align="center">
             Create a new trash log
           </Title>
-          <Suspense>
-            <TrashItemAccordian props={props} />
-          </Suspense>
+          {/* <Suspense> */}
+          <TrashItemAccordian props={props} />
+          {/* </Suspense> */}
 
           {/* <TrashItemAccordian items={props.items} form={form}/> */}
 
