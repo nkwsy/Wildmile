@@ -125,9 +125,9 @@ export const UploadTrashImage = async (formData) => {
     const fileBuffer = Buffer.from(await file.arrayBuffer());
     const res = await uploadFileToS3(fileBuffer, fileName, folderName);
     console.log("UploadPlantImage:", res);
-    return res;
+    return { success: true, url: res };
   } catch (e) {
     console.error("Error uploading file:", e);
-    return "Image Upload failed";
+    return { success: false, error: e };
   }
 };

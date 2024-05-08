@@ -54,7 +54,11 @@ export default function TrashImageUpload({ setImageFiles }) {
 
     try {
       const response = await UploadTrashImage(formData); // Assume this returns the URL of the uploaded image
-      const url = response; // Adjust according to your API response structure
+      if (!response || response.success === false) {
+        alert("Failed to upload image.");
+        return;
+      }
+      const url = response.url; // Adjust according to your API response structure
       updateFileDetails(index, { url });
     } catch (error) {
       console.error("Failed to upload image", error);
