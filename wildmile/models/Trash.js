@@ -1,18 +1,19 @@
 import mongoose from "mongoose";
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const { Schema } = mongoose;
 
-const polygonSchema = new Schema({
-  type: {
-    type: String,
-    enum: ["Polygon"],
-    required: true,
-  },
-  coordinates: {
-    type: [[[Number]]], // Array of arrays of arrays of numbers
-    required: true,
-  },
-});
+// const polygonSchema = new Schema({
+//   type: {
+//     type: String,
+//     enum: ["Polygon"],
+//     required: true,
+//   },
+//   coordinates: {
+//     type: [[[Number]]], // Array of arrays of arrays of numbers
+//     required: true,
+//   },
+// });
 
 const TrashLogSchema = new Schema(
   {
@@ -25,7 +26,7 @@ const TrashLogSchema = new Schema(
     numOfParticipants: Number,
     participants: [{ type: Schema.Types.ObjectId, ref: "User" }],
     unattributed: Boolean,
-    area: polygonSchema,
+    // area: polygonSchema,
     notes: String,
     weight: Number,
     deleted: { type: Boolean, default: false },
@@ -33,7 +34,7 @@ const TrashLogSchema = new Schema(
     temp: { type: Number },
     wind: { type: Number },
     cloud: { type: Number },
-    trashFound: { type: Array },
+    // trashFound: { type: Array },
 
     //weather: String, TODO find API to calculate
   },
@@ -48,6 +49,8 @@ TrashLogSchema.virtual("items", {
   justOne: false,
   options: { sort: { itemId: -1 } },
 });
+
+TrashLogSchema.plugin(mongoosePaginate);
 
 export default mongoose.models.TrashLog ||
   mongoose.model("TrashLog", TrashLogSchema);

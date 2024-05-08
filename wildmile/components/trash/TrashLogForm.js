@@ -18,9 +18,10 @@ import { useDisclosure } from "@mantine/hooks";
 // import Router from "next/router";
 import { useRouter } from "next/navigation";
 
+import { revalidatePath } from "next/cache";
 import TrashForm from "./trash_form";
 
-export default function CreateLog() {
+export default function TrashLogForm() {
   const router = useRouter(); // Step 2: Initialize useRouter
 
   const [errorMsg, setErrorMsg] = useState("");
@@ -74,6 +75,8 @@ export default function CreateLog() {
     if (res.status === 201) {
       const data = await res.json();
       const id = data._id;
+
+      revalidatePath("/trashlog");
       router.push(`/trashlog/${id}`); // Use the useRouter instance for navigation
     } else {
       setErrorMsg(await res.text()); // Set error message from API response

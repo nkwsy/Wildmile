@@ -1,7 +1,12 @@
 "use server";
+import TrashLog from "models/Trash";
 import TrashItem from "models/TrashItem";
 import IndividualTrashItem from "models/IndividualTrashItem";
-import TrashLog from "models/Trash";
+import { cleanObject } from "lib/utils";
+import { getSession } from "lib/getSession";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+
 export async function updateTrashCount(itemId, logId, quantity) {
   const item = await IndividualTrashItem.findOneAndUpdate(
     { itemId: itemId, logId: logId }, // find a document with these properties
@@ -24,6 +29,23 @@ export async function getTrashCount(itemId, logId) {
   return item ? item.quantity : 0;
 }
 
+export async function CreateLog(values) {
+  console.log("Values:", values.site);
+  const cleanValues = cleanObject(values);
+
+  const session = await getSession();
+  console.log("clean values:", cleanValues);
+  // Here you should insert the Log into the database
+  let log = await TrashLog.create(
+    { ...values, creator: session._id }
+    // { ...cleanValues }
+  );
+  console.log("Log:", log);
+  revalidatePath("/trashlog"); // Update cached posts
+  redirect(`/trashlog/${log._id}`); // Navigate to the new post page
+  return { success: true, data: JSON.stringify(log) };
+}
+
 export async function getItemsFromLog(useLogId) {
   //   await dbConnect();
   const id = useLogId; // Get the id from the request parameters
@@ -44,16 +66,6 @@ export async function getItemsFromLog(useLogId) {
   // const result = await TrashItem.find({}, ).lean();
   /* find all the data in our database */
   try {
-    const trashLogInfo = await TrashLog.findById(id, { maxTimeMS: 5000 })
-      .populate({
-        path: "items",
-        model: "IndividualTrashItem",
-        select: "-__v -createdAt -updatedAt -deleted -creator",
-      })
-      .lean()
-      .explain();
-    console.log("TrashLogInfo:", trashLogInfo);
-
     const trashLog = await TrashLog.findById(id)
       .populate({
         path: "items",
@@ -73,7 +85,6 @@ export async function getItemsFromLog(useLogId) {
     }, {});
 
     const result = await TrashItem.find({ deleted: false }, [
-      // "-_id",
       "-creator",
       "-__v",
       "-createdAt",
@@ -97,7 +108,6 @@ export async function getItemsFromLog(useLogId) {
     }
     // const items = result;
 
-    console.log("TrashLog:", trashLog, items);
     return { items: items, logId: id };
   } catch (error) {
     console.error("Error looking for trash items from log:", error);
