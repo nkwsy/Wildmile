@@ -26,16 +26,11 @@ async function dbConnect() {
 
   if (!cached.promise) {
     const opts = {
-      bufferCommands: false,
+      // bufferCommands: false,
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      connectTimeoutMS: 30000, // Increase the connection timeout
-      socketTimeoutMS: 45000, // Increase the socket timeout
-      serverSelectionTimeoutMS: 5000, // Timeout for server selection
-      family: 4, // Use IPv4, skip trying IPv6
-      autoReconnect: true, // Auto-reconnect on failure
-      reconnectTries: Number.MAX_VALUE, // Try to reconnect indefinitely
-      reconnectInterval: 1000, // Reconnect every 1000ms
+      connectTimeoutMS: 30000, // Extend the timeout to handle slow connections
+      socketTimeoutMS: 45000, // Extend the socket timeout
     };
 
     cached.promise = mongoose
