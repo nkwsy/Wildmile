@@ -1,4 +1,4 @@
-import User from "../../models/User";
+import User from "models/User";
 import getAvatar from "../avatar";
 
 export async function getAllUsers() {
@@ -65,7 +65,7 @@ export async function findUserByEmail(email) {
 
   // Here you find the user based on id/email in the database
   return await User.findOne({ email: email.toLowerCase() }, [
-    // "-_id",
+    "-_id",
     "-__v",
     "-createdAt",
     "-updatedAt",
