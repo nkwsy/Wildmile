@@ -29,6 +29,8 @@ async function dbConnect() {
       bufferCommands: false,
       autoIndex: false,
       maxPoolSize: 300,
+      serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+
       // useNewUrlParser: true,
       // useUnifiedTopology: true,
       // connectTimeoutMS: 30000, // Extend the timeout to handle slow connections
