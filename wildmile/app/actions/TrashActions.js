@@ -41,8 +41,8 @@ export async function CreateLog(values) {
     // { ...cleanValues }
   );
   console.log("Log:", log);
-  revalidatePath("/trashlog"); // Update cached posts
-  redirect(`/trashlog/${log._id}`); // Navigate to the new post page
+  revalidatePath("/trash"); // Update cached posts
+  redirect(`/trash/log/${log._id}`); // Navigate to the new post page
   return { success: true, data: JSON.stringify(log) };
 }
 
