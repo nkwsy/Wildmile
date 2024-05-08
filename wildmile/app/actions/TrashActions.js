@@ -33,11 +33,12 @@ export async function CreateLog(values) {
   console.log("Values:", values.site);
   const cleanValues = cleanObject(values);
 
-  const session = await getSession();
+  // const session = await getSession();
   console.log("clean values:", cleanValues);
   // Here you should insert the Log into the database
   let log = await TrashLog.create(
-    { ...values, creator: session._id }
+    // { ...values, creator: session._id }
+    { values }
     // { ...cleanValues }
   );
   console.log("Log:", log);
