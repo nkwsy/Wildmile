@@ -27,6 +27,8 @@ async function dbConnect() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
+      autoIndex: false,
+      maxPoolSize: 300,
       // useNewUrlParser: true,
       // useUnifiedTopology: true,
       // connectTimeoutMS: 30000, // Extend the timeout to handle slow connections

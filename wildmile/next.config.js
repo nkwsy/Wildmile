@@ -13,11 +13,9 @@ module.exports = {
 
   // Webpack configuration adjustments
   webpack: (config, { isServer }) => {
-    // Enabling top-level await in modules
-    config.experiments = {
-      topLevelAwait: true,
-    };
     config.experiments = config.experiments || {};
+
+    config.experiments.topLevelAwait = true; // Enabling top-level await in modules
     config.experiments.layers = true; // Enable layers experiment
 
     // Configuration for file watching, useful in development environments
