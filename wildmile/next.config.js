@@ -5,7 +5,14 @@
 // module.exports = withBundleAnalyzer({});
 
 module.exports = {
+  experimental: {
+    esmExternals: "loose", // <-- add this
+    serverComponentsExternalPackages: ["mongoose"], // <-- and this
+  },
   webpack: (config, context) => {
+    config.experiments = {
+      topLevelAwait: true,
+    };
     (config.watchOptions = {
       poll: 1000,
       aggregateTimeout: 300,
@@ -19,6 +26,4 @@ module.exports = {
 
     return config;
   },
-
-  experimental: {},
 };

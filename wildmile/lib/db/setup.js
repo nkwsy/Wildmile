@@ -26,11 +26,11 @@ async function dbConnect() {
 
   if (!cached.promise) {
     const opts = {
-      // bufferCommands: false,
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      connectTimeoutMS: 30000, // Extend the timeout to handle slow connections
-      socketTimeoutMS: 45000, // Extend the socket timeout
+      bufferCommands: false,
+      // useNewUrlParser: true,
+      // useUnifiedTopology: true,
+      // connectTimeoutMS: 30000, // Extend the timeout to handle slow connections
+      // socketTimeoutMS: 45000, // Extend the socket timeout
     };
 
     cached.promise = mongoose
