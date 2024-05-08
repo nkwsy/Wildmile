@@ -1,3 +1,7 @@
+export default function TrashHistory() {
+  return <div>TrashHistory</div>;
+}
+
 // "use client";
 // import { useState } from "react";
 // import {
