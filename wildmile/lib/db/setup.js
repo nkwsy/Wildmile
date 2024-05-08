@@ -38,9 +38,17 @@ async function dbConnect() {
       reconnectInterval: 1000, // Reconnect every 1000ms
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      return mongoose;
-    });
+    cached.promise = mongoose
+      .connect(MONGODB_URI, opts)
+      .then((mongoose) => {
+        console.log("MongoDB is connected");
+        return mongoose;
+      })
+      .catch((err) => {
+        console.error("MongoDB connection error:", err);
+        cached.promise = null; // Reset promise to allow for reconnection attempts
+        throw err;
+      });
   }
 
   try {
