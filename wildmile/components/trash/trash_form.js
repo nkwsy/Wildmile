@@ -26,13 +26,14 @@ import { DateTimePicker } from "@mantine/dates";
 import classes from "styles/TrashItemAccordion.module.css";
 // const [visible, handlers] = useDisclosure(false)
 
+import TrashImageUpload from "components/trash/TrashImageUpload";
 import { CreateLog } from "app/actions/TrashActions";
 import { SubmitButton } from "components/SubmitButton";
 // const [errorMsg, setErrorMsg] = useState('')
 
 export default function TrashForm(props) {
   const router = useRouter();
-
+  const [files, setFiles] = useState([]);
   const form = useForm({
     initialValues: {
       site: "",
@@ -77,10 +78,11 @@ export default function TrashForm(props) {
     // console.log("Form Data:", site);
     // const rawFormData = Object.fromEntries(formData);
     try {
+      values.images = files;
       console.log(values);
       const raw_response = await CreateLog(values);
       const response = await raw_response.json();
-      router.push(`/trashlog/${response._id}`);
+      router.push(`/trash/log/${response._id}`);
     } catch (error) {
       console.error(error);
     }
@@ -197,12 +199,19 @@ export default function TrashForm(props) {
             {...form.getInputProps("cloud")}
           />
         </Group>
-
-        <Textarea
-          label="Notes"
-          description="Any fun things found? Issues or triumphs?"
-          {...form.getInputProps("notes")}
-        />
+        {/* <Group justify="flex-start"> */}
+        <Grid>
+          <Grid.Col span={6}>
+            <Textarea
+              label="Notes"
+              description="Any fun things found? Issues or triumphs?"
+              {...form.getInputProps("notes")}
+            />
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <TrashImageUpload setImageFiles={setFiles} />
+          </Grid.Col>
+        </Grid>
         <Group>
           <SubmitButton />
         </Group>

@@ -14,7 +14,14 @@ const { Schema } = mongoose;
 //     required: true,
 //   },
 // });
-
+const TrashImageSchema = new mongoose.Schema(
+  {
+    url: { type: String, default: "" },
+    tags: { type: Array, default: [] },
+    description: { type: String, required: false, default: "" },
+  }
+  // { _id: false }
+);
 const TrashLogSchema = new Schema(
   {
     // Supporting Info
@@ -34,6 +41,8 @@ const TrashLogSchema = new Schema(
     temp: { type: Number },
     wind: { type: Number },
     cloud: { type: Number },
+    images: { type: [TrashImageSchema], default: [] },
+
     // trashFound: { type: Array },
 
     //weather: String, TODO find API to calculate

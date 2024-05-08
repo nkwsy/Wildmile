@@ -17,7 +17,6 @@ import { CreateLog } from "app/actions/TrashActions";
 import TrashLogFrom from "components/trash/TrashLogForm";
 import { SubmitButton } from "components/SubmitButton";
 import TrashForm from "components/trash/trash_form";
-import { useForm } from "@mantine/form";
 
 export default async function TrashLogPage() {
   async function CreateTrashLogForm(formData) {
