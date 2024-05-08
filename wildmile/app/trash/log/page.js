@@ -19,25 +19,25 @@ import { SubmitButton } from "components/SubmitButton";
 import TrashForm from "components/trash/trash_form";
 
 export default async function TrashLogPage() {
-  async function CreateTrashLogForm(formData) {
-    "use server";
-    const {
-      site,
-      participants,
-      timeStart,
-      timeEnd,
-      trashiness,
-      temp,
-      wind,
-      cloud,
-      notes,
-    } = formData;
-    console.log("Form Data:", site);
-    const rawFormData = Object.fromEntries(formData);
-    console.log(rawFormData);
-    const response = await CreateLog(formData);
-    console.log(response);
-  }
+  // async function CreateTrashLogForm(formData) {
+  //   "use server";
+  //   const {
+  //     site,
+  //     participants,
+  //     timeStart,
+  //     timeEnd,
+  //     trashiness,
+  //     temp,
+  //     wind,
+  //     cloud,
+  //     notes,
+  //   } = formData;
+  //   console.log("Form Data:", site);
+  //   const rawFormData = Object.fromEntries(formData);
+  //   console.log(rawFormData);
+  //   const response = await CreateLog(formData);
+  //   console.log(response);
+  // }
 
   return (
     <Container my="6rem">

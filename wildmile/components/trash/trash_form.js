@@ -81,8 +81,8 @@ export default function TrashForm(props) {
       values.images = files;
       console.log(values);
       const raw_response = await CreateLog(values);
-      const response = await raw_response.json();
-      router.push(`/trash/log/${response._id}`);
+      const response = await raw_response;
+      // router.push(`/trash/log/${response._id}`);
     } catch (error) {
       console.error(error);
     }
