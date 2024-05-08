@@ -17,6 +17,8 @@ module.exports = {
     config.experiments = {
       topLevelAwait: true,
     };
+    config.experiments = config.experiments || {};
+    config.experiments.layers = true; // Enable layers experiment
 
     // Configuration for file watching, useful in development environments
     config.watchOptions = {
