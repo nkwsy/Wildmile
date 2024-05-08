@@ -5,24 +5,33 @@
 // module.exports = withBundleAnalyzer({});
 
 module.exports = {
+  // Experimental features configuration
   experimental: {
-    esmExternals: "loose", // <-- add this
-    serverComponentsExternalPackages: ["mongoose"], // <-- and this
+    esmExternals: "loose", // Allows importing ESM packages as CommonJS
+    serverComponentsExternalPackages: ["mongoose"], // Prevents bundling for certain server packages
   },
-  webpack: (config, context) => {
+
+  // Webpack configuration adjustments
+  webpack: (config, { isServer }) => {
+    // Enabling top-level await in modules
     config.experiments = {
       topLevelAwait: true,
     };
-    (config.watchOptions = {
-      poll: 1000,
-      aggregateTimeout: 300,
-    }),
-      (config.externals = [...config.externals, "canvas"]);
-    // (config.resolve.alias = {
-    //   ...config.resolve.alias,
 
+    // Configuration for file watching, useful in development environments
+    config.watchOptions = {
+      poll: 1000, // Polling interval in milliseconds
+      aggregateTimeout: 300, // Delay before rebuilding once the first file changed
+    };
+
+    // Adding 'canvas' to webpack externals to prevent it from being bundled
+    config.externals = [...config.externals, "canvas"];
+
+    // Optionally disable 'canvas' in webpack resolution if necessary
+    // config.resolve.alias = {
+    //   ...config.resolve.alias,
     //   canvas: false,
-    // });
+    // };
 
     return config;
   },
