@@ -213,10 +213,10 @@ export default function TrashForm(props) {
           </Grid.Col>
         </Grid>
         <Group>
-          <Button type="submit" color="blue">
+          {/* <Button type="submit" color="blue">
             Submit
-          </Button>
-          {/* <SubmitButton /> */}
+          </Button> */}
+          <SubmitButton />
         </Group>
       </form>
       {/* </Grid> */}
