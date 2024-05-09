@@ -9,6 +9,7 @@ import { uploadFile, uploadFileToS3 } from "./UploadActions";
 import { getSession } from "lib/getSession";
 import sharp from "sharp";
 import axios from "axios";
+import { dbConnect } from "lib/dbConnect";
 
 export async function PlantHandler() {
   try {
@@ -110,7 +111,7 @@ export async function getIndividualPlants() {
 }
 
 export async function getRandomPlant() {
-  // await dbConnect();
+   await dbConnect();
   const result = await Plant.aggregate([{ $sample: { size: 1 } }]);
   // const randomPlant = JSON.stringify(result[0])
   return result[0];
