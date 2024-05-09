@@ -49,7 +49,7 @@ export async function CreateLog(values) {
 }
 
 export async function getItemsFromLog(useLogId) {
-  //   await dbConnect();
+  await dbConnect();
   const id = useLogId; // Get the id from the request parameters
   console.log("id" + id);
 
