@@ -76,3 +76,11 @@
   /* Style for the number input fields */
   max-width: 100px;
 }
+
+.slider {
+  /* Style for the slider elements */
+  /* width: auto; */
+  width: 40%;
+  padding-bottom: 1rem;
+  /* padding: auto; */
+}

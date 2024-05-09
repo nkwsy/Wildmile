@@ -17,8 +17,8 @@ const pointSchema = new Schema({
 
 const IndividualTrashItemSchema = new Schema(
   {
-    itemId: { type: Schema.Types.ObjectId, ref: "TrashItem" },
-    logId: { type: Schema.Types.ObjectId, ref: "TrashLog" },
+    itemId: { type: Schema.Types.ObjectId, ref: "TrashItem", index: true },
+    logId: { type: Schema.Types.ObjectId, ref: "TrashLog", index: true },
     quantity: Number,
     notes: String,
     location: pointSchema,

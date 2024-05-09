@@ -4,20 +4,10 @@ import {
   IconCalendarSearch,
   IconChartInfographic,
 } from "@tabler/icons-react";
-import { useEffect } from "react";
-import Router from "next/router";
-import { useUser } from "../../lib/hooks";
 import { IconCardGrid } from "../../components/icon_card_grid";
 import classes from "/styles/card.module.css";
 
-export default function TrashLanding() {
-  const [user, { loading }] = useUser();
-
-  useEffect(() => {
-    // redirect user to login if not authenticated
-    if (!loading && !user) Router.replace("/");
-  }, [user, loading]);
-
+export default function Page() {
   const cards = [
     {
       icon: IconClipboardPlus,
@@ -25,12 +15,12 @@ export default function TrashLanding() {
       href: "/trash/log",
       description: "Create a new trash log ",
     },
-    {
-      icon: IconCalendarSearch,
-      title: "Past Logs",
-      href: "/trash/history",
-      description: "View and Edit previous trash logs",
-    },
+    // {
+    //   icon: IconCalendarSearch,
+    //   title: "Past Logs",
+    //   href: "/trash/history",
+    //   description: "View and Edit previous trash logs",
+    // },
     {
       icon: IconChartInfographic,
       title: "Trash Dashboard",

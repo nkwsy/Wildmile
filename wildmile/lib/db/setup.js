@@ -27,11 +27,27 @@ async function dbConnect() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
+      autoIndex: false,
+      maxPoolSize: 300,
+      serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+
+      // useNewUrlParser: true,
+      // useUnifiedTopology: true,
+      // connectTimeoutMS: 30000, // Extend the timeout to handle slow connections
+      // socketTimeoutMS: 45000, // Extend the socket timeout
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      return mongoose;
-    });
+    cached.promise = mongoose
+      .connect(MONGODB_URI, opts)
+      .then((mongoose) => {
+        console.log("MongoDB is connected");
+        return mongoose;
+      })
+      .catch((err) => {
+        console.error("MongoDB connection error:", err);
+        cached.promise = null; // Reset promise to allow for reconnection attempts
+        throw err;
+      });
   }
 
   try {

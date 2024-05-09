@@ -1,7 +1,7 @@
 "use server";
 import { getLoginSession } from "lib/auth";
 import { cookies, headers } from "next/headers";
-import User from "models/User";
+// import User from "models/User";
 import { findUserByEmail } from "./db/user";
 
 export async function getSession() {
