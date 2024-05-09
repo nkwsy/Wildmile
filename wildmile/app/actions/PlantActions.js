@@ -9,7 +9,7 @@ import { uploadFile, uploadFileToS3 } from "./UploadActions";
 import { getSession } from "lib/getSession";
 import sharp from "sharp";
 import axios from "axios";
-import { dbConnect } from "lib/dbConnect";
+import { dbConnect } from "lib/db/setup";
 
 export async function PlantHandler() {
   try {
