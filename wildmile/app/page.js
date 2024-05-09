@@ -18,6 +18,7 @@ import {
 import { IconCardGrid } from "../components/icon_card_grid";
 import classes from "/styles/card.module.css";
 import RandomPlant from "../components/plants/RandomPlant";
+import { Suspense } from "react";
 export default function HomePage() {
   // const [user, { loading }] = useUser();
 
@@ -66,7 +67,9 @@ export default function HomePage() {
             </GridCol>
             <GridCol span={{ base: 12, md: 6, lg: 6 }}>
               <Fieldset legend="A Random Plant">
-                <RandomPlant />
+                <Suspense>
+                  <RandomPlant />
+                </Suspense>
               </Fieldset>
             </GridCol>
           </Grid>
