@@ -78,10 +78,10 @@ export default function PlantMainSection({ plant }) {
   console.log("Plantmain:", plant);
   return (
     <>
-      <PlantEditMode plant={plant} />
+      {/* <PlantEditMode plant={plant} /> */}
 
       <Grid>
-        <GridCol span={6}>
+        <GridCol span={{ base: 12, lg: 6 }}>
           {plant.thumbnail || plant.image_url ? (
             <Image
               src={plant.thumbnail || plant.image_url}
@@ -92,7 +92,7 @@ export default function PlantMainSection({ plant }) {
             />
           ) : null}
         </GridCol>
-        <GridCol span={6}>
+        <GridCol span={{ base: 12, lg: 6 }}>
           <Title order={1} className={classes.title}>
             {plant.commonName || plant.common_name || plant.scientificName}
           </Title>
@@ -104,7 +104,15 @@ export default function PlantMainSection({ plant }) {
 
           <Group spacing="xs">
             {plant.family && (
-              <Badge color={plant.color.family}>{plant.family}</Badge>
+              <Badge
+                color={
+                  plant.color && plant.color.family
+                    ? plant.color.family
+                    : "grey"
+                }
+              >
+                {plant.family}
+              </Badge>
             )}
             {plant.family_common_name && (
               <Badge>{plant.family_common_name}</Badge>

@@ -50,7 +50,7 @@ export default function Login() {
 
   useEffect(() => {
     // redirect to home if user is authenticated
-    if (user) Router.push("/home");
+    if (user) Router.push("/");
   }, [user]);
 
   return (

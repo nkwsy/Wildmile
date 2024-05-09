@@ -26,7 +26,7 @@ import classes from "/styles/nav.module.css";
 const nav_tabs = [
   {
     label: "Home",
-    link: "/home",
+    link: "/",
   },
   {
     label: "Trash",
@@ -128,7 +128,7 @@ export function HeaderNav() {
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
           {user && user ? (
-            <Link href="/home">
+            <Link href="/">
               <Image
                 src="/logo.png"
                 alt="Urban River Logo"

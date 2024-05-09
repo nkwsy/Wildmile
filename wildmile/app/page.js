@@ -1,23 +1,30 @@
-import { Title, Text, Container } from "@mantine/core";
+import {
+  Title,
+  Text,
+  Container,
+  Box,
+  Paper,
+  Grid,
+  GridCol,
+  Fieldset,
+} from "@mantine/core";
 import {
   IconTrash,
   IconPlant2,
   IconListDetails,
   IconUsers,
 } from "@tabler/icons-react";
-import { useEffect } from "react";
-import Router from "next/router";
+
 import { IconCardGrid } from "../components/icon_card_grid";
-import { useUser } from "../lib/hooks";
 import classes from "/styles/card.module.css";
-
+import RandomPlant from "../components/plants/RandomPlant";
 export default function HomePage() {
-  const [user, { loading }] = useUser();
+  // const [user, { loading }] = useUser();
 
-  useEffect(() => {
-    // redirect user to login if not authenticated
-    if (!loading && !user) Router.replace("/");
-  }, [user, loading]);
+  // useEffect(() => {
+  //   // redirect user to login if not authenticated
+  //   if (!loading && !user) Router.replace("/");
+  // }, [user, loading]);
 
   const cards = [
     {
@@ -41,15 +48,6 @@ export default function HomePage() {
     },
   ];
 
-  user && user.admin
-    ? cards.push({
-        icon: IconUsers,
-        title: "Admin",
-        href: "/admin",
-        description: "Manage the users on the wild mile",
-      })
-    : null;
-
   return (
     <>
       <Container maw="85%" my="5rem">
@@ -59,7 +57,20 @@ export default function HomePage() {
         <Text c="dimmed" className={classes.description} ta="center" mt="md">
           Collecting and sharing data about Urban River's projects.
         </Text>
-        <IconCardGrid cards={cards} />
+        <Box mt="lg">
+          <Grid>
+            <GridCol span={{ base: 12, md: 6, lg: 6 }}>
+              {/* <Box> */}
+              <IconCardGrid cards={cards} />
+              {/* </Box> */}
+            </GridCol>
+            <GridCol span={{ base: 12, md: 6, lg: 6 }}>
+              <Fieldset legend="A Random Plant">
+                <RandomPlant />
+              </Fieldset>
+            </GridCol>
+          </Grid>
+        </Box>
       </Container>
     </>
   );
