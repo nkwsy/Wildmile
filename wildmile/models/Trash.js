@@ -47,7 +47,7 @@ const TrashLogSchema = new Schema(
 
     //weather: String, TODO find API to calculate
   },
-  { timestamps: true, strictPopulate: false }
+  { timestamps: true, strictPopulate: false, bufferCommands: false }
 );
 
 // Does this work? using find doesnt return these values...
