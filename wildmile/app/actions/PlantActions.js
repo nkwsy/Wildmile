@@ -116,6 +116,12 @@ export async function getIndividualPlants() {
   return plants;
 }
 
+export async function getRandomPlant() {
+  await dbConnect();
+  const result = await Plant.aggregate([{ $sample: { size: 1 } }]);
+  // const randomPlant = JSON.stringify(result[0])
+  return result[0];
+}
 // Create Plants
 export async function savePlantInputs(PlantList) {
   console.log("PlantActions- savePlantInputs:", PlantList);
