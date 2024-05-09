@@ -79,17 +79,20 @@ function TrashItemAccordian({ props }) {
     const items = groupedByMaterial[material];
     const itemRows = [];
     items.forEach((item) => {
+      const capitalizedItemName =
+        item.name.charAt(0).toUpperCase() + item.name.slice(1);
+
       itemRows.push(
         <div key={item._id} className={classes.item}>
           <Group justify="space-between">
             <Tooltip
-              label={`${item.name}${
+              label={`${capitalizedItemName}${
                 item.description ? ` - ${item.description}` : ""
               }`}
               openDelay={500}
             >
               <Text className={`${classes.title} ${classes.truncateText}`}>
-                {item.name}
+                {capitalizedItemName}
               </Text>
             </Tooltip>
             <Text className={classes.catagory}>{item.catagory}</Text>
