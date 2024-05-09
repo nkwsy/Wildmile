@@ -1,7 +1,5 @@
 import { Title, Text, Container } from "@mantine/core";
 import { useEffect } from "react";
-import Router from "next/router";
-import { useUser } from "../../lib/hooks";
 import { IconCardGrid } from "../../components/icon_card_grid";
 import classes from "/styles/card.module.css";
 import {
@@ -20,12 +18,7 @@ import {
 // import MapPicker from "components/map_picker";
 
 export default function BurpHomeLanding() {
-  const [user, { loading }] = useUser();
 
-  useEffect(() => {
-    // redirect user to login if not authenticated
-    if (!loading && !user) Router.replace("/");
-  }, [user, loading]);
 
   const cards = [
     {

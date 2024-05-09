@@ -15,9 +15,7 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
-import Router from "next/router";
 import SampleForm from "components/macros/sample_form";
-import dbConnect from "/lib/db/setup";
 import mapboxgl from "!mapbox-gl";
 
 mapboxgl.accessToken = process.env.MAPBOX_KEY;
@@ -53,7 +51,6 @@ export default function CreateLog() {
   });
 
   // Use the databaseInput object to store the form data in the database
-
   async function createLog() {
     handlers.open();
     console.log(form.values);
@@ -69,13 +66,6 @@ export default function CreateLog() {
       handlers.close();
       setErrorMsg(await res.text());
     }
-
-    // Get the _id from the server response
-    // const data = await res.json();
-    // const id = data._id;
-
-    // Navigate to the trash/edit/[id].js page
-    // Router.push(`/projects`);
   }
 
   return (
@@ -93,12 +83,4 @@ export default function CreateLog() {
       </Paper>
     </Container>
   );
-}
-
-export async function getStaticProps() {
-  await dbConnect();
-
-  /* find all the data in our database */
-
-  return { props: {} };
 }
