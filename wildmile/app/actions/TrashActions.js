@@ -32,16 +32,15 @@ export async function getTrashCount(itemId, logId) {
 export async function CreateLog(values) {
   console.log("Values:", values.site);
   const cleanValues = cleanObject(values);
-
   const session = await getSession();
   console.log("clean values:", cleanValues);
   // Here you should insert the Log into the database
-  let log = await TrashLog.create(
+  const log = await TrashLog.create(
     { ...values, creator: session._id }
     // { ...cleanValues }
   );
   console.log("Log:", log);
-  revalidatePath("/trash"); // Update cached posts
+  // revalidatePath("/trash"); // Update cached posts
   redirect(`/trash/log/${log._id}`); // Navigate to the new post page
   return { success: true, data: JSON.stringify(log) };
 }
@@ -50,20 +49,7 @@ export async function getItemsFromLog(useLogId) {
   //   await dbConnect();
   const id = useLogId; // Get the id from the request parameters
   console.log("id" + id);
-  // const result = await TrashItem.find({}, [
-  //   // "-creator",
-  //   "-__v",
-  //   "-createdAt",
-  //   "-updatedAt",
-  // ])
-  // .populate({
-  //   path: "individualTrashItem",
-  //   match: { logId: id },
-  //   model: "IndividualTrashItem",
-  //   select: "-__v -createdAt -updatedAt -deleted -creator",
-  // })
-  // .lean();
-  // const result = await TrashItem.find({}, ).lean();
+
   /* find all the data in our database */
   try {
     const trashLog = await TrashLog.findById(id)
