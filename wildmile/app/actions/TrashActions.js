@@ -96,7 +96,6 @@ export async function getItemsFromLog(useLogId) {
       }
     }
     // const items = result;
-
     return { items: items, logId: id };
   } catch (error) {
     console.error("Error looking for trash items from log:", error);
