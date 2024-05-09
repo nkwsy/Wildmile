@@ -7,6 +7,8 @@ import { getSession } from "lib/getSession";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { uploadFileToS3 } from "./UploadActions";
+import dbConnect from "lib/db/setup";
+
 export async function updateTrashCount(itemId, logId, quantity) {
   const item = await IndividualTrashItem.findOneAndUpdate(
     { itemId: itemId, logId: logId }, // find a document with these properties
@@ -30,6 +32,7 @@ export async function getTrashCount(itemId, logId) {
 }
 
 export async function CreateLog(values) {
+  await dbConnect();
   console.log("Values:", values.site);
   const cleanValues = cleanObject(values);
   const session = await getSession();
