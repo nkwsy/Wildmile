@@ -1,3 +1,4 @@
+"use client";
 import React, { useRef, useEffect, useState } from "react";
 import {
   Stepper,
@@ -17,7 +18,7 @@ import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import Router from "next/router";
 import SampleForm from "components/macros/sample_form";
-import dbConnect from "/lib/db/setup";
+// import dbConnect from "/lib/db/setup";
 import mapboxgl from "!mapbox-gl";
 
 mapboxgl.accessToken = process.env.MAPBOX_KEY;
@@ -93,12 +94,4 @@ export default function CreateLog() {
       </Paper>
     </Container>
   );
-}
-
-export async function getStaticProps() {
-  await dbConnect();
-
-  /* find all the data in our database */
-
-  return { props: {} };
 }

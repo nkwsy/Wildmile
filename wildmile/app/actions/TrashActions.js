@@ -73,13 +73,16 @@ export async function getItemsFromLog(useLogId) {
       return acc;
     }, {});
 
-    const result = await TrashItem.find({ deleted: false }, [
-      "-creator",
-      "-__v",
-      "-createdAt",
-      "-updatedAt",
-      // "-deleted",
-    ]).lean();
+    const result = await TrashItem.find(
+      { deleted: false, creator: "5e94888191fc50001775feb5" },
+      [
+        "-creator",
+        "-__v",
+        "-createdAt",
+        "-updatedAt",
+        // "-deleted",
+      ]
+    ).lean();
     const items = result.reduce((acc, doc) => {
       const item = { ...doc }; // Clone the document to avoid mutating the original result
       item._id = item._id.toString();
