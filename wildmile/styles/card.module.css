@@ -1,5 +1,5 @@
 .wrapper {
-  padding: calc(var(--mantine-spacing-xl) * 2) var(--mantine-spacing-xl);
+  /* padding: calc(var(--mantine-spacing-xl) * 1) var(--mantine-spacing-xl); */
 }
 
 .centerGrid {
@@ -9,7 +9,8 @@
 }
 
 .card {
-  border: rem(1px) solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+  border: rem(1px) solid
+    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
 }
 
 .card:hover {
@@ -17,7 +18,7 @@
 }
 
 .cardTitle::after {
-  content: '';
+  content: "";
   display: block;
   background-color: var(--mantine-color-blue-filled);
   width: rem(45px);

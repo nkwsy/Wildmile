@@ -9,16 +9,14 @@ import { uploadFile, uploadFileToS3 } from "./UploadActions";
 import { getSession } from "lib/getSession";
 import sharp from "sharp";
 import axios from "axios";
+
 export async function PlantHandler() {
   try {
     const result = await getAllPlants();
-
     console.log("Result:", result);
-
     //   if (result.success === true) {
     //     console.log("success");
     // setNewModules(result.data);
-
     return JSON.stringify(result);
   } catch (error) {
     console.error("Error submitting form:", error);
@@ -29,13 +27,10 @@ export async function PlantHandler() {
 export async function getPlants() {
   try {
     const result = await getAllPlants();
-
     console.log("Result:", result);
-
     //   if (result.success === true) {
     //     console.log("success");
     // setNewModules(result.data);
-
     return result;
   } catch (error) {
     console.error("Error submitting form:", error);
@@ -46,12 +41,10 @@ export async function getPlants() {
 // Load Individual Plant data
 export async function getPlant(id) {
   await dbConnect();
-
   /* find all the data in our database */
   const result = await Plant.findOne({ _id: id }, ["-createdAt", "-updatedAt"]);
   const plant = result;
   console.log("Plant:", result);
-
   // plant._id = String(plant._id);
   return plant;
 }
@@ -117,7 +110,7 @@ export async function getIndividualPlants() {
 }
 
 export async function getRandomPlant() {
-  await dbConnect();
+  // await dbConnect();
   const result = await Plant.aggregate([{ $sample: { size: 1 } }]);
   // const randomPlant = JSON.stringify(result[0])
   return result[0];
