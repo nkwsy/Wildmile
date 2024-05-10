@@ -46,6 +46,7 @@
     "mongoose-delete": "^1.0.2",
     "mongoose-paginate-v2": "^1.8.0",
     "mongoose-sequence": "^6.0.1",
+    "mongoose-slugger-plugin": "^6.1.1",
     "next": "^14.2.1",
     "next-connect": "^1.0.0",
     "openmeteo": "^1.1.3",

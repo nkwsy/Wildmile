@@ -10,6 +10,14 @@ import { uploadFileToS3 } from "./UploadActions";
 import dbConnect from "lib/db/setup";
 
 export async function updateTrashCount(itemId, logId, quantity) {
+  if (quantity < 1) {
+    const item = await IndividualTrashItem.findOneAndDelete({
+      itemId: itemId,
+      logId: logId,
+    });
+    console.log("Deleted item: ", item);
+    return;
+  }
   const item = await IndividualTrashItem.findOneAndUpdate(
     { itemId: itemId, logId: logId }, // find a document with these properties
     { quantity: quantity }, // update the count property
