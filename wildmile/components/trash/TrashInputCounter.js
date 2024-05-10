@@ -36,6 +36,8 @@ export default function TrashInputCounter({ initialTrash, itemId, logId }) {
           handlersRef={handlersRef}
           allowNegative={false}
           hideControls
+          min={0}
+          max={400}
           defaultValue={initialTrash}
           onValueChange={async (e) => {
             const updatedCount = await updateTrashCount(

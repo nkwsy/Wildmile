@@ -32,7 +32,7 @@ const PlantSchema = new mongoose.Schema(
     color: {
       main: { type: String, default: "" },
       accent: { type: String, default: "" },
-      family: { type: String, default: "#228be6" },
+      family: { type: String, default: "#aeb6bd" },
       swatches: { type: Array, default: [] },
     },
     // pics: [PlantImageSchema],

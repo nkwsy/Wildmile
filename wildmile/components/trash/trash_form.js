@@ -34,6 +34,8 @@ import { SubmitButton } from "components/SubmitButton";
 
 export default function TrashForm(props) {
   const [files, setFiles] = useState([]);
+  const [loading, { toggle }] = useDisclosure();
+
   const form = useForm({
     initialValues: {
       site: "",
@@ -64,6 +66,7 @@ export default function TrashForm(props) {
   });
 
   const CreateTrashLogForm = async (values) => {
+    toggle(true);
     // const {
     //   site,
     //   participants,
@@ -84,6 +87,8 @@ export default function TrashForm(props) {
       const response = await raw_response;
       // router.push(`/trash/log/${response._id}`);
     } catch (error) {
+      toggle(false);
+
       console.error(error);
     }
   };
@@ -229,10 +234,10 @@ export default function TrashForm(props) {
             </Grid.Col>
           </Grid>
           <Group>
-            {/* <Button type="submit" color="blue">
-            Submit
-          </Button> */}
-            <SubmitButton />
+            <Button type="submit" color="blue" loading={loading}>
+              Submit
+            </Button>
+            {/* <SubmitButton /> */}
           </Group>
         </form>
       </Grid>
