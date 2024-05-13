@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+const { PointSchema } = require("models/locationSchemas");
+
 const DeploymentSchema = new mongoose.Schema({
   // should be the _id field
   //   deploymentID: {

@@ -61,6 +61,9 @@ const cameraSchema = new mongoose.Schema(
         default: false,
       },
     },
+    purchaseDate: {
+      type: Date,
+    },
     installationDate: {
       type: Date,
       default: Date.now,
