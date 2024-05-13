@@ -36,7 +36,7 @@ const PlantEditForm = ({ plant, onSave, onCancel }) => {
   const form = useForm({
     initialValues: {
       ...plant,
-      commonName: plant.commonName || plant.common_name || "e",
+      commonName: plant.commonName || plant.common_name || "",
       scientificName: plant.scientificName || plant.scientific_name || "",
       family: plant.family || "",
     },
@@ -56,6 +56,7 @@ const PlantEditForm = ({ plant, onSave, onCancel }) => {
     }
     setLoading.close();
     if (updatedPlant) {
+      console.log("Plant updated:", updatedPlant);
       // form.reset(); // Optionally reset form to initial values
       onSave(updatedPlant); // Call onSave to propagate changes or handle success state
     }

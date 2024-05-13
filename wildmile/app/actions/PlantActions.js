@@ -1,5 +1,5 @@
 "use server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { ObjectId } from "mongodb"; // Or the equivalent from mongoose if using that.
 
 import Plant from "models/Plant";
@@ -61,10 +61,32 @@ export async function updatePlant(formData) {
     notes: formData.notes,
     color: formData.color,
   };
+  if (!rawFormData.color.family && rawFormData.family !== "") {
+    rawFormData.color.family = await getPlantFamily(rawFormData.family);
+  }
+
   console.log("Raw Form Data:", rawFormData);
 
   const result = await Plant.findByIdAndUpdate(formData._id, formData);
+  revalidatePath("/");
   return JSON.stringify(result);
+}
+
+// get Plant Family data
+export async function getPlantFamily(family) {
+  console.log("PlantActions- getPlantFamily:", family);
+  try {
+    const result = await Plant.findOne({ family: family }, ["color"]);
+    if (!result) {
+      return null;
+    }
+    if (result.color.family) {
+      return result.color.family;
+    }
+  } catch (error) {
+    console.error("Error getting plant family:", error);
+    return null;
+  }
 }
 
 // Update Plant Family data
@@ -76,7 +98,6 @@ export async function updatePlantFamily(family, color) {
   );
   console.log("updated plant family:", result);
   revalidatePath("/");
-
   return JSON.stringify(result);
 }
 
@@ -95,6 +116,20 @@ export async function loadTrefleData(link) {
   }
 }
 
+// Search Plant data from Trefle API
+export async function searchTrefleData(query) {
+  // console.log("Link load trefle data:", link);
+  try {
+    const response = await fetch(
+      `https://trefle.io/api/v1/plants/search?token=${process.env.TREFLE_API_KEY}&q=${query}`
+    );
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error("Error loading Trefle data:", error);
+    return [];
+  }
+}
 // IndividualPlants
 export async function getIndividualPlants() {
   await dbConnect();

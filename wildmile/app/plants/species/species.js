@@ -1,28 +1,9 @@
-import {
-  SimpleGrid,
-  Text,
-  Card,
-  Image,
-  Badge,
-  Modal,
-  Title,
-  Container,
-  TextInput,
-  Textarea,
-  Button,
-  CardSection,
-  Group,
-  Chip,
-  ChipGroup,
-} from "@mantine/core";
-import Link from "next/link";
-
-import classes from "/styles/imagecard.module.css";
 import { useForm } from "@mantine/form";
 import dbConnect from "/lib/db/setup";
 import { useUser } from "lib/hooks";
 import { PlantHandler } from "app/actions/PlantActions";
 import Plant from "/models/Plant";
+import PlantCard from "components/plants/PlantCard";
 // Assuming this function is defined correctly and works as intended
 /* Retrieves plant(s) data from mongodb database */
 export async function getPlants() {
@@ -74,45 +55,7 @@ export default async function Species() {
   return (
     <>
       {plants.map((plant, index) => (
-        <Card
-          key={index}
-          //   onClick={() => updateFormValues(plant)}
-          withBorder
-          padding="lg"
-          radius="md"
-          component={Link}
-          href={`/plants/species/${plant.id}`}
-
-          //   className={classes.mantineCard}
-        >
-          <CardSection mb="sm">
-            <Image
-              src={plant.image || "/No_plant_image.jpg"}
-              alt={plant.title}
-            />
-          </CardSection>
-
-          <Group align="top" direction="column">
-            <div>
-              <Title className={classes.title}>{plant.title}</Title>
-              <Text
-                size="sm"
-                color="dimmed"
-                fs="italic"
-                c="dimmed"
-                className={classes.subtitle}
-              >
-                {plant.subtitle}
-              </Text>
-              {/* <Text size="sm" color="dimmed" className={classes.description}>
-                {plant.family}
-              </Text> */}
-              <Badge variant="light" color={plant.color.family}>
-                {plant.family}
-              </Badge>
-            </div>
-          </Group>
-        </Card>
+        <PlantCard key={index} plant={plant} />
       ))}
     </>
   );
