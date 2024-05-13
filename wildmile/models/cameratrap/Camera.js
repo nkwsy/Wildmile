@@ -14,6 +14,12 @@ const cameraSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    // uid: {
+    //   type: String,
+    //   required: true,
+    //   unique: true,
+    //   index: true,
+    // },
     model: {
       // could store this info somewhere else and just reference it if using a lot of the same model
       // maybe in Resources?
@@ -86,7 +92,7 @@ const cameraSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { _id: false }
+  { timestamps: true }
 );
 
 const Camera = mongoose.model("Camera", cameraSchema);

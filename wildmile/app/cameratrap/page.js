@@ -24,9 +24,9 @@ export default async function Page() {
     // standin for other links
     {
       icon: IconPlant2,
-      title: "Plants",
-      href: "/plants",
-      description: "Manage the plants on the wild mile",
+      title: "New Camera",
+      href: "/cameratrap/camera/new",
+      description: "Add a new camera device",
     },
   ];
   // user && user.admin

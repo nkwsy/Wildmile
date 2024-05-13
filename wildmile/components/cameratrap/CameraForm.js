@@ -20,18 +20,12 @@ import {
 import { DatePickerInput } from "@mantine/dates";
 
 import { useDisclosure } from "@mantine/hooks";
-import { DateTimePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useParams, useRouter, useFetch, usePathname } from "next/navigation";
-import { newEditProject, getProject } from "/app/actions/CameraTrapActions";
-// import LocationModal from "./maps/LocationModal";
-import LocationMap from "./maps/LocationMap";
-import { get } from "mongoose";
+import { newEditCamera, getCamera } from "/app/actions/CameratrapActions";
 
 export default function CameraForm(props) {
   const [loading, { toggle }] = useDisclosure();
-  const [point, setPoint] = useState(null);
-  const [polygon, setPolygon] = useState(null);
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
@@ -42,24 +36,20 @@ export default function CameraForm(props) {
     // mode: "uncontrolled",
 
     initialValues: {
+      _id: "",
       model: "",
       manufacturer: "",
       serial: "",
       connectivity: "",
-      dateInstalled: "",
-      // location: {
-      //   type: "Point",
-      //   coordinates: [],
-      // },
-      // locationBoundry: {
-      //   type: "Polygon",
-      //   coordinates: [],
-      // },
+      purchaseDate: "",
     },
   });
 
   useEffect(() => {
     if (params.cameraId) {
+      if (params.cameraId === "new") {
+        return;
+      }
       const fetchData = async () => {
         const project_result = await getCamera(params.project);
         const result = JSON.parse(project_result);
@@ -82,25 +72,13 @@ export default function CameraForm(props) {
   async function submitForm() {
     // loading(true);
     toggle();
-    if (point) {
-      form.values.location = {
-        type: "Point",
-        coordinates: point,
-      };
-    }
-    if (polygon) {
-      form.values.locationBoundry = {
-        type: "Polygon",
-        coordinates: polygon,
-      };
-    }
     console.log("Form state on submit:", form.values);
-    const raw_result = await newEditProject(form.values);
+    const raw_result = await newEditCamera(form.values);
     const result = JSON.parse(raw_result);
     console.log("Result:", result);
-    if (result.success === true) {
-      router.push(`/projects/${result.data.name}`);
-    }
+    // if (result.success === true) {
+    //   router.push(`/projects/${result.data.name}`);
+    // }
   }
   const initialState = {
     message: null,
@@ -125,6 +103,7 @@ export default function CameraForm(props) {
       <Box>
         <Grid>
           <Grid.Col span={4}>
+            <TextInput label="UR ID" {...form.getInputProps("_id")} />
             <TextInput
               label="Model"
               key="model"
@@ -145,9 +124,10 @@ export default function CameraForm(props) {
               {...form.getInputProps("connectivity")}
             />
             <DatePickerInput
-              label="Date Installed"
-              {...form.getInputProps("dateInstalled")}
+              label="Date Purchased"
+              {...form.getInputProps("purchaseDate")}
             />
+            <Textarea label="Notes" {...form.getInputProps("notes")} />
             <SubmitButton />
           </Grid.Col>
         </Grid>
