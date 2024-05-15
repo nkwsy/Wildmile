@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+import { AutoIncrementID } from "@typegoose/auto-increment";
 const cameraSchema = new mongoose.Schema(
   {
     // should just be the _id field
@@ -11,15 +11,24 @@ const cameraSchema = new mongoose.Schema(
     //   },
     _id: {
       // This should be the cameraID, Would be great if it was generated from mfg-model-sequential number
+      type: Number,
+      // required: true,
+    },
+    serial: {
       type: String,
       required: true,
     },
-    // uid: {
-    //   type: String,
-    //   required: true,
-    //   unique: true,
-    //   index: true,
-    // },
+
+    purchaseDate: {
+      type: Date,
+    },
+    connectivity: {
+      type: String, // E.g., "WiFi", "Wired Ethernet"
+    },
+    // Extra fields
+    notes: {
+      type: String,
+    },
     model: {
       // could store this info somewhere else and just reference it if using a lot of the same model
       // maybe in Resources?
@@ -31,9 +40,6 @@ const cameraSchema = new mongoose.Schema(
     },
     resolution: {
       type: String, // E.g., "1920x1080"
-    },
-    connectivity: {
-      type: String, // E.g., "WiFi", "Wired Ethernet"
     },
     features: {
       nightVision: {
@@ -67,9 +73,7 @@ const cameraSchema = new mongoose.Schema(
         default: false,
       },
     },
-    purchaseDate: {
-      type: Date,
-    },
+
     installationDate: {
       type: Date,
       default: Date.now,
@@ -77,24 +81,14 @@ const cameraSchema = new mongoose.Schema(
     instructionManual: {
       type: String,
     },
-    picture: {
-      type: String, // should be a URL to the picture
-    },
-    purchaseDate: {
-      type: Date,
-    },
     location: {
       // don't no if this is needed.
       type: String, // E.g., "Front door", "Backyard"
-    },
-    // Extra fields
-    notes: {
-      type: String,
     },
   },
   { timestamps: true }
 );
 
-const Camera = mongoose.model("Camera", cameraSchema);
+cameraSchema.plugin(AutoIncrementID, {});
 
-module.exports = Camera;
+export default mongoose.models.Camera || mongoose.model("Camera", cameraSchema);
