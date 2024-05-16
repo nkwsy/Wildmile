@@ -39,7 +39,8 @@ const pointStyle = [
     },
   },
 ];
-const LocationMap = ({ onPointSelect, onPolygonSelect }) => {
+
+const LocationMap = ({ onPointSelect, onPolygonSelect, existingLocations }) => {
   mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY;
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -48,8 +49,36 @@ const LocationMap = ({ onPointSelect, onPolygonSelect }) => {
   const [marker, setMarker] = useState(null);
   const [point, setPoint] = useState(null);
   const [polygon, setPolygon] = useState(null);
+  const [existingPoints, setExistingPoints] = useState([]);
+  const [existingPolygons, setExistingPolygons] = useState([]);
+  let usePoints = false;
+  let usePolygons = false;
+  useEffect(() => {
+    if (existingLocations) {
+      const points = existingLocations.filter(
+        (location) => location.type === "Point"
+      );
+      setPoint(points);
+      const polygons = existingLocations.filter(
+        (location) => location.type === "Polygon"
+      );
+      setExistingPoints(points);
+
+      setExistingPolygons(polygons);
+    }
+  }, [existingLocations]);
+
+  // Check if onPointSelect is a function
+  if (typeof onPointSelect === "function") {
+    usePoints = true;
+  }
+
+  // Check if onPolygonSelect is a function
+  if (typeof onPolygonSelect === "function") {
+    usePolygons = true;
+  }
   let Draw = new MapboxDraw({
-    controls: { point: true, polygon: true, trash: true },
+    controls: { point: usePoints, polygon: usePolygons, trash: true },
     displayControlsDefault: false,
     // styles: pointStyle,
   });

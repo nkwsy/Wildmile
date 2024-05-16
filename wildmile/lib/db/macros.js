@@ -49,3 +49,8 @@ export async function updateMacroSampleByID(req, id, update) {
   }
   return macroSample;
 }
+
+export async function getExistingLocations() {
+  const locations = await MacroSample.distinct("coordinates");
+  return locations;
+}
