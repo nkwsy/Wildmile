@@ -151,9 +151,9 @@ export default function SampleForm(props) {
             Add Bug Data
           </Button>
         </Fieldset>
-        <Button onClick={() => setLocationModalOpened(true)}>
+        {/* <Button onClick={() => setLocationModalOpened(true)}>
           Select Location
-        </Button>
+        </Button> */}
         <LocationModal
           opened={locationModalOpened}
           setOpened={setLocationModalOpened}
