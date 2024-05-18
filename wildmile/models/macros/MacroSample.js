@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const AutoIncrement = require("mongoose-sequence")(mongoose);
+import mongoose from "mongoose";
+// const AutoIncrement = require("mongoose-sequence")(mongoose);
 // import MacroImageSchema from "./MacroImages"; // Assuming MacroImageSchema is correctly imported from "./MacroImages"
 // Assuming PointSchema is correctly imported from "./locationSchemas"
 import { PointSchema } from "models/locationSchemas";
@@ -17,8 +17,7 @@ const MacroSampleSchema = new mongoose.Schema({
   dateDeployed: { type: Date },
   dateCollected: { type: Date },
   deploymentDuration: { type: Number },
-  locationName: { type: String },
-  coordinates: { PointSchema },
+  location: { type: String },
   treatment: [],
   replicateNumber: { type: Number },
   depth: { type: Number },
@@ -47,6 +46,6 @@ export default mongoose.models.MacroSample ||
   mongoose.model("MacroSample", MacroSampleSchema);
 // Apply the plugin to the MacroSampleSchema
 
-module.exports = {
-  MacroinvertebrateDataSchema,
-};
+// module.exports = {
+//   MacroinvertebrateDataSchema,
+// };

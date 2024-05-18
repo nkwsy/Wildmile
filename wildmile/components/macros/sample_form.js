@@ -30,7 +30,11 @@ export default function SampleForm(props) {
   const [location, setLocation] = useState(null);
   const [point, setPoint] = useState(null);
   const [polygon, setPolygon] = useState(null);
-
+  // props.existingLocations.map((location) => ({
+  //   value: location.id,
+  //   label: location.name,
+  // }))
+  const existingLocationOptions = [];
   const handleBugDataChange = (index, field, value) => {
     const updatedBugData = [...bugData];
     updatedBugData[index][field] = value;
@@ -45,6 +49,14 @@ export default function SampleForm(props) {
     const updatedBugData = [...bugData];
     updatedBugData.splice(index, 1);
     setBugData(updatedBugData);
+  };
+
+  const handleLocationSelect = (value) => {
+    const selectedLocation = props.existingLocations.find(
+      (loc) => loc.id === value
+    );
+    setLocation(selectedLocation);
+    props.form.setFieldValue("coordinates", selectedLocation.coordinates);
   };
 
   return (
@@ -169,9 +181,15 @@ export default function SampleForm(props) {
           </Group>
         </Grid.Col>
         <Grid.Col span={6}>
+          <Select
+            label="Select Location"
+            placeholder="Choose a location"
+            data={existingLocationOptions}
+            onChange={handleLocationSelect}
+          />
           <LocationMap
             onPointSelect={setPoint}
-            existingLocations={selectedLocation}
+            // existingLocations={selectedLocation}
           />
 
           <div>

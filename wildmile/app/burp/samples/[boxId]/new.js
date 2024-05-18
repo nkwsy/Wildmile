@@ -20,6 +20,7 @@ import Router from "next/router";
 import SampleForm from "components/macros/sample_form";
 // import dbConnect from "/lib/db/setup";
 import mapboxgl from "!mapbox-gl";
+import { getExistingLocations } from "app/actions/MacroActions";
 
 mapboxgl.accessToken = process.env.MAPBOX_KEY;
 
@@ -54,7 +55,12 @@ export default function CreateLog() {
   });
 
   // Use the databaseInput object to store the form data in the database
-
+  async function getLocations() {
+    // const res = await getExistingLocations();
+    const locations = {};
+    // const locations = await res;
+    return locations;
+  }
   async function createLog() {
     handlers.open();
     console.log(form.values);
@@ -78,6 +84,7 @@ export default function CreateLog() {
     // Navigate to the trash/edit/[id].js page
     // Router.push(`/projects`);
   }
+  const existingLocations = getLocations();
 
   return (
     <Container my="5rem">
@@ -86,7 +93,7 @@ export default function CreateLog() {
       </Title>
       <Paper withBorder shadow="md" py={"md"} px={"xl"} mt={30} radius="md">
         <Box m="md" flex>
-          <SampleForm form={form} />
+          <SampleForm form={form} existingLocations={existingLocations} />
           <Button justify="flex-right" onClick={createLog}>
             Submit
           </Button>
