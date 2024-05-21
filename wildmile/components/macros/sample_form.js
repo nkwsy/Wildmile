@@ -207,21 +207,20 @@ export default function SampleForm(props) {
           </Group>
         </Grid.Col>
         <Grid.Col span={6}>
-          <LocationDropdown
-            locations={existingLocations}
-            selectedLocation={location}
-          />
           <Select
+            label="Select Location"
             data={locationOptions}
             // onChange={handleLocationSelect}
             // value={selectedLocation}
             onChange={(option) => {
               handleLocationSelect(option);
-              // form.setFieldValue("coordinates", option.value);
             }}
-            // getOptionLabel={(option) => option.name}
-            // getOptionValue={(option) => option.id}
           />
+          <LocationDropdown
+            locations={existingLocations}
+            selectedLocation={location}
+          />
+
           {/* <Select
             label="Select Location"
             placeholder="Choose a location"

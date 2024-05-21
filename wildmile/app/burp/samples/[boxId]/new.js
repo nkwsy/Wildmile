@@ -32,6 +32,8 @@ export default function CreateLog() {
   const [errorMsg, setErrorMsg] = useState("");
   const [active, setActive] = useState(0);
   const [visible, handlers] = useDisclosure(false);
+  const [loading, { toggle }] = useDisclosure();
+
   const isBrowser = () => typeof window !== "undefined"; //The approach recommended by Next.js
 
   // const router = useRouter();
@@ -59,7 +61,8 @@ export default function CreateLog() {
   });
 
   async function createLog() {
-    handlers.open();
+    // handlers.open();
+    toggle();
     console.log(form.values);
     const res = await createMacroSample(form.values);
 
@@ -70,13 +73,14 @@ export default function CreateLog() {
     // });
 
     // if (res.status === 201) {
-    if (res.success === true) {
-      return router.push("/burp");
-      // Router.push("/burp");
-    } else {
-      handlers.close();
-      setErrorMsg(await res.text());
-    }
+    // if (res.success === true) {
+    //   return router.push("/burp");
+    //   // Router.push("/burp");
+    // } else {
+    //   handlers.close();
+    //   toggle();
+    //   setErrorMsg(await res.text());
+    // }
 
     // Get the _id from the server response
     // const data = await res.json();
@@ -94,7 +98,7 @@ export default function CreateLog() {
       <Paper withBorder shadow="md" py={"md"} px={"xl"} mt={30} radius="md">
         <Box m="md" flex>
           <SampleForm form={form} />
-          <Button justify="flex-right" onClick={createLog}>
+          <Button justify="flex-right" onClick={createLog} loading={loading}>
             Submit
           </Button>
         </Box>

@@ -4,6 +4,9 @@ import MacroImages from "models/macros/MacroImages";
 import MacroLocation from "models/macros/MacroLocation";
 import dbConnect from "lib/db/setup";
 import { cleanObject } from "lib/utils";
+import { getSession } from "lib/getSession";
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export async function getExistingLocations() {
   await dbConnect();
@@ -19,6 +22,7 @@ export async function newEditLocation(req) {
   console.log("clean values:", cleanValues);
   const { locationName, coordinates } = req;
   const location = await MacroLocation.create(cleanValues);
+  revalidatePath("/burp"); // Update cached posts
 
   return { success: true, data: JSON.parse(JSON.stringify(location)) };
 }
@@ -32,18 +36,32 @@ export async function getMacroSampleByID(id) {
 }
 
 export async function createMacroSample(req) {
+  await dbConnect();
   // Here you should insert the macro sample into the database
   console.log("createMacroSample req:", req.body);
   const cleanValues = cleanObject(req);
   console.log("clean values:", cleanValues);
+  try {
+    // Call database
 
-  const macroSample = await MacroSample.create(cleanValues);
-  return { success: true, data: JSON.parse(JSON.stringify(macroSample)) };
+    const session = await getSession();
+
+    const macroSample = await MacroSample.create({
+      ...cleanValues,
+      creator: session._id,
+    });
+  } catch (error) {
+    // Handle errors
+  }
+  revalidatePath("/burp"); // Update cached posts
+  redirect(`/burp`); // Navigate to the new post page
+  // return { success: true, data: JSON.parse(JSON.stringify(macroSample)) };
 
   // return macroSample;
 }
 
 export async function updateMacroSampleByID(req, id, update) {
+  await dbConnect();
   // Here you update the macro sample based on id in the database
   const macroSample = await getMacroSampleByID(id);
 
