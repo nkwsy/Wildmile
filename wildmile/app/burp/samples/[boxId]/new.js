@@ -53,10 +53,10 @@ export default function CreateLog() {
       replicateNumber: 0,
       depth: 0,
       substrate: "",
-      canopy: false,
-      numberOfCSO: 0,
+      // canopy: false,
+      // numberOfCSO: 0,
       notes: "",
-      coordinates: [],
+      // coordinates: [],
     },
   });
 
@@ -65,29 +65,6 @@ export default function CreateLog() {
     toggle();
     console.log(form.values);
     const res = await createMacroSample(form.values);
-
-    // const res = await fetch("/api/macros", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(form.values),
-    // });
-
-    // if (res.status === 201) {
-    // if (res.success === true) {
-    //   return router.push("/burp");
-    //   // Router.push("/burp");
-    // } else {
-    //   handlers.close();
-    //   toggle();
-    //   setErrorMsg(await res.text());
-    // }
-
-    // Get the _id from the server response
-    // const data = await res.json();
-    // const id = data._id;
-
-    // Navigate to the trash/edit/[id].js page
-    // Router.push(`/projects`);
   }
 
   return (
