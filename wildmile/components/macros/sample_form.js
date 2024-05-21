@@ -19,7 +19,7 @@ import {
   Box,
   Fieldset,
 } from "@mantine/core";
-import { DateTimePicker } from "@mantine/dates";
+import { DatePicker } from "@mantine/dates";
 // import MapPicker from "components/map_picker";
 // import LocationModal from "components/maps/LocationModal";
 import LocationMap from "components/maps/LocationMap";
@@ -100,12 +100,12 @@ export default function SampleForm(props) {
               required
             />
 
-            <DateTimePicker
+            <DatePicker
               label="Date Deployed"
               {...props.form.getInputProps("dateDeployed")}
             />
 
-            <DateTimePicker
+            <DatePicker
               label="Date Collected"
               {...props.form.getInputProps("dateCollected")}
             />
@@ -136,7 +136,10 @@ export default function SampleForm(props) {
               label="Replicate Number"
               {...props.form.getInputProps("replicateNumber")}
             />
-            <NumberInput label="Depth" {...props.form.getInputProps("depth")} />
+            <NumberInput
+              label="Depth (in ft)"
+              {...props.form.getInputProps("depth")}
+            />
             <TextInput
               label="Substrate"
               {...props.form.getInputProps("substrate")}
@@ -201,9 +204,6 @@ export default function SampleForm(props) {
                 Add Bug Data
               </Button>
             </Fieldset>
-            {/* <Button onClick={() => setLocationModalOpened(true)}>
-          Select Location
-        </Button> */}
           </Group>
         </Grid.Col>
         <Grid.Col span={6}>
@@ -220,29 +220,6 @@ export default function SampleForm(props) {
             locations={existingLocations}
             selectedLocation={location}
           />
-
-          {/* <Select
-            label="Select Location"
-            placeholder="Choose a location"
-            data={existingLocationOptions}
-            onChange={handleLocationSelect}
-          />
-          <LocationMap
-            onPointSelect={setPoint}
-            // existingLocations={selectedLocation}
-          />
-
-          <div>
-            Selected Location:{" "}
-            {...props.form.getInputProps("coordinates").value
-              ? `[${props.form.values.coordinates.lat}, ${props.form.values.coordinates.lng}]`
-              : "None"}
-          </div>
-          {location && (
-            <p>
-              Selected Location: {location.lat}, {location.lng}
-            </p>
-          )} */}
         </Grid.Col>
       </Grid>
     </Box>

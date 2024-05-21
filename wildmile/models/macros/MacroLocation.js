@@ -14,6 +14,7 @@ const MacroLocationSchema = new mongoose.Schema({
   dateStart: { type: Date },
   dateEnd: { type: Date },
   images: [],
+  tags: [],
   notes: { type: String },
 });
 

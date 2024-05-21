@@ -11,24 +11,30 @@ const MacroinvertebrateDataSchema = new mongoose.Schema({
 });
 
 // Macro sample box schema
-const MacroSampleSchema = new mongoose.Schema({
-  boxNum: Number,
-  samplingPeriod: { type: Number },
-  dateDeployed: { type: Date },
-  dateCollected: { type: Date },
-  deploymentDuration: { type: Number },
-  location: { type: mongoose.Schema.Types.ObjectId, ref: "MacroLocation" },
-  treatment: [],
-  replicateNumber: { type: Number },
-  depth: { type: Number },
-  substrate: { type: String },
-  canopy: { type: Boolean },
-  numberOfCSO: { type: Number },
-  volunteerName: { type: String },
-  imageFolder: { type: String },
-  macroinvertebrateData: [MacroinvertebrateDataSchema],
-  notes: { type: String },
-});
+const MacroSampleSchema = new mongoose.Schema(
+  {
+    boxNum: Number,
+    samplingPeriod: { type: Number },
+    dateDeployed: { type: Date },
+    dateCollected: { type: Date },
+    deploymentDuration: { type: Number },
+    location: { type: mongoose.Schema.Types.ObjectId, ref: "MacroLocation" },
+    treatment: [],
+    replicateNumber: { type: Number },
+    depth: { type: Number },
+    substrate: { type: String },
+    // canopy: { type: Boolean },
+    numberOfCSO: { type: Number },
+    volunteerName: { type: String },
+    imageFolder: { type: String },
+    macroinvertebrateData: [MacroinvertebrateDataSchema],
+    notes: { type: String },
+    creator: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 MacroSampleSchema.pre("save", function (next) {
   this.deploymentDuration =

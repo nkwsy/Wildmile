@@ -17,6 +17,7 @@ import {
   TextInput,
   Box,
   Grid,
+  Checkbox,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { DateTimePicker } from "@mantine/dates";
@@ -46,6 +47,7 @@ export default function LocationForm(props) {
       notes: "",
       dateStart: null,
       treatment: [],
+      canopy: false,
       // location: {
       //   type: "Point",
       //   coordinates: [],
@@ -146,6 +148,7 @@ export default function LocationForm(props) {
               ]}
               {...form.getInputProps("treatment")}
             />
+            <Checkbox {...form.getInputProps("canopy")}>Canopy</Checkbox>
             <Textarea label="Notes" {...form.getInputProps("notes")} />
             <SubmitButton />
           </Grid.Col>
