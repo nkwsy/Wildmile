@@ -17,7 +17,7 @@ const MacroSampleSchema = new mongoose.Schema({
   dateDeployed: { type: Date },
   dateCollected: { type: Date },
   deploymentDuration: { type: Number },
-  location: { type: String },
+  location: { type: mongoose.Schema.Types.ObjectId, ref: "MacroLocation" },
   treatment: [],
   replicateNumber: { type: Number },
   depth: { type: Number },

@@ -23,10 +23,14 @@ import { DateTimePicker } from "@mantine/dates";
 // import MapPicker from "components/map_picker";
 // import LocationModal from "components/maps/LocationModal";
 import LocationMap from "components/maps/LocationMap";
+import { LocationDropdown } from "components/maps/LocationSelect";
+import { getExistingLocations } from "app/actions/MacroActions";
 
 export default function SampleForm(props) {
   const [bugData, setBugData] = useState([]);
   const [locationModalOpened, setLocationModalOpened] = useState(false);
+  const [existingLocations, setExistingLocations] = useState([]);
+  const [locationOptions, setLocationOptions] = useState([]);
   const [location, setLocation] = useState(null);
   const [point, setPoint] = useState(null);
   const [polygon, setPolygon] = useState(null);
@@ -34,7 +38,28 @@ export default function SampleForm(props) {
   //   value: location.id,
   //   label: location.name,
   // }))
-  const existingLocationOptions = [];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getExistingLocations();
+      const allLocations = JSON.parse(res);
+      console.log("All Locations:", allLocations);
+      setExistingLocations(allLocations);
+      setLocationOptions(
+        allLocations.map((location) => ({
+          value: location._id,
+          label: location.locationName,
+        }))
+      );
+    };
+    fetchData();
+    console.log("Existing Locations:", existingLocations);
+  }, []);
+
+  useEffect(() => {
+    console.log("Existing Locations:", existingLocations);
+  }, [existingLocations]);
+  // const existingLocationOptions = [];
   const handleBugDataChange = (index, field, value) => {
     const updatedBugData = [...bugData];
     updatedBugData[index][field] = value;
@@ -52,11 +77,12 @@ export default function SampleForm(props) {
   };
 
   const handleLocationSelect = (value) => {
-    const selectedLocation = props.existingLocations.find(
-      (loc) => loc.id === value
-    );
+    // console.log("Selected Location:", value);
+    const selectedLocation = existingLocations.find((loc) => loc._id === value);
+    console.log("Selected Location:", selectedLocation);
     setLocation(selectedLocation);
-    props.form.setFieldValue("coordinates", selectedLocation.coordinates);
+    props.form.setFieldValue("location", selectedLocation._id);
+    // props.form.setFieldValue("coordinates", selectedLocation.coordinates);
   };
 
   return (
@@ -181,7 +207,22 @@ export default function SampleForm(props) {
           </Group>
         </Grid.Col>
         <Grid.Col span={6}>
+          <LocationDropdown
+            locations={existingLocations}
+            selectedLocation={location}
+          />
           <Select
+            data={locationOptions}
+            // onChange={handleLocationSelect}
+            // value={selectedLocation}
+            onChange={(option) => {
+              handleLocationSelect(option);
+              // form.setFieldValue("coordinates", option.value);
+            }}
+            // getOptionLabel={(option) => option.name}
+            // getOptionValue={(option) => option.id}
+          />
+          {/* <Select
             label="Select Location"
             placeholder="Choose a location"
             data={existingLocationOptions}
@@ -202,7 +243,7 @@ export default function SampleForm(props) {
             <p>
               Selected Location: {location.lat}, {location.lng}
             </p>
-          )}
+          )} */}
         </Grid.Col>
       </Grid>
     </Box>

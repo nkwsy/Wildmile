@@ -15,6 +15,7 @@ import {
   IconMicroscope,
   IconNewSection,
   IconButterfly,
+  IconMap,
 } from "@tabler/icons-react";
 
 // import MapPicker from "components/map_picker";
@@ -51,6 +52,12 @@ export default function BurpHomeLanding() {
       title: "New Sample",
       href: "/burp/samples/new",
       description: "Create a new sample",
+    },
+    {
+      icon: IconMap,
+      title: "New Location",
+      href: "/burp/locations",
+      description: "Manage the locations",
     },
   ];
   // user && user.admin

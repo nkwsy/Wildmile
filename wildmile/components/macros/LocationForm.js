@@ -12,6 +12,7 @@ import {
   Select,
   LoadingOverlay,
   Affix,
+  MultiSelect,
   TagsInput,
   TextInput,
   Box,
@@ -44,7 +45,7 @@ export default function LocationForm(props) {
       locationName: "",
       notes: "",
       dateStart: null,
-
+      treatment: [],
       // location: {
       //   type: "Point",
       //   coordinates: [],
@@ -81,7 +82,7 @@ export default function LocationForm(props) {
     // loading(true);
     toggle();
     if (point) {
-      form.values.location = {
+      form.values.coordinates = {
         type: "Point",
         coordinates: point,
       };
@@ -94,11 +95,11 @@ export default function LocationForm(props) {
     }
     console.log("Form state on submit:", form.values);
     const raw_result = await newEditLocation(form.values);
-    const result = JSON.parse(raw_result);
+    const result = raw_result;
     console.log("Result:", result);
-    // if (result.success === true) {
-    //   router.push(`/projects/${result.data.name}`);
-    // }
+    if (result.success === true) {
+      router.push(`/burp`);
+    }
   }
   const initialState = {
     message: null,
@@ -132,12 +133,20 @@ export default function LocationForm(props) {
               label="Date Start"
               {...form.getInputProps("dateStart")}
             />
-            <Textarea label="Notes" {...form.getInputProps("notes")} />
-            <TagsInput
-              label="Collaborating Editors"
-              placeholder="add email then click enter"
-              {...form.getInputProps("authorizedUsers")}
+            <MultiSelect
+              label="Treatment"
+              miw={200}
+              data={[
+                {
+                  value: "Artificial Structure",
+                  label: "Artificial Structure",
+                },
+                { value: "Sea Wall", label: "Sea Wall" },
+                { value: "Bank", label: "Bank" },
+              ]}
+              {...form.getInputProps("treatment")}
             />
+            <Textarea label="Notes" {...form.getInputProps("notes")} />
             <SubmitButton />
           </Grid.Col>
           <Grid.Col span={8}>

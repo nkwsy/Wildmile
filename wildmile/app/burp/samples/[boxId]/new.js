@@ -16,21 +16,25 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
-import Router from "next/router";
+// import Router from "next/router";
+import { useRouter } from "next/router";
 import SampleForm from "components/macros/sample_form";
 // import dbConnect from "/lib/db/setup";
 import mapboxgl from "!mapbox-gl";
-import { getExistingLocations } from "app/actions/MacroActions";
+import {
+  getExistingLocations,
+  createMacroSample,
+} from "app/actions/MacroActions";
 
-mapboxgl.accessToken = process.env.MAPBOX_KEY;
+// mapboxgl.accessToken = process.env.MAPBOX_KEY;
 
 export default function CreateLog() {
   const [errorMsg, setErrorMsg] = useState("");
   const [active, setActive] = useState(0);
   const [visible, handlers] = useDisclosure(false);
-
   const isBrowser = () => typeof window !== "undefined"; //The approach recommended by Next.js
 
+  // const router = useRouter();
   function scrollToTop() {
     if (!isBrowser()) return;
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -42,7 +46,7 @@ export default function CreateLog() {
       samplingPeriod: 0,
       dateDeployed: null,
       dateCollected: null,
-      locationName: "",
+      location: null,
       treatment: [],
       replicateNumber: 0,
       depth: 0,
@@ -54,24 +58,21 @@ export default function CreateLog() {
     },
   });
 
-  // Use the databaseInput object to store the form data in the database
-  async function getLocations() {
-    // const res = await getExistingLocations();
-    const locations = {};
-    // const locations = await res;
-    return locations;
-  }
   async function createLog() {
     handlers.open();
     console.log(form.values);
-    const res = await fetch("/api/macros", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form.values),
-    });
+    const res = await createMacroSample(form.values);
 
-    if (res.status === 201) {
-      Router.push("/burp");
+    // const res = await fetch("/api/macros", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(form.values),
+    // });
+
+    // if (res.status === 201) {
+    if (res.success === true) {
+      return router.push("/burp");
+      // Router.push("/burp");
     } else {
       handlers.close();
       setErrorMsg(await res.text());
@@ -84,7 +85,6 @@ export default function CreateLog() {
     // Navigate to the trash/edit/[id].js page
     // Router.push(`/projects`);
   }
-  const existingLocations = getLocations();
 
   return (
     <Container my="5rem">
@@ -93,7 +93,7 @@ export default function CreateLog() {
       </Title>
       <Paper withBorder shadow="md" py={"md"} px={"xl"} mt={30} radius="md">
         <Box m="md" flex>
-          <SampleForm form={form} existingLocations={existingLocations} />
+          <SampleForm form={form} />
           <Button justify="flex-right" onClick={createLog}>
             Submit
           </Button>

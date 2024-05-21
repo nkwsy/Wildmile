@@ -11,12 +11,12 @@ const PointSchema = new mongoose.Schema({
     type: [Number], // [longitude, latitude]
     required: true,
   },
-  name: {
-    type: String,
-  },
-  tags: {
-    type: [String],
-  },
+  // name: {
+  //   type: String,
+  // },
+  // tags: {
+  //   type: [String],
+  // },
 });
 
 // Polygon Schema
