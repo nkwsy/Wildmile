@@ -19,7 +19,7 @@ import {
   Box,
   Fieldset,
 } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
+import { DatePickerInput } from "@mantine/dates";
 // import MapPicker from "components/map_picker";
 // import LocationModal from "components/maps/LocationModal";
 import LocationMap from "components/maps/LocationMap";
@@ -100,21 +100,19 @@ export default function SampleForm(props) {
               required
             />
 
-            <DatePicker
+            <DatePickerInput
               label="Date Deployed"
+              defaultLevel="year"
               {...props.form.getInputProps("dateDeployed")}
             />
 
-            <DatePicker
+            <DatePickerInput
+              defaultLevel="year"
               label="Date Collected"
               {...props.form.getInputProps("dateCollected")}
             />
           </Group>
           <Group>
-            <TextInput
-              label="Location Name"
-              {...props.form.getInputProps("locationName")}
-            />
             <MultiSelect
               label="Treatment"
               miw={200}
@@ -140,10 +138,10 @@ export default function SampleForm(props) {
               label="Depth (in ft)"
               {...props.form.getInputProps("depth")}
             />
-            <TextInput
+            {/* <TextInput
               label="Substrate"
               {...props.form.getInputProps("substrate")}
-            />
+            /> */}
             {/* <TextInput label="Canopy" {...props.form.getInputProps("canopy")} /> */}
           </Group>
           <Group>
