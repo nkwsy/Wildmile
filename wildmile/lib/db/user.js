@@ -3,7 +3,7 @@ import getAvatar from "../avatar";
 
 import dbConnect from "./setup";
 
-await dbConnect()
+dbConnect()
 export async function getAllUsers() {
   // For demo purpose only. You are not likely to have to return all users.
   const users = await User.find({}, [
