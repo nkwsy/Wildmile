@@ -62,6 +62,6 @@ const MediaSchema = new mongoose.Schema({
   mediaComments: String,
 });
 
-const Media = mongoose.model("Media", mediaSchema);
+const Media = mongoose.model("Media", MediaSchema);
 
 module.exports = Media;
