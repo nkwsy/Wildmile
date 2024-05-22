@@ -20,6 +20,7 @@ export async function uploadFileToS3(file, fileName, folderName) {
     Key: `${folderName}/${fileName}`,
     Body: file, // use fileBuffer for sharp
     ContentType: "image/jpg, image/jpeg, image/png",
+    // ContentType: file.type
   };
   const command = new PutObjectCommand(params);
   try {
