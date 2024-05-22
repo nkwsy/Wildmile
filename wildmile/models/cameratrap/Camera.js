@@ -34,9 +34,11 @@ const cameraSchema = new mongoose.Schema(
       // maybe in Resources?
       type: String,
       required: true,
+      lowercase: true,
     },
     manufacturer: {
       type: String,
+      lowercase: true,
     },
     resolution: {
       type: String, // E.g., "1920x1080"
