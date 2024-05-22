@@ -230,7 +230,7 @@ export default function TrashForm(props) {
               />
             </Grid.Col>
             <Grid.Col span={6}>
-              <TrashImageUpload setImageFiles={setFiles} />
+              {/* <TrashImageUpload setImageFiles={setFiles} /> */}
             </Grid.Col>
           </Grid>
           <Group>
