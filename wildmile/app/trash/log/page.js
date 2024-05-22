@@ -20,18 +20,20 @@ import { cookies, headers } from "next/headers";
 export default async function TrashLogPage() {
   const cookieStore = cookies();
   const token = cookieStore.get("session");
+  const session = await getSession({ headers });
   // if (!session) {
   //   alert("You must be logged in to create a trash log");
   //   redirect("/login");
   // }
+  console.log("Token:", session);
   return (
     <Container>
       <Paper withBorder shadow="md" py={"md"} px={"xl"} mt={30} radius="md">
         <Title mb={30} align="center">
           Create a new trash log
         </Title>
-        {!token && <AlertLogin />}
-        {token && <TrashForm />}
+        {!session && <AlertLogin />}
+        {session && <TrashForm />}
       </Paper>
     </Container>
   );

@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const AutoIncrement = require("mongoose-sequence")(mongoose);
+import mongoose from "mongoose";
+// const AutoIncrement = require("mongoose-sequence")(mongoose);
 // import MacroImageSchema from "./MacroImages"; // Assuming MacroImageSchema is correctly imported from "./MacroImages"
 // Assuming PointSchema is correctly imported from "./locationSchemas"
 import { PointSchema } from "models/locationSchemas";
@@ -11,25 +11,30 @@ const MacroinvertebrateDataSchema = new mongoose.Schema({
 });
 
 // Macro sample box schema
-const MacroSampleSchema = new mongoose.Schema({
-  boxNum: Number,
-  samplingPeriod: { type: Number },
-  dateDeployed: { type: Date },
-  dateCollected: { type: Date },
-  deploymentDuration: { type: Number },
-  locationName: { type: String },
-  coordinates: { PointSchema },
-  treatment: [],
-  replicateNumber: { type: Number },
-  depth: { type: Number },
-  substrate: { type: String },
-  canopy: { type: Boolean },
-  numberOfCSO: { type: Number },
-  volunteerName: { type: String },
-  imageFolder: { type: String },
-  macroinvertebrateData: [MacroinvertebrateDataSchema],
-  notes: { type: String },
-});
+const MacroSampleSchema = new mongoose.Schema(
+  {
+    boxNum: Number,
+    samplingPeriod: { type: Number },
+    dateDeployed: { type: Date },
+    dateCollected: { type: Date },
+    deploymentDuration: { type: Number },
+    location: { type: mongoose.Schema.Types.ObjectId, ref: "MacroLocation" },
+    treatment: [],
+    replicateNumber: { type: Number },
+    depth: { type: Number },
+    substrate: { type: String },
+    // canopy: { type: Boolean },
+    numberOfCSO: { type: Number },
+    volunteerName: { type: String },
+    imageFolder: { type: String },
+    macroinvertebrateData: [MacroinvertebrateDataSchema],
+    notes: { type: String },
+    creator: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 MacroSampleSchema.pre("save", function (next) {
   this.deploymentDuration =
@@ -47,6 +52,6 @@ export default mongoose.models.MacroSample ||
   mongoose.model("MacroSample", MacroSampleSchema);
 // Apply the plugin to the MacroSampleSchema
 
-module.exports = {
-  MacroinvertebrateDataSchema,
-};
+// module.exports = {
+//   MacroinvertebrateDataSchema,
+// };

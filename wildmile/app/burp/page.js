@@ -15,10 +15,14 @@ import {
   IconMicroscope,
   IconNewSection,
   IconButterfly,
+  IconMap,
 } from "@tabler/icons-react";
 
 // import MapPicker from "components/map_picker";
-
+export const metadata = {
+  title: "B.U.R.P.  Bugs In Urban Rivers Project.",
+  description: "Bugs In Urban Rivers Project.",
+};
 export default function BurpHomeLanding() {
   // const [user, { loading }] = useUser();
 
@@ -51,6 +55,12 @@ export default function BurpHomeLanding() {
       title: "New Sample",
       href: "/burp/samples/new",
       description: "Create a new sample",
+    },
+    {
+      icon: IconMap,
+      title: "New Location",
+      href: "/burp/locations",
+      description: "Manage the locations",
     },
   ];
   // user && user.admin

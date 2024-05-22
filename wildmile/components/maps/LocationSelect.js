@@ -1,10 +1,11 @@
+"use client";
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import classes from "styles/map.module.css";
-
+import { Select } from "@mantine/core";
 // import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 // mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
 function updateArea(e) {}
@@ -39,6 +40,71 @@ const pointStyle = [
     },
   },
 ];
+
+export function LocationDropdown({ locations, selectedLocation }) {
+  mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY;
+  const [lng, setLng] = useState(-87.65);
+  const [lat, setLat] = useState(41.9);
+  const [currentLocations, setCurrentLocations] = useState(locations);
+  const mapContainer = useRef(null);
+  const map = useRef(null);
+  //   const [selectedLocation, setSelectedLocation] = useState(null);
+
+  useEffect(() => {
+    if (map.current) return; // Initialize map only once
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: "mapbox://styles/mapbox/streets-v11",
+      center: [lng, lat],
+      zoom: 9,
+    });
+  }, []);
+
+  useEffect(() => {
+    // Update marker position when selectedLocation changes
+    if (selectedLocation) {
+      console.log("Selected Location:", selectedLocation);
+      // let useLocation = locations.find(selectedLocation._id);
+      const marker = new mapboxgl.Marker({ color: "#FF0000" })
+        .setLngLat(selectedLocation.coordinates.coordinates)
+        .addTo(map.current);
+      map.current.flyTo({
+        center: selectedLocation.coordinates.coordinates,
+        zoom: 16,
+      });
+      // marker.setLngLat(selectedLocation);
+    }
+  }, [selectedLocation]);
+
+  useEffect(() => {
+    if (!map.current) return; // Wait for map to initialize
+    if (locations && locations.length > 0) {
+      console.log("Locations:", locations);
+      locations.forEach((location) => {
+        new mapboxgl.Marker()
+          .setLngLat(location.coordinates.coordinates)
+          .addTo(map.current);
+      });
+      // setCurrentLocations(locations);
+    }
+  }, [locations]);
+
+  return (
+    <div>
+      {/* <Select
+        data={currentLocations}
+        value={selectedLocation}
+        onChange={(option) => {
+          setSelectedLocation(option);
+          onSelect(option);
+        }}
+        // getOptionLabel={(option) => option.name}
+        // getOptionValue={(option) => option.id}
+      /> */}
+      <div ref={mapContainer} className={classes.map}></div>
+    </div>
+  );
+}
 
 const LocationMap = ({ onPointSelect, onPolygonSelect, existingLocations }) => {
   mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY;
