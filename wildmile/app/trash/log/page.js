@@ -17,6 +17,12 @@ import { getSession } from "lib/getSession";
 import { redirect } from "next/navigation";
 import { AlertLogin } from "components/alert";
 import { cookies, headers } from "next/headers";
+
+export const metadata = {
+  title: "Trashlog",
+  description: "Logging trash. Taking names.",
+};
+
 export default async function TrashLogPage() {
   const cookieStore = cookies();
   const token = cookieStore.get("session");
