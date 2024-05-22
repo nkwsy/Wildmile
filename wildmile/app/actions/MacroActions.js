@@ -20,8 +20,12 @@ export async function newEditLocation(req) {
   await dbConnect();
   const cleanValues = cleanObject(req);
   console.log("clean values:", cleanValues);
-  const { locationName, coordinates } = req;
-  const location = await MacroLocation.create(cleanValues);
+
+  const session = await getSession();
+  const location = await MacroLocation.create({
+    ...cleanValues,
+    creator: session._id,
+  });
   revalidatePath("/burp"); // Update cached posts
 
   return { success: true, data: JSON.parse(JSON.stringify(location)) };
@@ -45,7 +49,6 @@ export async function createMacroSample(req) {
     // Call database
 
     const session = await getSession();
-
     const macroSample = await MacroSample.create({
       ...cleanValues,
       creator: session._id,

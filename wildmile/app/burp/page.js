@@ -19,7 +19,10 @@ import {
 } from "@tabler/icons-react";
 
 // import MapPicker from "components/map_picker";
-
+export const metadata = {
+  title: "B.U.R.P.  Bugs In Urban Rivers Project.",
+  description: "Bugs In Urban Rivers Project.",
+};
 export default function BurpHomeLanding() {
   // const [user, { loading }] = useUser();
 

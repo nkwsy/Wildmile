@@ -1,6 +1,17 @@
 import CreateLog from "./new";
 
-export default function Page({ params }) {
+import { getSession } from "lib/getSession";
+import { cookies, headers } from "next/headers";
+import { AlertLogin } from "components/alert";
+
+export const metadata = {
+  title: "B.U.R.P.  Samples",
+  description: "Bugs In Urban Rivers Project.",
+};
+export default async function Page({ params }) {
+  const session = await getSession({ headers });
+  if (!session) return <AlertLogin />;
+
   if (params.boxId) {
     if (params.boxId === "new") {
       return <CreateLog />;

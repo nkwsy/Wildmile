@@ -20,7 +20,7 @@ import {
   Checkbox,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { DateTimePicker } from "@mantine/dates";
+import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useParams, useRouter, useFetch, usePathname } from "next/navigation";
 // import { newEditProject, getProject } from "/app/actions";
@@ -131,24 +131,30 @@ export default function LocationForm(props) {
               key="name"
               {...form.getInputProps("locationName")}
             />
-            <DateTimePicker
+            <DatePickerInput
               label="Date Start"
+              defaultLevel="year"
               {...form.getInputProps("dateStart")}
             />
-            <MultiSelect
-              label="Treatment"
-              miw={200}
-              data={[
-                {
-                  value: "Artificial Structure",
-                  label: "Artificial Structure",
-                },
-                { value: "Sea Wall", label: "Sea Wall" },
-                { value: "Bank", label: "Bank" },
-              ]}
-              {...form.getInputProps("treatment")}
-            />
-            <Checkbox {...form.getInputProps("canopy")}>Canopy</Checkbox>
+            <Group>
+              <MultiSelect
+                label="Treatment"
+                miw={200}
+                data={[
+                  {
+                    value: "Artificial Structure",
+                    label: "Artificial Structure",
+                  },
+                  { value: "Sea Wall", label: "Sea Wall" },
+                  { value: "Bank", label: "Bank" },
+                ]}
+                {...form.getInputProps("treatment")}
+              />
+              <Checkbox
+                label="Canopy Present"
+                {...form.getInputProps("canopy")}
+              />
+            </Group>
             <Textarea label="Notes" {...form.getInputProps("notes")} />
             <SubmitButton />
           </Grid.Col>

@@ -16,6 +16,7 @@ const MacroLocationSchema = new mongoose.Schema({
   images: [],
   tags: [],
   notes: { type: String },
+  creator: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
 
 // Model creation
