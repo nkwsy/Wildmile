@@ -39,6 +39,9 @@ const PlantEditForm = ({ plant, onSave, onCancel }) => {
       commonName: plant.commonName || plant.common_name || "",
       scientificName: plant.scientificName || plant.scientific_name || "",
       family: plant.family || "",
+      tags: plant.tags || [],
+      notes: plant.notes || "",
+      links: plant.links || {},
     },
     // Define a schema if you want to include validation with, e.g., yup
     // validate: (values) => { return {}; }
@@ -47,7 +50,11 @@ const PlantEditForm = ({ plant, onSave, onCancel }) => {
   const updatePlantOnClick = async (values) => {
     setLoading.open();
     console.log("Plant to update: ", values);
-    const updatedPlant = await updatePlant(values);
+    if (plant?._id) {
+      const updatedPlant = await updatePlant(values);
+    } else {
+      const updatedPlant = await createPlant(values);
+    }
     if (form.isDirty("color.family") || form.isDirty("family")) {
       const updatedPlantFamily = await updatePlantFamily(
         values.family,

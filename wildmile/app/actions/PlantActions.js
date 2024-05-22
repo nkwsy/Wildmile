@@ -60,9 +60,14 @@ export async function updatePlant(formData) {
     tags: formData.tags,
     notes: formData.notes,
     color: formData.color,
+    links: formData.links,
   };
-  if (!rawFormData.color.family && rawFormData.family !== "") {
-    rawFormData.color.family = await getPlantFamily(rawFormData.family);
+  if (!rawFormData.color) {
+    if (rawFormData.family !== "" && !rawFormData.color?.family) {
+      rawFormData.color = {
+        family: await getPlantFamily(rawFormData.family),
+      };
+    }
   }
 
   console.log("Raw Form Data:", rawFormData);
@@ -72,6 +77,32 @@ export async function updatePlant(formData) {
   return JSON.stringify(result);
 }
 
+// Update Plant data
+export async function createPlant(formData) {
+  console.log("PlantActions- updatePlant:", formData);
+  const rawFormData = {
+    commonName: formData.commonName,
+    scientificName: formData.scientificName,
+    family: formData.family,
+    tags: formData.tags,
+    notes: formData.notes,
+    color: formData.color,
+    links: formData.links,
+  };
+  if (!rawFormData.color) {
+    if (rawFormData.family !== "" && !rawFormData.color?.family) {
+      rawFormData.color = {
+        family: await getPlantFamily(rawFormData.family),
+      };
+    }
+  }
+
+  console.log("Raw Form Data:", rawFormData);
+
+  const result = await Plant.create(formData);
+  revalidatePath("/");
+  return JSON.stringify(result);
+}
 // get Plant Family data
 export async function getPlantFamily(family) {
   console.log("PlantActions- getPlantFamily:", family);
