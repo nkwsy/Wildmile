@@ -87,6 +87,7 @@ export default function DeploymentForm(props) {
   };
 
   return (
+<>
     <Box>
       <Grid>
         <Grid.Col span={6}>
@@ -206,7 +207,7 @@ export default function DeploymentForm(props) {
           </Group>
         </Grid.Col>
         <Grid.Col span={6}>
-          <Group>
+          
             <LocationForm setLocation={setLocation} />
           <Select
             label="Select Location"
@@ -224,5 +225,6 @@ export default function DeploymentForm(props) {
         </Grid.Col>
       </Grid>
     </Box>
+    </>
   );
 }

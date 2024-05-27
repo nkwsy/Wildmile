@@ -15,7 +15,7 @@ const DeploymentLocationSchema = new mongoose.Schema(
         notes: String,
         image: String,
         retired: Boolean,
-        creator: {mongoose.Schema.Types.ObjectId, ref: "User"},
+        creator: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     },
     {
         timestamps: true,
