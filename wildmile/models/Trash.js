@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const mongoosePaginate = require("mongoose-paginate-v2");
+// const mongoosePaginate = require("mongoose-paginate-v2");
 
 const { Schema } = mongoose;
 
@@ -58,8 +58,14 @@ TrashLogSchema.virtual("items", {
   justOne: false,
   options: { sort: { itemId: -1 } },
 });
+TrashLogSchema.virtual("user", {
+  ref: "User", // The model to use
+  localField: "creator", // Find people where `localField`
+  foreignField: "_id", // is equal to `foreignField`
+  justOne: true,
+});
 
-TrashLogSchema.plugin(mongoosePaginate);
+// TrashLogSchema.plugin(mongoosePaginate);
 
 export default mongoose.models.TrashLog ||
   mongoose.model("TrashLog", TrashLogSchema);

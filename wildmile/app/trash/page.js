@@ -15,12 +15,12 @@ export default function Page() {
       href: "/trash/log",
       description: "Create a new trash log ",
     },
-    // {
-    //   icon: IconCalendarSearch,
-    //   title: "Past Logs",
-    //   href: "/trash/history",
-    //   description: "View and Edit previous trash logs",
-    // },
+    {
+      icon: IconCalendarSearch,
+      title: "Past Logs",
+      href: "/trash/history",
+      description: "View and Edit previous trash logs",
+    },
     {
       icon: IconChartInfographic,
       title: "Trash Dashboard",
