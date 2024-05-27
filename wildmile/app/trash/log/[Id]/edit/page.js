@@ -10,7 +10,6 @@ import {
   Select,
   LoadingOverlay,
   Affix,
-  Space,
 } from "@mantine/core";
 // import { DateTimePicker } from "@mantine/dates";
 // import TrashItemTable from '../../components/trash_item_table'
@@ -37,29 +36,16 @@ export async function renderTrashForm(logId) {
 export default async function page({ params }) {
   console.log("Params:", params);
 
+  const props = await getTrashLogById(params.Id);
   return (
     <>
       <Container>
         <Paper withBorder shadow="md" py={"md"} px={"xl"} mt={30} radius="md">
           <Title mb={30} align="center">
-            Create a new trash log
+            Edit Trash log
           </Title>
+          <TrashForm props={props} />
           {/* <Suspense>{renderTrashForm(params.Id)}</Suspense> */}
-          <Group>
-            <Button
-              component={Link}
-              color="yellow"
-              href={`/trash/log/${params.Id}/edit`}
-            >
-              Edit Form
-            </Button>
-          </Group>
-          <Space h="md" />
-          <Suspense>{renderAccordian(params.Id)}</Suspense>
-
-          <Button component={Link} href="/trash">
-            Done
-          </Button>
         </Paper>
       </Container>
     </>

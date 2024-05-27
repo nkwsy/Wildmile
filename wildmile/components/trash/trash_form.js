@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Stepper,
   Button,
@@ -32,20 +32,21 @@ import { CreateLog } from "app/actions/TrashActions";
 import { SubmitButton } from "components/SubmitButton";
 // const [errorMsg, setErrorMsg] = useState('')
 
-export default function TrashForm(props) {
+export default function TrashForm({ props }) {
   const [files, setFiles] = useState([]);
   const [loading, { toggle }] = useDisclosure();
-
+  console.log("Props:", props);
   const form = useForm({
     initialValues: {
+      // _id: props._id || null,
       site: "",
       numOfParticipants: 1,
       timeStart: new Date(),
       timeEnd: new Date(),
       trashiness: 1,
       temp: 65,
-      wind: 1,
-      cloud: 1,
+      wind: "1",
+      cloud: "1",
       weight: null,
       notes: "",
     },
@@ -65,6 +66,25 @@ export default function TrashForm(props) {
     },
   });
 
+  useEffect(() => {
+    if (!props) return;
+    form.setValues({ ...props });
+    console.log("Props wind:");
+    if (props.wind) {
+      form.setValues({
+        wind: props.wind.toString(),
+      });
+    }
+    if (props.cloud) {
+      form.setValues({
+        cloud: props.cloud.toString(),
+      });
+    }
+
+    // form.resetDirty(props);
+  }, []);
+  console.log("Form:", form.getValues());
+
   const CreateTrashLogForm = async (values) => {
     toggle(true);
     // const {
@@ -81,7 +101,7 @@ export default function TrashForm(props) {
     // console.log("Form Data:", site);
     // const rawFormData = Object.fromEntries(formData);
     try {
-      values.images = files;
+      // values.images = files;
       console.log(values);
       const raw_response = await CreateLog(values);
       const response = await raw_response;
@@ -92,6 +112,7 @@ export default function TrashForm(props) {
       console.error(error);
     }
   };
+
   const marks = [
     { value: 1, label: "1" },
     // { value: 2, label: "2" },
