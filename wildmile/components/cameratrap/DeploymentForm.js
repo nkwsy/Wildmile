@@ -23,7 +23,7 @@ import {
 import { DatePickerInput } from "@mantine/dates";
 // import MapPicker from "components/map_picker";
 // import LocationModal from "components/maps/LocationModal";
-import LocationMap from "components/maps/LocationMap";
+// import LocationMap from "components/maps/LocationMap";
 import LocationForm from "components/maps/LocationForm";
 import { LocationDropdown } from "components/maps/LocationSelect";
 import { getExistingLocations } from "app/actions/CameratrapActions";
