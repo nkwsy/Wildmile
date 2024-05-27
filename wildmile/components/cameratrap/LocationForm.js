@@ -18,21 +18,22 @@ import {
   Box,
   Grid,
   Checkbox,
+  Modal
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useParams, useRouter, useFetch, usePathname } from "next/navigation";
 // import { newEditProject, getProject } from "/app/actions";
-import { newEditLocation } from "app/actions/MacroActions";
+import { newEditLocation } from "app/actions/CameratrapActions";
 // import LocationModal from "./maps/LocationModal";
 import LocationMap from "components/maps/LocationMap";
-import { get } from "mongoose";
 
 export default function LocationForm(props) {
   const [loading, { toggle }] = useDisclosure();
   const [point, setPoint] = useState(null);
   const [polygon, setPolygon] = useState(null);
+  const [opened, { open, close }] = useDisclosure(false);
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
@@ -45,9 +46,8 @@ export default function LocationForm(props) {
     initialValues: {
       locationName: "",
       notes: "",
-      dateStart: null,
-      treatment: [],
-      canopy: false,
+      tags: [],
+      retired: false,
       // location: {
       //   type: "Point",
       //   coordinates: [],
@@ -58,27 +58,6 @@ export default function LocationForm(props) {
       // },
     },
   });
-
-  //   useEffect(() => {
-  //     if (params.project) {
-  //       const fetchData = async () => {
-  //         const project_result = await getProject(params.project);
-  //         const result = JSON.parse(project_result);
-  //         // if (result && result.data) {
-  //         console.log("Data loaded:", result);
-  //         form.initialize(result);
-  //         form.setValues({
-  //           // ...form.values, // Default values for the form
-  //           ...result, // Data fetched from the server
-  //         });
-  //         // } else {
-  //         //   console.error("Failed to fetch data or data is empty:", result);
-  //         // }
-  //       };
-
-  //       fetchData();
-  //     }
-  //   }, [params]); // Ensure to depend on params.project
 
   async function submitForm() {
     // loading(true);
@@ -99,9 +78,9 @@ export default function LocationForm(props) {
     const raw_result = await newEditLocation(form.values);
     const result = raw_result;
     console.log("Result:", result);
-    if (result.success === true) {
-      router.push(`/burp`);
-    }
+    // if (result.success === true) {
+    //   router.push(`/burp`);
+    // }
   }
   const initialState = {
     message: null,
@@ -123,7 +102,10 @@ export default function LocationForm(props) {
 
   return (
     <>
+      <Modal opened={opened} onClose={close} title="Location">
+
       <Box>
+
         <Grid>
           <Grid.Col span={4}>
             <TextInput
@@ -131,31 +113,15 @@ export default function LocationForm(props) {
               key="name"
               {...form.getInputProps("locationName")}
             />
-            <DatePickerInput
-              label="Date Start"
-              defaultLevel="year"
-              {...form.getInputProps("dateStart")}
-            />
             <Group>
-              <MultiSelect
-                label="Treatment"
-                miw={200}
-                data={[
-                  {
-                    value: "Artificial Structure",
-                    label: "Artificial Structure",
-                  },
-                  { value: "Sea Wall", label: "Sea Wall" },
-                  { value: "Bank", label: "Bank" },
-                ]}
-                {...form.getInputProps("treatment")}
-              />
               <Checkbox
-                label="Canopy Present"
-                {...form.getInputProps("canopy")}
+                label="Retired"
+                {...form.getInputProps("retired")}
               />
             </Group>
             <Textarea label="Notes" {...form.getInputProps("notes")} />
+            <TagsInput label="Tags" {...form.getInputProps("tags")} />
+
             <SubmitButton />
           </Grid.Col>
           <Grid.Col span={8}>
@@ -166,6 +132,9 @@ export default function LocationForm(props) {
           </Grid.Col>
         </Grid>
       </Box>
+        </Modal>
+        <Button onClick={open}>New Location</Button>
+
     </>
   );
 }
