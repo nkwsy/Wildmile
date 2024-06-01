@@ -1,5 +1,7 @@
-'use client'
+"use client";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import {
   Stepper,
   Button,
@@ -20,15 +22,23 @@ import {
   Box,
   Fieldset,
 } from "@mantine/core";
-import { DatePickerInput } from "@mantine/dates";
+import { useForm } from "@mantine/form";
+import { useDisclosure } from "@mantine/hooks";
+import { DatePickerInput, DateInput } from "@mantine/dates";
 // import MapPicker from "components/map_picker";
 // import LocationModal from "components/maps/LocationModal";
 // import LocationMap from "components/maps/LocationMap";
 import LocationForm from "components/cameratrap/LocationForm";
 import { LocationDropdown } from "components/maps/LocationSelect";
-import { getExistingLocations } from "app/actions/CameratrapActions";
+import {
+  getExistingLocations,
+  getAllCameras,
+  newEditDeployment,
+} from "app/actions/CameratrapActions";
 
 export default function DeploymentForm(props) {
+  const router = useRouter();
+
   const [bugData, setBugData] = useState([]);
   const [locationModalOpened, setLocationModalOpened] = useState(false);
   const [existingLocations, setExistingLocations] = useState([]);
@@ -36,10 +46,43 @@ export default function DeploymentForm(props) {
   const [location, setLocation] = useState(null);
   const [point, setPoint] = useState(null);
   const [polygon, setPolygon] = useState(null);
+  const [refreshLocations, setRefreshLocations] = useState(false);
+  const [existingCameras, setExistingCameras] = useState([]);
+  const [cameraOptions, setCameraOptions] = useState([]);
+  const [loading, { toggle }] = useDisclosure();
+
   // props.existingLocations.map((location) => ({
   //   value: location.id,
   //   label: location.name,
   // }))
+
+  const form = useForm({
+    initialValues: {
+      cameraId: "",
+      locationId: "",
+      // location: {
+      //   type: "Point",
+      //   coordinates: [0, 0],
+      // },
+      coordinateUncertainty: null,
+      deploymentStart: new Date(),
+      deploymentEnd: null,
+      setupBy: "",
+      cameraDelay: null,
+      cameraHeight: null,
+      cameraDepth: null,
+      cameraTilt: null,
+      cameraHeading: null,
+      detectionDistance: null,
+      timestampIssues: false,
+      baitUse: false,
+      featureType: "",
+      habitat: "",
+      deploymentGroups: "",
+      deploymentTags: [],
+      deploymentComments: "",
+    },
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,11 +99,28 @@ export default function DeploymentForm(props) {
     };
     fetchData();
     console.log("Existing Locations:", existingLocations);
-  }, []);
+  }, [refreshLocations]);
 
   useEffect(() => {
     console.log("Existing Locations:", existingLocations);
   }, [existingLocations]);
+
+  useEffect(() => {
+    const fetchCameras = async () => {
+      const res = await getAllCameras();
+      const allCameras = JSON.parse(res);
+      console.log("All Cameras:", allCameras);
+      setExistingCameras(allCameras);
+      setCameraOptions(
+        allCameras.map((camera) => ({
+          value: camera._id,
+          label:
+            camera.name + " - " + camera.model + " - " + camera.manufacturer,
+        }))
+      );
+    };
+    fetchCameras();
+  }, []);
   // const existingLocationOptions = [];
   const handleBugDataChange = (index, field, value) => {
     const updatedBugData = [...bugData];
@@ -83,149 +143,149 @@ export default function DeploymentForm(props) {
     const selectedLocation = existingLocations.find((loc) => loc._id === value);
     console.log("Selected Location:", selectedLocation);
     setLocation(selectedLocation);
-    props.form.setFieldValue("location", selectedLocation._id);
+    form.setFieldValue("location", selectedLocation._id);
     // props.form.setFieldValue("coordinates", selectedLocation.coordinates);
   };
+  async function submitForm() {
+    // loading(true);
+    toggle();
+    console.log("Location:", location);
+    if (location) {
+      form.values.location = location.location;
+      form.values.locationId = location._id;
+    }
 
+    console.log("Form state on submit:", form.values);
+    const raw_result = await newEditDeployment(form.values);
+    const result = raw_result;
+    console.log("Result:", result);
+    if (result.success === true) {
+      router.push(`/cameratrap/deployment`);
+    }
+  }
   return (
-<>
-    <Box>
-      <Grid>
-        <Grid.Col span={6}>
-          <Group grow>
-            <NumberInput
-              label="Box Number"
-              {...props.form.getInputProps("boxNum")}
+    <>
+      <Box>
+        <Grid>
+          <Grid.Col span={6}>
+            <Group grow>
+              <Select
+                label="Camera"
+                data={cameraOptions}
+                {...form.getInputProps("cameraId")}
+              />
+              <DateInput
+                label="Deployment Start"
+                required
+                {...form.getInputProps("deploymentStart")}
+              />
+              <DateInput
+                label="Deployment End"
+                {...form.getInputProps("deploymentEnd")}
+              />
+            </Group>
+            <Group>
+              <Textarea
+                miw="80%"
+                label="Notes"
+                // {...props.form.getInputProps("notes")}
+              />
+            </Group>
+            <Group py="lg">
+              <Textarea
+                label="Deployment Tags"
+                {...form.getInputProps("deploymentTags")}
+              />
+            </Group>
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <LocationForm
+              setLocation={setLocation}
+              refreshLocations={setRefreshLocations}
             />
-            <NumberInput
-              label="Sampling Period"
-              {...props.form.getInputProps("samplingPeriod")}
-              required
+            <Select
+              label="Select Location"
+              data={locationOptions}
+              // onChange={handleLocationSelect}
+              // value={selectedLocation}
+              onChange={(option) => {
+                handleLocationSelect(option);
+              }}
+              // {...form.getInputProps("locationId")}
             />
-
-            <DatePickerInput
-              label="Date Deployed"
-              defaultLevel="year"
-              {...props.form.getInputProps("dateDeployed")}
+            <LocationDropdown
+              locations={existingLocations}
+              selectedLocation={location}
+              setSelectedLocation={setLocation}
             />
-
-            <DatePickerInput
-              defaultLevel="year"
-              label="Date Collected"
-              {...props.form.getInputProps("dateCollected")}
-            />
-          </Group>
-          <Group>
-            <MultiSelect
-              label="Treatment"
-              miw={200}
-              data={[
-                {
-                  value: "Artificial Structure",
-                  label: "Artificial Structure",
-                },
-                { value: "Sea Wall", label: "Sea Wall" },
-                { value: "Bank", label: "Bank" },
-                { value: "Benthic", label: "Benthic" },
-                { value: "Surface", label: "Surface" },
-              ]}
-              {...props.form.getInputProps("treatment")}
-            />
-          </Group>
-          <Group grow>
-            <NumberInput
-              label="Replicate Number"
-              {...props.form.getInputProps("replicateNumber")}
-            />
-            <NumberInput
-              label="Depth (in ft)"
-              {...props.form.getInputProps("depth")}
-            />
-            {/* <TextInput
-              label="Substrate"
-              {...props.form.getInputProps("substrate")}
-            /> */}
-            {/* <TextInput label="Canopy" {...props.form.getInputProps("canopy")} /> */}
-          </Group>
-          <Group>
-            <Textarea
-              miw="80%"
-              label="Notes"
-              {...props.form.getInputProps("notes")}
-            />
-          </Group>
-          <Group py="lg">
-            <Fieldset>
-              {bugData.map((bug, index) => (
-                <div
-                  key={index}
-                  style={{ display: "flex", alignItems: "center" }}
-                >
-                  <Autocomplete
-                    label="Bug Type"
-                    data={[
-                      { value: "amphipoda", label: "amphipoda" },
-                      { value: "chironomidae", label: "chironomidae" },
-                      { value: "isopoda", label: "isopoda" },
-                      { value: "odonata", label: "odonata" },
-                      { value: "gastropoda", label: "gastropoda" },
-                      { value: "mollusca", label: "mollusca" },
-                      { value: "oligochaeta", label: "oligochaeta" },
-                      { value: "planaria", label: "planaria" },
-                      { value: "decapoda", label: "decapoda" },
-                      { value: "diptera", label: "diptera" },
-                      { value: "trichoptera", label: "trichoptera" },
-                      { value: "ephemeroptera", label: "ephemeroptera" },
-                      { value: "coleoptera", label: "coleoptera" },
-                      { value: "nematoda", label: "nematoda" },
-                      { value: "chironomidaeBW", label: "chironomidaeBW" },
-                    ]}
-                    value={bug.type}
-                    onChange={(value) =>
-                      handleBugDataChange(index, "type", value)
-                    }
-                  />
-                  <NumberInput
-                    label="Bug Count"
-                    value={bug.count}
-                    onChange={(value) =>
-                      handleBugDataChange(index, "count", value)
-                    }
-                  />
-                  <Button
-                    variant="outline"
-                    color="red"
-                    onClick={() => handleRemoveBugData(index)}
-                  >
-                    Remove
-                  </Button>
-                </div>
-              ))}
-              <Button variant="outline" onClick={handleAddBugData}>
-                Add Bug Data
-              </Button>
-            </Fieldset>
-          </Group>
-        </Grid.Col>
-        <Grid.Col span={6}>
-          
-            <LocationForm setLocation={setLocation} />
-          <Select
-            label="Select Location"
-            data={locationOptions}
-            // onChange={handleLocationSelect}
-            // value={selectedLocation}
-            onChange={(option) => {
-              handleLocationSelect(option);
-            }}
-          />
-          <LocationDropdown
-            locations={existingLocations}
-            selectedLocation={location}
-          />
-        </Grid.Col>
-      </Grid>
-    </Box>
+          </Grid.Col>
+        </Grid>
+        <Button color="blue" onClick={submitForm}>
+          Submit
+        </Button>
+      </Box>
     </>
   );
 }
+
+// {/* <form onSubmit={form.onSubmit((values) => console.log(values))}>
+//   {/* <TextInput label="Location ID" {...form.getInputProps('locationID')} />
+//       <TextInput label="Location Name" {...form.getInputProps('locationName')} />
+//       <NumberInput label="Latitude" {...form.getInputProps('location.coordinates.1')} min={-90} max={90} />
+//       <NumberInput label="Longitude" {...form.getInputProps('location.coordinates.0')} min={-180} max={180} /> */}
+//   <NumberInput
+//     label="Coordinate Uncertainty"
+//     {...form.getInputProps("coordinateUncertainty")}
+//     min={1}
+//   />
+
+//   <TextInput label="Setup By" {...form.getInputProps("setupBy")} />
+//   <NumberInput
+//     label="Camera Delay"
+//     {...form.getInputProps("cameraDelay")}
+//     min={0}
+//   />
+//   <NumberInput
+//     label="Camera Height"
+//     {...form.getInputProps("cameraHeight")}
+//     min={0}
+//   />
+//   <NumberInput
+//     label="Camera Depth"
+//     {...form.getInputProps("cameraDepth")}
+//     min={0}
+//   />
+//   <NumberInput
+//     label="Camera Tilt"
+//     {...form.getInputProps("cameraTilt")}
+//     min={-90}
+//     max={90}
+//   />
+//   <NumberInput
+//     label="Camera Heading"
+//     {...form.getInputProps("cameraHeading")}
+//     min={0}
+//     max={360}
+//   />
+//   <NumberInput
+//     label="Detection Distance"
+//     {...form.getInputProps("detectionDistance")}
+//     min={0}
+//   />
+//   <Switch
+//     label="Timestamp Issues"
+//     {...form.getInputProps("timestampIssues", { type: "checkbox" })}
+//   />
+//   <Switch
+//     label="Bait Use"
+//     {...form.getInputProps("baitUse", { type: "checkbox" })}
+//   />
+//   <TextInput label="Feature Type" {...form.getInputProps("featureType")} />
+//   <TextInput label="Habitat" {...form.getInputProps("habitat")} />
+//   <TextInput
+//     label="Deployment Groups"
+//     {...form.getInputProps("deploymentGroups")}
+//   />
+
+//   <Button type="submit">Submit</Button>
+// </form>; */}

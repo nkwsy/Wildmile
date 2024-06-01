@@ -19,3 +19,23 @@
   padding: 6px;
   font-weight: bold;
 }
+.marker {
+  background-color: #3fb1ce;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+.markerSelected {
+  background-color: #ce3f3f;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+/* border: #404040; */

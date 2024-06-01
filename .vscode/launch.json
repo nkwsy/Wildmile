@@ -2,35 +2,56 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Launch Chrome",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
       "name": "Next.js: debug server-side",
       "type": "node-terminal",
       "request": "launch",
-      "cwd": "${workspaceFolder}/wildmile",
-      "command": "npm run dev"
+      "command": "npm run dev --turbo"
     },
     {
       "name": "Next.js: debug client-side",
       "type": "chrome",
       "request": "launch",
-      "cwd": "${workspaceFolder}/wildmile",
+      "resolveSourceMapLocations": ["${workspaceFolder}/", "!/node_modules/**"],
       "url": "http://localhost:3000"
     },
     {
       "name": "Next.js: debug full stack",
-      "type": "node",
+      "type": "node-terminal",
       "request": "launch",
-      "program": "${workspaceFolder}/node_modules/.bin/next",
       "cwd": "${workspaceFolder}/wildmile",
-      "runtimeArgs": ["--inspect"],
+      "command": "npm run dev --turbo",
       "skipFiles": ["<node_internals>/**"],
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "/turbopack/[project]/*": "${webRoot}/*"
+      },
       "serverReadyAction": {
-        // "action": "debugWithEdge",
-
         "action": "debugWithChrome",
         "killOnServerStop": true,
         "pattern": "- Local:.+(https?://.+)",
         "uriFormat": "%s",
-        "webRoot": "${workspaceFolder}"
+        "webRoot": "${workspaceFolder}/wildmile"
+      }
+    },
+    {
+      "name": "Next.js: Simple debug full stack",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/wildmile",
+      "command": "npm run dev",
+      "sourceMaps": true,
+      "serverReadyAction": {
+        "webRoot": "${workspaceFolder}/wildmile",
+        "pattern": "- Local:.+(https?://.+)",
+        "uriFormat": "%s",
+        "action": "debugWithChrome"
       }
     },
     {
@@ -63,5 +84,6 @@
       "request": "launch",
       "cwd": "${workspaceFolder}"
     }
-  ]
+  ],
+  "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"]
 }

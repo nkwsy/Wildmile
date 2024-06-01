@@ -1,4 +1,7 @@
 "use server";
+import sharp from "sharp";
+import axios from "axios";
+import dbConnect from "lib/db/setup";
 import Resource from "models/Resources";
 
 export async function getPlantingTemplate(userId = null) {
@@ -10,4 +13,21 @@ export async function getPlantingTemplate(userId = null) {
   }
   const resources = await Resource.find(search, ["metadata", "data"]).lean();
   return JSON.stringify(resources);
+}
+
+// Use Inaturalist API to search for taxa
+// https://api.inaturalist.org/v1/docs/#/
+
+export async function getInatTaxa(query) {
+  // console.log("Link load trefle data:", link);
+  try {
+    const response = await fetch(
+      `https://api.inaturalist.org/v1/taxa?q=${query}`
+    );
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error("Error loading Trefle data:", error);
+    return [];
+  }
 }

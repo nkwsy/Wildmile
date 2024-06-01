@@ -13,6 +13,7 @@ import {
   IconPlant2,
   IconListDetails,
   IconUsers,
+  IconCameraDollar,
 } from "@tabler/icons-react";
 
 import { IconCardGrid } from "../components/icon_card_grid";
@@ -46,6 +47,12 @@ export default function HomePage() {
       title: "B.U.R.P.",
       href: "/burp",
       description: "See the Current Wild Mile Projects",
+    },
+    {
+      icon: IconCameraDollar,
+      title: "Camera Traps",
+      href: "/cameratrap",
+      description: "WM Camera Trap Data",
     },
   ];
 

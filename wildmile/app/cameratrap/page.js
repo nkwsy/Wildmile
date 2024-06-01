@@ -11,6 +11,7 @@ import {
   IconUsers,
   IconBackhoe,
 } from "@tabler/icons-react";
+import TaxaSearch, { WildlifeSidebar } from "components/cameratrap/TaxaSearch";
 
 export default async function Page() {
   // const { classes, theme } = cardStyles()
@@ -28,7 +29,26 @@ export default async function Page() {
       href: "/cameratrap/camera/new",
       description: "Add a new camera device",
     },
+    {
+      icon: IconTrash,
+      title: "Cameras",
+      href: "/cameratrap/camera",
+      description: "Manage the cameras",
+    },
+    {
+      icon: IconUsers,
+      title: "Deployments",
+      href: "/cameratrap/deployment",
+      description: "Manage the deployments",
+    },
+    {
+      icon: IconBackhoe,
+      title: "New Deployment",
+      href: "/cameratrap/deployment/edit/new",
+      description: "Create a new deployment",
+    },
   ];
+
   // user && user.admin
   //   ? cards.push({
   //       icon: IconBackhoe,
@@ -53,6 +73,8 @@ export default async function Page() {
         <Button component={Link} href="/projects/new">
           New Project
         </Button> */}
+        {/* <TaxaSearch /> */}
+        <WildlifeSidebar />
       </Container>
     </>
   );

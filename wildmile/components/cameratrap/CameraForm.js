@@ -36,7 +36,7 @@ export default function CameraForm(props) {
     // mode: "uncontrolled",
 
     initialValues: {
-      _id: "",
+      name: "",
       model: "",
       manufacturer: "",
       serial: "",
@@ -103,7 +103,7 @@ export default function CameraForm(props) {
       <Box>
         <Grid>
           <Grid.Col span={4}>
-            <TextInput label="UR ID" {...form.getInputProps("_id")} />
+            <TextInput label="UR ID" {...form.getInputProps("name")} />
             <TextInput
               label="Model"
               key="model"

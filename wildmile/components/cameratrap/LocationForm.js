@@ -18,7 +18,7 @@ import {
   Box,
   Grid,
   Checkbox,
-  Modal
+  Modal,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { DatePickerInput } from "@mantine/dates";
@@ -29,7 +29,7 @@ import { newEditLocation } from "app/actions/CameratrapActions";
 // import LocationModal from "./maps/LocationModal";
 import LocationMap from "components/maps/LocationMap";
 
-export default function LocationForm(props) {
+export default function LocationForm({ refreshLocations, setLocation }) {
   const [loading, { toggle }] = useDisclosure();
   const [point, setPoint] = useState(null);
   const [polygon, setPolygon] = useState(null);
@@ -37,7 +37,6 @@ export default function LocationForm(props) {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
-  console.log("Pathname:", pathname, params);
   // ...
 
   const form = useForm({
@@ -48,6 +47,8 @@ export default function LocationForm(props) {
       notes: "",
       tags: [],
       retired: false,
+      mount: "",
+      favorite: false,
       // location: {
       //   type: "Point",
       //   coordinates: [],
@@ -63,7 +64,7 @@ export default function LocationForm(props) {
     // loading(true);
     toggle();
     if (point) {
-      form.values.coordinates = {
+      form.values.location = {
         type: "Point",
         coordinates: point,
       };
@@ -78,9 +79,10 @@ export default function LocationForm(props) {
     const raw_result = await newEditLocation(form.values);
     const result = raw_result;
     console.log("Result:", result);
-    // if (result.success === true) {
-    //   router.push(`/burp`);
-    // }
+    if (result.success === true) {
+      refreshLocations(true);
+      close();
+    }
   }
   const initialState = {
     message: null,
@@ -103,38 +105,32 @@ export default function LocationForm(props) {
   return (
     <>
       <Modal opened={opened} onClose={close} title="Location">
-
-      <Box>
-
-        <Grid>
-          <Grid.Col span={4}>
-            <TextInput
-              label="Name"
-              key="name"
-              {...form.getInputProps("locationName")}
-            />
-            <Group>
-              <Checkbox
-                label="Retired"
-                {...form.getInputProps("retired")}
+        <Box>
+          <Grid>
+            <Grid.Col span={4}>
+              <TextInput
+                label="Name"
+                key="name"
+                {...form.getInputProps("locationName")}
               />
-            </Group>
-            <Textarea label="Notes" {...form.getInputProps("notes")} />
-            <TagsInput label="Tags" {...form.getInputProps("tags")} />
+              <Group>
+                <Checkbox label="Retired" {...form.getInputProps("retired")} />
+              </Group>
+              <Textarea label="Notes" {...form.getInputProps("notes")} />
+              <TagsInput label="Tags" {...form.getInputProps("tags")} />
 
-            <SubmitButton />
-          </Grid.Col>
-          <Grid.Col span={8}>
-            <LocationMap
-              onPointSelect={setPoint}
-              //   onPolygonSelect={setPolygon}
-            />
-          </Grid.Col>
-        </Grid>
-      </Box>
-        </Modal>
-        <Button onClick={open}>New Location</Button>
-
+              <SubmitButton />
+            </Grid.Col>
+            <Grid.Col span={8}>
+              <LocationMap
+                onPointSelect={setPoint}
+                //   onPolygonSelect={setPolygon}
+              />
+            </Grid.Col>
+          </Grid>
+        </Box>
+      </Modal>
+      <Button onClick={open}>New Location</Button>
     </>
   );
 }

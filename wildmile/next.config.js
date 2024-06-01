@@ -12,8 +12,11 @@ module.exports = {
   },
 
   // Webpack configuration adjustments
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, dev }) => {
     config.experiments = config.experiments || {};
+    if (dev) {
+      config.devtool = "source-map";
+    }
 
     config.experiments.topLevelAwait = true; // Enabling top-level await in modules
     config.experiments.layers = true; // Enable layers experiment
@@ -26,12 +29,6 @@ module.exports = {
 
     // Adding 'canvas' to webpack externals to prevent it from being bundled
     config.externals = [...config.externals, "canvas"];
-
-    // Optionally disable 'canvas' in webpack resolution if necessary
-    // config.resolve.alias = {
-    //   ...config.resolve.alias,
-    //   canvas: false,
-    // };
 
     return config;
   },
