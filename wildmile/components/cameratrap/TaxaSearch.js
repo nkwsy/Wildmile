@@ -12,8 +12,12 @@ import {
   Paper,
   Box,
   SimpleGrid,
+  Button,
+  Group,
 } from "@mantine/core";
 import classes from "/styles/WildlifeSidebar.module.css";
+import SpeciesCard from "./SpeciesCard";
+import axios from "axios";
 
 const TaxaSearch = () => {
   const [query, setQuery] = useState("");
@@ -51,6 +55,7 @@ const TaxaSearch = () => {
     </div>
   );
 };
+
 export const WildlifeSidebar = () => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
@@ -83,7 +88,6 @@ export const WildlifeSidebar = () => {
         console.error("Error fetching default animals:", error);
       }
     };
-
     fetchDefaultAnimals();
   }, []);
 
@@ -93,6 +97,7 @@ export const WildlifeSidebar = () => {
         `https://api.inaturalist.org/v1/taxa?q=${query}&class=${taxonomyClass}`
       );
       const data = await response.json();
+      console.log("Search results:", data.results);
       setResults(data.results);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -102,8 +107,8 @@ export const WildlifeSidebar = () => {
   return (
     // <Sidebar className={classes.sidebar}>
     <Paper shadow="xs" p="xl">
-      <Box>
-        <h2>Wildlife Search</h2>
+      <h2>Wildlife Search</h2>
+      <Group>
         <TextInput
           value={query}
           onChange={(e) => setQuery(e.currentTarget.value)}
@@ -117,11 +122,19 @@ export const WildlifeSidebar = () => {
           placeholder="Filter by taxonomy class"
           className={classes.taxonomySelect}
         />
-        <button onClick={handleSearch}>Search</button>
-      </Box>
-      <Box grow mt="md">
-        <SimpleGrid cols={3} spacing="md">
-          {results.length > 0
+      </Group>
+      <Button onClick={handleSearch}>Search</Button>
+      <SimpleGrid
+        mt={40}
+        cols={{ base: 2, sm: 2, lg: 5, xl: 4 }}
+        breakpoints={[
+          { maxWidth: "62rem", cols: 3, spacing: "md" },
+          { maxWidth: "48rem", cols: 2, spacing: "sm" },
+          { maxWidth: "36rem", cols: 1, spacing: "sm" },
+        ]}
+      >
+        {results.length > 0 && <SpeciesCard results={results} />}
+        {/* {results.length > 0
             ? results.map((taxon) => (
                 <Card
                   key={taxon.id}
@@ -143,9 +156,10 @@ export const WildlifeSidebar = () => {
                       alt={taxon.name}
                     />
                   </Card.Section>
-                  <Text weight={500}>
+                  <Text>
                     {taxon.preferred_common_name || taxon.name}
                   </Text>
+
                 </Card>
               ))
             : defaultAnimals.map((taxon) => (
@@ -171,9 +185,8 @@ export const WildlifeSidebar = () => {
                     {taxon.preferred_common_name || taxon.name}
                   </Text>
                 </Card>
-              ))}
-        </SimpleGrid>
-      </Box>
+              ))} */}
+      </SimpleGrid>
     </Paper>
   );
 };
