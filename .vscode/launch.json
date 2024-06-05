@@ -1,5 +1,9 @@
 {
   "version": "0.2.0",
+  "resolveSourceMapLocations": [
+    "${workspaceFolder}/wildmile/**",
+    "!wildmile/node_modules/**"
+  ],
   "configurations": [
     {
       "name": "Launch Chrome",
@@ -12,13 +16,12 @@
       "name": "Next.js: debug server-side",
       "type": "node-terminal",
       "request": "launch",
-      "command": "npm run dev --turbo"
+      "command": "npm run dev"
     },
     {
       "name": "Next.js: debug client-side",
       "type": "chrome",
       "request": "launch",
-      "resolveSourceMapLocations": ["${workspaceFolder}/", "!/node_modules/**"],
       "url": "http://localhost:3000"
     },
     {
@@ -26,12 +29,10 @@
       "type": "node-terminal",
       "request": "launch",
       "cwd": "${workspaceFolder}/wildmile",
-      "command": "npm run dev --turbo",
+      "command": "npm run dev",
       "skipFiles": ["<node_internals>/**"],
       "sourceMaps": true,
-      "sourceMapPathOverrides": {
-        "/turbopack/[project]/*": "${webRoot}/*"
-      },
+
       "serverReadyAction": {
         "action": "debugWithChrome",
         "killOnServerStop": true,
@@ -84,6 +85,5 @@
       "request": "launch",
       "cwd": "${workspaceFolder}"
     }
-  ],
-  "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"]
+  ]
 }

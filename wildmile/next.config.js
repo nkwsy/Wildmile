@@ -14,9 +14,9 @@ module.exports = {
   // Webpack configuration adjustments
   webpack: (config, { isServer, dev }) => {
     config.experiments = config.experiments || {};
-    if (dev) {
-      config.devtool = "source-map";
-    }
+    // if (dev) {
+    //   config.devtool = "source-map";
+    // }
 
     config.experiments.topLevelAwait = true; // Enabling top-level await in modules
     config.experiments.layers = true; // Enable layers experiment

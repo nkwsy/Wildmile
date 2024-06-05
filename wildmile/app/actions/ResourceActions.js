@@ -22,7 +22,7 @@ export async function getInatTaxa(query) {
   // console.log("Link load trefle data:", link);
   try {
     const response = await fetch(
-      `https://api.inaturalist.org/v1/taxa?q=${query}`
+      `https://api.inaturalist.org/v1/taxa/autocomplete?q=${query}`
     );
     const data = await response.json();
     return data.data;

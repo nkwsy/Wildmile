@@ -61,7 +61,7 @@ export const WildlifeSidebar = () => {
   const [results, setResults] = useState([]);
   const [taxonomyClass, setTaxonomyClass] = useState("");
   const [defaultAnimals, setDefaultAnimals] = useState([]);
-
+  const [selected, setSelected] = useState(null);
   const taxonomyClasses = [
     { value: "Mammalia", label: "Mammals" },
     { value: "Aves", label: "Birds" },
@@ -122,6 +122,7 @@ export const WildlifeSidebar = () => {
           placeholder="Filter by taxonomy class"
           className={classes.taxonomySelect}
         />
+        {selected && <Text>{selected.name}</Text>}
       </Group>
       <Button onClick={handleSearch}>Search</Button>
       <SimpleGrid
@@ -133,7 +134,9 @@ export const WildlifeSidebar = () => {
           { maxWidth: "36rem", cols: 1, spacing: "sm" },
         ]}
       >
-        {results.length > 0 && <SpeciesCard results={results} />}
+        {results.length > 0 && (
+          <SpeciesCard results={results} setSelected={setSelected} />
+        )}
         {/* {results.length > 0
             ? results.map((taxon) => (
                 <Card

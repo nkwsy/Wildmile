@@ -22,13 +22,14 @@ import { IconBrandWikipedia } from "@tabler/icons-react";
 
 export function SpeciesCards(results) {
   const result_values = results.map((result) => ({
-    id: result._id,
+    id: result.id,
     title: result.preferred_common_name || result.name || "",
     subtitle: result.name || "",
-    image: result.default_photo.medium_url || "",
+    image: result.default_photo?.medium_url || "/No_plant_image.jpg",
     description: result.rank,
     family: result.iconic_taxon_name || "",
     wiki: result.wikipedia_url || "",
+    inat_result: result,
     // color: result.rank === "species" ? "#0875c8" : "#da833b",
 
     // tags: result.family, result.family_common_name ?? null.filter(Boolean),
@@ -36,7 +37,7 @@ export function SpeciesCards(results) {
   return result_values;
 }
 
-export default function Species({ results }) {
+export default function Species({ results, setSelected }) {
   console.log("Results:", results);
   if (results.length < 0) {
     return;
@@ -48,7 +49,7 @@ export default function Species({ results }) {
       {result_values.map((result, index) => (
         <Card
           key={index}
-          //   onClick={() => updateFormValues(plant)}
+          onClick={() => setSelected(result.inat_result)}
           withBorder
           padding="lg"
           radius="md"
