@@ -19,6 +19,7 @@ import {
 import Link from "next/link";
 import classes from "/styles/imagecard.module.css";
 import { IconBrandWikipedia } from "@tabler/icons-react";
+import { useSelection } from "components/cameratrap/ContextCamera";
 
 export function SpeciesCards(results) {
   const result_values = results.map((result) => ({
@@ -37,7 +38,9 @@ export function SpeciesCards(results) {
   return result_values;
 }
 
-export default function Species({ results, setSelected }) {
+export default function Species({ results }) {
+  const [selection, setSelection] = useSelection();
+
   console.log("Results:", results);
   if (results.length < 0) {
     return;
@@ -49,7 +52,7 @@ export default function Species({ results, setSelected }) {
       {result_values.map((result, index) => (
         <Card
           key={index}
-          onClick={() => setSelected(result.inat_result)}
+          onClick={() => setSelection([...selection, result.inat_result])}
           withBorder
           padding="lg"
           radius="md"

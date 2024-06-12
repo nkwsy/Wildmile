@@ -2,6 +2,8 @@
 // import "@mantine/core/styles/global.css";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
+// import dayjs from "dayjs";
+// import customParseFormat from "dayjs/plugin/customParseFormat";
 
 // import Hydration from "/lib/hydration"; // (c)
 
@@ -35,6 +37,7 @@ const theme = createTheme({
 
 // import { WebVitals } from "./_components/web-vitals";
 export default function RootLayout({ children }) {
+  // dayjs.extend(customParseFormat);
   return (
     <html lang="en">
       <head>

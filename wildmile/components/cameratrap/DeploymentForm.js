@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 
 import {
   Stepper,
@@ -29,33 +29,17 @@ import { DatePickerInput, DateInput } from "@mantine/dates";
 // import LocationModal from "components/maps/LocationModal";
 // import LocationMap from "components/maps/LocationMap";
 import LocationForm from "components/cameratrap/LocationForm";
+import { onChangeDate } from "lib/utils";
 import { LocationDropdown } from "components/maps/LocationSelect";
 import {
   getExistingLocations,
   getAllCameras,
   newEditDeployment,
+  getDeployment,
 } from "app/actions/CameratrapActions";
 
-export default function DeploymentForm(props) {
-  const router = useRouter();
-
-  const [bugData, setBugData] = useState([]);
-  const [locationModalOpened, setLocationModalOpened] = useState(false);
-  const [existingLocations, setExistingLocations] = useState([]);
-  const [locationOptions, setLocationOptions] = useState([]);
-  const [location, setLocation] = useState(null);
-  const [point, setPoint] = useState(null);
-  const [polygon, setPolygon] = useState(null);
-  const [refreshLocations, setRefreshLocations] = useState(false);
-  const [existingCameras, setExistingCameras] = useState([]);
-  const [cameraOptions, setCameraOptions] = useState([]);
-  const [loading, { toggle }] = useDisclosure();
-
-  // props.existingLocations.map((location) => ({
-  //   value: location.id,
-  //   label: location.name,
-  // }))
-
+import { DateBox } from "./DeploymentPage";
+export function DeploymentFormOptions() {
   const form = useForm({
     initialValues: {
       cameraId: "",
@@ -66,6 +50,7 @@ export default function DeploymentForm(props) {
       // },
       coordinateUncertainty: null,
       deploymentStart: new Date(),
+      // deploymentStart: null,
       deploymentEnd: null,
       setupBy: "",
       cameraDelay: null,
@@ -83,6 +68,71 @@ export default function DeploymentForm(props) {
       deploymentComments: "",
     },
   });
+
+  return form;
+}
+export default function DeploymentForm(props) {
+  const router = useRouter();
+  const params = useParams();
+
+  const [bugData, setBugData] = useState([]);
+  const [locationModalOpened, setLocationModalOpened] = useState(false);
+  const [existingLocations, setExistingLocations] = useState([]);
+  const [locationOptions, setLocationOptions] = useState([]);
+  const [location, setLocation] = useState(null);
+  const [point, setPoint] = useState(null);
+  const [polygon, setPolygon] = useState(null);
+  const [refreshLocations, setRefreshLocations] = useState(false);
+  const [existingCameras, setExistingCameras] = useState([]);
+  const [cameraOptions, setCameraOptions] = useState([]);
+  const [loading, { toggle }] = useDisclosure();
+  const [deploymentStart, setDeploymentStart] = useState(new Date());
+  const [deploymentEnd, setDeploymentEnd] = useState(null);
+  const [disabled, setDisabled] = useState(true);
+
+  const [CurrDate, SetCurrDate] = useState(null);
+  const form = DeploymentFormOptions();
+  // props.existingLocations.map((location) => ({
+  //   value: location.id,
+  //   label: location.name,
+  // }))
+
+  // Load existing info
+  useEffect(() => {
+    if (params.deploymentId) {
+      if (params.deploymentId === "new") {
+        setDisabled(false);
+        return;
+      }
+      const fetchData = async () => {
+        const project_result = await getDeployment(params.deploymentId);
+        const result = JSON.parse(project_result);
+        // if (result && result.data) {
+        console.log("Data loaded:", result);
+        form.setValues({
+          ...form.values, // Default values for the form
+          ...result, // Data fetched from the server
+        });
+        if (result.deploymentStart) {
+          setDeploymentStart(new Date(result.deploymentStart));
+        }
+        if (result.deploymentEnd) {
+          setDeploymentEnd(new Date(result.deploymentEnd));
+        }
+        // if (result.locationId) {
+
+        // handleLocationSelect(result.locationId);
+        // }
+
+        // form.initialize(result);
+        // } else {
+        //   console.error("Failed to fetch data or data is empty:", result);
+        // }
+      };
+
+      fetchData();
+    }
+  }, [params]); // Ensure to depend on params.project
 
   useEffect(() => {
     const fetchData = async () => {
@@ -105,6 +155,7 @@ export default function DeploymentForm(props) {
     console.log("Existing Locations:", existingLocations);
   }, [existingLocations]);
 
+  // set locations
   useEffect(() => {
     const fetchCameras = async () => {
       const res = await getAllCameras();
@@ -121,6 +172,7 @@ export default function DeploymentForm(props) {
     };
     fetchCameras();
   }, []);
+
   // const existingLocationOptions = [];
   const handleBugDataChange = (index, field, value) => {
     const updatedBugData = [...bugData];
@@ -143,9 +195,11 @@ export default function DeploymentForm(props) {
     const selectedLocation = existingLocations.find((loc) => loc._id === value);
     console.log("Selected Location:", selectedLocation);
     setLocation(selectedLocation);
+    // setSelectedLocation(selectedLocation);
     form.setFieldValue("location", selectedLocation._id);
     // props.form.setFieldValue("coordinates", selectedLocation.coordinates);
   };
+
   async function submitForm() {
     // loading(true);
     toggle();
@@ -166,6 +220,7 @@ export default function DeploymentForm(props) {
   return (
     <>
       <Box>
+        {/* <DateBox field="deploymentStart" setDate={CurrDate} /> */}
         <Grid>
           <Grid.Col span={6}>
             <Group grow>
@@ -176,12 +231,16 @@ export default function DeploymentForm(props) {
               />
               <DateInput
                 label="Deployment Start"
+                // onChange={(date) => this.onChangeDate(date)}
+                disabled={disabled}
+                value={deploymentStart}
+                onChange={setDeploymentStart}
                 required
-                {...form.getInputProps("deploymentStart")}
+                // {...form.getInputProps("deploymentStart")}
               />
               <DateInput
                 label="Deployment End"
-                {...form.getInputProps("deploymentEnd")}
+                // {...form.getInputProps("deploymentEnd")}
               />
             </Group>
             <Group>
@@ -207,7 +266,7 @@ export default function DeploymentForm(props) {
               label="Select Location"
               data={locationOptions}
               // onChange={handleLocationSelect}
-              // value={selectedLocation}
+              value={location}
               onChange={(option) => {
                 handleLocationSelect(option);
               }}
@@ -220,7 +279,7 @@ export default function DeploymentForm(props) {
             />
           </Grid.Col>
         </Grid>
-        <Button color="blue" onClick={submitForm}>
+        <Button color="blue" onClick={submitForm} loading={loading}>
           Submit
         </Button>
       </Box>

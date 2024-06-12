@@ -60,18 +60,53 @@ export async function getExistingLocations() {
   return JSON.stringify(locations);
 }
 
+// to edit deployments
 export async function newEditDeployment(req) {
   console.log(req);
   await dbConnect();
   const cleanValues = cleanObject(req);
   console.log("clean values:", cleanValues);
-
+  let deployment;
   const session = await getSession();
-  const deployment = await CameratrapDeployment.create({
-    ...cleanValues,
-    creator: session._id,
-  });
-  revalidatePath("/"); // Update cached posts
+  if (req._id) {
+    let deployment = await CameratrapDeployment.updateOne(
+      { _id: req._id },
+      {
+        ...cleanValues,
+        // creator: session._id,
+      }
+    );
+    revalidatePath("/"); // Update cached posts
+    return { success: true, data: JSON.parse(JSON.stringify(deployment)) };
+  } else {
+    let deployment = await CameratrapDeployment.create({
+      ...cleanValues,
+      creator: session._id,
+    });
+    revalidatePath("/"); // Update cached posts
+    return { success: true, data: JSON.parse(JSON.stringify(deployment)) };
+  }
+}
 
-  return { success: true, data: JSON.parse(JSON.stringify(deployment)) };
+export async function getDeployment(deploymentId) {
+  await dbConnect();
+  const raw_deployment = await CameratrapDeployment.findOne(
+    {
+      _id: deploymentId,
+    },
+    ["-__v", "-createdAt", "-updatedAt"]
+  ).lean();
+  const deployment = JSON.stringify(raw_deployment);
+  console.log(deployment);
+  return deployment;
+}
+
+export async function getAllDeployments() {
+  await dbConnect();
+  const deployments = await CameratrapDeployment.find().populate([
+    "locationId",
+    "cameraId",
+  ]);
+  console.log(deployments);
+  return deployments;
 }

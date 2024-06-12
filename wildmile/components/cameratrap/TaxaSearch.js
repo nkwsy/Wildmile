@@ -18,6 +18,7 @@ import {
 import classes from "/styles/WildlifeSidebar.module.css";
 import SpeciesCard from "./SpeciesCard";
 import axios from "axios";
+import { useSelection } from "./ContextCamera";
 
 const TaxaSearch = () => {
   const [query, setQuery] = useState("");
@@ -61,7 +62,9 @@ export const WildlifeSidebar = () => {
   const [results, setResults] = useState([]);
   const [taxonomyClass, setTaxonomyClass] = useState("");
   const [defaultAnimals, setDefaultAnimals] = useState([]);
-  const [selected, setSelected] = useState(null);
+  // const [selected, setSelected] = useState(null);
+  const [selection, setSelection] = useSelection();
+
   const taxonomyClasses = [
     { value: "Mammalia", label: "Mammals" },
     { value: "Aves", label: "Birds" },
@@ -122,7 +125,7 @@ export const WildlifeSidebar = () => {
           placeholder="Filter by taxonomy class"
           className={classes.taxonomySelect}
         />
-        {selected && <Text>{selected.name}</Text>}
+        {selection && <Text>{selection}</Text>}
       </Group>
       <Button onClick={handleSearch}>Search</Button>
       <SimpleGrid
@@ -134,9 +137,33 @@ export const WildlifeSidebar = () => {
           { maxWidth: "36rem", cols: 1, spacing: "sm" },
         ]}
       >
-        {results.length > 0 && (
-          <SpeciesCard results={results} setSelected={setSelected} />
-        )}
+        {selection &&
+          selection.map((taxon) => (
+            <Card
+              key={taxon.id}
+              shadow="sm"
+              p="lg"
+              m="md"
+              className={classes.resultItem}
+            >
+              <Card.Section>
+                <Image
+                  src={
+                    taxon.image
+                      ? taxon.default_photo.square_url
+                      : "https://via.placeholder.com/150"
+                  }
+                  fit="contain"
+                  height={160}
+                  className={classes.galleryImage}
+                  alt={taxon.title}
+                />
+              </Card.Section>
+              <Text>{taxon.title}</Text>
+            </Card>
+          ))}
+        {results.length > 0 && <SpeciesCard results={results} />}
+
         {/* {results.length > 0
             ? results.map((taxon) => (
                 <Card

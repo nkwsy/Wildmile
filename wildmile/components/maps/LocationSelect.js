@@ -209,10 +209,15 @@ export function LocationDropdown({
   }, [locations]);
 
   useEffect(() => {
+    if (!map.current) return; // Wait for map to initialize
+
     if (selectedLocation) {
       markersRef.current.forEach((marker) => {
         const markerEl = marker;
-        if (markerEl.id === selectedLocation._id) {
+        if (
+          markerEl.id === selectedLocation ||
+          markerEl.id === selectedLocation._id
+        ) {
           console.log("Selected marker:", markerEl);
           markerEl.addClassName(classes.markerSelected);
         } else {

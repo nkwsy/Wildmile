@@ -11,7 +11,7 @@ const DeploymentSchema = new mongoose.Schema(
     //     unique: true,
     //   },
     cameraId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "Camera",
     },
@@ -80,7 +80,7 @@ const DeploymentSchema = new mongoose.Schema(
     deploymentTags: [String],
     deploymentComments: String,
   },
-  { timestamps: true }
+  { timestamps: true, strictPopulate: false }
 );
 
 export default mongoose.models.CameratrapDeployment ||

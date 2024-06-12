@@ -14,10 +14,12 @@ export default async function Page({ params }) {
   if (!session) return <AlertLogin />;
 
   if (params.deploymentId) {
-    if (params.deploymentId === "new") {
-        return <DeploymentForm />;
-      console.log("New Deployment");
-    }
+    // if (params.deploymentId === "new") {
+    return <DeploymentForm />;
+    console.log("New Deployment");
+    // }
+
+    //TODO add deployment functions
     console.log("BoxId:", params.deploymentId);
   }
   return (
