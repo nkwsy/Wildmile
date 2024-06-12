@@ -119,10 +119,11 @@ export default function DeploymentForm(props) {
         if (result.deploymentEnd) {
           setDeploymentEnd(new Date(result.deploymentEnd));
         }
-        // if (result.locationId) {
 
-        // handleLocationSelect(result.locationId);
-        // }
+        if (result.locationId) {
+          // setLocation(result.locationId);
+          handleLocationSelect(result.locationId);
+        }
 
         // form.initialize(result);
         // } else {
@@ -270,7 +271,7 @@ export default function DeploymentForm(props) {
               onChange={(option) => {
                 handleLocationSelect(option);
               }}
-              // {...form.getInputProps("locationId")}
+              {...form.getInputProps("locationId")}
             />
             <LocationDropdown
               locations={existingLocations}
