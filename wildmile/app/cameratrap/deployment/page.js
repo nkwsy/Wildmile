@@ -25,6 +25,7 @@ import {
   IconUsers,
   IconBackhoe,
   IconCameraBolt,
+  IconCameraDollar,
 } from "@tabler/icons-react";
 
 import AllDeployments, { DeploymentCards } from "./AllDeployments";
