@@ -43,45 +43,57 @@ export default async function AllDeployments() {
 
   return (
     <>
-      {deployments.map((deployment, index) => (
-        <Card
-          key={index}
-          //   onClick={() => updateFormValues(plant)}
-          withBorder
-          padding="lg"
-          radius="md"
-          component={Link}
-          href={`/cameratrap/deployment/edit/${deployment.id}`}
+      <SimpleGrid
+        mt={40}
+        cols={{ base: 2, sm: 2, lg: 5, xl: 4 }}
+        breakpoints={[
+          { maxWidth: "62rem", cols: 3, spacing: "md" },
+          { maxWidth: "48rem", cols: 2, spacing: "sm" },
+          { maxWidth: "36rem", cols: 1, spacing: "sm" },
+        ]}
+      >
+        {deployments.map((deployment, index) => (
+          <Card
+            key={index}
+            //   onClick={() => updateFormValues(plant)}
+            withBorder
+            padding="lg"
+            radius="md"
+            component={Link}
+            href={`/cameratrap/deployment/edit/${deployment.id}`}
 
-          //   className={classes.mantineCard}
-        >
-          <CardSection mb="sm">
-            {/* <Image
+            //   className={classes.mantineCard}
+          >
+            <CardSection mb="sm">
+              {/* <Image
               src={plant.image || "/No_plant_image.jpg"}
               alt={plant.title}
             /> */}
-          </CardSection>
+            </CardSection>
 
-          <Group align="top" direction="column">
-            <div>
-              <Title className={classes.title}>{deployment.locationName}</Title>
-              <Text
-                size="sm"
-                color="dimmed"
-                fs="italic"
-                c="dimmed"
-                className={classes.subtitle}
-              >
-                {deployment.camera}
-              </Text>
-              {/* <Text size="sm" color="dimmed" className={classes.description}>
+            <Group align="top" direction="column">
+              <div>
+                <Title className={classes.title}>
+                  {deployment.locationName}
+                </Title>
+                <Text
+                  size="sm"
+                  color="dimmed"
+                  fs="italic"
+                  c="dimmed"
+                  className={classes.subtitle}
+                >
+                  {deployment.camera}
+                </Text>
+                {/* <Text size="sm" color="dimmed" className={classes.description}>
                   {plant.family}
                 </Text> */}
-              <Badge variant="light">{deployment.deploymentTags}</Badge>
-            </div>
-          </Group>
-        </Card>
-      ))}
+                <Badge variant="light">{deployment.deploymentTags}</Badge>
+              </div>
+            </Group>
+          </Card>
+        ))}
+      </SimpleGrid>
     </>
   );
 }

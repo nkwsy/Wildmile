@@ -10,6 +10,9 @@ import {
   IconListDetails,
   IconUsers,
   IconBackhoe,
+  IconPokeball,
+  IconCameraSearch,
+  IconCameraPlus,
 } from "@tabler/icons-react";
 import TaxaSearch, { WildlifeSidebar } from "components/cameratrap/TaxaSearch";
 
@@ -24,13 +27,13 @@ export default async function Page() {
   const cards = [
     // standin for other links
     {
-      icon: IconPlant2,
+      icon: IconCameraPlus,
       title: "New Camera",
       href: "/cameratrap/camera/new",
       description: "Add a new camera device",
     },
     {
-      icon: IconTrash,
+      icon: IconCameraSearch,
       title: "Cameras",
       href: "/cameratrap/camera",
       description: "Manage the cameras",
@@ -42,10 +45,10 @@ export default async function Page() {
       description: "Manage the deployments",
     },
     {
-      icon: IconBackhoe,
-      title: "New Deployment",
-      href: "/cameratrap/deployment/edit/new",
-      description: "Create a new deployment",
+      icon: IconPokeball,
+      title: "Identify wildlife",
+      href: "/cameratrap/identify",
+      description: "Find and catagorize wildlife",
     },
   ];
 
