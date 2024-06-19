@@ -1,6 +1,13 @@
 # Wildmile Management Portal
 
-## Configuration
+## Requirements
+
+- Node.js 20 or later (Prefer to use the latest LTS version)
+- A MongoDB server (You can use a free tier at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+
+## Getting Started
+
+## Option 1: Run it Locally without Docker
 
 ### Step 1. Get the connection string of your MongoDB server
 
@@ -17,6 +24,7 @@ For more details, follow this [MongoDB Guide](https://docs.mongodb.com/guides/se
 Copy the `.env.local.example` file in this directory to `.env.local` (which will be ignored by Git):
 
 ```bash
+cd wildmile
 cp .env.local.example .env.local
 ```
 
@@ -39,7 +47,7 @@ yarn dev
 Your app should be up and running on [http://localhost:3000](http://localhost:3000)! If it doesn't work, post on [GitHub discussions](https://github.com/vercel/next.js/discussions).
 
 
-## Running it locally using docker
+## Option 2: Running it locally using docker
 
 Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) 
 

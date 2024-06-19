@@ -29,8 +29,8 @@ export async function newEditCamera(req) {
 
     const camera = await Camera.create(req);
     console.log("newEditCamera camera:", camera);
-    const result = await { success: true, data: camera };
-    return JSON.parse(JSON.stringify(result));
+    const result = { success: true, cameraId: camera._id};
+    return result;
   } catch (error) {
     console.error("Error creating camera:", error);
     throw error;
