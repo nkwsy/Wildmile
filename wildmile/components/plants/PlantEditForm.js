@@ -12,7 +12,11 @@ import {
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import PlantImageUpload from "./PlantImageUpload";
-import { updatePlant, updatePlantFamily } from "/app/actions/PlantActions";
+import {
+  createPlant,
+  updatePlant,
+  updatePlantFamily,
+} from "/app/actions/PlantActions";
 
 const default_swatches = [
   "#2e2e2e",
@@ -50,10 +54,11 @@ const PlantEditForm = ({ plant, onSave, onCancel }) => {
   const updatePlantOnClick = async (values) => {
     setLoading.open();
     console.log("Plant to update: ", values);
+    let updatedPlant;
     if (plant?._id) {
-      const updatedPlant = await updatePlant(values);
+      updatedPlant = await updatePlant(values);
     } else {
-      const updatedPlant = await createPlant(values);
+      updatedPlant = await createPlant(values);
     }
     if (form.isDirty("color.family") || form.isDirty("family")) {
       const updatedPlantFamily = await updatePlantFamily(

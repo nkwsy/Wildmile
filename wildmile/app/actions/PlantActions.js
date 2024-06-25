@@ -80,9 +80,11 @@ export async function updatePlant(formData) {
 // Update Plant data
 export async function createPlant(formData) {
   console.log("PlantActions- updatePlant:", formData);
+  //TODO: normalize fields in DB. Will require refactor of a lot of pages
   const rawFormData = {
     commonName: formData.commonName,
     scientificName: formData.scientificName,
+    scientific_name: formData.scientificName,
     family: formData.family,
     tags: formData.tags,
     notes: formData.notes,
@@ -98,7 +100,15 @@ export async function createPlant(formData) {
   }
 
   console.log("Raw Form Data:", rawFormData);
-
+  const alreadyExists = await Plant.exists({
+    $or: [
+      { scientific_name: formData.scientificName },
+      { scientificName: formData.scientificName },
+    ],
+  });
+  if (alreadyExists) {
+    return "Plant already exists";
+  }
   const result = await Plant.create(formData);
   revalidatePath("/");
   return JSON.stringify(result);
