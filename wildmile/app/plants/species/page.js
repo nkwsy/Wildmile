@@ -23,6 +23,7 @@ import classes from "/styles/imagecard.module.css";
 import { get } from "mongoose";
 import Species from "./species";
 import { getPlants } from "/app/actions/PlantActions";
+import NewPlant from "../new";
 
 export default async function Page() {
   return (
@@ -39,6 +40,8 @@ export default async function Page() {
         >
           Collecting and sharing data about Urban River's projects.
         </Text>
+
+        <NewPlant />
         <SimpleGrid
           mt={40}
           cols={{ base: 2, sm: 2, lg: 5, xl: 4 }}
