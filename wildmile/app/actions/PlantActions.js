@@ -137,7 +137,7 @@ export async function loadTrefleData(link) {
   // console.log("Link load trefle data:", link);
   try {
     const response = await fetch(
-      `https://trefle.io${link}?token=${process.env.TREFLE_API_KEY}`
+      `http://trefle.io${link}?token=${process.env.TREFLE_API_KEY}`
     );
     const data = await response.json();
     return data.data;
@@ -152,7 +152,7 @@ export async function searchTrefleData(query) {
   // console.log("Link load trefle data:", link);
   try {
     const response = await fetch(
-      `https://trefle.io/api/v1/plants/search?token=${process.env.TREFLE_API_KEY}&q=${query}`
+      `http://trefle.io/api/v1/plants/search?token=${process.env.TREFLE_API_KEY}&q=${query}`
     );
     const data = await response.json();
     return data.data;
