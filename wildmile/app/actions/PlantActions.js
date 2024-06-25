@@ -52,6 +52,7 @@ export async function getPlant(id) {
 
 // Update Plant data
 export async function updatePlant(formData) {
+  await dbConnect();
   console.log("PlantActions- updatePlant:", formData);
   const rawFormData = {
     commonName: formData.commonName,
@@ -79,6 +80,7 @@ export async function updatePlant(formData) {
 
 // Update Plant data
 export async function createPlant(formData) {
+  await dbConnect();
   console.log("PlantActions- updatePlant:", formData);
   //TODO: normalize fields in DB. Will require refactor of a lot of pages
   const rawFormData = {
@@ -115,6 +117,7 @@ export async function createPlant(formData) {
 }
 // get Plant Family data
 export async function getPlantFamily(family) {
+  await dbConnect();
   console.log("PlantActions- getPlantFamily:", family);
   try {
     const result = await Plant.findOne({ family: family }, ["color"]);
@@ -132,6 +135,7 @@ export async function getPlantFamily(family) {
 
 // Update Plant Family data
 export async function updatePlantFamily(family, color) {
+  await dbConnect();
   console.log("PlantActions- updatePlantFamily:", family, color);
   const result = await Plant.updateMany(
     { family: family },
@@ -225,6 +229,7 @@ export async function savePlantInputs(PlantList) {
 // }
 
 export async function removeIndividualPlants({ individualPlantIds, reason }) {
+  await dbConnect();
   console.log("PlantActions- removeIndividualPlants:", individualPlantIds);
   if (reason == "edit" || reason == "delete") {
     const result = await IndividualPlant.deleteMany({
@@ -264,6 +269,7 @@ export async function generateThumbnail(file) {
 
 // Add Plant Image to images array
 export async function CreatePlantImage(formData) {
+  await dbConnect();
   console.log("CreatePlantImage:", formData);
   try {
     const fields = {

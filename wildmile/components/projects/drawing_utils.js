@@ -54,7 +54,13 @@ export function setCellPlantFill(plantCell, plantData) {
     if (plantData.color.family) {
       cell.fill(plantData.color.family);
       cell.opacity(1);
+    } else {
+      cell.fill("#099CFF");
+      cell.opacity(0.9);
     }
+  } else {
+    cell.fill("#099CFF");
+    cell.opacity(0.9);
   }
 }
 
