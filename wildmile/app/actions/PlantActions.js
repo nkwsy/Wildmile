@@ -87,6 +87,7 @@ export async function createPlant(formData) {
     commonName: formData.commonName,
     scientificName: formData.scientificName,
     scientific_name: formData.scientificName,
+    common_name: formData.commonName,
     family: formData.family,
     tags: formData.tags,
     notes: formData.notes,
