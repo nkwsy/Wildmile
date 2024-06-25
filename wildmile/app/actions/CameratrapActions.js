@@ -19,17 +19,23 @@ export async function getCamera(id) {
 }
 
 export async function getAllCameras() {
+  await dbConnect();
   const cameras = await Camera.find({}, ["-__v"]);
   return JSON.stringify(cameras);
 }
 
+export async function getCameras() {
+  await dbConnect();
+  const cameras = await Camera.find({}, ["-__v"]);
+  return cameras;
+}
 export async function newEditCamera(req) {
   try {
     console.log("newEditCamera req:", req);
 
     const camera = await Camera.create(req);
     console.log("newEditCamera camera:", camera);
-    const result = { success: true, cameraId: camera._id};
+    const result = { success: true, cameraId: camera._id };
     return result;
   } catch (error) {
     console.error("Error creating camera:", error);
