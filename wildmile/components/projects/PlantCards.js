@@ -58,20 +58,39 @@ export function PlantCards(props) {
     setShowAvatar(!showAvatar);
   };
 
+  const sortCardPlants = (plants) => {
+    return plants.sort((a, b) => {
+      if (a.family < b.family) {
+        return -1;
+      }
+      if (a.family > b.family) {
+        return 1;
+      }
+      if (a.scientific_name < b.scientific_name) {
+        return -1;
+      }
+      if (a.scientific_name > b.scientific_name) {
+        return 1;
+      }
+      return 0;
+    });
+  };
+
   useEffect(() => {
     async function handlePlantSearch() {
       // const raw_plants = await PlantHandler();
       // const raw_plants = await AllPlants();
       // const plants = JSON.parse(raw_plants);
       console.log("Plants:", plants);
-
-      const plant_values = plants.map((plant) => ({
+      const sorted_plants = sortCardPlants(plants);
+      const plant_values = sorted_plants.map((plant) => ({
         id: plant._id,
         title: plant.commonName || plant.common_name || plant.scientificName,
         subtitle: plant.scientificName || plant.scientific_name,
         image: plant.thumbnail,
         description: plant.notes,
         color: plant.color,
+        family: plant.family,
         tags: [
           ...(plant.tags ?? []),
           plant.family,
