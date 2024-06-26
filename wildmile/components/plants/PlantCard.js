@@ -48,7 +48,7 @@ export default async function PlantCard({ plant }) {
       padding="lg"
       radius="md"
       component={Link}
-      href={`/plants/species/${plant.id}`}
+      href={`/plants/species/${plant.slug}`}
 
       //   className={classes.mantineCard}
     >
