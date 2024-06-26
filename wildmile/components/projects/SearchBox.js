@@ -1,6 +1,9 @@
 /* eslint-disable function-paren-newline */
 /* eslint-disable react/react-in-jsx-scope */
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
+import { useClientState } from "./context_mod_map";
+
 import {
   CheckIcon,
   Combobox,
@@ -19,21 +22,29 @@ export default function SearchableMultiSelect({ itemsMap }) {
   const [search, setSearch] = useState("");
   const [value, setValue] = useState([]);
 
-  const handleValueSelect = (val) =>
+  const handleValueSelect = (val) => {
+    console.log("Selected:", val);
+    val.onClick();
     setValue((current) =>
       current.includes(val)
         ? current.filter((v) => v !== val)
         : [...current, val]
     );
+    console.log("Value:", value);
+  };
 
   const handleValueRemove = (val) =>
     setValue((current) => current.filter((v) => v !== val));
-
-  const values = value.map((item) => (
-    <Pill key={item} withRemoveButton onRemove={() => handleValueRemove(item)}>
-      {itemsMap.get(item)}
-    </Pill>
-  ));
+  console.log(itemsMap);
+  // const values = value.map((item) =>
+  // <Pill
+  //   key={item.id}
+  //   withRemoveButton
+  //   onRemove={() => handleValueRemove(item)}
+  // >
+  // itemsMap.get(item)
+  // );
+  const selectedPlants = useClientState("selectedPlants");
 
   const options = Array.from(itemsMap.entries())
     .filter(
@@ -42,15 +53,15 @@ export default function SearchableMultiSelect({ itemsMap }) {
         item.subtitle.toLowerCase().includes(search.trim().toLowerCase())
     )
     .map(([key, item]) => (
-      <Combobox.Option value={key} key={key} active={value.includes(key)}>
+      <Combobox.Option value={item} key={item.id} active={value.includes(key)}>
         <Group gap="sm">
-          {value.includes(key) ? <CheckIcon size={12} /> : null}
+          {selectedPlants.has(item.id) ? <CheckIcon size={12} /> : null}
           <span>{item.title}</span>
           <span> {item.subtitle}</span>
         </Group>
       </Combobox.Option>
     ));
-
+  console.log(options);
   return (
     <Combobox
       store={combobox}
@@ -58,14 +69,22 @@ export default function SearchableMultiSelect({ itemsMap }) {
       withinPortal={false}
     >
       <Combobox.DropdownTarget>
-        <PillsInput onClick={() => combobox.openDropdown()}>
+        <PillsInput
+          onClick={() => combobox.toggleDropdown()}
+          component="button"
+          type="button"
+          pointer
+          rightSection={<Combobox.Chevron />}
+          rightSectionPointerEvents="none"
+        >
           <Pill.Group>
-            {values}
+            {/* {values} */}
 
             <Combobox.EventsTarget>
               <PillsInput.Field
-                onFocus={() => combobox.openDropdown()}
-                onBlur={() => combobox.closeDropdown()}
+                // onFocus={() => combobox.openDropdown()}
+                // onBlur={() => combobox.closeDropdown()}
+
                 value={search}
                 placeholder="Search values"
                 onChange={(event) => {
