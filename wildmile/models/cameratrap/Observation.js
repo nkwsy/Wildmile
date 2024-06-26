@@ -7,16 +7,16 @@ const ObservationSchema = new mongoose.Schema({
   //   required: true,
   //   unique: true,
   // },
-  deploymentID: {
+  deploymentId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Deployment",
     required: true,
   },
-  mediaID: {
+  mediaId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Media",
   },
-  eventID: String, // This should be a reference to an Event model? not even sure what this is
+  eventId: String, // This should be a reference to an Event model? not even sure what this is
   eventStart: {
     type: Date,
     required: true,

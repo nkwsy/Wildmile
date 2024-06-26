@@ -38,7 +38,7 @@ export default function Page() {
   return (
     <Container>
       <Title mb={30} align="center">
-        Create a new Project
+        Edit Camera
       </Title>
       <CameraForm />
     </Container>

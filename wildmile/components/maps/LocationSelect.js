@@ -4,7 +4,7 @@ import mapboxgl from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
-import classes from "styles/map.module.css";
+import classes from "/styles/map.module.css";
 import { Select } from "@mantine/core";
 // import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 // mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
@@ -41,14 +41,128 @@ const pointStyle = [
   },
 ];
 
-export function LocationDropdown({ locations, selectedLocation }) {
+// export function LocationDropdown({
+//   locations,
+//   selectedLocation,
+//   setSelectedLocation,
+// }) {
+//   mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY;
+//   const [lng, setLng] = useState(-87.65);
+//   const [lat, setLat] = useState(41.9);
+//   const [currentLocations, setCurrentLocations] = useState(locations);
+//   const [selectedMarker, setSelectedMarker] = useState(null);
+//   const [previousMarker, setPreviousMarker] = useState(null);
+//   const mapContainer = useRef(null);
+//   const map = useRef(null);
+//   //   const [selectedLocation, setSelectedLocation] = useState(null);
+
+//   useEffect(() => {
+//     if (map.current) return; // Initialize map only once
+//     map.current = new mapboxgl.Map({
+//       container: mapContainer.current,
+//       style: "mapbox://styles/mapbox/streets-v11",
+//       center: [lng, lat],
+//       zoom: 9,
+//     });
+//   }, []);
+
+//   useEffect(() => {
+//     // Update marker position when selectedLocation changes
+//     if (selectedLocation) {
+//       // map.current.markerSelected;
+//       console.log("Selected Location:", selectedLocation);
+//       let elements = document.getElementsByClassName(classes.markerSelected);
+//       for (let i = 0; i < elements.length; i++) {
+//         elements[i].className = classes.markerSelected;
+//       }
+//       console.log("Selected elements:", elements, classes.markerSelected);
+//       let element = document.getElementById(selectedLocation._id);
+//       element.className = classes.markerSelected;
+//       console.log("Selected element:", element);
+
+//       map.current.flyTo({
+//         center: selectedLocation.location.coordinates,
+//         zoom: 18,
+//       });
+//     } else {
+//       console.log("No location selected");
+//     }
+//   }, [selectedLocation]);
+
+//   useEffect(() => {
+//     if (!map.current) return; // Wait for map to initialize
+//     map.current.on("click", (e) => {
+//       const features = map.current.queryRenderedFeatures(e.point);
+//       // e.features[0].className = classes.markerSelected;
+//       console.log(e);
+//     });
+//     if (locations && locations.length > 0) {
+//       console.log("Locations:", locations);
+//       locations.forEach((location) => {
+//         const el = document.createElement("div");
+//         el.className = classes.markerSelected;
+//         el.id = location._id;
+
+//         el.addEventListener("click", () => {
+//           console.log("Clicked:", el.id);
+//           setSelectedLocation(location);
+//         });
+//         const popup = new mapboxgl.Popup({ offset: 25 }).setText(
+//           location.locationName
+//         );
+//         new mapboxgl.Marker(el)
+//           .setLngLat(location.location.coordinates)
+//           .setPopup(popup)
+//           .addTo(map.current);
+//       });
+
+//       // setCurrentLocations(locations);
+//     }
+//   }, [locations]);
+
+//   return (
+//     <div>
+//       {/* <Select
+//         data={currentLocations}
+//         value={selectedLocation}
+//         onChange={(option) => {
+//           setSelectedLocation(option);
+//           onSelect(option);
+//         }}
+//         // getOptionLabel={(option) => option.name}
+//         // getOptionValue={(option) => option.id}
+//       /> */}
+//       <div ref={mapContainer} className={classes.map}></div>
+//     </div>
+//   );
+// }
+
+// map.module.css
+// .marker {
+//   background-color: blue;
+//   border-radius: 50%;
+//   width: 20px;
+//   height: 20px;
+// }
+
+// .markerSelected {
+//   background-color: red;
+//   border-radius: 50%;
+//   width: 20px;
+//   height: 20px;
+// }
+
+export function LocationDropdown({
+  locations,
+  selectedLocation,
+  setSelectedLocation,
+}) {
   mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY;
   const [lng, setLng] = useState(-87.65);
   const [lat, setLat] = useState(41.9);
-  const [currentLocations, setCurrentLocations] = useState(locations);
   const mapContainer = useRef(null);
   const map = useRef(null);
-  //   const [selectedLocation, setSelectedLocation] = useState(null);
+  const markersRef = useRef([]);
 
   useEffect(() => {
     if (map.current) return; // Initialize map only once
@@ -61,46 +175,65 @@ export function LocationDropdown({ locations, selectedLocation }) {
   }, []);
 
   useEffect(() => {
-    // Update marker position when selectedLocation changes
-    if (selectedLocation) {
-      console.log("Selected Location:", selectedLocation);
-      // let useLocation = locations.find(selectedLocation._id);
-      const marker = new mapboxgl.Marker({ color: "#FF0000" })
-        .setLngLat(selectedLocation.coordinates.coordinates)
-        .addTo(map.current);
-      map.current.flyTo({
-        center: selectedLocation.coordinates.coordinates,
-        zoom: 16,
-      });
-      // marker.setLngLat(selectedLocation);
-    }
-  }, [selectedLocation]);
-
-  useEffect(() => {
     if (!map.current) return; // Wait for map to initialize
     if (locations && locations.length > 0) {
-      console.log("Locations:", locations);
-      locations.forEach((location) => {
-        new mapboxgl.Marker()
-          .setLngLat(location.coordinates.coordinates)
+      // Clear existing markers
+      markersRef.current.forEach((marker) => marker.remove());
+      markersRef.current = [];
+
+      // Add new markers
+      const markers = locations.map((location) => {
+        const el = document.createElement("div");
+        el.className = classes.marker;
+        el.id = location._id;
+
+        // el.addEventListener("click", () => {
+        //   setSelectedLocation(location);
+        // });
+
+        const popup = new mapboxgl.Popup({ offset: 25 }).setText(
+          location.locationName
+        );
+
+        const marker = new mapboxgl.Marker(el)
+          .setLngLat(location.location.coordinates)
+          .setPopup(popup)
           .addTo(map.current);
+
+        markersRef.current.push(marker);
+        return marker;
       });
-      // setCurrentLocations(locations);
+
+      markersRef.current = markers;
     }
   }, [locations]);
 
+  useEffect(() => {
+    if (!map.current) return; // Wait for map to initialize
+
+    if (selectedLocation) {
+      markersRef.current.forEach((marker) => {
+        const markerEl = marker;
+        if (
+          markerEl.id === selectedLocation ||
+          markerEl.id === selectedLocation._id
+        ) {
+          console.log("Selected marker:", markerEl);
+          markerEl.addClassName(classes.markerSelected);
+        } else {
+          markerEl.addClassName(classes.marker);
+        }
+      });
+
+      map.current.flyTo({
+        center: selectedLocation.location.coordinates,
+        zoom: 18,
+      });
+    }
+  }, [selectedLocation]);
+
   return (
     <div>
-      {/* <Select
-        data={currentLocations}
-        value={selectedLocation}
-        onChange={(option) => {
-          setSelectedLocation(option);
-          onSelect(option);
-        }}
-        // getOptionLabel={(option) => option.name}
-        // getOptionValue={(option) => option.id}
-      /> */}
       <div ref={mapContainer} className={classes.map}></div>
     </div>
   );

@@ -7,7 +7,7 @@ import { PointSchema } from "models/locationSchemas";
 // Macro sample box schema
 const MacroLocationSchema = new mongoose.Schema({
   locationName: { type: String },
-  coordinates: PointSchema,
+  location: PointSchema,
   treatment: [],
   substrate: { type: String },
   canopy: { type: Boolean },

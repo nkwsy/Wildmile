@@ -10,12 +10,15 @@ const DeploymentSchema = new mongoose.Schema(
     //     required: true,
     //     unique: true,
     //   },
-    cameraID: {
-      type: String,
+    cameraId: {
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "Camera",
     },
-    locationID: String,
+    locationId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "DeploymentLocation",
+    },
     locationName: String,
     location: PointSchema,
     // latitude: {
@@ -74,11 +77,11 @@ const DeploymentSchema = new mongoose.Schema(
     featureType: String,
     habitat: String,
     deploymentGroups: String,
-    deploymentTags: String,
+    deploymentTags: [String],
     deploymentComments: String,
   },
-  { timestamps: true }
+  { timestamps: true, strictPopulate: false }
 );
 
-// export default mongoose.models.CameratrapDeployment ||
-//   mongoose.model("CameratrapDeployment", DeploymentSchema);
+export default mongoose.models.CameratrapDeployment ||
+  mongoose.model("CameratrapDeployment", DeploymentSchema);
