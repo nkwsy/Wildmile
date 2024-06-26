@@ -19,11 +19,14 @@ import { useForm } from "@mantine/form";
 import classes from "/styles/imagecard.module.css";
 import PlantDetails from "components/plants/PlantPage";
 
+// TODO change from id to slug
 export async function getPlant(id) {
   await dbConnect();
-
   /* find all the data in our database */
-  const result = await Plant.findOne({ _id: id }, ["-createdAt", "-updatedAt"]);
+  const result = await Plant.findOne({ slug: id }, [
+    "-createdAt",
+    "-updatedAt",
+  ]);
   // const plant = result;
   // console.log("Plant:", result);
   const plant = result.toObject();
@@ -31,6 +34,7 @@ export async function getPlant(id) {
   // plant._id = String(plant._id);
   return plant;
 }
+
 export default async function Page({ params }) {
   console.log("Params:", params.id);
 

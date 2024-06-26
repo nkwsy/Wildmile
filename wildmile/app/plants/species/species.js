@@ -41,6 +41,7 @@ export function PlantCards(plants) {
     description: plant.notes,
     family: plant.family,
     color: plant.color,
+    slug: plant.slug,
 
     // tags: plant.family, plant.family_common_name ?? null.filter(Boolean),
   }));

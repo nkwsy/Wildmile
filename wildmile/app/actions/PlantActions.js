@@ -276,7 +276,7 @@ export async function CreatePlantImage(formData) {
     const fields = {
       plantId: formData.get("plantId"),
       file: formData.get("file"),
-      url: formData.get("url"),
+      // url: formData.get("url"),
       description: formData.get("description"),
       quality: formData.get("quality"),
       isOriginal: formData.get("isOriginal"),
@@ -284,22 +284,22 @@ export async function CreatePlantImage(formData) {
       imageSubject: formData.get("imageSubject"),
     };
     console.log("Fields:", fields.file);
-    if (fields.url) {
-      try {
-        const response = await axios.get(fields.url, {
-          responseType: "arraybuffer",
-        });
-        // Create a Blob from the response data
-        const imageBlob = new Blob([response.data], { type: "image/jpeg" }); // Assuming you know the type or can detect it
-        const imageFile = new File([imageBlob], "downloadedImage.jpg", {
-          type: "image/jpeg", // Ensure correct MIME type
-          lastModified: new Date().getTime(), // Current timestamp as lastModified
-          name: "downloadedImage.jpg", // File name
-        });
-      } catch (error) {
-        console.error("Error downloading image:", error);
-      }
-    }
+    // if (fields.url) {
+    //   try {
+    //     const response = await axios.get(fields.url, {
+    //       responseType: "arraybuffer",
+    //     });
+    //     // Create a Blob from the response data
+    //     const imageBlob = new Blob([response.data], { type: "image/jpeg" }); // Assuming you know the type or can detect it
+    //     const imageFile = new File([imageBlob], "downloadedImage.jpg", {
+    //       type: "image/jpeg", // Ensure correct MIME type
+    //       lastModified: new Date().getTime(), // Current timestamp as lastModified
+    //       name: "downloadedImage.jpg", // File name
+    //     });
+    //   } catch (error) {
+    //     console.error("Error downloading image:", error);
+    //   }
+    // }
     if (fields.isMainImage) {
       const newThumbnail = await generateThumbnail(fields.file);
       const updatedThumb = await Plant.findByIdAndUpdate(
@@ -311,15 +311,16 @@ export async function CreatePlantImage(formData) {
       );
       console.log("Updated Thumbnail:", updatedThumb);
     }
+    let imageUrl = "";
     if (fields.file) {
-      const imageUrl = await UploadPlantImage(formData);
-      fields.url = imageUrl;
+      imageUrl = await UploadPlantImage(formData);
+      // fields.url = imageUrl;
     }
-    if (!fields.url || fields.url === "") {
-      return "Add image or URL";
-    }
+    // if (!fields.url || fields.url === "") {
+    //   return "Add image or URL";
+    // }
     const data = {
-      url: fields.url,
+      url: imageUrl,
       tags: fields.imageSubject.split(", "),
       description: fields.description,
       quality: parseInt(fields.quality),
