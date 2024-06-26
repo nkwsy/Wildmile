@@ -27,11 +27,11 @@ const PlantSchema = new mongoose.Schema(
     slug: {
       type: String,
       unique: true,
-      default: function () {
-        return this.scientific_name
-          ? this.scientific_name.split(" ").join("-").toLowerCase()
-          : "";
-      },
+      // default: function () {
+      //   return this.scientific_name
+      //     ? this.scientific_name.split(" ").join("-").toLowerCase()
+      //     : "";
+      // },
     },
     family: String,
     family_common_name: String,
@@ -68,7 +68,7 @@ const PlantSchema = new mongoose.Schema(
 
 PlantSchema.pre("save", function (next) {
   if (this.isModified("scientific_name") || this.isNew) {
-    this.slug = this.name.split(" ").join("-").toLowerCase();
+    this.slug = this.scientific_name.split(" ").join("-").toLowerCase();
   }
 
   next();
