@@ -118,6 +118,7 @@ const defaultInitialState = {
   plantingTemplateDeploy: false,
   plantRemovalTool: false,
   modLayerSelectable: null,
+  plantCellHover: null,
 };
 
 const initializeState = (initialProps) => {

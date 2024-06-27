@@ -15,6 +15,7 @@ import useSWR from "swr";
 import LocationModal from "components/maps/LocationModal";
 import { ModuleFormModal } from "./module_form";
 import { use } from "passport";
+import { useClient } from "./context_mod_map";
 // import dynamic from "next/dynamic";
 
 // const Canvas = dynamic(() => import("../components/canvas"), {
@@ -285,6 +286,8 @@ export const PlantCellGen = ({
   modules,
   // setSelectedModule,
 }) => {
+  const { dispatch } = useClient();
+
   const rows = 10;
   const columns = 4;
   const plantCellWidth = cellWidth / columns;
@@ -332,6 +335,11 @@ export const PlantCellGen = ({
           console.log("clicked cell", e.target, e.target.id(), plantCell);
         };
         rect.on("click", changeSelectedCell);
+        rect.on("mouseenter", function () {
+          if (plantCell.plant_id) {
+            dispatch({ type: "TOGGLE_PLANT_CELL_HOVER", payload: plantCell });
+          }
+        });
         plantCells.push(plantCell);
       }
     }

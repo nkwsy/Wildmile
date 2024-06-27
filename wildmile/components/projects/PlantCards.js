@@ -37,6 +37,25 @@ import PlantSelectCards from "./PlantSelectCard";
 import PlantSelectTable from "./PlantSelectTable";
 import ClientContext, { useClient, useClientState } from "./context_mod_map";
 import { KonvaGrid } from "./ModuleTemplate";
+import { use } from "passport";
+import { PlantCardFromId } from "components/plants/PlantCard";
+
+export function InfoBox() {
+  const [currentPlantHighlight, setCurrentPlantHighlight] = useState(null);
+
+  const plant_highlight = useClientState("plantCellHover");
+  useEffect(() => {
+    if (plant_highlight) {
+      setCurrentPlantHighlight(plant_highlight.plant_id);
+    }
+  }, [plant_highlight]);
+
+  // const plant_id = plant_highlight?.plant_id;
+  if (currentPlantHighlight) {
+    return <PlantCardFromId plant_id={currentPlantHighlight} />;
+  }
+  return <></>;
+}
 
 export function PlantCards(props) {
   const { plants, dispatch, state } = useClient();
@@ -136,6 +155,7 @@ export function PlantCards(props) {
 
     handlePlantSearch();
   }, [plants]);
+
   if (!isReady) {
     return (
       <Container>
@@ -149,10 +169,13 @@ export function PlantCards(props) {
           <Modal opened={opened} onClose={close} title="Planting Template">
             <KonvaGrid />
           </Modal>
-          <Button onClick={open}>Create Template</Button>
-          <Button onClick={toggleAvatar}>
-            {showAvatar ? "Hide Avatar" : "Show Avatar"}
-          </Button>
+          <InfoBox />
+          <Group>
+            <Button onClick={open}>Create Template</Button>
+            <Button onClick={toggleAvatar}>
+              {showAvatar ? "Hide Avatar" : "Show Avatar"}
+            </Button>
+          </Group>
           <SearchableMultiSelect itemsMap={cardPlants} />
           {showAvatar && (
             <PlantSelectCards

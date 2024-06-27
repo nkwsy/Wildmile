@@ -1,3 +1,4 @@
+"use server";
 import {
   SimpleGrid,
   Text,
@@ -16,10 +17,18 @@ import {
   ChipGroup,
 } from "@mantine/core";
 import Link from "next/link";
-
+import { getPlant } from "/app/actions/PlantActions";
 import classes from "/styles/imagecard.module.css";
 
-export function PlantCardUnformated(plant_data) {
+export async function PlantCardFromId({ plant_id }) {
+  if (!plant_id) {
+    return <></>;
+  }
+  const plant_data = await getPlant(plant_id);
+  const plant_card_data = await PlantCardUnformated(plant_data);
+  return PlantCard({ plant: plant_card_data });
+}
+export async function PlantCardUnformated(plant_data) {
   const plant = {
     id: plant_data._id,
     title:
@@ -30,7 +39,7 @@ export function PlantCardUnformated(plant_data) {
     image:
       plant_data.thumbnail || plant_data.image_url || "/No_plant_image.jpg",
     description: plant_data.notes || "",
-    family: plant_data.family,
+    family: plant_data.family || plant_data.family_common_name || "",
     color: plant_data.color || "grey",
 
     // tags: plant.family, plant.family_common_name ?? null.filter(Boolean),

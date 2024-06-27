@@ -33,7 +33,7 @@ const PlantSchema = new mongoose.Schema(
       //     : "";
       // },
     },
-    family: String,
+    family: { type: String, default: "" },
     family_common_name: String,
     genus: String,
     genus_id: Number,

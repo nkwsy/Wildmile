@@ -68,9 +68,9 @@ export default function PlantRemovalTool({ plantCells }) {
           <Chip value="unknown">Unknown</Chip>
         </Chip.Group>
       </Group>
-      <Button onClick={() => setTriggerSave(true)} color="red">
+      {/* <Button onClick={() => setTriggerSave(true)} color="red">
         Remove
-      </Button>
+      </Button> */}
     </Fieldset>
   );
 }
