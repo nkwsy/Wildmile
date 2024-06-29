@@ -147,7 +147,7 @@ export const PlantingTemplate = () => {
             <Layer>{squares}</Layer>
           </Stage>
         )}
-        (selectedTemplate){" "}
+        {/* (selectedTemplate){" "} */}
         {
           <ColorSelectionButtons
             selectedColor={selectedColor}

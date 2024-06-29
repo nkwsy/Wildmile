@@ -196,6 +196,10 @@ export const plantCellReducer = (state, action) => {
       // Create a new Map to clear the cells, side effects should be handled outside
       return { ...state, plantCells: new Map() };
 
+    // Log which plant cell is being hovered over
+    case "TOGGLE_PLANT_CELL_HOVER":
+      const plantCellHover = action.payload;
+      return { ...state, plantCellHover: { ...plantCellHover } };
     // Logs plant cells which are clicked by user
     case "TOGGLE_PLANT_CELL_SELECTION":
       const plantCell = action.payload;
