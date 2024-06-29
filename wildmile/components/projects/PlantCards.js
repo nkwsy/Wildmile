@@ -38,8 +38,8 @@ import PlantSelectTable from "./PlantSelectTable";
 import ClientContext, { useClient, useClientState } from "./context_mod_map";
 import { KonvaGrid } from "./ModuleTemplate";
 import { use } from "passport";
-import { PlantCardFromId } from "components/plants/PlantCard";
-
+// import { PlantCardFromId } from "components/plants/PlantCard";
+import PlantInfoBox from "./PlantInfoBox";
 export function InfoBox() {
   const [currentPlantHighlight, setCurrentPlantHighlight] = useState(null);
 
@@ -169,7 +169,7 @@ export function PlantCards(props) {
           <Modal opened={opened} onClose={close} title="Planting Template">
             <KonvaGrid />
           </Modal>
-          <InfoBox />
+          <PlantInfoBox />
           <Group>
             <Button onClick={open}>Create Template</Button>
             <Button onClick={toggleAvatar}>
