@@ -7,6 +7,15 @@ const defaultOpacity = 0.2;
 
 import { useClientState } from "./context_mod_map";
 
+export function formatScientificName(scientificName) {
+  const words = scientificName.split(" ");
+  let formattedName = `${words[0].charAt(0)}.`;
+  if (words.length > 1) {
+    formattedName += `\n${words[1].substring(0, 4)}`;
+  }
+  return formattedName;
+}
+
 // export const { plantInfo } = useClientState("plants");
 export function getIndexColor(indexNumber) {
   const default_swatches = [
@@ -48,7 +57,32 @@ export function toggleCellFill(plantCell, color) {
 }
 export function setCellPlantFill(plantCell, plantData) {
   const cell = plantCell.konva_object;
+  // TODO: Option to display thumbnail of plant
   // const plantData = plantData.id;
+  // if (plantData.thumbnail) {
+  //   var imageObj = new Image();
+  //   imageObj.src = plantData.thumbnail;
+  //   cell.fillPatternImage(imageObj);
+  //   cell.fillPatternScale({ x: 0.02, y: 0.02 });
+  //   if (plantData.color && plantData.color.family) {
+  //     cell.fill(plantData.color.family);
+  //     cell.opacity(0.1);
+  //   }
+
+  var text = new Konva.Text({
+    x: cell.x() + 0.2,
+    y: cell.y() + 0.2,
+    fontSize: 2,
+    // fontFamily: "Courier New",
+    // fontStyle: "monospace",
+    fontVariant: "small-caps",
+    fill: "white",
+  });
+  // format name into short version
+  const formattedName = formatScientificName(plantData.scientific_name);
+  text.text(formattedName);
+  const cellLayer = cell.getLayer();
+  cellLayer.add(text);
 
   if (plantData.color) {
     if (plantData.color.family) {
