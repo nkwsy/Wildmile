@@ -245,7 +245,7 @@ const CanvasComponent = ({ children }) => {
         height={containerSize.height}
         // // scaleX={scale}
         // scaleY={scale}
-        onTouchStart={handlePinch}
+        onTouchMove={handlePinch}
         onTouchEnd={handleTouchEnd}
         onWheel={handleWheel}
         rotation={rotation}
