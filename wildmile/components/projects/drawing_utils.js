@@ -11,7 +11,7 @@ export function formatScientificName(scientificName) {
   const words = scientificName.split(" ");
   let formattedName = `${words[0].charAt(0)}.`;
   if (words.length > 1) {
-    formattedName += `\n${words[1].substring(0, 4)}`;
+    formattedName += `\n${words[1].substring(0, 6)}`;
   }
   return formattedName;
 }
@@ -68,21 +68,25 @@ export function setCellPlantFill(plantCell, plantData) {
   //     cell.fill(plantData.color.family);
   //     cell.opacity(0.1);
   //   }
-
+  //TODO: make the cell a layer in mod_util.js so text can be added
   var text = new Konva.Text({
-    x: cell.x() + 0.2,
-    y: cell.y() + 0.2,
+    // x: cell.x() + 0.2,
+    // y: cell.y() + 0.2,
+    x: 0.2,
+    y: 0.2,
     fontSize: 2,
     // fontFamily: "Courier New",
     // fontStyle: "monospace",
     fontVariant: "small-caps",
     fill: "white",
+    listening: false,
   });
   // format name into short version
   const formattedName = formatScientificName(plantData.scientific_name);
   text.text(formattedName);
   const cellLayer = cell.getLayer();
-  cellLayer.add(text);
+  const cellGroup = plantCell.konva_group;
+  // cellLayer.add(text);
 
   if (plantData.color) {
     if (plantData.color.family) {
@@ -96,6 +100,7 @@ export function setCellPlantFill(plantCell, plantData) {
     cell.fill("#099CFF");
     cell.opacity(0.9);
   }
+  cellGroup.add(text);
 }
 
 export function setCellOnStroke(plantCell, color) {

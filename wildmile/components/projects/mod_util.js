@@ -9,12 +9,12 @@ import {
   Line,
   useStrictMode,
 } from "react-konva";
-import { Grid } from "@mantine/core";
-import { Button } from "@mantine/core";
-import useSWR from "swr";
-import LocationModal from "components/maps/LocationModal";
-import { ModuleFormModal } from "./module_form";
-import { use } from "passport";
+// import { Grid } from "@mantine/core";
+// import { Button } from "@mantine/core";
+// import useSWR from "swr";
+// import LocationModal from "components/maps/LocationModal";
+// import { ModuleFormModal } from "./module_form";
+// import { use } from "passport";
 import { useClient } from "./context_mod_map";
 // import dynamic from "next/dynamic";
 
@@ -253,6 +253,7 @@ export class PlantCell {
     module_location_y,
     shape,
     shape_key,
+    group,
     attrs,
     plant_id,
     individual_plant_id,
@@ -269,6 +270,7 @@ export class PlantCell {
     };
     this.konva_object = shape; // Assuming 'shape' is a Konva shape instance
     this.shape_key = shape_key; // Unique identifier for the shape
+    this.konva_group = group;
     this.attrs = attrs; // Additional attributes for the cell
     this.individual_plant_id =
       individual_plant_id !== undefined ? individual_plant_id : null;
@@ -302,6 +304,7 @@ export const PlantCellGen = ({
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 10; j++) {
         let rect;
+        let group;
         const x = module.y * cellWidth + plantCellWidth * i;
         const y = module.x * cellHeight + plantCellHeight * j;
         // Create a rectangle shape for the cell
@@ -317,6 +320,12 @@ export const PlantCellGen = ({
           // id: `${module.x},${y}`,
           // visible: false,
         });
+        group = new Konva.Group({
+          x: x,
+          y: y,
+          width: plantCellWidth,
+          height: plantCellHeight,
+        });
 
         // Add click event listener
         // if (rect) {
@@ -328,17 +337,23 @@ export const PlantCellGen = ({
           module.y,
           rect, // Unsure if I should pass the exact konva object
           rect.id(),
+          group,
           {}
         );
         const changeSelectedCell = (e) => {
           togglePlantCellSelection(x, y, e.target, plantCell);
           console.log("clicked cell", e.target, e.target.id(), plantCell);
         };
-        rect.on("click", changeSelectedCell);
+        rect.on("click", function () {
+          // if (plantCell.plant_id) {
+          dispatch({ type: "TOGGLE_PLANT_CELL_SELECTION", payload: plantCell });
+        });
+        group.add(rect);
+        // rect.on("click", changeSelectedCell);
         rect.on("mouseenter", function () {
-          if (plantCell.plant_id) {
-            dispatch({ type: "TOGGLE_PLANT_CELL_HOVER", payload: plantCell });
-          }
+          // if (plantCell.plant_id) {
+          dispatch({ type: "TOGGLE_PLANT_CELL_HOVER", payload: plantCell });
+          // }
         });
         plantCells.push(plantCell);
       }
