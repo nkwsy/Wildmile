@@ -12,8 +12,12 @@
       "name": "Next.js: debug client-side",
       "type": "chrome",
       "request": "launch",
-      "cwd": "${workspaceFolder}/wildmile",
-      "url": "http://localhost:3000"
+      "cwd": "${workspaceFolder}",
+      "webRoot": "${workspaceFolder}/wildmile",
+      "url": "http://localhost:3000",
+      "runtimeArgs": ["--inspect"],
+
+      "trace": true
     },
     {
       "name": "Next.js: debug full stack",

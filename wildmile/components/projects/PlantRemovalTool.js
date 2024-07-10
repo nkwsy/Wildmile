@@ -61,16 +61,21 @@ export default function PlantRemovalTool({ plantCells }) {
   return (
     <Fieldset legend="Remove Plants">
       <Group>
-        <Chip.Group multiple={true} value={value} onChange={handleChipChange}>
+        <Chip.Group
+          multiple={true}
+          value={value}
+          onChange={handleChipChange}
+          size="xs"
+        >
           <Chip value="delete">Delete</Chip>
           <Chip value="herbivory">Herbivory</Chip>
           <Chip value="enviormental">Enviormental</Chip>
           <Chip value="unknown">Unknown</Chip>
         </Chip.Group>
       </Group>
-      <Button onClick={() => setTriggerSave(true)} color="red">
+      {/* <Button onClick={() => setTriggerSave(true)} color="red">
         Remove
-      </Button>
+      </Button> */}
     </Fieldset>
   );
 }

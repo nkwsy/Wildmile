@@ -30,13 +30,6 @@ import CanvasContext, {
 } from "./context_mod_map";
 // import Hydration from "lib/hydration";
 import CellGen from "./mod_util";
-import useStore from "/lib/store";
-import { use } from "passport";
-// import { ModuleFormModal } from "./module_form";
-import { useMediaQuery } from "@mantine/hooks";
-import { set } from "mongoose";
-import dynamic from "next/dynamic";
-
 // const CanvasComponent = dynamic(
 //   () => import("components/projects/CanvasComponent"),
 //   {
@@ -118,6 +111,7 @@ const defaultInitialState = {
   plantingTemplateDeploy: false,
   plantRemovalTool: false,
   modLayerSelectable: null,
+  plantCellHover: null,
 };
 
 const initializeState = (initialProps) => {
@@ -132,6 +126,7 @@ import {
   toggleCellOff,
   toggleCellOn,
   setCellOnStroke,
+  setCellBlank,
 } from "./drawing_utils";
 
 ///
@@ -350,6 +345,9 @@ export const ModMapWrapper = ({ children }) => {
       let plant_data = use_plants.get(cell.plant_id);
       if (plant_data) {
         setCellPlantFill(cell, plant_data);
+      } else {
+        // toggleCellFill(cell, "grey");
+        setCellBlank(cell);
       }
     });
     // moveToTop("plantCells");

@@ -52,6 +52,7 @@ import RemoveModuleForm from "./mf_delete";
 import { usePathname, useSearchParams } from "next/navigation";
 import { PlantCards } from "components/projects/PlantCards";
 import PlantingToolbar from "./PlantingToolbar";
+import classes from "/styles/toolbar.module.css";
 // const [visible, handlers] = useDisclosure(false);
 
 // const [errorMsg, setErrorMsg] = useState('')
@@ -138,6 +139,7 @@ export default function ModuleToolbar() {
     <>
       {editMode && mode === "plants" && <PlantingToolbar />}
       <Card shadow="xs" padding="lg" pl={8} radius="sm" withBorder>
+        {/* <Card className={classes.toolbar} withBorder> */}
         <CardSection withBorder inheritPadding py="xs">
           <Group justify="space-between">
             <Group justify="space-between">{sliderz()}</Group>

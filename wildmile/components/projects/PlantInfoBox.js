@@ -1,4 +1,3 @@
-"use server";
 import {
   SimpleGrid,
   Text,
@@ -19,16 +18,10 @@ import {
 import Link from "next/link";
 import { getPlant } from "/app/actions/PlantActions";
 import classes from "/styles/imagecard.module.css";
+import { useEffect, useState } from "react";
+import { useClientState } from "./context_mod_map";
 
-export async function PlantCardFromId({ plant_id }) {
-  if (!plant_id) {
-    return <></>;
-  }
-  const plant_data = await getPlant(plant_id);
-  const plant_card_data = await PlantCardUnformated(plant_data);
-  return PlantCard({ plant: plant_card_data });
-}
-export async function PlantCardUnformated(plant_data) {
+export function PlantCardUnformated(plant_data) {
   const plant = {
     id: plant_data._id,
     title:
@@ -48,18 +41,39 @@ export async function PlantCardUnformated(plant_data) {
   return plant;
 }
 
-export default async function PlantCard({ plant }) {
+export default function PlantInfoBox() {
+  const [plant, setPlant] = useState(null);
+  const [plant_id, setPlantId] = useState(null);
+  const plant_highlight = useClientState("plantCellHover");
+
+  useEffect(() => {
+    async function fetchPlant(plant_id) {
+      const plant_data = await getPlant(plant_id);
+      setPlant(PlantCardUnformated(plant_data));
+    }
+    if (plant_highlight?.plant === plant_id) {
+      return;
+    }
+    if (plant_highlight?.plant) {
+      setPlantId(plant_highlight.plant);
+    }
+    if (plant_id) {
+      fetchPlant(plant_id);
+    }
+  }, [plant_highlight]);
+  if (!plant) {
+    return <></>;
+  }
+
   return (
-    <Card
-      //   key={index}
-      //   onClick={() => updateFormValues(plant)}
+    <Card // key={index} // onClick={()=> updateFormValues(plant)}
       withBorder
       padding="lg"
       radius="md"
       component={Link}
       href={`/plants/species/${plant.slug}`}
 
-      //   className={classes.mantineCard}
+      // className={classes.mantineCard}
     >
       <CardSection mb="sm">
         <Image src={plant.image || "/No_plant_image.jpg"} alt={plant.title} />
@@ -78,8 +92,8 @@ export default async function PlantCard({ plant }) {
             {plant.subtitle}
           </Text>
           {/* <Text size="sm" color="dimmed" className={classes.description}>
-      {plant.family}
-    </Text> */}
+                {plant.family}
+            </Text> */}
           <Badge variant="light" color={plant.color.family}>
             {plant.family}
           </Badge>
