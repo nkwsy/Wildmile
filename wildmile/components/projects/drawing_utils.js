@@ -48,12 +48,26 @@ export function toggleCellOff(plantCell) {
   cell.strokeWidth(0.1);
   // cell.pacity(0.2);
   // TODO make cell fill null
-  //   cell.fill(null);
+  // cell.fill(null);
 }
 
-export function toggleCellFill(plantCell, color) {
+export function toggleCellFill(plantCell, color, opacity) {
   const cell = plantCell.konva_object;
   cell.fill(color);
+}
+export function setCellBlank(plantCell) {
+  // Check if the cell contains a plant
+  if (!plantCell.plant_id) {
+    // setCellPlantFill(plantCell, plantCell.plant_id);
+
+    const cell = plantCell.konva_object;
+    const group = plantCell.konva_group;
+    cell.fill(null);
+    cell.stroke(defaultStroke);
+    cell.strokeWidth(defaultStrokeWidth);
+    cell.opacity(defaultOpacity);
+    group.destroyChildren();
+  }
 }
 export function setCellPlantFill(plantCell, plantData) {
   const cell = plantCell.konva_object;
@@ -84,6 +98,7 @@ export function setCellPlantFill(plantCell, plantData) {
   // format name into short version
   const formattedName = formatScientificName(plantData.scientific_name);
   text.text(formattedName);
+  text.name("plantText");
   const cellLayer = cell.getLayer();
   const cellGroup = plantCell.konva_group;
   // cellLayer.add(text);
@@ -100,6 +115,7 @@ export function setCellPlantFill(plantCell, plantData) {
     cell.fill("#099CFF");
     cell.opacity(0.9);
   }
+  cellGroup.destroyChildren();
   cellGroup.add(text);
 }
 

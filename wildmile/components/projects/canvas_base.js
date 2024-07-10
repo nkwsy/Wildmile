@@ -126,6 +126,7 @@ import {
   toggleCellOff,
   toggleCellOn,
   setCellOnStroke,
+  setCellBlank,
 } from "./drawing_utils";
 
 ///
@@ -344,6 +345,9 @@ export const ModMapWrapper = ({ children }) => {
       let plant_data = use_plants.get(cell.plant_id);
       if (plant_data) {
         setCellPlantFill(cell, plant_data);
+      } else {
+        // toggleCellFill(cell, "grey");
+        setCellBlank(cell);
       }
     });
     // moveToTop("plantCells");
