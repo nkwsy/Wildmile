@@ -1,3 +1,4 @@
+"use client";
 import {
   Paper,
   TextInput,
@@ -7,13 +8,14 @@ import {
   Avatar,
   Container,
 } from "@mantine/core";
-import Router from "next/router";
 import { useForm, isEmail } from "@mantine/form";
 import { useEffect } from "react";
-import { useUser } from "../lib/hooks";
+import { useUser } from "../../lib/hooks";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
-  const [user, { loading, mutate }] = useUser();
+  const { user, loading, mutate } = useUser();
+  const router = useRouter();
 
   const form = useForm({
     initialValues: {
@@ -47,7 +49,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     // redirect user to login if not authenticated
-    if (!loading && !user) Router.replace("/login");
+    if (!loading && !user) router.replace("/login");
   }, [user, loading]);
 
   let photoSrc = "https://api.multiavatar.com/noname.png";

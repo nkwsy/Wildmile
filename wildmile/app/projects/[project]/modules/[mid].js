@@ -12,7 +12,7 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useEffect } from "react";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useUser } from "../../../../lib/hooks";
 import dbConnect from "../../../../lib/db/setup";
 import Module from "../../../../models/Module";
@@ -28,7 +28,7 @@ const ModuleRenderer = dynamic(() => import("../../../../components/module"), {
 
 export default function ProjectSectionLanding(props) {
   const router = useRouter();
-  const [user, { loading }] = useUser();
+  const { user, loading }  = useUser();
 
   const form = useForm({
     initialValues: {
@@ -60,7 +60,7 @@ export default function ProjectSectionLanding(props) {
 
   useEffect(() => {
     // redirect user to login if not authenticated
-    if (!loading && !user) Router.replace("/");
+    if (!loading && !user) router.replace("/");
   }, [user, loading]);
 
   return (

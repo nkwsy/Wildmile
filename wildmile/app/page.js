@@ -1,3 +1,4 @@
+"use client";
 import {
   Title,
   Text,
@@ -7,6 +8,7 @@ import {
   Grid,
   GridCol,
   Fieldset,
+  LoadingOverlay,
 } from "@mantine/core";
 import {
   IconTrash,
@@ -19,14 +21,20 @@ import {
 import { IconCardGrid } from "../components/icon_card_grid";
 import classes from "/styles/card.module.css";
 import RandomPlant from "../components/plants/RandomPlant";
-import { Suspense } from "react";
-export default function HomePage() {
-  // const [user, { loading }] = useUser();
+import { Suspense, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useUser } from "lib/hooks";
 
-  // useEffect(() => {
-  //   // redirect user to login if not authenticated
-  //   if (!loading && !user) Router.replace("/");
-  // }, [user, loading]);
+export default function HomePage() {
+  const { user, loading } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    // redirect user to login if not authenticated
+    if (!loading && !user) router.replace("/login");
+  }, [user, loading, router]);
+
+  if (loading) return <LoadingOverlay visible />;
 
   const cards = [
     {

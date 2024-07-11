@@ -24,7 +24,7 @@ export const metadata = {
   description: "Bugs In Urban Rivers Project.",
 };
 export default function BurpHomeLanding() {
-  // const [user, { loading }] = useUser();
+  // const { user, loading }  = useUser();
 
   // useEffect(() => {
   //   // redirect user to login if not authenticated

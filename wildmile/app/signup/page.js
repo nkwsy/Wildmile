@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import {
   Stepper,
@@ -13,11 +14,12 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
-import { useUser } from "../lib/hooks";
-import Router from "next/router";
+import { useUser } from "../../lib/hooks";
+import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
-  const [user, { mutate }] = useUser();
+  const { user, loading, mutate }   = useUser();
+  const router = useRouter();
   const [errorMsg, setErrorMsg] = useState("");
   const [active, setActive] = useState(0);
   const [visible, handlers] = useDisclosure(false);
@@ -67,7 +69,7 @@ export default function SignupPage() {
       const userObj = await res.json();
       // set user to useSWR state
       mutate(userObj);
-      Router.push("/");
+      router.push("/");
     } else {
       handlers.close();
       setErrorMsg(await res.text());
