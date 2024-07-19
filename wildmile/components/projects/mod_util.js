@@ -101,6 +101,24 @@ export function findItemInArray(array, x, y) {
   return array.find((item) => item.x === x && item.y === y) || false;
 }
 
+export function moduleColor(module) {
+  const colors = {
+    "5-d": "#D68D5E",
+    "3-d": "#189968",
+    Sub: "#189599",
+    Dock: "#7e6544",
+  };
+  if (module.tags) {
+    for (tag of module.tags) {
+      if (tag === "tree" || tag === "Tree") {
+        return "#155d12";
+      }
+    }
+  }
+  const color = colors[module.model] || "#c08787";
+  return color;
+}
+
 export const ModuleGen = (config) => {
   const {
     module,
@@ -122,13 +140,14 @@ export const ModuleGen = (config) => {
 
   const stroke = "#5ECCA2";
   const strokeWidth = 0.1;
-  const color = module.model === "5-d" ? "#D68D5E" : "#189968";
-
+  const color = moduleColor(module);
+  const x = module.y * cellWidth || 0;
+  const y = module.x * cellHeight || 0;
   if (module.shape === "R3" || module.shape === "R2.3") {
     // Create a rectangle shape
     const rect = new Konva.Rect({
-      x: module.y * cellWidth,
-      y: module.x * cellHeight,
+      x: x,
+      y: y,
       width: cellWidth,
       height: cellHeight,
       fill: color,
