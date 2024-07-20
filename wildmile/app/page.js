@@ -21,21 +21,9 @@ import {
 import { IconCardGrid } from "../components/icon_card_grid";
 import classes from "/styles/card.module.css";
 import RandomPlant from "../components/plants/RandomPlant";
-import { Suspense, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useUser } from "lib/hooks";
+import { Suspense } from "react";
 
 export default function HomePage() {
-  const { user, loading } = useUser();
-  const router = useRouter();
-
-  useEffect(() => {
-    // redirect user to login if not authenticated
-    if (!loading && !user) router.replace("/login");
-  }, [user, loading, router]);
-
-  if (loading) return <LoadingOverlay visible />;
-
   const cards = [
     {
       icon: IconTrash,
