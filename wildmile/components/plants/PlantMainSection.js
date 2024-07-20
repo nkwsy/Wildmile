@@ -23,7 +23,7 @@ import { useUser } from "lib/hooks";
 
 export function PlantEditMode({ plant }) {
   const [editMode, setEditMode] = useState(false);
-  const [user, { loading }] = useUser();
+  const { user, loading } = useUser();
   // Effect to handle role-based access after user data is loaded
   useEffect(() => {
     if (loading || !user) {
@@ -72,7 +72,7 @@ export function PlantEditMode({ plant }) {
 }
 
 export default function PlantMainSection({ plant }) {
-  //   const [user, { mutate }] = useUser();
+  //  const { user, loading } = useUser();
   //   console.log("User Role:", user);
 
   console.log("Plantmain:", plant);
