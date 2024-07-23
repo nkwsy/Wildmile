@@ -36,7 +36,7 @@ export default function CameraForm(props) {
     // mode: "uncontrolled",
 
     initialValues: {
-      _id: "",
+      name: "",
       model: "",
       manufacturer: "",
       serial: "",
@@ -73,11 +73,10 @@ export default function CameraForm(props) {
     // loading(true);
     toggle();
     console.log("Form state on submit:", form.values);
-    const raw_result = await newEditCamera(form.values);
-    const result = JSON.parse(raw_result);
+    const result = await newEditCamera(form.values);
     console.log("Result:", result);
     if (result.success === true) {
-      router.push(`/cameratrap/camera`);
+      router.push(`/cameratrap/camera/${result.cameraId}`);
     }
   }
   const initialState = {
@@ -103,7 +102,7 @@ export default function CameraForm(props) {
       <Box>
         <Grid>
           <Grid.Col span={4}>
-            <TextInput label="UR ID" {...form.getInputProps("_id")} />
+            <TextInput label="UR ID" {...form.getInputProps("name")} />
             <TextInput
               label="Model"
               key="model"

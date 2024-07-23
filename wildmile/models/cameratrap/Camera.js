@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-import { AutoIncrementID } from "@typegoose/auto-increment";
+// import { AutoIncrementID } from "@typegoose/auto-increment";
+import { object } from "yup";
 const cameraSchema = new mongoose.Schema(
   {
     // should just be the _id field
@@ -9,14 +10,11 @@ const cameraSchema = new mongoose.Schema(
     //     required: true,
     //     unique: true,
     //   },
-    _id: {
-      // This should be the cameraID, Would be great if it was generated from mfg-model-sequential number
-      type: Number,
-      // required: true,
-    },
+
+    name: { type: String, required: true },
     serial: {
       type: String,
-      required: true,
+      // required: true,
     },
 
     purchaseDate: {
@@ -34,9 +32,11 @@ const cameraSchema = new mongoose.Schema(
       // maybe in Resources?
       type: String,
       required: true,
+      lowercase: true,
     },
     manufacturer: {
       type: String,
+      lowercase: true,
     },
     resolution: {
       type: String, // E.g., "1920x1080"
@@ -89,6 +89,6 @@ const cameraSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-cameraSchema.plugin(AutoIncrementID, {});
+// cameraSchema.plugin(AutoIncrementID, {});
 
 export default mongoose.models.Camera || mongoose.model("Camera", cameraSchema);

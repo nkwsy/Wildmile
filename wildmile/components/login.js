@@ -13,13 +13,14 @@ import {
 } from "@mantine/core";
 import { useForm, isEmail } from "@mantine/form";
 import { useState, useEffect } from "react";
-import Router from "next/router";
 import Link from "next/link";
-import { useUser } from "../lib/hooks";
+import { useUser } from "lib/hooks";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
-  const [user, { mutate }] = useUser();
+  const { user, loading, mutate }  = useUser();
   const [errorMsg, setErrorMsg] = useState("");
+  const router = useRouter();
 
   const form = useForm({
     initialValues: {
@@ -50,7 +51,7 @@ export default function Login() {
 
   useEffect(() => {
     // redirect to home if user is authenticated
-    if (user) Router.push("/");
+    if (user) router.push("/");
   }, [user]);
 
   return (

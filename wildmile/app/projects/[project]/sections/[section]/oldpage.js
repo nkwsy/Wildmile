@@ -1,7 +1,7 @@
 import { Title, Text, Container } from "@mantine/core";
 import { IconListDetails } from "@tabler/icons-react";
 import { useEffect } from "react";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useUser } from "/lib/hooks";
 import dbConnect from "/lib/db/setup";
 import Section from "/models/Section";
@@ -13,11 +13,11 @@ import {
 
 export default function ProjectSectionLanding(props) {
   const router = useRouter();
-  const [user, { loading }] = useUser();
+  const { user, loading }  = useUser();
 
   useEffect(() => {
     // redirect user to login if not authenticated
-    if (!loading && !user) Router.replace("/");
+    if (!loading && !user) router.replace("/");
   }, [user, loading]);
 
   const sections = props.sections.map((section) => {

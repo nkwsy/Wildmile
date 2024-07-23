@@ -19,7 +19,7 @@ router
       console.log("user", req.user);
       const { email, ranger, admin, profile, _id } = req.user;
       return res.json({
-        user: { email, ranger: ranger || false, admin, profile, _id },
+        user: { email, ranger: ranger || false, admin: admin || false, profile, _id },
       });
     }
     return res.json({});
