@@ -1,5 +1,4 @@
-// pages/forgot-password.js
-
+"use client";
 import {
   Container,
   Paper,

@@ -16,13 +16,14 @@ import {
   rem,
 } from "@mantine/core";
 import { IconLogout, IconSettings, IconChevronDown } from "@tabler/icons-react";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useUser } from "../lib/hooks";
-import Router from "next/router";
+import { useRouter } from "next/navigation";
 import cx from "clsx";
 import classes from "/styles/nav.module.css";
+
 const nav_tabs = [
   {
     label: "Home",
@@ -63,13 +64,11 @@ const nav_tabs = [
   },
 ];
 
-export function HeaderNav() {
-  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
-    useDisclosure(false);
+async function DesktopHeaderMenu() {
+  // const session =  await getSession();
+  const { user, loading, mutate }  = useUser();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
-  // const { classes, theme, cx } = useStyles()
-  const [user, { mutate }] = useUser();
-
+  const router = useRouter();
   let photoSrc = "https://api.multiavatar.com/noname.png";
 
   if (user && user.profile) {
@@ -80,6 +79,91 @@ export function HeaderNav() {
     }
   }
 
+  async function handleLogout() {
+    await fetch("/api/logout");
+    mutate({ user: null });
+    router.push("/");
+  }
+
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (!user) {
+    return (
+      <>
+                  <Link href="/login">
+                    <Button variant="default">Log in</Button>
+                  </Link>
+                  <Link href="/signup">
+                    <Button>Sign up</Button>
+                  </Link>
+      </>
+    )
+  }
+
+  return (
+    <>
+      <Menu
+            width={260}
+            position="bottom-end"
+            transitionProps={{ transition: "pop-top-right" }}
+            onClose={() => setUserMenuOpened(false)}
+            onOpen={() => setUserMenuOpened(true)}
+            withinPortal
+            mt="0.5rem"
+          >
+            <Menu.Target>
+              <UnstyledButton
+                className={cx(classes.user, {
+                  [classes.userActive]: userMenuOpened,
+                })}
+              >
+                <Group spacing={7}>
+                  <Avatar
+                    src={photoSrc}
+                    alt={
+                      user.profile
+                        ? user.profile.name || "Username"
+                        : "Username"
+                    }
+                    radius="xl"
+                    size={40}
+                  />
+                  <Text fw={500} size="sm" lh={1} mr={3}>
+                    {user.profile
+                      ? user.profile.name || "Username"
+                      : "Username"}
+                  </Text>
+                  <IconChevronDown size={15} stroke={2.5} />
+                </Group>
+              </UnstyledButton>
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Link href="/profile">
+                <Menu.Item
+                  icon={<IconSettings size="0.8rem" stroke={1.5} />}
+                >
+                  Account settings
+                </Menu.Item>
+              </Link>
+              <Menu.Item
+                icon={<IconLogout size="0.9rem" stroke={1.5} />}
+                onClick={handleLogout}
+              >
+                Logout
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
+          </>
+  );
+}
+
+async function MobileHeaderMenu() {
+  const { user, loading, mutate } = useUser();
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
   const items = nav_tabs.map((link) => {
     const menuItems = link.subitems?.map((item) => (
       <Menu.Item key={item.label}>
@@ -116,18 +200,31 @@ export function HeaderNav() {
       </Link>
     );
   });
-
-  async function handleLogout() {
-    await fetch("/api/logout");
-    mutate({ user: null });
-    Router.push("/");
+  if (!user) {
+    return (
+      <>
+        <Link href="/login">
+          <Button variant="default">Log in</Button>
+        </Link>
+        <Link href="/signup">
+          <Button>Sign up</Button>
+        </Link>
+      </>
+    );
   }
+  return items;
+}
+
+export function HeaderNav() {
+  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
+    useDisclosure(false);
+  // const { classes, theme, cx } = useStyles()
+  // const { user, loading, mutate }  = useUser();
 
   return (
     <Box pb={10}>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
-          {user && user ? (
             <Link href="/">
               <Image
                 src="/logo.png"
@@ -138,18 +235,6 @@ export function HeaderNav() {
                 mb="-1rem"
               />
             </Link>
-          ) : (
-            <Link href="/">
-              <Image
-                src="/logo.png"
-                alt="Urban River Logo"
-                h="3.8rem"
-                w="auto"
-                mt="0.5rem"
-                mb="-1rem"
-              />
-            </Link>
-          )}
 
           <Group
             h="100%"
@@ -158,72 +243,15 @@ export function HeaderNav() {
             visibleFrom="sm"
             className={classes.hiddenMobile}
           >
-            {user && user ? items : null}
+            <Suspense>
+              <MobileHeaderMenu />
+            </Suspense>
           </Group>
 
           <Group className={classes.hiddenMobile}>
-            {user && user ? (
-              <Menu
-                width={260}
-                position="bottom-end"
-                transitionProps={{ transition: "pop-top-right" }}
-                onClose={() => setUserMenuOpened(false)}
-                onOpen={() => setUserMenuOpened(true)}
-                withinPortal
-                mt="0.5rem"
-              >
-                <Menu.Target>
-                  <UnstyledButton
-                    className={cx(classes.user, {
-                      [classes.userActive]: userMenuOpened,
-                    })}
-                  >
-                    <Group spacing={7}>
-                      <Avatar
-                        src={photoSrc}
-                        alt={
-                          user.profile
-                            ? user.profile.name || "Username"
-                            : "Username"
-                        }
-                        radius="xl"
-                        size={40}
-                      />
-                      <Text fw={500} size="sm" lh={1} mr={3}>
-                        {user.profile
-                          ? user.profile.name || "Username"
-                          : "Username"}
-                      </Text>
-                      <IconChevronDown size={15} stroke={2.5} />
-                    </Group>
-                  </UnstyledButton>
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Link href="/profile">
-                    <Menu.Item
-                      icon={<IconSettings size="0.8rem" stroke={1.5} />}
-                    >
-                      Account settings
-                    </Menu.Item>
-                  </Link>
-                  <Menu.Item
-                    icon={<IconLogout size="0.9rem" stroke={1.5} />}
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-            ) : (
-              <>
-                <Link href="/login">
-                  <Button variant="default">Log in</Button>
-                </Link>
-                <Link href="/signup">
-                  <Button>Sign up</Button>
-                </Link>
-              </>
-            )}
+            <Suspense>
+              <DesktopHeaderMenu />
+            </Suspense>
           </Group>
 
           <Burger
@@ -246,14 +274,17 @@ export function HeaderNav() {
         <ScrollArea h={`calc(100vh - ${rem(60)})`} mx="-md">
           <Divider my="sm" color={"dark"} />
 
-          {user && user ? items : null}
+          <Suspense>
+            <MobileHeaderMenu />
+          </Suspense>
+
 
           <Divider my="sm" color={"dark"} />
 
-          <Group position="center" grow pb="xl" px="md">
+          {/* <Group position="center" grow pb="xl" px="md">
             <Button variant="default">Log in</Button>
             <Button>Sign up</Button>
-          </Group>
+          </Group> */}
         </ScrollArea>
       </Drawer>
     </Box>

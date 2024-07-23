@@ -88,7 +88,7 @@ function EditModeSwitch() {
       payload: value,
     });
   };
-  const [user, { loading }] = useUser();
+  const { user, loading, mutate }  = useUser();
 
   if (loading) return <LoadingOverlay visible />;
   if (!user) return <Text>Please log in to edit</Text>;

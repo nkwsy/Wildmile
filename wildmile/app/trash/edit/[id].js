@@ -15,7 +15,7 @@ import {
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { DateTimePicker } from "@mantine/dates";
-import Router from "next/router";
+import { useRouter } from "next/navigation";
 // import TrashItemTable from '../../components/trash_item_table'
 // import TrashItemAccordian from "/components/trash_item_accordian";
 // import IndividualTrashItem from "models/IndividualTrashItem";
@@ -26,7 +26,7 @@ export default function UpdateTrashCountLog(props) {
   const [errorMsg, setErrorMsg] = useState("");
   const [active, setActive] = useState(0);
   const [visible, handlers] = useDisclosure(false);
-
+  const router = useRouter();
   const isBrowser = () => typeof window !== "undefined"; //The approach recommended by Next.js
 
   function scrollToTop() {
@@ -54,7 +54,7 @@ export default function UpdateTrashCountLog(props) {
     });
 
     if (res.status === 201) {
-      Router.push("/trash");
+      router.push("/trash");
     } else {
       handlers.close();
       setErrorMsg(await res.text());
