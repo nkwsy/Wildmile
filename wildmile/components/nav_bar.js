@@ -68,7 +68,7 @@ export function HeaderNav({ children }) {
     useDisclosure(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   // const { classes, theme, cx } = useStyles()
-  const [user, { mutate }] = useUser();
+  const { user, loading, mutate }  = useUser();
 
   let photoSrc = "https://api.multiavatar.com/noname.png";
 
@@ -249,7 +249,6 @@ export function HeaderNav({ children }) {
             {user && user ? items : null}
 
             <Divider my="sm" color={"dark"} />
-
             <Group position="center" grow pb="xl" px="md">
               <Button variant="default">Log in</Button>
               <Button>Sign up</Button>

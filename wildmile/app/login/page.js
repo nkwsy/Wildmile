@@ -1,8 +1,6 @@
-import Login from '../components/login'
+import Login from '../../components/login'
 
 export default function LoginPage() {
-
-
   return (
     <>
       <Login />

@@ -39,7 +39,7 @@ export async function getProjects() {
 
 export default async function Page() {
   // const { classes, theme } = cardStyles()
-  // const [user, { loading }] = useUser();
+  // const { user, loading }  = useUser();
   // useEffect(() => {
   //   // redirect user to login if not authenticated
   //   if (!loading && !user) Router.replace("/");

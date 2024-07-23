@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useUser } from "../../lib/hooks";
 
 export default function PlantObservations() {
-  const [user, { loading }] = useUser();
+  const { user, loading }  = useUser();
 
   // useEffect(() => {
   //   // redirect user to login if not authenticated

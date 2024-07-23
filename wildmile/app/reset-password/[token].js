@@ -1,5 +1,4 @@
-// pages/reset-password/[token].js
-
+"use client";
 import {
   Container,
   Paper,
@@ -10,7 +9,7 @@ import {
 } from "@mantine/core";
 import Link from "next/link";
 import { useForm } from "@mantine/form";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function ResetPassword() {

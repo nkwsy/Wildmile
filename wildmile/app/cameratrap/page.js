@@ -1,42 +1,76 @@
-// "use client";
+"use client";
 import { Title, Text, Container, Button } from "@mantine/core";
-
+import { LoadingOverlay } from '@mantine/core';
+import { useEffect } from "react";
 import { IconCardGrid } from "/components/icon_card_grid";
 import classes from "/styles/card.module.css";
 import Link from "next/link";
 import {
-  IconTrash,
-  IconPlant2,
-  IconListDetails,
   IconUsers,
   IconBackhoe,
+  IconPokeball,
+  IconCameraSearch,
+  IconCameraPlus,
 } from "@tabler/icons-react";
+import TaxaSearch, { WildlifeSidebar } from "components/cameratrap/TaxaSearch";
+import { useUser } from "lib/hooks";
+import { useRouter } from "next/navigation";
 
-export default async function Page() {
-  // const { classes, theme } = cardStyles()
-  // const [user, { loading }] = useUser();
-  // useEffect(() => {
-  //   // redirect user to login if not authenticated
-  //   if (!loading && !user) Router.replace("/");
-  // }, [user, loading]);
-
+function CameraTrapCards({ user }) {
   const cards = [
-    // standin for other links
     {
-      icon: IconPlant2,
+      icon: IconCameraPlus,
       title: "New Camera",
       href: "/cameratrap/camera/new",
       description: "Add a new camera device",
     },
+    {
+      icon: IconCameraSearch,
+      title: "Cameras",
+      href: "/cameratrap/camera",
+      description: "Manage the cameras",
+    },
+    {
+      icon: IconUsers,
+      title: "Deployments",
+      href: "/cameratrap/deployment",
+      description: "Manage the deployments",
+    },
+    {
+      icon: IconPokeball,
+      title: "Identify wildlife",
+      href: "/cameratrap/identify",
+      description: "Find and catagorize wildlife",
+    },
   ];
-  // user && user.admin
-  //   ? cards.push({
-  //       icon: IconBackhoe,
-  //       title: "New Project",
-  //       href: "/projects/project/new",
-  //       description: "Create a new project",
-  //     })
-  //   : null;
+  if (user?.admin) {
+    cards.push({
+            icon: IconBackhoe,
+            title: "New Project",
+            href: "/projects/project/new",
+            description: "Create a new project",
+    });
+  }
+
+  return <IconCardGrid cards={cards} />
+}
+
+
+export default function CameraTrapHomePage() {
+  // const { classes, theme } = cardStyles()
+  const { user, loading } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    // redirect user to login if not authenticated
+    if (!loading && !user) router.replace("/login");
+    console.log(user);
+  }, [user, loading, router]);
+
+
+  if (loading) {
+    return <LoadingOverlay visible />;
+  }
 
   return (
     <>
@@ -47,12 +81,13 @@ export default async function Page() {
         <Text c="dimmed" ta="center" mt="md">
           Collecting and sharing data about Urban River's projects.
         </Text>
-
-        <IconCardGrid cards={cards} />
+        <CameraTrapCards user={user} />
         {/* <IconCardGrid cards={projects} />
         <Button component={Link} href="/projects/new">
           New Project
         </Button> */}
+        {/* <TaxaSearch /> */}
+        <WildlifeSidebar />
       </Container>
     </>
   );
