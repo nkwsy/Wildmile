@@ -6,7 +6,7 @@ import AlertPopup from "components/alert";
 import { useUser } from "lib/hooks";
 
 export default function NewPlant() {
-  const [user, { loading }] = useUser();
+  const { user, loading } = useUser();
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [saved, { setSaved }] = useState(false);
   const [editMode, setEditMode] = useState(false);
