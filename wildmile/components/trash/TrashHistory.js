@@ -74,14 +74,14 @@ export function TrashLogData() {
   //   console.log("Data:", data);
   //   const rows = convertDataToRows(data);
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [user, { loading: userLoading }] = useUser();
+  // const [loading, setLoading] = useState(true);
+  const [user, loading] = useUser();
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (userLoading) return;
+        if (loading) return;
         console.log("User:", user);
         const response = await getTrashLogByUser(user._id);
         console.log("Response:", response);
