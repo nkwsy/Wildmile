@@ -56,11 +56,11 @@ export function PlantEditMode({ plant }) {
           ) : (
             <>
               {/* Ensure the button is only shown when user data is fully loaded and user is an admin */}
+              {user && <PlantImageUpload plantId={plant._id} />}
+
               {user && user.admin && (
                 <>
                   <Button onClick={() => setEditMode(true)}>Edit</Button>
-
-                  <PlantImageUpload plantId={plant._id} />
                 </>
               )}
             </>

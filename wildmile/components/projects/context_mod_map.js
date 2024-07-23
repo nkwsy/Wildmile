@@ -3,10 +3,11 @@
 import { createContext, useContext, useState, useReducer } from "react";
 const ClientContext = createContext();
 export default ClientContext;
-import { getIndexColor } from "./drawing_utils";
+import { getIndexColor, toggleCellOff } from "./drawing_utils";
 // import plants from "pages/api/plants";
 
 import { SaveEditedPlantCells } from "./PlantEditingFunctions";
+import next from "next";
 
 export const useClient = () => {
   const context = useContext(ClientContext);
@@ -100,6 +101,110 @@ const mapPlantCells = (state) => {
   return updatedPlantCells;
 };
 
+// Edit Plant cell function
+// TODO: make the addition of a plant to the template reflect in the options, allow user to overlay potential changes ont grid
+export function editPlantCell({ plantCell, state }) {
+  const key = generateKey([
+    plantCell.module_location.x,
+    plantCell.module_location.y,
+    plantCell.x,
+    plantCell.y,
+  ]);
+
+  const current_selected_plant_cells = state.selectedPlantCell;
+  const current_plant_cells_to_edit = state.selectedPlantCellsToEdit;
+  const toggle_in_edit_mode = state.editMode;
+  const current_selected_plantId = state.selectedPlantId;
+  const current_selected_plants = state.selectedPlants;
+  const plant_removal_tool = state.plantRemovalTool;
+  const newPlantCellsToEdit = new Map(current_plant_cells_to_edit);
+  const newPlantCells = new Map(current_selected_plant_cells);
+  // if in edit mode and plant selected, add to selectedPlantCellsToEdit
+  if (current_selected_plantId && toggle_in_edit_mode) {
+    if (newPlantCellsToEdit.has(key)) {
+      plantCell.new_plant_id = null;
+      newPlantCellsToEdit.delete(key);
+    } else {
+      plantCell.new_plant_id = current_selected_plantId;
+      newPlantCellsToEdit.set(key, plantCell);
+      let plant_selection = current_selected_plants.get(
+        current_selected_plantId
+      );
+      selectPlantCell(plantCell, plant_selection.selectionColor);
+    }
+    return { ...state, selectedPlantCellsToEdit: newPlantCellsToEdit };
+  }
+  // Check if the key already exists
+  // The key doesn't exist, so insert the new entry
+  if (newPlantCells.has(key)) {
+    newPlantCells.delete(key);
+  }
+  if (plant_removal_tool) {
+    if (newPlantCellsToEdit.has(key)) {
+      plantCell.new_plant_id = null;
+      newPlantCellsToEdit.delete(key);
+    } else {
+      plantCell.new_plant_id = null;
+      newPlantCellsToEdit.set(key, plantCell);
+      selectPlantCell(plantCell, "red");
+    }
+    return { ...state, selectedPlantCellsToEdit: newPlantCellsToEdit };
+  } else {
+    newPlantCells.set(key, plantCell);
+  }
+  return { ...state, selectedPlantCell: newPlantCells };
+}
+
+// Extract plant cells by template
+// TODO: Add overwrite option to allow user to overlay changes on grid
+function extractPlantCellsByTemplate(
+  state,
+  module_location,
+  selectedPlantCellsToEdit
+) {
+  // Initialize an object to hold the matching plant cells
+  let matchingPlantCells = new Map();
+  // let selectedPlantCellsToEdit = state.selectedPlantCellsToEdit;
+  let newPlantCells = state.plantCells;
+  let overwrite = false;
+  // Iterate through the plantingTemplate entries
+  state.plantingTemplate.forEach((templateValue, templateKey) => {
+    // Combine module_location and cell_key to form the search key
+    const searchKey = generateKey([
+      module_location.x,
+      module_location.y,
+      templateValue.y,
+      templateValue.x,
+    ]);
+
+    // Check if this key exists in plantCells
+    if (newPlantCells.has(searchKey)) {
+      // TODO add the templateValue.plant tho the cell in the matchingPlantCells object
+      // TODO make matchingPlantCells a map and set the key of the object
+      let matchedPlantCell = newPlantCells.get(searchKey);
+      // overwrite logic
+      if (selectedPlantCellsToEdit.has(searchKey)) {
+        matchedPlantCell.new_plant_id = null; // Remove the plant from the cell
+        selectedPlantCellsToEdit.delete(searchKey);
+        toggleCellOff(matchedPlantCell);
+      } else {
+        if (matchedPlantCell.plant_id) {
+          if (overwrite) {
+            matchedPlantCell.new_plant_id = templateValue.plant; // Add the plant from templateValue to the cell
+            selectedPlantCellsToEdit.set(searchKey, matchedPlantCell);
+          }
+        } else {
+          matchedPlantCell.new_plant_id = templateValue.plant; // Add the plant from templateValue to the cell
+          selectedPlantCellsToEdit.set(searchKey, matchedPlantCell);
+          selectPlantCell(matchedPlantCell, templateValue.color);
+        }
+      }
+    }
+  });
+
+  return selectedPlantCellsToEdit;
+}
+
 export function selectPlantCell(plantCell, color) {
   const cell = plantCell.konva_object;
   cell.strokeWidth(1);
@@ -161,9 +266,27 @@ export const plantCellReducer = (state, action) => {
           return option;
         }
       );
+      function isOption(PlantingTemplateOptions, PlantingTemplate) {
+        return PlantingTemplateOptions.id === PlantingTemplate.id;
+      }
+      current_planting_template.forEach((cell, key) => {
+        // Example comparison criteria: checking if `id` properties match
+        let result = updatedPlantingTemplateOptions.find((option) =>
+          isOption(option, cell)
+        );
+        // Update the `plant` property
+        const updatedCell = {
+          ...cell,
+          plant: result.plant,
+        };
+        current_planting_template.set(key, updatedCell);
+      });
+
+      console.log(current_planting_template);
       return {
         ...state,
         plantingTemplateOptions: updatedPlantingTemplateOptions,
+        plantingTemplate: current_planting_template,
       };
     // Make planting layer visible so you can deploy the templates
     case "MOD_LAYER_SELECTABLE":
@@ -196,6 +319,19 @@ export const plantCellReducer = (state, action) => {
       // Create a new Map to clear the cells, side effects should be handled outside
       return { ...state, plantCells: new Map() };
 
+    // Log which plant cell is being hovered over
+    case "TOGGLE_PLANT_CELL_HOVER":
+      const plantCellHover = action.payload;
+      // if (state.plantingTemplate) {
+      if (state.plantingTemplate && state.plantingTemplate.size != 0) {
+        let moduleLocation = plantCellHover.module_location;
+        // let matchingPlantCells = extractPlantCellsByTemplate(
+        //   state,
+        //   moduleLocation
+        // );
+      }
+      // const hoveredPlantCells = state.plantCells;
+      return { ...state, plantCellHover: { ...plantCellHover } };
     // Logs plant cells which are clicked by user
     case "TOGGLE_PLANT_CELL_SELECTION":
       const plantCell = action.payload;
@@ -214,6 +350,18 @@ export const plantCellReducer = (state, action) => {
       const plant_removal_tool = state.plantRemovalTool;
       const newPlantCellsToEdit = new Map(current_plant_cells_to_edit);
       const newPlantCells = new Map(current_selected_plant_cells);
+
+      // if in template mode
+      if (state.plantingTemplate && state.plantingTemplate.size != 0) {
+        let moduleLocation = plantCell.module_location;
+        let matchingPlantCells = extractPlantCellsByTemplate(
+          state,
+          moduleLocation,
+          newPlantCellsToEdit
+        );
+        return { ...state, selectedPlantCellsToEdit: matchingPlantCells };
+      }
+
       // if in edit mode and plant selected, add to selectedPlantCellsToEdit
       if (current_selected_plantId && toggle_in_edit_mode) {
         if (newPlantCellsToEdit.has(key)) {

@@ -9,12 +9,13 @@ import {
   Line,
   useStrictMode,
 } from "react-konva";
-import { Grid } from "@mantine/core";
-import { Button } from "@mantine/core";
-import useSWR from "swr";
-import LocationModal from "components/maps/LocationModal";
-import { ModuleFormModal } from "./module_form";
-import { use } from "passport";
+// import { Grid } from "@mantine/core";
+// import { Button } from "@mantine/core";
+// import useSWR from "swr";
+// import LocationModal from "components/maps/LocationModal";
+// import { ModuleFormModal } from "./module_form";
+// import { use } from "passport";
+import { useClient } from "./context_mod_map";
 // import dynamic from "next/dynamic";
 
 // const Canvas = dynamic(() => import("../components/canvas"), {
@@ -100,6 +101,24 @@ export function findItemInArray(array, x, y) {
   return array.find((item) => item.x === x && item.y === y) || false;
 }
 
+export function moduleColor(module) {
+  const colors = {
+    "5-d": "#D68D5E",
+    "3-d": "#189968",
+    Sub: "#189599",
+    Dock: "#7e6544",
+  };
+  if (module.tags) {
+    for (let tag of module.tags) {
+      if (tag === "tree" || tag === "Tree") {
+        return "#155d12";
+      }
+    }
+  }
+  const color = colors[module.model] || "#c08787";
+  return color;
+}
+
 export const ModuleGen = (config) => {
   const {
     module,
@@ -115,19 +134,17 @@ export const ModuleGen = (config) => {
   //   setSelectedModule(module);
   //   toggleCellSelection(module.x, module.y);
   // };
-  // const stroke = isSelected ? "#1080dc" : "#5ECCA2";
-  // const strokeWidth = isSelected ? 4 : 0.1;
-  // const color = module.model === "5-d" ? "#D68D5E" : "#189968";
 
   const stroke = "#5ECCA2";
   const strokeWidth = 0.1;
-  const color = module.model === "5-d" ? "#D68D5E" : "#189968";
-
+  const color = moduleColor(module);
+  const x = module.y * cellWidth || 0;
+  const y = module.x * cellHeight || 0;
   if (module.shape === "R3" || module.shape === "R2.3") {
     // Create a rectangle shape
     const rect = new Konva.Rect({
-      x: module.y * cellWidth,
-      y: module.x * cellHeight,
+      x: x,
+      y: y,
       width: cellWidth,
       height: cellHeight,
       fill: color,
@@ -252,6 +269,7 @@ export class PlantCell {
     module_location_y,
     shape,
     shape_key,
+    group,
     attrs,
     plant_id,
     individual_plant_id,
@@ -268,6 +286,7 @@ export class PlantCell {
     };
     this.konva_object = shape; // Assuming 'shape' is a Konva shape instance
     this.shape_key = shape_key; // Unique identifier for the shape
+    this.konva_group = group;
     this.attrs = attrs; // Additional attributes for the cell
     this.individual_plant_id =
       individual_plant_id !== undefined ? individual_plant_id : null;
@@ -285,6 +304,8 @@ export const PlantCellGen = ({
   modules,
   // setSelectedModule,
 }) => {
+  const { dispatch } = useClient();
+
   const rows = 10;
   const columns = 4;
   const plantCellWidth = cellWidth / columns;
@@ -299,6 +320,7 @@ export const PlantCellGen = ({
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 10; j++) {
         let rect;
+        let group;
         const x = module.y * cellWidth + plantCellWidth * i;
         const y = module.x * cellHeight + plantCellHeight * j;
         // Create a rectangle shape for the cell
@@ -314,6 +336,12 @@ export const PlantCellGen = ({
           // id: `${module.x},${y}`,
           // visible: false,
         });
+        group = new Konva.Group({
+          x: x,
+          y: y,
+          width: plantCellWidth,
+          height: plantCellHeight,
+        });
 
         // Add click event listener
         // if (rect) {
@@ -325,13 +353,24 @@ export const PlantCellGen = ({
           module.y,
           rect, // Unsure if I should pass the exact konva object
           rect.id(),
+          group,
           {}
         );
         const changeSelectedCell = (e) => {
           togglePlantCellSelection(x, y, e.target, plantCell);
           console.log("clicked cell", e.target, e.target.id(), plantCell);
         };
-        rect.on("click", changeSelectedCell);
+        rect.on("click", function () {
+          // if (plantCell.plant_id) {
+          dispatch({ type: "TOGGLE_PLANT_CELL_SELECTION", payload: plantCell });
+        });
+        group.add(rect);
+        // rect.on("click", changeSelectedCell);
+        rect.on("mouseenter", function () {
+          // if (plantCell.plant_id) {
+          dispatch({ type: "TOGGLE_PLANT_CELL_HOVER", payload: plantCell });
+          // }
+        });
         plantCells.push(plantCell);
       }
     }

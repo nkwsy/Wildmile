@@ -1,5 +1,5 @@
 "use server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { ObjectId } from "mongodb"; // Or the equivalent from mongoose if using that.
 
 import Plant from "models/Plant";
@@ -52,6 +52,7 @@ export async function getPlant(id) {
 
 // Update Plant data
 export async function updatePlant(formData) {
+  await dbConnect();
   console.log("PlantActions- updatePlant:", formData);
   const rawFormData = {
     commonName: formData.commonName,
@@ -60,15 +61,82 @@ export async function updatePlant(formData) {
     tags: formData.tags,
     notes: formData.notes,
     color: formData.color,
+    links: formData.links,
   };
+  if (!rawFormData.color) {
+    if (rawFormData.family !== "" && !rawFormData.color?.family) {
+      rawFormData.color = {
+        family: await getPlantFamily(rawFormData.family),
+      };
+    }
+  }
+
   console.log("Raw Form Data:", rawFormData);
 
   const result = await Plant.findByIdAndUpdate(formData._id, formData);
+  revalidatePath("/");
   return JSON.stringify(result);
+}
+
+// Update Plant data
+export async function createPlant(formData) {
+  await dbConnect();
+  console.log("PlantActions- updatePlant:", formData);
+  //TODO: normalize fields in DB. Will require refactor of a lot of pages
+  const rawFormData = {
+    commonName: formData.commonName,
+    scientificName: formData.scientificName,
+    scientific_name: formData.scientificName,
+    common_name: formData.commonName,
+    family: formData.family,
+    tags: formData.tags,
+    notes: formData.notes,
+    color: formData.color,
+    links: formData.links,
+  };
+  if (!rawFormData.color) {
+    if (rawFormData.family !== "" && !rawFormData.color?.family) {
+      rawFormData.color = {
+        family: await getPlantFamily(rawFormData.family),
+      };
+    }
+  }
+
+  console.log("Raw Form Data:", rawFormData);
+  const alreadyExists = await Plant.exists({
+    $or: [
+      { scientific_name: formData.scientificName },
+      { scientificName: formData.scientificName },
+    ],
+  });
+  if (alreadyExists) {
+    return "Plant already exists";
+  }
+  const result = await Plant.create(formData);
+  revalidatePath("/");
+  return JSON.stringify(result);
+}
+// get Plant Family data
+export async function getPlantFamily(family) {
+  await dbConnect();
+  console.log("PlantActions- getPlantFamily:", family);
+  try {
+    const result = await Plant.findOne({ family: family }, ["color"]);
+    if (!result) {
+      return null;
+    }
+    if (result.color.family) {
+      return result.color.family;
+    }
+  } catch (error) {
+    console.error("Error getting plant family:", error);
+    return null;
+  }
 }
 
 // Update Plant Family data
 export async function updatePlantFamily(family, color) {
+  await dbConnect();
   console.log("PlantActions- updatePlantFamily:", family, color);
   const result = await Plant.updateMany(
     { family: family },
@@ -76,7 +144,6 @@ export async function updatePlantFamily(family, color) {
   );
   console.log("updated plant family:", result);
   revalidatePath("/");
-
   return JSON.stringify(result);
 }
 
@@ -85,7 +152,7 @@ export async function loadTrefleData(link) {
   // console.log("Link load trefle data:", link);
   try {
     const response = await fetch(
-      `https://trefle.io${link}?token=${process.env.TREFLE_API_KEY}`
+      `http://trefle.io${link}?token=${process.env.TREFLE_API_KEY}`
     );
     const data = await response.json();
     return data.data;
@@ -95,6 +162,20 @@ export async function loadTrefleData(link) {
   }
 }
 
+// Search Plant data from Trefle API
+export async function searchTrefleData(query) {
+  // console.log("Link load trefle data:", link);
+  try {
+    const response = await fetch(
+      `http://trefle.io/api/v1/plants/search?token=${process.env.TREFLE_API_KEY}&q=${query}`
+    );
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error("Error loading Trefle data:", error);
+    return [];
+  }
+}
 // IndividualPlants
 export async function getIndividualPlants() {
   await dbConnect();
@@ -149,6 +230,7 @@ export async function savePlantInputs(PlantList) {
 // }
 
 export async function removeIndividualPlants({ individualPlantIds, reason }) {
+  await dbConnect();
   console.log("PlantActions- removeIndividualPlants:", individualPlantIds);
   if (reason == "edit" || reason == "delete") {
     const result = await IndividualPlant.deleteMany({
@@ -188,12 +270,13 @@ export async function generateThumbnail(file) {
 
 // Add Plant Image to images array
 export async function CreatePlantImage(formData) {
+  await dbConnect();
   console.log("CreatePlantImage:", formData);
   try {
     const fields = {
       plantId: formData.get("plantId"),
       file: formData.get("file"),
-      url: formData.get("url"),
+      // url: formData.get("url"),
       description: formData.get("description"),
       quality: formData.get("quality"),
       isOriginal: formData.get("isOriginal"),
@@ -201,22 +284,22 @@ export async function CreatePlantImage(formData) {
       imageSubject: formData.get("imageSubject"),
     };
     console.log("Fields:", fields.file);
-    if (fields.url) {
-      try {
-        const response = await axios.get(fields.url, {
-          responseType: "arraybuffer",
-        });
-        // Create a Blob from the response data
-        const imageBlob = new Blob([response.data], { type: "image/jpeg" }); // Assuming you know the type or can detect it
-        const imageFile = new File([imageBlob], "downloadedImage.jpg", {
-          type: "image/jpeg", // Ensure correct MIME type
-          lastModified: new Date().getTime(), // Current timestamp as lastModified
-          name: "downloadedImage.jpg", // File name
-        });
-      } catch (error) {
-        console.error("Error downloading image:", error);
-      }
-    }
+    // if (fields.url) {
+    //   try {
+    //     const response = await axios.get(fields.url, {
+    //       responseType: "arraybuffer",
+    //     });
+    //     // Create a Blob from the response data
+    //     const imageBlob = new Blob([response.data], { type: "image/jpeg" }); // Assuming you know the type or can detect it
+    //     const imageFile = new File([imageBlob], "downloadedImage.jpg", {
+    //       type: "image/jpeg", // Ensure correct MIME type
+    //       lastModified: new Date().getTime(), // Current timestamp as lastModified
+    //       name: "downloadedImage.jpg", // File name
+    //     });
+    //   } catch (error) {
+    //     console.error("Error downloading image:", error);
+    //   }
+    // }
     if (fields.isMainImage) {
       const newThumbnail = await generateThumbnail(fields.file);
       const updatedThumb = await Plant.findByIdAndUpdate(
@@ -228,15 +311,16 @@ export async function CreatePlantImage(formData) {
       );
       console.log("Updated Thumbnail:", updatedThumb);
     }
+    let imageUrl = "";
     if (fields.file) {
-      const imageUrl = await UploadPlantImage(formData);
-      fields.url = imageUrl;
+      imageUrl = await UploadPlantImage(formData);
+      // fields.url = imageUrl;
     }
-    if (!fields.url || fields.url === "") {
-      return "Add image or URL";
-    }
+    // if (!fields.url || fields.url === "") {
+    //   return "Add image or URL";
+    // }
     const data = {
-      url: fields.url,
+      url: imageUrl,
       tags: fields.imageSubject.split(", "),
       description: fields.description,
       quality: parseInt(fields.quality),

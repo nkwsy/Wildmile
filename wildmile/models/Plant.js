@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 const PlantImageSchema = new mongoose.Schema(
   {
-    url: { type: String, default: "" },
+    url: { type: String, required: true },
     tags: { type: Array, default: [] },
     description: { type: String, required: false, default: "" },
     quality: { type: Number, min: 1, max: 5, default: 3 },
@@ -17,9 +17,23 @@ const PlantImageSchema = new mongoose.Schema(
 
 const PlantSchema = new mongoose.Schema(
   {
-    scientific_name: { type: String, unique: true, required: true },
+    scientific_name: {
+      type: String,
+      unique: true,
+      required: true,
+    },
+    scientificName: String, // for backwards compatibility
     common_name: String,
-    family: String,
+    slug: {
+      type: String,
+      unique: true,
+      // default: function () {
+      //   return this.scientific_name
+      //     ? this.scientific_name.split(" ").join("-").toLowerCase()
+      //     : "";
+      // },
+    },
+    family: { type: String, default: "" },
     family_common_name: String,
     genus: String,
     genus_id: Number,
@@ -51,6 +65,14 @@ const PlantSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+PlantSchema.pre("save", function (next) {
+  if (this.isModified("scientific_name") || this.isNew) {
+    this.slug = this.scientific_name.split(" ").join("-").toLowerCase();
+  }
+
+  next();
+});
 
 export default mongoose.models.Plant || mongoose.model("Plant", PlantSchema);
 // Basing off of https://docs.trefle.io/docs/advanced/plants-fields

@@ -37,6 +37,25 @@ import PlantSelectCards from "./PlantSelectCard";
 import PlantSelectTable from "./PlantSelectTable";
 import ClientContext, { useClient, useClientState } from "./context_mod_map";
 import { KonvaGrid } from "./ModuleTemplate";
+import { use } from "passport";
+// import { PlantCardFromId } from "components/plants/PlantCard";
+import PlantInfoBox from "./PlantInfoBox";
+export function InfoBox() {
+  const [currentPlantHighlight, setCurrentPlantHighlight] = useState(null);
+
+  const plant_highlight = useClientState("plantCellHover");
+  useEffect(() => {
+    if (plant_highlight) {
+      setCurrentPlantHighlight(plant_highlight.plant_id);
+    }
+  }, [plant_highlight]);
+
+  // const plant_id = plant_highlight?.plant_id;
+  if (currentPlantHighlight) {
+    return <PlantCardFromId plant_id={currentPlantHighlight} />;
+  }
+  return <></>;
+}
 
 export function PlantCards(props) {
   const { plants, dispatch, state } = useClient();
@@ -58,20 +77,39 @@ export function PlantCards(props) {
     setShowAvatar(!showAvatar);
   };
 
+  const sortCardPlants = (plants) => {
+    return plants.sort((a, b) => {
+      if (a.family < b.family) {
+        return -1;
+      }
+      if (a.family > b.family) {
+        return 1;
+      }
+      if (a.scientific_name < b.scientific_name) {
+        return -1;
+      }
+      if (a.scientific_name > b.scientific_name) {
+        return 1;
+      }
+      return 0;
+    });
+  };
+
   useEffect(() => {
     async function handlePlantSearch() {
       // const raw_plants = await PlantHandler();
       // const raw_plants = await AllPlants();
       // const plants = JSON.parse(raw_plants);
       console.log("Plants:", plants);
-
-      const plant_values = plants.map((plant) => ({
+      const sorted_plants = sortCardPlants(plants);
+      const plant_values = sorted_plants.map((plant) => ({
         id: plant._id,
         title: plant.commonName || plant.common_name || plant.scientificName,
         subtitle: plant.scientificName || plant.scientific_name,
         image: plant.thumbnail,
         description: plant.notes,
         color: plant.color,
+        family: plant.family,
         tags: [
           ...(plant.tags ?? []),
           plant.family,
@@ -117,6 +155,7 @@ export function PlantCards(props) {
 
     handlePlantSearch();
   }, [plants]);
+
   if (!isReady) {
     return (
       <Container>
@@ -130,10 +169,13 @@ export function PlantCards(props) {
           <Modal opened={opened} onClose={close} title="Planting Template">
             <KonvaGrid />
           </Modal>
-          <Button onClick={open}>Create Template</Button>
-          <Button onClick={toggleAvatar}>
-            {showAvatar ? "Hide Avatar" : "Show Avatar"}
-          </Button>
+          <PlantInfoBox />
+          <Group>
+            <Button onClick={open}>Create Template</Button>
+            <Button onClick={toggleAvatar}>
+              {showAvatar ? "Hide Avatar" : "Show Avatar"}
+            </Button>
+          </Group>
           <SearchableMultiSelect itemsMap={cardPlants} />
           {showAvatar && (
             <PlantSelectCards

@@ -12,7 +12,11 @@ import {
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import PlantImageUpload from "./PlantImageUpload";
-import { updatePlant, updatePlantFamily } from "/app/actions/PlantActions";
+import {
+  createPlant,
+  updatePlant,
+  updatePlantFamily,
+} from "/app/actions/PlantActions";
 
 const default_swatches = [
   "#2e2e2e",
@@ -36,9 +40,12 @@ const PlantEditForm = ({ plant, onSave, onCancel }) => {
   const form = useForm({
     initialValues: {
       ...plant,
-      commonName: plant.commonName || plant.common_name || "e",
+      commonName: plant.commonName || plant.common_name || "",
       scientificName: plant.scientificName || plant.scientific_name || "",
       family: plant.family || "",
+      tags: plant.tags || [],
+      notes: plant.notes || "",
+      links: plant.links || {},
     },
     // Define a schema if you want to include validation with, e.g., yup
     // validate: (values) => { return {}; }
@@ -47,7 +54,12 @@ const PlantEditForm = ({ plant, onSave, onCancel }) => {
   const updatePlantOnClick = async (values) => {
     setLoading.open();
     console.log("Plant to update: ", values);
-    const updatedPlant = await updatePlant(values);
+    let updatedPlant;
+    if (plant?._id) {
+      updatedPlant = await updatePlant(values);
+    } else {
+      updatedPlant = await createPlant(values);
+    }
     if (form.isDirty("color.family") || form.isDirty("family")) {
       const updatedPlantFamily = await updatePlantFamily(
         values.family,
@@ -56,6 +68,7 @@ const PlantEditForm = ({ plant, onSave, onCancel }) => {
     }
     setLoading.close();
     if (updatedPlant) {
+      console.log("Plant updated:", updatedPlant);
       // form.reset(); // Optionally reset form to initial values
       onSave(updatedPlant); // Call onSave to propagate changes or handle success state
     }

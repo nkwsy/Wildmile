@@ -95,7 +95,7 @@ export const PlantingTemplate = () => {
       );
       setSelectedCells(newCells);
       dispatch({ type: "SET_PLANTING_TEMPLATE", payload: newCells });
-      dispatch({ type: "MOD_LAYER_SELECTABLE", payload: true });
+      // dispatch({ type: "MOD_LAYER_SELECTABLE", payload: true });
     }
     if (!selectedTemplate) {
       setSelectedCells(new Map());
@@ -147,7 +147,7 @@ export const PlantingTemplate = () => {
             <Layer>{squares}</Layer>
           </Stage>
         )}
-        (selectedTemplate){" "}
+        {/* (selectedTemplate){" "} */}
         {
           <ColorSelectionButtons
             selectedColor={selectedColor}

@@ -43,7 +43,7 @@ import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { useUser } from "lib/hooks";
 
-import { useContext, Suspense, useState, useEffect } from "react";
+import { useContext, Suspense, useState, useEffect, useRef } from "react";
 import CanvasContext, { useClient, useClientState } from "./context_mod_map";
 const ModuleForm = dynamic(() => import("components/projects/mf.js"));
 // const MultiModuleForm = dynamic(() => import("components/projects/mfs.js"));
@@ -52,6 +52,7 @@ import RemoveModuleForm from "./mf_delete";
 import { usePathname, useSearchParams } from "next/navigation";
 import { PlantCards } from "components/projects/PlantCards";
 import PlantingToolbar from "./PlantingToolbar";
+import classes from "/styles/toolbar.module.css";
 // const [visible, handlers] = useDisclosure(false);
 
 // const [errorMsg, setErrorMsg] = useState('')
@@ -71,8 +72,8 @@ export function sliderz() {
         data={[
           { label: "Modules", value: "modules" },
           { label: "Plants", value: "plants" },
-          { label: "Edit", value: "edit" },
-          { label: "Svelte", value: "svelte" },
+          // { label: "Edit", value: "edit" },
+          // { label: "Svelte", value: "svelte" },
         ]}
       />
     </>
@@ -138,6 +139,7 @@ export default function ModuleToolbar() {
     <>
       {editMode && mode === "plants" && <PlantingToolbar />}
       <Card shadow="xs" padding="lg" pl={8} radius="sm" withBorder>
+        {/* <Card className={classes.toolbar} withBorder> */}
         <CardSection withBorder inheritPadding py="xs">
           <Group justify="space-between">
             <Group justify="space-between">{sliderz()}</Group>

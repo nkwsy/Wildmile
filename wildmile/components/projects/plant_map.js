@@ -169,10 +169,12 @@ export function CreatePlantCellLayer(props) {
     // Add new groups to the layer
     groups.forEach((group) => {
       layer.add(group.konva_object);
+      layer.add(group.konva_group);
     });
     return () => {
       groups.forEach((group) => {
         group.konva_object.remove();
+        group.konva_group.remove();
       });
     };
   }, [groups, plantRef]); // Effect depends on groups and modRef
