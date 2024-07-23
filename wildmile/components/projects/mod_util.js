@@ -109,7 +109,7 @@ export function moduleColor(module) {
     Dock: "#7e6544",
   };
   if (module.tags) {
-    for (tag of module.tags) {
+    for (let tag of module.tags) {
       if (tag === "tree" || tag === "Tree") {
         return "#155d12";
       }
@@ -134,9 +134,6 @@ export const ModuleGen = (config) => {
   //   setSelectedModule(module);
   //   toggleCellSelection(module.x, module.y);
   // };
-  // const stroke = isSelected ? "#1080dc" : "#5ECCA2";
-  // const strokeWidth = isSelected ? 4 : 0.1;
-  // const color = module.model === "5-d" ? "#D68D5E" : "#189968";
 
   const stroke = "#5ECCA2";
   const strokeWidth = 0.1;

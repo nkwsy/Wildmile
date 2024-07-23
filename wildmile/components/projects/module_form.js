@@ -43,7 +43,7 @@ import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { useUser } from "lib/hooks";
 
-import { useContext, Suspense, useState, useEffect } from "react";
+import { useContext, Suspense, useState, useEffect, useRef } from "react";
 import CanvasContext, { useClient, useClientState } from "./context_mod_map";
 const ModuleForm = dynamic(() => import("components/projects/mf.js"));
 // const MultiModuleForm = dynamic(() => import("components/projects/mfs.js"));
@@ -72,8 +72,8 @@ export function sliderz() {
         data={[
           { label: "Modules", value: "modules" },
           { label: "Plants", value: "plants" },
-          { label: "Edit", value: "edit" },
-          { label: "Svelte", value: "svelte" },
+          // { label: "Edit", value: "edit" },
+          // { label: "Svelte", value: "svelte" },
         ]}
       />
     </>

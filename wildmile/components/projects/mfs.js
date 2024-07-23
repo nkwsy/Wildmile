@@ -5,6 +5,7 @@ import React, {
   useState,
   useEffect,
   useFormState,
+  useRef,
 } from "react";
 import { useFormStatus } from "react-dom";
 
@@ -25,13 +26,16 @@ import { useParams, useRouter, useFetch, usePathname } from "next/navigation";
 
 import ClientProvider from "components/projects/context_mod_map";
 import { IconTrash } from "@tabler/icons-react";
+import { ModuleGen } from "components/projects/mod_util";
+import { use } from "passport";
+import { Stage, Layer, Rect } from "react-konva";
 
 export default function MultiModuleForm({ returnSelectedCells }) {
   const router = useRouter();
 
   const pathname = usePathname();
   const params = useParams();
-
+  const modExampleRef = useState(null);
   const { newModules, setNewModules } = useContext(ClientProvider);
   console.log("Params:", params);
   const locations = [];
@@ -48,7 +52,7 @@ export default function MultiModuleForm({ returnSelectedCells }) {
     projectName: params.project,
     sectionName: params.section,
     shape: "",
-    tag: [],
+    // tag: [],
     tags: [],
   };
 
@@ -86,6 +90,30 @@ export default function MultiModuleForm({ returnSelectedCells }) {
       // Handle the error as needed
     }
   }
+  useEffect(() => {
+    if (modExampleRef.current) {
+      console.log("Ref:", modExampleRef.current);
+    }
+    if (
+      form.getValues("model") &&
+      form.getValues("shape") &&
+      form.getValues("orientation") &&
+      form.getValues("flipped") &&
+      form.getValues("island_name") &&
+      form.getValues("locationCode") &&
+      form.getValues("tags")
+    ) {
+      console.log("Form values:", form.values);
+      let example_module_shape = ModuleGen({
+        module: form.values,
+        cellWidth: 50,
+        cellHeight: 150,
+      });
+      modExampleRef.current = example_module_shape;
+    } else {
+      modExampleRef.current = null;
+    }
+  }, [form]);
 
   const initialState = {
     message: null,
@@ -108,6 +136,13 @@ export default function MultiModuleForm({ returnSelectedCells }) {
     <>
       <Box maw={340} mx="auto">
         {/* <form action={formAction}> */}
+        <Stage width={160} height={160}>
+          <Layer>
+            {/* <Rect x={20} y={50} width={100} height={100} fill="red" /> */}
+            <div ref={modExampleRef} />
+          </Layer>
+        </Stage>
+
         <form action={submitForm}>
           <Group style={{ display: "flex", gap: "8px" }}>
             <SegmentedControl
@@ -162,7 +197,11 @@ export default function MultiModuleForm({ returnSelectedCells }) {
               {...form.getInputProps("locationCode")}
             />
           </Group>
-          <TagsInput label="Tags" {...form.getInputProps("tags")} />
+          <TagsInput
+            label="Tags"
+            placeholder="enter tag"
+            {...form.getInputProps("tags")}
+          />
           <TextInput label="Notes" {...form.getInputProps("notes")} />
           {/* <input
             type="hidden"
