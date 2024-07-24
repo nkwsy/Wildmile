@@ -1,6 +1,9 @@
 import User from "models/User";
 import getAvatar from "../avatar";
 
+import dbConnect from "./setup";
+
+
 export async function getAllUsers() {
   // For demo purpose only. You are not likely to have to return all users.
   const users = await User.find({}, [
@@ -26,6 +29,7 @@ export async function createUser({
   if (!picture) {
     picture = getAvatar(name);
   }
+  await dbConnect()
   // Here you should insert the user into the database
   const user = await User.create({
     email: email,
@@ -61,6 +65,7 @@ export async function convertEmailsToUserIds(emails) {
 }
 
 export async function findUserByEmail(email) {
+  await dbConnect()
   console.log("findUserByEmail", email);
 
   // Here you find the user based on id/email in the database
@@ -73,6 +78,7 @@ export async function findUserByEmail(email) {
 }
 
 export async function updateUserByEmail(req, email, update) {
+  await dbConnect()
   // Updating requires the _id which we filter out of results in other places so lets
   const user = await User.findOne({ email: email });
 

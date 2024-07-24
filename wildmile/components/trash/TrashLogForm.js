@@ -76,8 +76,8 @@ export default function TrashLogForm() {
       const data = await res.json();
       const id = data._id;
 
-      revalidatePath("/trashlog");
-      router.push(`/trashlog/${id}`); // Use the useRouter instance for navigation
+      revalidatePath("/trash");
+      router.push(`/trash/${id}`); // Use the useRouter instance for navigation
     } else {
       setErrorMsg(await res.text()); // Set error message from API response
     }

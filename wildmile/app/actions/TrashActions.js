@@ -41,18 +41,32 @@ export async function getTrashCount(itemId, logId) {
 
 export async function CreateLog(values) {
   await dbConnect();
-  console.log("Values:", values.site);
+  console.log("Values:", values);
   const cleanValues = cleanObject(values);
   const session = await getSession();
   console.log("clean values:", cleanValues);
   // Here you should insert the Log into the database
-  const log = await TrashLog.create(
-    { ...values, creator: session._id }
-    // { ...cleanValues }
-  );
-  console.log("Log:", log);
-  // revalidatePath("/trash"); // Update cached posts
-  redirect(`/trash/log/${log._id}`); // Navigate to the new post page
+  // let log;
+  if (!values._id) {
+    const log = await TrashLog.create({
+      ...values,
+      creator: session._id,
+    });
+    revalidatePath("/trash"); // Update cached posts
+    redirect(`/trash/log/${log._id}`); // Navigate to the new post page
+
+    console.log("New TrashLog:", log);
+  } else {
+    const log = await TrashLog.findByIdAndUpdate(
+      values._id,
+      { ...values, creator: session._id },
+      // { ...cleanValues }
+      { upsert: true, new: true, runValidators: true }
+    );
+    revalidatePath("/trash"); // Update cached posts
+    redirect(`/trash/log/${log._id}`); // Navigate to the new post page
+    console.log("Update TrashLog:", log);
+  }
   return { success: true, data: JSON.stringify(log) };
 }
 
@@ -130,3 +144,66 @@ export const UploadTrashImage = async (formData) => {
     return { success: false, error: e };
   }
 };
+
+// Trash Log Actions
+
+export async function getTrashLogs() {
+  await dbConnect();
+
+  /* find all the data in our database */
+  const result = await TrashLog.find({ deleted: false }, [
+    "-__v",
+    "-createdAt",
+    "-updatedAt",
+  ]).sort({ timeEnd: -1 });
+
+  const trashLogs = result.map((doc) => {
+    const log = doc.toObject();
+
+    // We need to convert everything to be JSON serializable
+    log._id = String(log._id);
+    log.timeStart = Date.parse(log.timeStart);
+    log.timeEnd = Date.parse(log.timeEnd);
+    console.log(log);
+    log.creator = String(log.creator);
+    return log;
+  });
+
+  return trashLogs;
+}
+
+export async function getTrashLogById(id) {
+  await dbConnect();
+  const log = await TrashLog.findById(id, [
+    "-__v",
+    "-createdAt",
+    "-updatedAt",
+  ]).lean();
+  log._id = String(log._id);
+  log.creator = String(log.creator);
+  return log;
+}
+
+export async function updateTrashLogById(id, update) {
+  await dbConnect();
+  const log = await TrashLog.findByIdAndUpdate(id, update);
+  return log;
+}
+
+export async function deleteTrashLogById(id) {
+  await dbConnect();
+  const log = await TrashLog.findByIdAndUpdate(id, { deleted: true });
+  return log;
+}
+
+export async function getTrashLogByUser(userId) {
+  await dbConnect();
+  const logs = await TrashLog.find({ creator: userId, deleted: false }, [
+    "-__v",
+    "-createdAt",
+    "-updatedAt",
+  ])
+    .sort({ timeEnd: -1 })
+    .lean();
+  return logs;
+}

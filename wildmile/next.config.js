@@ -4,12 +4,12 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 
 module.exports = withBundleAnalyzer({});
 
-module.exports = {
-  // Experimental features configuration
-  experimental: {
-    esmExternals: "loose", // Allows importing ESM packages as CommonJS
-    serverComponentsExternalPackages: ["mongoose"], // Prevents bundling for certain server packages
-  },
+// module.exports = {
+//   // Experimental features configuration
+//   experimental: {
+//     esmExternals: "loose", // Allows importing ESM packages as CommonJS
+//     serverComponentsExternalPackages: ["mongoose"], // Prevents bundling for certain server packages
+//   },
 
   // Webpack configuration adjustments
   webpack: (
@@ -37,3 +37,4 @@ module.exports = {
     return config;
   },
 };
+

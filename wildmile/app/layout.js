@@ -20,8 +20,8 @@ import { HeaderNav } from "/components/nav_bar";
 // import Footer from "../components/footer";
 
 export const metadata = {
-  title: "My Mantine app",
-  description: "I have followed setup instructions carefully",
+  title: "Urban Rivers",
+  description: "",
 };
 
 const theme = createTheme({
@@ -48,7 +48,7 @@ export default function RootLayout({ children }) {
 
         {/* <Hydration /> */}
 
-        <MantineProvider>
+        <MantineProvider theme={theme}>
           {/* <HeaderNav /> */}
           {children}
         </MantineProvider>
