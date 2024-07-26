@@ -112,7 +112,7 @@ export async function createPlant(formData) {
   if (alreadyExists) {
     return "Plant already exists";
   }
-  const result = await Plant.create(formData);
+  const result = await Plant.create(rawFormData);
   revalidatePath("/");
   return JSON.stringify(result);
 }
@@ -173,6 +173,22 @@ export async function searchTrefleData(query) {
     return data.data;
   } catch (error) {
     console.error("Error loading Trefle data:", error);
+    return [];
+  }
+}
+
+// `https://api.gbif.org/v1/species/match?name=${query}&rank=SPECIES&class=Plantae`
+export async function searchPlantGBIFData(query) {
+  try {
+    const response = await fetch(
+      `https://api.gbif.org/v1/species/search?datasetKey=d7dddbf4-2cf0-4f39-9b2a-bb099caae36c&higherTaxonKey=6&q=${query}`
+    );
+    const data = await response.json();
+    console.log("GBIF Data:", data);
+    return data.results;
+    // return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
     return [];
   }
 }

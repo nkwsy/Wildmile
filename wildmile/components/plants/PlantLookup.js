@@ -20,15 +20,22 @@ import {
 import { useState } from "react";
 import { useForm } from "@mantine/form";
 import Link from "next/link";
-import { searchTrefleData } from "app/actions/PlantActions";
+import {
+  searchPlantGBIFData,
+  searchTrefleData,
+} from "app/actions/PlantActions";
 import { PlantCardUnformated } from "./PlantCard";
 import classes from "/styles/imagecard.module.css";
 
 export function PlantCard(raw_plant, setSelectedPlant) {
   let plant = {
-    id: raw_plant.id,
+    // id: raw_plant.id,
     title:
-      raw_plant.commonName || raw_plant.common_name || raw_plant.scientificName,
+      raw_plant.commonName ||
+      raw_plant.common_name ||
+      raw_plant.scientificName ||
+      raw_plant.cannonicalName ||
+      raw_plant.common_names[0],
     subtitle: raw_plant.scientificName || raw_plant.scientific_name,
     image: raw_plant.thumbnail || raw_plant.image_url || "/No_plant_image.jpg",
     description: raw_plant.notes || "",
@@ -37,7 +44,7 @@ export function PlantCard(raw_plant, setSelectedPlant) {
   };
   return (
     <Card
-      key={raw_plant.id}
+      key={raw_plant.title}
       onClick={() => setSelectedPlant(raw_plant)}
       withBorder
       padding="lg"
@@ -76,11 +83,17 @@ export function PlantCard(raw_plant, setSelectedPlant) {
 }
 
 export function PlantSearch({ setSelectedPlant }) {
-  const [plant_results, setPlantResults] = useState([]);
+  const [plant_results, setPlantResults] = useState(null);
   const form = useForm();
 
   const searchPlants = async () => {
-    const result = await searchTrefleData(form.values.plant_name);
+    // const result = await searchTrefleData(form.values.plant_name);
+    const result = await searchPlantGBIFData(form.values.plant_name);
+    // let truncated_result = {
+    //   scientific_name: result.cannonicalName,
+    //   common_names: result.commonName,
+    //   family: result.family,
+    // };
     setPlantResults(result);
     console.log("Result:", result);
   };
@@ -105,9 +118,12 @@ export function PlantSearch({ setSelectedPlant }) {
           { maxWidth: "36rem", cols: 1, spacing: "sm" },
         ]}
       >
-        {plant_results.map((raw_plant) =>
-          PlantCard(raw_plant, setSelectedPlant)
-        )}
+        {/* {plant_results && setSelectedPlant(plant_results)} */}
+
+        {plant_results &&
+          plant_results.map((raw_plant) =>
+            PlantCard(raw_plant, setSelectedPlant)
+          )}
       </SimpleGrid>
     </>
   );
