@@ -41,7 +41,11 @@ const PlantEditForm = ({ plant, onSave, onCancel }) => {
     initialValues: {
       ...plant,
       commonName: plant.commonName || plant.common_name || "",
-      scientificName: plant.scientificName || plant.scientific_name || "",
+      scientificName:
+        plant.canonicalName ||
+        plant.scientificName ||
+        plant.scientific_name ||
+        "",
       family: plant.family || "",
       tags: plant.tags || [],
       notes: plant.notes || "",
