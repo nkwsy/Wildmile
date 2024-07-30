@@ -8,16 +8,10 @@ const PlantImageSchema = new mongoose.Schema(
     description: { type: String, required: false, default: "" },
     quality: { type: Number, min: 1, max: 5, default: 3 },
     original: { type: Boolean, default: false },
-  }
+  },
+  { toObject: { virtuals: true, flattenObjectIds: true } }
   // { _id: false }
 );
-PlantImageSchema.set("toObject", {
-  transform: function (doc, ret, options) {
-    ret.id = ret._id.toString();
-    delete ret._id;
-    return ret;
-  },
-});
 
 // copyright: String,
 // metadata: Object,
@@ -71,7 +65,7 @@ const PlantSchema = new mongoose.Schema(
     // ],
     tags: Array,
   },
-  { timestamps: true }
+  { timestamps: true, toObject: { virtuals: true, flattenObjectIds: true } }
 );
 
 PlantSchema.pre("save", function (next) {

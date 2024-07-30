@@ -8,6 +8,16 @@ export function cleanObject(obj) {
   }, {});
 }
 
+export function convertIdsToString(obj) {
+  if (Array.isArray(obj)) {
+    obj.forEach(convertIdsToString);
+  } else if (obj && typeof obj === "object") {
+    if (obj._id) {
+      obj._id = obj._id.toString();
+    }
+    Object.values(obj).forEach(convertIdsToString);
+  }
+}
 export function sortAlphabetically(object, key, direction = "asc") {
   return object.sort((a, b) => {
     const nameA = a[key].toUpperCase(); // ignore upper and lowercase
