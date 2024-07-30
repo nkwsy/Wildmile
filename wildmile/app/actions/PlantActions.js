@@ -126,14 +126,14 @@ export async function getPlantFamily(family) {
   try {
     const result = await Plant.findOne({ family: family }, ["color"]);
     if (!result) {
-      return null;
+      return "";
     }
     if (result.color.family) {
       return result.color.family;
     }
   } catch (error) {
     console.error("Error getting plant family:", error);
-    return null;
+    return "";
   }
 }
 
@@ -213,6 +213,8 @@ export async function getIndividualPlants() {
 export async function getRandomPlant() {
   await dbConnect();
   const result = await Plant.aggregate([{ $sample: { size: 1 } }]);
+  result[0]._id = result[0]._id.toString();
+  console.log("Random Plant:", result[0]);
   // const randomPlant = JSON.stringify(result[0])
   return result[0];
 }

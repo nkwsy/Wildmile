@@ -6,7 +6,7 @@ import classes from "/styles/PlantDetails.module.css";
 // import PlantInfoModal from "./PlantInfoModal";
 export async function renderImages(imagesData) {
   // Flatten the images object into an array of image objects
-
+  if (!imagesData) return null;
   const allImages = Object.entries(imagesData).flatMap(([section, images]) =>
     images.map((image) => ({ ...image, section }))
   );
