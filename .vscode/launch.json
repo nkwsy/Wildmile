@@ -15,6 +15,7 @@
     {
       "name": "Next.js: debug server-side",
       "type": "node-terminal",
+      "cwd": "${workspaceFolder}/wildmile",
       "request": "launch",
       "command": "npm run dev"
     },
@@ -22,7 +23,8 @@
       "name": "Next.js: debug client-side",
       "type": "chrome",
       "request": "launch",
-      "url": "http://localhost:3000"
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/wildmile"
     },
     {
       "name": "Next.js: debug full stack",

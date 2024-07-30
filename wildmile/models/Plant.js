@@ -11,6 +11,14 @@ const PlantImageSchema = new mongoose.Schema(
   }
   // { _id: false }
 );
+PlantImageSchema.set("toObject", {
+  transform: function (doc, ret, options) {
+    ret.id = ret._id.toString();
+    delete ret._id;
+    return ret;
+  },
+});
+
 // copyright: String,
 // metadata: Object,
 // });

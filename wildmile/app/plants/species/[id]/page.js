@@ -27,11 +27,14 @@ export async function getPlant(id) {
     "-createdAt",
     "-updatedAt",
   ]);
+  // const flatResult = result.toJSON();
   // const plant = result;
   // console.log("Plant:", result);
-  const plant = result.toObject();
-  delete plant.__v;
-  // plant._id = String(plant._id);
+
+  const plant = result.toObject({ transform: true });
+  // delete plant.__v;
+  // result._id = result._id.toString();
+  console.log("FlatResult:", plant);
   return plant;
 }
 
