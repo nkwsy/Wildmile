@@ -10,6 +10,7 @@ import { getSession } from "lib/getSession";
 import sharp from "sharp";
 import axios from "axios";
 import dbConnect from "lib/db/setup";
+import { sortAlphabetically } from "lib/utils";
 
 export async function PlantHandler() {
   try {
@@ -25,9 +26,11 @@ export async function PlantHandler() {
   }
 }
 
-export async function getPlants() {
+export async function getPlants({ filter }) {
+  await dbConnect();
   try {
-    const result = await getAllPlants();
+    const plants = await Plant.find().lean();
+    const result = sortAlphabetically(plants, "scientific_name");
     console.log("Result:", result);
     //   if (result.success === true) {
     //     console.log("success");
@@ -74,7 +77,7 @@ export async function updatePlant(formData) {
   console.log("Raw Form Data:", rawFormData);
 
   const result = await Plant.findByIdAndUpdate(formData._id, formData);
-  revalidatePath("/");
+  revalidatePath("/plants/species");
   return JSON.stringify(result);
 }
 
@@ -113,7 +116,7 @@ export async function createPlant(formData) {
     return "Plant already exists";
   }
   const result = await Plant.create(rawFormData);
-  revalidatePath("/");
+  revalidatePath("/plants/species");
   return JSON.stringify(result);
 }
 // get Plant Family data
