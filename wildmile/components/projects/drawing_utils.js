@@ -11,7 +11,7 @@ export function formatScientificName(scientificName) {
   const words = scientificName.split(" ");
   let formattedName = `${words[0].charAt(0)}.`;
   if (words.length > 1) {
-    formattedName += `\n${words[1].substring(0, 6)}`;
+    formattedName += `\n${words[1].substring(0, 4)}`;
   }
   return formattedName;
 }
