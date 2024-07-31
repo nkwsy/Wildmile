@@ -86,8 +86,8 @@ export function setCellPlantFill(plantCell, plantData) {
   var text = new Konva.Text({
     // x: cell.x() + 0.2,
     // y: cell.y() + 0.2,
-    x: 0.2,
-    y: 0.2,
+    x: 0.4,
+    y: 0.4,
     fontSize: 2,
     // fontFamily: "Courier New",
     // fontStyle: "monospace",
@@ -95,6 +95,13 @@ export function setCellPlantFill(plantCell, plantData) {
     fill: "white",
     listening: false,
   });
+
+  if (plantData.color && plantData.color.main) {
+    text.stroke(plantData.color.main);
+    text.fillAfterStrokeEnabled(true);
+    text.strokeWidth(1);
+    text.lineJoin("round");
+  }
   // format name into short version
   const formattedName = formatScientificName(plantData.scientific_name);
   text.text(formattedName);
