@@ -50,6 +50,11 @@ const PlantEditForm = ({ plant, onSave, onCancel }) => {
       tags: plant.tags || [],
       notes: plant.notes || "",
       links: plant.links || {},
+      color: {
+        main: plant.color?.main || "",
+        accent: plant.color?.accent || "",
+        family: plant.color?.family || "",
+      },
     },
     // Define a schema if you want to include validation with, e.g., yup
     // validate: (values) => { return {}; }
