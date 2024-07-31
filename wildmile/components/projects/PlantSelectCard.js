@@ -14,9 +14,11 @@ import {
   AccordianItem,
   Chip,
   Table,
+  ActionIcon,
 } from "@mantine/core";
 import { useClientState } from "./context_mod_map";
-
+import { IconLink } from "@tabler/icons-react";
+import Link from "next/link";
 export default function PlantSelectCards(props) {
   const [showAvatar, setShowAvatar] = useState(true);
 
@@ -68,6 +70,15 @@ export default function PlantSelectCards(props) {
               </div>
             </Group>
             {/* <Group align="right" direction="column"> */}
+            <ActionIcon
+              component={Link}
+              href={item.url}
+              size="input-xs"
+              right="xs"
+              variant="default"
+            >
+              <IconLink />
+            </ActionIcon>
           </Paper>
         ))}
       </ScrollArea.Autosize>

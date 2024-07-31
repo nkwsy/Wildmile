@@ -40,6 +40,7 @@ import { KonvaGrid } from "./ModuleTemplate";
 import { use } from "passport";
 // import { PlantCardFromId } from "components/plants/PlantCard";
 import PlantInfoBox from "./PlantInfoBox";
+import { PlantMenu } from "./PlantMenu";
 export function InfoBox() {
   const [currentPlantHighlight, setCurrentPlantHighlight] = useState(null);
 
@@ -110,6 +111,7 @@ export function PlantCards(props) {
         description: plant.notes,
         color: plant.color,
         family: plant.family,
+        url: `/plants/species/${plant.slug}` || "",
         tags: [
           ...(plant.tags ?? []),
           plant.family,
