@@ -100,6 +100,7 @@ export function setCellPlantFill(plantCell, plantData) {
     text.stroke(plantData.color.main);
     text.fillAfterStrokeEnabled(true);
     text.strokeWidth(1);
+    text.lineJoin("round");
   }
   // format name into short version
   const formattedName = formatScientificName(plantData.scientific_name);
