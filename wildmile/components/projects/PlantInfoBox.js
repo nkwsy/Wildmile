@@ -1,3 +1,4 @@
+"use client";
 import {
   SimpleGrid,
   Text,
@@ -14,12 +15,14 @@ import {
   Group,
   Chip,
   ChipGroup,
+  ActionIcon,
 } from "@mantine/core";
 import Link from "next/link";
 import { getPlant } from "/app/actions/PlantActions";
 import classes from "/styles/imagecard.module.css";
 import { useEffect, useState } from "react";
 import { useClientState } from "./context_mod_map";
+import { IconLink } from "@tabler/icons-react";
 
 export function PlantCardUnformated(plant_data) {
   const plant = {
@@ -34,6 +37,7 @@ export function PlantCardUnformated(plant_data) {
     description: plant_data.notes || "",
     family: plant_data.family || plant_data.family_common_name || "",
     color: plant_data.color || "grey",
+    url: `/plants/species/${plant_data.slug}` || "",
 
     // tags: plant.family, plant.family_common_name ?? null.filter(Boolean),
   };
@@ -44,23 +48,38 @@ export function PlantCardUnformated(plant_data) {
 export default function PlantInfoBox() {
   const [plant, setPlant] = useState(null);
   const [plant_id, setPlantId] = useState(null);
-  const plant_highlight = useClientState("plantCellHover");
-
+  // const plant_highlight = useClientState("plantCellHover");
+  const plant_highlight = useClientState("selectedPlantCell");
+  console.log("PlantHighlight:", plant_highlight);
   useEffect(() => {
-    async function fetchPlant(plant_id) {
-      const plant_data = await getPlant(plant_id);
-      setPlant(PlantCardUnformated(plant_data));
-    }
-    if (plant_highlight?.plant === plant_id) {
-      return;
-    }
-    if (plant_highlight?.plant) {
-      setPlantId(plant_highlight.plant);
-    }
-    if (plant_id) {
-      fetchPlant(plant_id);
+    const lastValue = Array.from(plant_highlight.values()).pop();
+    if (lastValue && lastValue.plant_id !== plant_id) {
+      setPlantId(lastValue.plant_id);
     }
   }, [plant_highlight]);
+  useEffect(() => {
+    const fetchPlant = async () => {
+      const response = await fetch(`/api/plants/getPlant/${plant_id}`, {
+        next: { tags: ["individualPlants"] },
+      });
+      console.log("Fetching and updating plants...");
+      const raw_response = await response.json();
+      // Simulate fetching data
+      const data = JSON.parse(raw_response);
+      // const plant_data = await getPlant(plant_id);
+      console.log("PlantData:", data);
+      setPlant(PlantCardUnformated(data));
+    };
+    // if (plant_highlight?.plant === plant_id) {
+    //   return;
+    // }
+    // if (plant_highlight?.plant) {
+    //   setPlantId(plant_highlight.plant);
+    // }
+    if (plant_id) {
+      fetchPlant();
+    }
+  }, [plant_id]);
   if (!plant) {
     return <></>;
   }
@@ -97,6 +116,9 @@ export default function PlantInfoBox() {
           <Badge variant="light" color={plant.color.family}>
             {plant.family}
           </Badge>
+          <ActionIcon component={Link} href={plant.url} right="xs">
+            <IconLink />
+          </ActionIcon>
         </div>
       </Group>
     </Card>
