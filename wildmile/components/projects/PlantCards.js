@@ -171,7 +171,6 @@ export function PlantCards(props) {
           <Modal opened={opened} onClose={close} title="Planting Template">
             <KonvaGrid />
           </Modal>
-          <PlantInfoBox />
           <Group>
             <Button onClick={open}>Create Template</Button>
             <Button onClick={toggleAvatar}>

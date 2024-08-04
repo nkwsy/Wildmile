@@ -53,6 +53,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { PlantCards } from "components/projects/PlantCards";
 import PlantingToolbar from "./PlantingToolbar";
 import classes from "/styles/toolbar.module.css";
+import PlantInfoBox from "./PlantInfoBox";
 // const [visible, handlers] = useDisclosure(false);
 
 // const [errorMsg, setErrorMsg] = useState('')
@@ -89,7 +90,7 @@ function EditModeSwitch() {
       payload: value,
     });
   };
-  const { user, loading, mutate }  = useUser();
+  const { user, loading, mutate } = useUser();
 
   if (loading) return <LoadingOverlay visible />;
   if (!user) return <Text>Please log in to edit</Text>;
@@ -146,7 +147,9 @@ export default function ModuleToolbar() {
             <EditModeSwitch />
           </Group>
         </CardSection>
-
+        <CardSection withBorder inheritPadding py="xs">
+          <PlantInfoBox />
+        </CardSection>
         {mode === "plants" && (
           <CardSection withBorder inheritPadding py="xs">
             <Group>
