@@ -5,6 +5,8 @@ import {
   Card,
   Image,
   Badge,
+  Paper,
+  Avatar,
   Modal,
   Title,
   Container,
@@ -20,9 +22,11 @@ import {
 import Link from "next/link";
 import { getPlant } from "/app/actions/PlantActions";
 import classes from "/styles/imagecard.module.css";
+import cardClasses from "/styles/plantcard.module.css";
 import { useEffect, useState } from "react";
 import { useClientState } from "./context_mod_map";
 import { IconLink } from "@tabler/icons-react";
+import exp from "constants";
 
 export function PlantCardUnformated(plant_data) {
   const plant = {
@@ -36,7 +40,12 @@ export function PlantCardUnformated(plant_data) {
       plant_data.thumbnail || plant_data.image_url || "/No_plant_image.jpg",
     description: plant_data.notes || "",
     family: plant_data.family || plant_data.family_common_name || "",
-    color: plant_data.color || "grey",
+    color: plant_data.color || { family: "grey" },
+    // tags: [
+    //   ...(plant_data.tags ?? []),
+    //   plant_data.family,
+    //   plant_data.family_common_name ?? null,
+    // ].filter(Boolean),
     url: `/plants/species/${plant_data.slug}` || "",
 
     // tags: plant.family, plant.family_common_name ?? null.filter(Boolean),
@@ -44,7 +53,94 @@ export function PlantCardUnformated(plant_data) {
   //   return PlantCard({ plant });
   return plant;
 }
+export function PlantInfoCard({ plant }) {
+  return (
+    <Card // key={index} // onClick={()=> updateFormValues(plant)}
+      withBorder
+      padding="lg"
+      radius="md"
+      component={Link}
+      href={`/plants/species/${plant.slug}`}
 
+      // className={classes.mantineCard}
+    >
+      <CardSection mb="sm">
+        <Image
+          src={plant.image || "/No_plant_image.jpg"}
+          alt={plant.title}
+          h="auto"
+          w="100%"
+        />
+      </CardSection>
+
+      <Group align="top" direction="column">
+        <div>
+          <Title className={classes.title}>{plant.title}</Title>
+          <Text
+            size="sm"
+            color="dimmed"
+            fs="italic"
+            c="dimmed"
+            className={classes.subtitle}
+          >
+            {plant.subtitle}
+          </Text>
+          {/* <Text size="sm" color="dimmed" className={classes.description}>
+                {plant.family}
+            </Text> */}
+          <Badge variant="light" color={plant.color.family}>
+            {plant.family}
+          </Badge>
+          <ActionIcon component={Link} href={plant.url} right="xs">
+            <IconLink />
+          </ActionIcon>
+        </div>
+      </Group>
+    </Card>
+  );
+}
+export function PlantInfoCell({ plant }) {
+  return (
+    <Paper className={cardClasses.box}>
+      <Group wrap="nowrap" align="left">
+        <Avatar src={plant.image} radius="sm" size="xl" />
+      </Group>
+      <Group align="top" direction="column">
+        <div>
+          <Text className={classes.title}>{plant.title}</Text>
+          <Text size="sm" color="dimmed" fw={400}>
+            {plant.subtitle}
+          </Text>
+          <Chip.Group>
+            <Badge variant="light" color={plant.color.family}>
+              {plant.family}
+            </Badge>
+            {/* {item.tags.map((tag, index) => (
+              <Badge
+                key={tag + String(index)}
+                className={classes.badge}
+                color={item.color && item.color.family} // Add a conditional check before accessing the family property
+                radius="lg"
+              >
+                {tag}
+              </Badge>
+            ))} */}
+          </Chip.Group>
+        </div>
+      </Group>
+      {/* <Group align="right" direction="column"> */}
+      <ActionIcon
+        component={Link}
+        href={plant.url}
+        size="input-xs"
+        right="xs"
+        variant="default"
+      >
+        <IconLink />
+      </ActionIcon>
+    </Paper>
+  );
+}
 export default function PlantInfoBox() {
   const [plant, setPlant] = useState(null);
   const [plant_id, setPlantId] = useState(null);
@@ -83,44 +179,8 @@ export default function PlantInfoBox() {
   if (!plant) {
     return <></>;
   }
-
-  return (
-    <Card // key={index} // onClick={()=> updateFormValues(plant)}
-      withBorder
-      padding="lg"
-      radius="md"
-      component={Link}
-      href={`/plants/species/${plant.slug}`}
-
-      // className={classes.mantineCard}
-    >
-      <CardSection mb="sm">
-        <Image src={plant.image || "/No_plant_image.jpg"} alt={plant.title} />
-      </CardSection>
-
-      <Group align="top" direction="column">
-        <div>
-          <Title className={classes.title}>{plant.title}</Title>
-          <Text
-            size="sm"
-            color="dimmed"
-            fs="italic"
-            c="dimmed"
-            className={classes.subtitle}
-          >
-            {plant.subtitle}
-          </Text>
-          {/* <Text size="sm" color="dimmed" className={classes.description}>
-                {plant.family}
-            </Text> */}
-          <Badge variant="light" color={plant.color.family}>
-            {plant.family}
-          </Badge>
-          <ActionIcon component={Link} href={plant.url} right="xs">
-            <IconLink />
-          </ActionIcon>
-        </div>
-      </Group>
-    </Card>
-  );
+  if (plant) {
+    return <PlantInfoCell plant={plant} />;
+    // return <PlantInfoCard plant={plant} />;
+  }
 }
