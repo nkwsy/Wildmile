@@ -1,4 +1,4 @@
-const { getPlantTags } = require("../../actions/plantActions");
+import { getPlantTags } from "actions/PlantActions";
 
 export async function GET(request, { params, query, res }) {
   try {
