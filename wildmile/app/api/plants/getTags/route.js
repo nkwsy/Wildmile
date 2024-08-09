@@ -1,4 +1,4 @@
-import { getPlantTags } from "actions/PlantActions";
+import { getPlantTags } from "/actions/PlantActions";
 
 export async function GET(request, { params, query, res }) {
   try {
