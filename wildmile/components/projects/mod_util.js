@@ -360,10 +360,14 @@ export const PlantCellGen = ({
           togglePlantCellSelection(x, y, e.target, plantCell);
           console.log("clicked cell", e.target, e.target.id(), plantCell);
         };
-        rect.on("click", function () {
+        rect.on("click tap", function () {
           // if (plantCell.plant_id) {
           dispatch({ type: "TOGGLE_PLANT_CELL_SELECTION", payload: plantCell });
         });
+        // rect.on("tap", function () {
+        //   // if (plantCell.plant_id) {
+        //   dispatch({ type: "TOGGLE_PLANT_CELL_SELECTION", payload: plantCell });
+        // });
         group.add(rect);
         // rect.on("click", changeSelectedCell);
         rect.on("mouseenter", function () {

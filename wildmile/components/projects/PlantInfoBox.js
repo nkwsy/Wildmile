@@ -46,6 +46,7 @@ export function PlantCardUnformated(plant_data) {
     //   plant_data.family,
     //   plant_data.family_common_name ?? null,
     // ].filter(Boolean),
+    tags: plant_data.tags || [],
     url: `/plants/species/${plant_data.slug}` || "",
 
     // tags: plant.family, plant.family_common_name ?? null.filter(Boolean),
@@ -94,6 +95,20 @@ export function PlantInfoCard({ plant }) {
           <ActionIcon component={Link} href={plant.url} right="xs">
             <IconLink />
           </ActionIcon>
+          {plant.tags && (
+            <ChipGroup>
+              {plant.tags.map((tag, index) => (
+                <Badge
+                  key={tag + String(index)}
+                  className={classes.badge}
+                  color={plant.color && plant.color.family} // Add a conditional check before accessing the family property
+                  radius="lg"
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </ChipGroup>
+          )}
         </div>
       </Group>
     </Card>
@@ -115,17 +130,21 @@ export function PlantInfoCell({ plant }) {
             <Badge variant="light" color={plant.color.family}>
               {plant.family}
             </Badge>
-            {/* {item.tags.map((tag, index) => (
-              <Badge
-                key={tag + String(index)}
-                className={classes.badge}
-                color={item.color && item.color.family} // Add a conditional check before accessing the family property
-                radius="lg"
-              >
-                {tag}
-              </Badge>
-            ))} */}
           </Chip.Group>
+          {plant.tags && (
+            <ChipGroup>
+              {plant.tags.map((tag, index) => (
+                <Badge
+                  key={tag + String(index)}
+                  className={classes.badge}
+                  color={plant.color && plant.color.family} // Add a conditional check before accessing the family property
+                  radius="lg"
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </ChipGroup>
+          )}
         </div>
       </Group>
       {/* <Group align="right" direction="column"> */}
