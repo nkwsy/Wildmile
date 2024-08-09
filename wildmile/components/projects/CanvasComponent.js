@@ -126,10 +126,12 @@ const CanvasComponent = ({ children }) => {
       y: (p1.y + p2.y) / 2,
     };
   }
-  var lastCenter = null;
-  var lastDist = 0;
-  var dragStopped = false;
-
+  // var lastCenter = null;
+  // var lastDist = 0;
+  // var dragStopped = false;
+  const [lastCenter, setLastCenter] = useState(null);
+  const [lastDist, setLastDist] = useState(0);
+  const [dragStopped, setDragStopped] = useState(false);
   const handlePinch = (e) => {
     e.evt.preventDefault();
     const stage = e.target.getStage();
@@ -140,14 +142,16 @@ const CanvasComponent = ({ children }) => {
     // we need to restore dragging, if it was cancelled by multi-touch
     if (touch1 && !touch2 && !stage.isDragging() && dragStopped) {
       stage.startDrag();
-      dragStopped = false;
+      // dragStopped = false;
+      setDragStopped(false);
     }
 
     if (touch1 && touch2) {
       // if the stage was under Konva's drag&drop
       // we need to stop it, and implement our own pan logic with two pointers
       if (stage.isDragging()) {
-        dragStopped = true;
+        setDragStopped(true);
+        // dragStopped = true;
         stage.stopDrag();
       }
 
@@ -161,7 +165,8 @@ const CanvasComponent = ({ children }) => {
       };
 
       if (!lastCenter) {
-        lastCenter = getCenter(p1, p2);
+        // lastCenter = getCenter(p1, p2);
+        setLastCenter(getCenter(p1, p2));
         return;
       }
       var newCenter = getCenter(p1, p2);
@@ -169,7 +174,8 @@ const CanvasComponent = ({ children }) => {
       var dist = getDistance(p1, p2);
 
       if (!lastDist) {
-        lastDist = dist;
+        // lastDist = dist;
+        setLastDist(dist);
       }
 
       // local coordinates of center point
@@ -193,15 +199,18 @@ const CanvasComponent = ({ children }) => {
       };
 
       stage.position(newPos);
-
-      lastDist = dist;
-      lastCenter = newCenter;
+      setLastDist(dist);
+      setLastCenter(newCenter);
+      // lastDist = dist;
+      // lastCenter = newCenter;
     }
   };
 
   const handleTouchEnd = (e) => {
-    lastDist = 0;
-    lastCenter = null;
+    // lastDist = 0;
+    // lastCenter = null;
+    setLastDist(0);
+    setLastCenter(null);
   };
 
   // Function to check if all required values are valid
@@ -249,7 +258,7 @@ const CanvasComponent = ({ children }) => {
         onTouchEnd={handleTouchEnd}
         onWheel={handleWheel}
         rotation={rotation}
-        draggable
+        draggable={true}
       >
         {layers.map((layer) => (
           <Layer key={layer.id} ref={layer.ref} visible={layer.visible}></Layer>
