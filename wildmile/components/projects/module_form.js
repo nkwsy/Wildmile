@@ -73,6 +73,7 @@ export function sliderz() {
         data={[
           { label: "Modules", value: "modules" },
           { label: "Plants", value: "plants" },
+          { label: "Off", value: "off" },
           // { label: "Edit", value: "edit" },
           // { label: "Svelte", value: "svelte" },
         ]}
