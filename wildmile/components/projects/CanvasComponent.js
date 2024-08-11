@@ -35,6 +35,7 @@ const CanvasComponent = ({ children }) => {
   //   };
 
   useStrictMode(true);
+  Konva.hitOnDragEnabled = true;
   // const clientValues = useClient();
   const {
     cellWidth,
@@ -129,9 +130,9 @@ const CanvasComponent = ({ children }) => {
   // var lastCenter = null;
   // var lastDist = 0;
   // var dragStopped = false;
-  const [lastCenter, setLastCenter] = useState(null);
-  const [lastDist, setLastDist] = useState(0);
   const [dragStopped, setDragStopped] = useState(false);
+  const lastDist = useRef(null);
+  const lastCenter = useRef(null);
   const handlePinch = (e) => {
     e.evt.preventDefault();
     const stage = e.target.getStage();
@@ -142,7 +143,6 @@ const CanvasComponent = ({ children }) => {
     // we need to restore dragging, if it was cancelled by multi-touch
     if (touch1 && !touch2 && !stage.isDragging() && dragStopped) {
       stage.startDrag();
-      // dragStopped = false;
       setDragStopped(false);
     }
 
@@ -151,7 +151,6 @@ const CanvasComponent = ({ children }) => {
       // we need to stop it, and implement our own pan logic with two pointers
       if (stage.isDragging()) {
         setDragStopped(true);
-        // dragStopped = true;
         stage.stopDrag();
       }
 
@@ -164,18 +163,16 @@ const CanvasComponent = ({ children }) => {
         y: touch2.clientY,
       };
 
-      if (!lastCenter) {
-        // lastCenter = getCenter(p1, p2);
-        setLastCenter(getCenter(p1, p2));
+      if (!lastCenter.current) {
+        lastCenter.current = getCenter(p1, p2);
         return;
       }
       var newCenter = getCenter(p1, p2);
 
       var dist = getDistance(p1, p2);
 
-      if (!lastDist) {
-        // lastDist = dist;
-        setLastDist(dist);
+      if (!lastDist.current) {
+        lastDist.current = dist;
       }
 
       // local coordinates of center point
@@ -184,14 +181,14 @@ const CanvasComponent = ({ children }) => {
         y: (newCenter.y - stage.y()) / stage.scaleX(),
       };
 
-      var scale = stage.scaleX() * (dist / lastDist);
+      var scale = stage.scaleX() * (dist / lastDist.current);
 
       stage.scaleX(scale);
       stage.scaleY(scale);
 
       // calculate new position of the stage
-      var dx = newCenter.x - lastCenter.x;
-      var dy = newCenter.y - lastCenter.y;
+      var dx = newCenter.x - lastCenter.current.x;
+      var dy = newCenter.y - lastCenter.current.y;
 
       var newPos = {
         x: newCenter.x - pointTo.x * scale + dx,
@@ -199,18 +196,17 @@ const CanvasComponent = ({ children }) => {
       };
 
       stage.position(newPos);
-      setLastDist(dist);
-      setLastCenter(newCenter);
-      // lastDist = dist;
-      // lastCenter = newCenter;
+      // update lastDist and lastCenter
+      lastDist.current = dist;
+      lastCenter.current = newCenter;
     }
   };
 
   const handleTouchEnd = (e) => {
     // lastDist = 0;
     // lastCenter = null;
-    setLastDist(0);
-    setLastCenter(null);
+    lastDist.current = 0;
+    lastCenter.current = null;
   };
 
   // Function to check if all required values are valid
