@@ -10,7 +10,7 @@ import { getSession } from "lib/getSession";
 import sharp from "sharp";
 import axios from "axios";
 import dbConnect from "lib/db/setup";
-import { sortAlphabetically } from "lib/utils";
+import { sortAlphabetically, convertIdsToString } from "lib/utils";
 
 export async function PlantHandler() {
   try {
@@ -148,6 +148,19 @@ export async function updatePlantFamily(family, color) {
   console.log("updated plant family:", result);
   revalidatePath("/");
   return JSON.stringify(result);
+}
+
+// Function to get a list of unique tags used in plants
+export async function getUniquePlantTags() {
+  await dbConnect();
+
+  const result = await Plant.aggregate([
+    { $unwind: "$tags" },
+    { $group: { _id: null, uniqueTags: { $addToSet: "$tags" } } },
+    { $project: { _id: 0, uniqueTags: 1 } },
+  ]);
+
+  return result.length > 0 ? result[0].uniqueTags : [];
 }
 
 // Load Plant data from Trefle API
