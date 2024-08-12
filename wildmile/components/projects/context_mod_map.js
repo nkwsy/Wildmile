@@ -393,7 +393,10 @@ export const plantCellReducer = (state, action) => {
         }
         return { ...state, selectedPlantCellsToEdit: newPlantCellsToEdit };
       } else {
-        newPlantCells.set(key, plantCell);
+        //not in edit mode, select single plant
+        const newPlantCells = new Map([[key, plantCell]]);
+        return { ...state, selectedPlantCell: newPlantCells };
+        // newPlantCells.set(key, plantCell);
       }
       return { ...state, selectedPlantCell: newPlantCells };
 
