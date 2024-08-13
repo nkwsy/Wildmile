@@ -27,6 +27,7 @@ export async function updateTrashCount(itemId, logId, quantity) {
     }
   );
   console.log("Updated item: ", item);
+  revalidatePath("/trash/log/[id]", "page");
   return item.count;
 }
 

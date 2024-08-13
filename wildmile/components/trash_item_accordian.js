@@ -108,7 +108,7 @@ function TrashItemAccordian({ props }) {
 
     accordionItems.push(
       <div key={material}>
-        <AccordionItem key={material} value={material} onChange={setValue}>
+        <AccordionItem key={material} value={material}>
           <AccordionControl className={classes.accordionControl}>
             <Text className={classes.material}> {material}</Text>
           </AccordionControl>
