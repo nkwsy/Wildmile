@@ -5,12 +5,18 @@ import dbConnect from "/lib/db/setup";
 import Project from "/models/Project";
 import Section from "/models/Section";
 import { IconCardGrid } from "/components/icon_card_grid";
+import dynamic from "next/dynamic";
+
+// const GeneratePDF = dynamic(() => import("/lib/pdfgen"), { ssr: false });
+import { getPdf } from "/lib/pdfgen";
 
 export default async function Page(context) {
   // const router = useRouter();
   const projectName = context.params.project;
   const sections = await getSections(projectName);
   const sectionCards = await (<IconCardGrid cards={sections.sections_card} />);
+  // GeneratePDF("new2");
+  getPdf();
   const cards = [
     {
       icon: IconPlus,
