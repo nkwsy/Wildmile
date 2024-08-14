@@ -516,7 +516,7 @@ export async function GET(req) {
   }
 
   // Generate the PDF by processing a specific module
-  await gettingModule("66205d46f994ebe9e71dc38e");
+  await gettingModule(sectionId);
 
   // Return the generated PDF
   const pdfBytes = doc.output("arraybuffer");
