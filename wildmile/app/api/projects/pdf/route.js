@@ -7,16 +7,16 @@ import Module from "/models/Module";
 
 export async function GET(req) {
   const url = new URL(req.url);
-  //   let sectionId = url.searchParams.get("sectionId");
-  const sectionId = "66205d46f994ebe9e71dc38e";
+  let sectionId = url.searchParams.get("sectionId");
+  //   const sectionId = "66205d46f994ebe9e71dc38e";
   console.log(sectionId);
-  //   if (!sectionId) {
-  //     let sectionId = "66205d46f994ebe9e71dc38e";
-  //     // return NextResponse.json(
-  //     //   { error: "sectionId is required" },
-  //     //   { status: 400 }
-  //     // );
-  //   }
+  if (!sectionId) {
+    //     let sectionId = "66205d46f994ebe9e71dc38e";
+    return NextResponse.json(
+      { error: "sectionId is required" },
+      { status: 400 }
+    );
+  }
   const doc = new jsPDF();
 
   // Function to get distinct plants based on module coordinates
@@ -135,7 +135,7 @@ export async function GET(req) {
 
     for (const mod of minfo) {
       const plantTable = await gettingPlants(mod.x, mod.y);
-
+      groupRender(mod, minfo, mod);
       await generatePlants(mod.x, mod.y);
       //   await drawModShape(mod.shape, mod.orientation, mod.flipped);
       await generateBrackets(
@@ -304,6 +304,214 @@ export async function GET(req) {
       if (shape === "T2.3") color = orientation === "RH" ? "Yellow" : "Orange";
     }
     return color;
+  }
+
+  function generateGroups(mod, allMods) {
+    // groups = ['A','B','C','D','E','F','G','H','I','J','K','M','N','O','P'];
+    //   groups = ["M", "N", "O", "P"];
+    //   subGroups = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"];
+    //   thisModGroup = returnGroup(mod.tags, groups, subGroups);
+    //   console.log("thismod", thisModGroup);
+    //   AllModsInGroup = returnAllModsInGroup(
+    //     allMods,
+    //     thisModGroup.group,
+    //     thisModGroup.subgroup,
+    //     subGroups
+    //   );
+    //returnAllGroups(allMods, groups,subGroups)
+    //   groupText = `Group: ${thisModGroup.group}${thisModGroup.subgroup}`;
+    //   groupNum = `Group: ${thisModGroup.group}`;
+    //   doc.setFontSize(22);
+    //   doc.text(groupText, 18, 176); //{baseline:'top', maxWidth: 64}
+    //   doc.text(groupNum, 18, 226);
+    groupRender(thisModGroup, AllModsInGroup, mod);
+  }
+
+  function moduleCoordinates(
+    shape,
+    orientation,
+    flipped,
+    width,
+    height,
+    homeX,
+    homeY,
+    options = "S"
+  ) {
+    console.log(
+      "moduleCoordinates",
+      shape,
+      orientation,
+      flipped,
+      width,
+      height,
+      homeX,
+      homeY
+    );
+    if (["T3", "T2.3"].includes(shape)) {
+      const xTl = homeX;
+      const yTl = homeY;
+      const xTr = homeX + width;
+      const yTr = homeY;
+      const xBl = homeX;
+      const yBl = homeY + height;
+      const xBr = homeX + width;
+      const yBr = homeY + height;
+      let coordinates;
+      // doc.setLineWidth();
+
+      if (orientation === "RH") {
+        if (flipped === true) {
+          console.log("flippped", xTl, yTl, xTr, yTr, xBr, yBr);
+          doc.triangle(xTl, yTl, xTr, yTr, xBr, yBr, options);
+        } else {
+          doc.triangle(xTl, yTl, xBl, yBl, xBr, yBr, options);
+        }
+      } else if (orientation === "LH") {
+        if (flipped === true) {
+          doc.triangle(xTr, yTr, xBl, yBl, xTl, yTl, options);
+        } else {
+          doc.triangle(xTr, yTr, xBr, yBr, xBl, yBl, options);
+        }
+      }
+    }
+    if (orientation === "flat") {
+      console.log("oeuttuhoeh", homeX, homeY, width, height);
+      doc.rect(homeX, homeY, width, height, options);
+    }
+  }
+
+  function difference(a, b) {
+    return Math.abs(a - b);
+  }
+  function groupRender(thisMod, AllModsInGroup, mod) {
+    let thisSubGroup = [];
+    let thisGroup = AllModsInGroup;
+    let largestSubX = -1;
+    let largestSubY = -1;
+    let largestX = -1;
+    let largestY = -1;
+    // for (var i = 0; i < AllModsInGroup.length; i++) {
+    //   if (thisMod.group === AllModsInGroup[i].groupInfo.group) {
+    //     thisGroup.push(AllModsInGroup[i]);
+    //     if (AllModsInGroup[i].x > largestX) {
+    //       largestX = AllModsInGroup[i].x;
+    //     }
+    //     if (AllModsInGroup[i].y > largestY) {
+    //       console.log("true");
+    //       largestY = AllModsInGroup[i].y;
+    //     }
+    //     // get mod subgroup
+    //     if (thisMod.subgroup === AllModsInGroup[i].groupInfo.subgroup) {
+    //       thisSubGroup.push(AllModsInGroup[i]);
+    //       if (AllModsInGroup[i].x > largestSubX) {
+    //         largestSubX = AllModsInGroup[i].x;
+    //       }
+    //       if (AllModsInGroup[i].y > largestSubY) {
+    //         console.log("true");
+    //         largestSubY = AllModsInGroup[i].y;
+    //       }
+    //     }
+    //     // console.log();
+    //   }
+    // }
+    console.log("thisSub", thisSubGroup, largestSubY);
+    // starting position of selection
+    let startX = 18;
+    let startY = 178;
+    let rectSizeX = 30;
+    let rectSizeY = 10;
+
+    let subgroup;
+    // for (var i = 0; i < thisSubGroup.length; i++) {
+    //   x = thisSubGroup[i].x;
+    //   y = thisSubGroup[i].y;
+    //   xMultiple = difference(x, largestSubX);
+    //   yMultiple = difference(y, largestSubY);
+    //   console.log("yMult", yMultiple, difference(y, largestSubY));
+    //   modStartX = xMultiple * rectSizeX + startX;
+    //   modStartY = yMultiple * rectSizeY + startY;
+    //   console.log("modStartX", x, modStartY);
+
+    //   if (mod.x == x && mod.y == y) {
+    //     fill = "FD";
+    //     doc.setFillColor("#D3D3D3");
+    //   } else {
+    //     fill = "S";
+    //     doc.setFillColor("#ffffff");
+    //   }
+    //   console.log(
+    //     "allinfo",
+    //     thisSubGroup[i].shape,
+    //     thisSubGroup[i].orientation,
+    //     thisSubGroup[i].flipped,
+    //     rectSizeX,
+    //     rectSizeY,
+    //     modStartX,
+    //     modStartY,
+    //     fill
+    //   );
+    //   moduleCoordinates(
+    //     thisSubGroup[i].shape,
+    //     thisSubGroup[i].orientation,
+    //     thisSubGroup[i].flipped,
+    //     rectSizeX,
+    //     rectSizeY,
+    //     modStartX,
+    //     modStartY,
+    //     fill
+    //   );
+    //   doc.text(
+    //     `${x},${y}`,
+    //     modStartX + rectSizeX / 2,
+    //     modStartY + rectSizeY / 2,
+    //     { align: "center", baseline: "middle" }
+    //   );
+    // }
+    for (var n = 0; n < thisGroup.length; n++) {
+      console.log("thisgroupn", thisGroup[n]);
+      let startX = 28;
+      let startY = 232;
+      let rectSizeX = 12;
+      let rectSizeY = 4;
+      let x = thisGroup[n].x;
+      let y = thisGroup[n].y;
+      let xGroupMultiple = difference(x, largestX);
+      let yGroupMultiple = difference(y, largestY);
+      //   console.log("yMult", yMultiple, difference(y, largestSubY));
+      let modStartX = xGroupMultiple * rectSizeX + startX;
+      let modStartY = yGroupMultiple * rectSizeY + startY;
+      let fill;
+      console.log("modStartX", x, y);
+      if (
+        //   thisSubGroup[0].groupInfo.subgroup == thisGroup[n].groupInfo.subgroup
+        thisGroup[n] == mod
+      ) {
+        fill = "FD";
+        doc.setFillColor("#b9b9b9");
+      } else {
+        fill = "S";
+        doc.setFillColor("#ffffff");
+      }
+      doc.setFontSize(6);
+      doc.setLineWidth(0);
+      moduleCoordinates(
+        thisGroup[n].shape,
+        thisGroup[n].orientation,
+        thisGroup[n].flipped,
+        rectSizeX,
+        rectSizeY,
+        modStartX,
+        modStartY,
+        fill
+      );
+      doc.text(
+        `${x},${y}`,
+        modStartX + rectSizeX / 2,
+        modStartY + rectSizeY / 2,
+        { align: "center", baseline: "middle" }
+      );
+    }
+    // doc.text(`Group: ${thisSubGroup[0].groupInfo.group}`,modStartX, 228,{align: 'center'});
   }
 
   // Generate the PDF by processing a specific module

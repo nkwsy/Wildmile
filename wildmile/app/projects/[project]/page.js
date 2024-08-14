@@ -16,7 +16,7 @@ export default async function Page(context) {
   const sections = await getSections(projectName);
   const sectionCards = await (<IconCardGrid cards={sections.sections_card} />);
   // GeneratePDF("new2");
-  getPdf();
+  // getPdf();
   const cards = [
     {
       icon: IconPlus,
@@ -63,6 +63,7 @@ export async function getSections(projectName) {
 
   const sections_card = await section.map((section) => {
     return {
+      id: section._id,
       icon: IconListDetails,
       title: section.name,
       href: `/projects/${projectName}/sections/${section.name}`,
