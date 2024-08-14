@@ -41,7 +41,7 @@ export default async function Page(context) {
           <Link href={"/projects/" + projectName + "/sections"}></Link>
           {sectionCards}
         </SimpleGrid>
-        <PdfDownloader />
+        {/* <PdfDownloader /> */}
       </Container>
     </>
   );

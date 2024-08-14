@@ -6,7 +6,7 @@ import IndividualPlant from "/models/IndividualPlant";
 import Module from "/models/Module";
 import dbConnect from "lib/db/setup";
 export async function GET(req) {
-  dbConnect();
+  await dbConnect();
   const url = new URL(req.url);
   let sectionId = url.searchParams.get("sectionId");
   //   const sectionId = "66205d46f994ebe9e71dc38e";
