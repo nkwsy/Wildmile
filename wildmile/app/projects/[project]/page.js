@@ -6,7 +6,7 @@ import Project from "/models/Project";
 import Section from "/models/Section";
 import { IconCardGrid } from "/components/icon_card_grid";
 import dynamic from "next/dynamic";
-
+import PdfDownloader from "components/projects/tools/PdfDownloader";
 // const GeneratePDF = dynamic(() => import("/lib/pdfgen"), { ssr: false });
 import { getPdf } from "/lib/pdfgen";
 
@@ -41,6 +41,7 @@ export default async function Page(context) {
           <Link href={"/projects/" + projectName + "/sections"}></Link>
           {sectionCards}
         </SimpleGrid>
+        <PdfDownloader />
       </Container>
     </>
   );

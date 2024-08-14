@@ -800,8 +800,7 @@ async function generatePlants(x, y) {
   return;
 }
 export async function getPdf() {
-  //   const pgen = await gettingModule("new2");
-  const doc = new jsPDF();
+  const pgen = await gettingModule("new2");
 
   doc.text("Hello world!", 10, 10);
 
