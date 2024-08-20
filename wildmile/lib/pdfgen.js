@@ -409,7 +409,7 @@ function returnGroup(tags, groups = "none", subGroups = "none") {
   return groupMatrix;
 }
 function difference(a, b) {
-  return Math.abs(a - b);
+  return Math.abs(b - a);
 }
 
 function moduleCoordinates(
@@ -444,14 +444,14 @@ function moduleCoordinates(
     let coordinates;
     // doc.setLineWidth();
 
-    if (orientation === "RH") {
+    if (orientation === "LH") {
       if (flipped === true) {
         console.log("flippped", xTl, yTl, xTr, yTr, xBr, yBr);
         doc.triangle(xTl, yTl, xTr, yTr, xBr, yBr, options);
       } else {
         doc.triangle(xTl, yTl, xBl, yBl, xBr, yBr, options);
       }
-    } else if (orientation === "LH") {
+    } else if (orientation === "RH") {
       if (flipped === true) {
         doc.triangle(xTr, yTr, xBl, yBl, xTl, yTl, options);
       } else {
@@ -509,6 +509,7 @@ function groupRender(thisMod, AllModsInGroup, mod) {
     y = thisSubGroup[i].y;
     xMultiple = difference(x, largestSubX);
     yMultiple = difference(y, largestSubY);
+    xMultiple = largestSubY - y;
     console.log("yMult", yMultiple, difference(y, largestSubY));
     modStartX = xMultiple * rectSizeX + startX;
     modStartY = yMultiple * rectSizeY + startY;

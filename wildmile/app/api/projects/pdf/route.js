@@ -9,6 +9,8 @@ export async function GET(req) {
   await dbConnect();
   const url = new URL(req.url);
   let sectionId = url.searchParams.get("sectionId");
+  let tag = url.searchParams.get("tag");
+  let moduleGroup = { sectionId: sectionId };
   //   const sectionId = "66205d46f994ebe9e71dc38e";
   console.log(sectionId);
   if (!sectionId) {
@@ -18,17 +20,21 @@ export async function GET(req) {
       { status: 400 }
     );
   }
+  if (tag) {
+    moduleGroup["tags"] = tag;
+  }
+  console.log(url, tag, sectionId, moduleGroup);
   const doc = new jsPDF();
 
   // Function to get distinct plants based on module coordinates
   async function getP(x, y) {
-    const pnum = await Module.find({ x, y, sectionId: sectionId })
+    const pnum = await Module.find({ x, y, ...moduleGroup })
       .distinct("_id")
       .then(async (usedMods) => {
         let tagMods = usedMods.map((id) => new mongoose.Types.ObjectId(id)); // Use 'new' keyword here
         console.log("tagMods", tagMods);
         return await IndividualPlant.aggregate([
-          { $match: { module: { $in: tagMods } } },
+          { $match: { module: { $in: tagMods }, deleted: false } },
           {
             $group: {
               _id: "$plant",
@@ -58,24 +64,37 @@ export async function GET(req) {
           { $sort: { plantName: 1 } },
         ]);
       });
+
     return pnum;
   }
-
+  const default_swatches = [
+    "#2e2e2e",
+    "#868e96",
+    "#fa5252",
+    "#be4bdb",
+    "#7950f2",
+    "#228be6",
+    "#15aabf",
+    "#12b886",
+    "#40c057",
+    "#fab005",
+    "#fd7e14",
+  ];
   // Function to generate plant information and draw it on the PDF
   async function generatePlants(x, y) {
     const gp = await getP(x, y);
     gp.forEach((plant, i) => {
       plant.xy.forEach((placement) => {
         const leftMargin = 24 + 5;
-        const topMargin = 100 + 3;
+        const topMargin = 132 + 7;
         const radius = 5;
         const xPos = leftMargin + radius + placement.x * 15;
-        const yPos = topMargin + radius + placement.y * 12;
+        const yPos = topMargin + radius + placement.y * -12;
 
         doc.setFont("Helvetica", "Bold");
         doc.setFontSize(20);
         doc.setTextColor("#ffffff");
-        doc.setFillColor("#333333");
+        doc.setFillColor(default_swatches[i]);
         doc.circle(xPos, yPos, radius, "F");
         doc.text((i + 1).toString(), xPos, yPos, {
           align: "center",
@@ -90,7 +109,7 @@ export async function GET(req) {
   async function gettingPlants(x, y) {
     let thePlants = [];
     const ppp = await getP(x, y);
-    console.log(ppp);
+    // console.log(ppp);
     //   let plantLength = ppp.length;
     for (var i = 0; i < ppp.length; i++) {
       let id = i + 1;
@@ -131,8 +150,9 @@ export async function GET(req) {
   ]);
   // Function to process modules based on tags
   async function gettingModule(sectionId) {
-    const allMods = await Module.find({ sectionId: sectionId }); // Filter by sectionId
-    const minfo = await Module.find({ sectionId: sectionId });
+    // const allMods = await Module.find({ sectionId: sectionId }); // Filter by sectionId
+
+    const minfo = await Module.find(moduleGroup).sort({ x: 1, y: 1 });
 
     for (const mod of minfo) {
       const plantTable = await gettingPlants(mod.x, mod.y);
@@ -248,9 +268,9 @@ export async function GET(req) {
       if (shape == "T3" || shape == "T2.3") {
         if (orientation === "LH") {
           if (flipped === true) {
-            doc.triangle(x1, y1, x1, y2, x1, y1);
+            doc.triangle(x1, y1, x1, y2, x2, y1);
           } else {
-            doc.triangle(x1, y2, x2, y2, x2, y1);
+            doc.triangle(x2, y2, x1, y2, x2, y1);
           }
         }
         if (orientation === "RH") {
@@ -415,7 +435,7 @@ export async function GET(req) {
     //     // console.log();
     //   }
     // }
-    console.log("thisSub", thisSubGroup, largestSubY);
+    // console.log("thisSub", thisSubGroup, largestSubY);
     // starting position of selection
     let startX = 18;
     let startY = 178;
@@ -469,15 +489,18 @@ export async function GET(req) {
     //   );
     // }
     for (var n = 0; n < thisGroup.length; n++) {
-      console.log("thisgroupn", thisGroup[n]);
-      let startX = 28;
-      let startY = 232;
-      let rectSizeX = 12;
+      //   console.log("thisgroupn", thisGroup[n]);
+      //   let startX = 28;
+
+      let startX = 8;
+      let startY = 280;
+      let rectSizeX = 8;
       let rectSizeY = 4;
       let x = thisGroup[n].x;
       let y = thisGroup[n].y;
       let xGroupMultiple = difference(x, largestX);
-      let yGroupMultiple = difference(y, largestY);
+      //   let yGroupMultiple = difference(y, largestY);
+      let yGroupMultiple = largestY - y;
       //   console.log("yMult", yMultiple, difference(y, largestSubY));
       let modStartX = xGroupMultiple * rectSizeX + startX;
       let modStartY = yGroupMultiple * rectSizeY + startY;
