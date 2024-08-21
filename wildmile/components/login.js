@@ -10,6 +10,7 @@ import {
   Container,
   Group,
   Button,
+  Tooltip,
 } from "@mantine/core";
 import { useForm, isEmail } from "@mantine/form";
 import { useState, useEffect } from "react";
@@ -18,7 +19,7 @@ import { useUser } from "lib/hooks";
 import { useRouter } from "next/navigation";
 
 export default function Login() {
-  const { user, loading, mutate }  = useUser();
+  const { user, loading, mutate } = useUser();
   const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
 
@@ -45,7 +46,9 @@ export default function Login() {
       // set user to useSWR state
       mutate(userObj);
     } else {
-      setErrorMsg("Incorrect email or password.");
+      setErrorMsg(
+        "Incorrect email or password. This is not the same as Galaxy digital. You must create an account here."
+      );
     }
   }
 
@@ -83,6 +86,7 @@ export default function Login() {
             required
             {...form.getInputProps("email")}
           />
+
           <PasswordInput
             label="Password"
             placeholder="Your password"
