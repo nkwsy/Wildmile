@@ -16,7 +16,8 @@ const LocationModal = ({ setLocation }) => {
         opened={opened}
         onClose={close}
         title="Select a Location"
-        size="lg"
+        size="xl"
+        centered
       >
         <LocationMap onLocationSelect={handleLocationSelect} />
         <Button onClick={close}>Close</Button>
