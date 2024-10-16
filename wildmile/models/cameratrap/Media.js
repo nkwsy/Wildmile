@@ -19,6 +19,19 @@ const MediaSchema = new mongoose.Schema({
   exifData: mongoose.Schema.Types.Mixed,
   favorite: Boolean,
   mediaComments: String,
+  reviewed: {
+    type: Boolean,
+    default: false
+  },
+  accepted: {
+    type: Boolean,
+    default: false
+  },
+  reviewCount: {
+    type: Number,
+    default: 0
+  },
+
 });
 
 // Add a pre-save hook to ensure timestamp is always valid

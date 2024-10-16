@@ -266,6 +266,11 @@ async function processFile(buffer, object) {
 
   const fileExtension = object.Key.split('.').pop().toLowerCase();
   const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension);
+  // Skip files with 'THUMB' in their relativePath
+  if (object.Key.includes('THUMB')) {
+    console.log(`Skipping thumbnail file: ${object.Key}`);
+    return null;
+  }
 
   if (!isImage) {
     console.log(`Skipping non-image file: ${object.Key}`);
