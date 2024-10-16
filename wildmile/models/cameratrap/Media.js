@@ -1,67 +1,38 @@
 import mongoose from "mongoose";
 
 const MediaSchema = new mongoose.Schema({
-  // should just be the ObjectId. could create an alias to field for cameratrap-DP compliance?
-  //   mediaID: {
-  //     type: String,
-  //     required: true,
-  //     unique: true
-  //   },
-  deploymentID: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Deployment",
-    required: true,
-  },
-  captureMethod: {
+  mediaID: {
     type: String,
-    enum: ["activityDetection", "timeLapse"],
-    default: "activityDetection",
+    required: true,
+    unique: true,
   },
   timestamp: {
     type: Date,
     required: true,
   },
-  // could be used to store the path to the file on the server in Wildlife_Camera folder without S3 path
-  relitivePath: {
-    type: String,
-    required: true,
-    validate: {
-      validator: function (v) {
-        return /^(?=^[^./~])(^((?!\.{2}).)*$).*$/.test(v);
-      },
-      message: (props) => `${props.value} is not a valid file path!`,
-    },
-  },
-  filePath: {
-    type: String,
-    required: true,
-    validate: {
-      validator: function (v) {
-        return /^(?=^[^./~])(^((?!\.{2}).)*$).*$/.test(v);
-      },
-      message: (props) => `${props.value} is not a valid file path!`,
-    },
-  },
-  filePublic: {
-    type: Boolean,
-    required: true,
-  },
+  publicURL: String,
+  relativePath: [String],
+  filePath: String,
+  filePublic: Boolean,
   fileName: String,
-  fileMediatype: {
-    type: String,
-    required: true,
-    validate: {
-      validator: function (v) {
-        return /^(image|video|audio)\/.*$/.test(v);
-      },
-      message: (props) => `${props.value} is not a valid media type!`,
-    },
-  },
+  fileMediatype: String,
   exifData: mongoose.Schema.Types.Mixed,
   favorite: Boolean,
   mediaComments: String,
 });
 
-const Media = mongoose.model("Media", MediaSchema);
+// Add a pre-save hook to ensure timestamp is always valid
+MediaSchema.pre('save', function(next) {
+  if (this.timestamp && isNaN(this.timestamp.getTime())) {
+    this.timestamp = new Date();
+  }
+  next();
+});
 
-module.exports = Media;
+// Add an index on relativePath for efficient querying
+MediaSchema.index({ relativePath: 1 });
+
+// Check if the model already exists before compiling
+const CameratrapMedia = mongoose.models.CameratrapMedia || mongoose.model("CameratrapMedia", MediaSchema);
+
+export default CameratrapMedia;
