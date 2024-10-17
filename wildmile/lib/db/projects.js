@@ -134,7 +134,7 @@ export async function updateOrInsertModules(params, locations) {
         // Update the existing Module
         await Module.updateOne(
           { _id: existingModule._id },
-          { $set: updateData }
+          { $set: cleanObject(updateData) }
         );
       } else {
         // Insert a new Module
