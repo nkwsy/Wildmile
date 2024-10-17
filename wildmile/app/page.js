@@ -16,6 +16,7 @@ import {
   IconListDetails,
   IconUsers,
   IconCameraDollar,
+  IconMap,
 } from "@tabler/icons-react";
 
 import { IconCardGrid } from "../components/icon_card_grid";
@@ -49,6 +50,12 @@ export default function HomePage() {
       title: "Camera Traps",
       href: "/cameratrap",
       description: "WM Camera Trap Data",
+    },
+    {
+      icon: IconMap,
+      title: "Locations",
+      href: "/projects",
+      description: "Plant maps & Install plans",
     },
   ];
 
