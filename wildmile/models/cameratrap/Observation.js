@@ -10,7 +10,7 @@ const ObservationSchema = new mongoose.Schema({
   deploymentId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Deployment",
-    required: true,
+    // required: true,
   },
   mediaId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -29,11 +29,13 @@ const ObservationSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: ["media", "event"],
+    default: "media",
   },
   observationType: {
     type: String,
     required: true,
     enum: ["animal", "human", "vehicle", "blank", "unknown", "unclassified"],
+    default: "animal",
   },
   cameraSetupType: String,
   scientificName: String, // This should be a reference to a Species model, or use a taxonomy API. Should have refrence pics for user
