@@ -12,7 +12,7 @@ import {
   IconCameraSearch,
   IconCameraPlus,
 } from "@tabler/icons-react";
-import TaxaSearch, { WildlifeSidebar } from "components/cameratrap/TaxaSearch";
+// import TaxaSearch, { WildlifeSidebar } from "components/cameratrap/TaxaSearch";
 import { useUser } from "lib/hooks";
 import { useRouter } from "next/navigation";
 
@@ -87,7 +87,7 @@ export default function CameraTrapHomePage() {
           New Project
         </Button> */}
         {/* <TaxaSearch /> */}
-        <WildlifeSidebar />
+        {/* <WildlifeSidebar /> */}
       </Container>
     </>
   );
