@@ -72,6 +72,7 @@ export function ImageAnnotation({ fetchRandomImage }) {
     } else {
       observations = selection.map((animal) => ({
         mediaId: currentImage._id,
+        taxonId: animal.id,
         scientificName: animal.name,
         count: animalCounts[animal.id] || 1,
         eventStart: currentImage.timestamp,
@@ -159,7 +160,7 @@ export function ImageAnnotation({ fetchRandomImage }) {
   if (!currentImage) {
     return <Text>No image selected</Text>;
   }
-
+  console.log(currentImage);
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Card.Section>

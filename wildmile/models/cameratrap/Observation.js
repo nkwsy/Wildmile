@@ -39,6 +39,7 @@ const ObservationSchema = new mongoose.Schema(
       default: "animal",
     },
     cameraSetupType: String,
+    taxonId: String,
     scientificName: String, // This should be a reference to a Species model, or use a taxonomy API. Should have refrence pics for user
     count: {
       type: Number,

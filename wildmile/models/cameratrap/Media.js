@@ -118,32 +118,41 @@ MediaSchema.methods.updateObservationsAndCheckConsensus = async function () {
     uniqueReviewers.add(obs.creator.toString());
   });
 
-  this.speciesConsensus = Object.entries(observationTypes).map(
+  this.speciesConsensus = Object.entries(observationTypes).flatMap(
     ([observationType, observations]) => {
-      const counts = {};
+      const speciesCounts = {};
       observations.forEach((obs) => {
-        const key =
-          obs.observationType === "animal"
-            ? obs.scientificName
-            : observationType;
-        counts[key] = (counts[key] || 0) + 1;
+        if (obs.observationType === "animal") {
+          const key = `${obs.scientificName}-${obs.count}`;
+          speciesCounts[key] = (speciesCounts[key] || 0) + 1;
+        } else {
+          const key = `${observationType}-${obs.count || 1}`;
+          speciesCounts[key] = (speciesCounts[key] || 0) + 1;
+        }
       });
 
-      const mostCommonKey = Object.entries(counts).reduce((a, b) =>
-        b[1] > a[1] ? b : a
-      )[0];
-      const consensusCount = counts[mostCommonKey];
-
-      return {
-        observationType,
-        scientificName: observationType === "animal" ? mostCommonKey : null,
-        count:
-          observationType === "animal"
-            ? parseInt(observations[0].count) || 0
-            : 0,
-        accepted: consensusCount >= 3,
-        observationCount: observations.length,
-      };
+      return Object.entries(speciesCounts).map(([key, count]) => {
+        const [identifier, observedCount] = key.split("-");
+        if (observationType === "animal") {
+          return {
+            observationType,
+            taxonID: identifier,
+            scientificName: identifier,
+            count: parseInt(observedCount) || 0,
+            accepted: count >= 3,
+            observationCount: count,
+          };
+        } else {
+          return {
+            observationType,
+            taxonID: null,
+            scientificName: null,
+            count: parseInt(observedCount) || 1,
+            accepted: count >= 3,
+            observationCount: count,
+          };
+        }
+      });
     }
   );
 
