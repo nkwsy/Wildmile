@@ -7,6 +7,7 @@ export async function GET() {
 
   try {
     const deployments = await CameratrapDeployment.find({}, "_id locationName");
+    console.log(deployments);
     return NextResponse.json(deployments);
   } catch (error) {
     console.error("Error fetching deployments:", error);

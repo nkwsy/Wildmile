@@ -23,7 +23,7 @@ import {
 } from "@tabler/icons-react";
 import { useImage, useSelection } from "./ContextCamera";
 
-export function ImageAnnotation({ fetchRandomImage }) {
+export function ImageAnnotation({ fetchNextImage }) {
   const [currentImage, setCurrentImage] = useImage();
   const [selection, setSelection] = useSelection();
   const [animalCounts, setAnimalCounts] = useState({});
@@ -85,21 +85,16 @@ export function ImageAnnotation({ fetchRandomImage }) {
     try {
       const response = await fetch("/api/cameratrap/saveObservations", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(observations),
-        credentials: "include",
       });
 
       if (response.ok) {
-        if (comment.trim()) {
-          await handleAddComment();
-        }
+        // Instead of fetchRandomImage, use fetchNextImage
+        await fetchNextImage();
         setSelection([]);
         setAnimalCounts({});
         setNoAnimalsVisible(false);
-        await fetchRandomImage();
       } else {
         alert("Failed to save observations");
       }

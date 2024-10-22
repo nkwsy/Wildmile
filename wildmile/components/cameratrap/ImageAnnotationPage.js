@@ -69,6 +69,17 @@ export const ImageAnnotationPage = () => {
     }
   };
 
+  const fetchNextImage = async () => {
+    if (currentImage) {
+      await fetchCamtrapImage({
+        direction: "next",
+        currentImageId: currentImage._id,
+      });
+    } else {
+      await fetchCamtrapImage();
+    }
+  };
+
   return (
     <Group align="flex-start" spacing="xl">
       <Paper shadow="xs" p="xl" style={{ flex: 1 }}>
@@ -85,7 +96,7 @@ export const ImageAnnotationPage = () => {
               Next Image
             </Button>
           </Group>
-          <ImageAnnotation fetchCamtrapImage={fetchCamtrapImage} />
+          <ImageAnnotation fetchNextImage={fetchNextImage} />
         </Stack>
       </Paper>
 
