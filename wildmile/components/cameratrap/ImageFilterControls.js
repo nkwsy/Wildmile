@@ -2,7 +2,15 @@
 import React, { useState, useEffect } from "react";
 
 import { DatePickerInput } from "@mantine/dates";
-import { Select, Button, Group, Stack, Switch } from "@mantine/core";
+import {
+  Select,
+  Button,
+  Group,
+  Stack,
+  Switch,
+  ActionIcon,
+} from "@mantine/core";
+import { IconX } from "@tabler/icons-react";
 
 export function ImageFilterControls({ onApplyFilters }) {
   const [filters, setFilters] = useState({
@@ -41,32 +49,73 @@ export function ImageFilterControls({ onApplyFilters }) {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
+  const handleClearFilter = (key) => {
+    setFilters((prev) => ({ ...prev, [key]: null }));
+  };
+
+  const handleClearAllFilters = () => {
+    setFilters({
+      locationId: null,
+      startDate: null,
+      endDate: null,
+      reviewed: false,
+      reviewedByUser: false,
+    });
+  };
+
   const handleApplyFilters = () => {
     onApplyFilters(filters);
   };
 
   return (
     <Stack spacing="md">
-      <Select
-        label="Location"
-        placeholder="Select a location"
-        data={locations}
-        value={filters.locationId}
-        onChange={(value) => handleFilterChange("locationId", value)}
-        clearable
-      />
-      <DatePickerInput
-        label="Start Date"
-        placeholder="Select start date"
-        value={filters.startDate}
-        onChange={(value) => handleFilterChange("startDate", value)}
-      />
-      <DatePickerInput
-        label="End Date"
-        placeholder="Select end date"
-        value={filters.endDate}
-        onChange={(value) => handleFilterChange("endDate", value)}
-      />
+      <Group align="flex-end">
+        <Select
+          label="Location"
+          placeholder="Select a location"
+          data={locations}
+          value={filters.locationId}
+          onChange={(value) => handleFilterChange("locationId", value)}
+          clearable
+          style={{ flex: 1 }}
+        />
+        <ActionIcon
+          onClick={() => handleClearFilter("locationId")}
+          disabled={!filters.locationId}
+        >
+          <IconX size={16} />
+        </ActionIcon>
+      </Group>
+      <Group align="flex-end">
+        <DatePickerInput
+          label="Start Date"
+          placeholder="Select start date"
+          value={filters.startDate}
+          onChange={(value) => handleFilterChange("startDate", value)}
+          style={{ flex: 1 }}
+        />
+        <ActionIcon
+          onClick={() => handleClearFilter("startDate")}
+          disabled={!filters.startDate}
+        >
+          <IconX size={16} />
+        </ActionIcon>
+      </Group>
+      <Group align="flex-end">
+        <DatePickerInput
+          label="End Date"
+          placeholder="Select end date"
+          value={filters.endDate}
+          onChange={(value) => handleFilterChange("endDate", value)}
+          style={{ flex: 1 }}
+        />
+        <ActionIcon
+          onClick={() => handleClearFilter("endDate")}
+          disabled={!filters.endDate}
+        >
+          <IconX size={16} />
+        </ActionIcon>
+      </Group>
       <Switch
         label="Show only reviewed images"
         checked={filters.reviewed}
@@ -81,7 +130,12 @@ export function ImageFilterControls({ onApplyFilters }) {
           handleFilterChange("reviewedByUser", event.currentTarget.checked)
         }
       />
-      <Button onClick={handleApplyFilters}>Apply Filters</Button>
+      <Group position="apart">
+        <Button onClick={handleApplyFilters}>Apply Filters</Button>
+        <Button variant="outline" onClick={handleClearAllFilters}>
+          Clear All Filters
+        </Button>
+      </Group>
     </Stack>
   );
 }
