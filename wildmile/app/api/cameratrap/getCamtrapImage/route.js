@@ -37,12 +37,13 @@ export async function GET(request) {
     query.reviewed = false;
   }
 
+  // TODO: Uncomment this when we have a way to get the user's review status on a certain image
   // Filter by user's review status
-  if (reviewedByUser === "true") {
-    query.reviewedByUser = true;
-  } else if (reviewedByUser === "false") {
-    query.reviewedByUser = false;
-  }
+  // if (reviewedByUser === "true") {
+  //   query.reviewedByUser = true;
+  // } else if (reviewedByUser === "false") {
+  //   query.reviewedByUser = false;
+  // }
 
   // Handle next/previous image
   if (direction && currentImageId) {
