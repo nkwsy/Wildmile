@@ -85,8 +85,7 @@ export function ImageFilterControls({ onApplyFilters }) {
         >
           <IconX size={16} />
         </ActionIcon>
-      </Group>
-      <Group align="flex-end">
+
         <DatePickerInput
           label="Start Date"
           placeholder="Select start date"
@@ -100,8 +99,7 @@ export function ImageFilterControls({ onApplyFilters }) {
         >
           <IconX size={16} />
         </ActionIcon>
-      </Group>
-      <Group align="flex-end">
+
         <DatePickerInput
           label="End Date"
           placeholder="Select end date"
@@ -123,13 +121,14 @@ export function ImageFilterControls({ onApplyFilters }) {
           handleFilterChange("reviewed", event.currentTarget.checked)
         }
       />
-      <Switch
+      {/* // TODO: Implement filter to show images a user has reviewed */}
+      {/* <Switch
         label="Show only images reviewed by me"
         checked={filters.reviewedByUser}
         onChange={(event) =>
           handleFilterChange("reviewedByUser", event.currentTarget.checked)
         }
-      />
+      /> */}
       <Group position="apart">
         <Button onClick={handleApplyFilters}>Apply Filters</Button>
         <Button variant="outline" onClick={handleClearAllFilters}>

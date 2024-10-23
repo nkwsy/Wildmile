@@ -144,6 +144,86 @@ function parseExifDate(dateString) {
   return new Date(Date.UTC(year, month - 1, day, hour, minute, second));
 }
 
+async function getMetadata(buffer, fileName) {
+  try {
+    // Use the -b option to exclude binary data
+    const tags = await exiftool.read(buffer, ['-File:all', '-b']);
+    return tags;
+  } catch (error) {
+    console.error(`Error reading metadata for ${fileName}: ${error.message}`);
+    return null;
+  }
+}
+
+async function processFile(buffer, object) {
+  let metadata;
+  let timestamp;
+
+  const fileExtension = object.Key.split('.').pop().toLowerCase();
+  const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension);
+  // Skip files with 'THUMB' in their relativePath
+  if (object.Key.includes('THUMB')) {
+    console.log(`Skipping thumbnail file: ${object.Key}`);
+    return null;
+  }
+
+  if (!isImage) {
+    console.log(`Skipping non-image file: ${object.Key}`);
+    return null;
+  }
+
+  try {
+    metadata = await getImageMetadata(buffer);
+    
+    // Use DateTimeOriginal as the basis for timestamp
+    if (metadata && metadata.DateTimeOriginal) {
+      timestamp = parseExifDate(metadata.DateTimeOriginal.description);
+    } else {
+      timestamp = new Date(object.LastModified);
+    }
+  } catch (error) {
+    console.warn(`Failed to read metadata for ${object.Key}: ${error.message}`);
+    metadata = {};
+    timestamp = new Date(object.LastModified);
+  }
+
+  return {
+    mediaID: object.ETag.replace(/^"|"$/g, ''),
+    timestamp: timestamp,
+    publicURL: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${object.Key}`,
+    relativePath: object.Key.split('/').slice(1),
+    filePath: object.Key,
+    filePublic: true,
+    fileName: object.Key.split('/').pop(),
+    fileMediatype: `image/${object.Key.split('.').pop().toLowerCase()}`,
+    exifData: metadata
+  };
+}
+
+async function getImageMetadata(buffer) {
+  try {
+    const tags = await ExifReader.load(buffer);
+    
+    // Filter out base64 data, keep original tag names, and exclude large entries
+    const filteredTags = Object.fromEntries(
+      Object.entries(tags).filter(([key, value]) => {
+        return (typeof value !== 'object' || 
+               (typeof value === 'object' && !('base64' in value) && !Buffer.isBuffer(value))) &&
+               JSON.stringify(value).length <= 1024;
+      })
+    );
+
+    return filteredTags;
+  } catch (error) {
+    console.error('Error reading EXIF data:', error);
+    return {};
+  }
+}
+
+// Don't forget to close ExifTool when you're done
+process.on('exit', () => exiftool.end());
+
+
 // CAMERA ACTIONS
 export async function getCamera(id) {
   const camera = await Camera.findOne({ _id: id }, ["-__v"]).lean().exec();
@@ -249,81 +329,3 @@ export async function getAllDeployments() {
   return deployments;
 }
 
-async function getMetadata(buffer, fileName) {
-  try {
-    // Use the -b option to exclude binary data
-    const tags = await exiftool.read(buffer, ['-File:all', '-b']);
-    return tags;
-  } catch (error) {
-    console.error(`Error reading metadata for ${fileName}: ${error.message}`);
-    return null;
-  }
-}
-
-async function processFile(buffer, object) {
-  let metadata;
-  let timestamp;
-
-  const fileExtension = object.Key.split('.').pop().toLowerCase();
-  const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension);
-  // Skip files with 'THUMB' in their relativePath
-  if (object.Key.includes('THUMB')) {
-    console.log(`Skipping thumbnail file: ${object.Key}`);
-    return null;
-  }
-
-  if (!isImage) {
-    console.log(`Skipping non-image file: ${object.Key}`);
-    return null;
-  }
-
-  try {
-    metadata = await getImageMetadata(buffer);
-    
-    // Use DateTimeOriginal as the basis for timestamp
-    if (metadata && metadata.DateTimeOriginal) {
-      timestamp = parseExifDate(metadata.DateTimeOriginal.description);
-    } else {
-      timestamp = new Date(object.LastModified);
-    }
-  } catch (error) {
-    console.warn(`Failed to read metadata for ${object.Key}: ${error.message}`);
-    metadata = {};
-    timestamp = new Date(object.LastModified);
-  }
-
-  return {
-    mediaID: object.ETag.replace(/^"|"$/g, ''),
-    timestamp: timestamp,
-    publicURL: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${object.Key}`,
-    relativePath: object.Key.split('/').slice(1),
-    filePath: object.Key,
-    filePublic: true,
-    fileName: object.Key.split('/').pop(),
-    fileMediatype: `image/${object.Key.split('.').pop().toLowerCase()}`,
-    exifData: metadata
-  };
-}
-
-async function getImageMetadata(buffer) {
-  try {
-    const tags = await ExifReader.load(buffer);
-    
-    // Filter out base64 data, keep original tag names, and exclude large entries
-    const filteredTags = Object.fromEntries(
-      Object.entries(tags).filter(([key, value]) => {
-        return (typeof value !== 'object' || 
-               (typeof value === 'object' && !('base64' in value) && !Buffer.isBuffer(value))) &&
-               JSON.stringify(value).length <= 1024;
-      })
-    );
-
-    return filteredTags;
-  } catch (error) {
-    console.error('Error reading EXIF data:', error);
-    return {};
-  }
-}
-
-// Don't forget to close ExifTool when you're done
-process.on('exit', () => exiftool.end());
