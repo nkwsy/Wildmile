@@ -15,7 +15,7 @@ export async function POST(request) {
   try {
     const { mediaId, comment } = await request.json();
 
-    const media = await CameratrapMedia.findById(mediaId);
+    const media = await CameratrapMedia.findOne({ mediaID: mediaId });
     if (!media) {
       return NextResponse.json({ message: "Media not found" }, { status: 404 });
     }

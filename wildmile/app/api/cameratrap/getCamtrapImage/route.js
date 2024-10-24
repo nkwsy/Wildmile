@@ -33,9 +33,10 @@ export async function GET(request) {
 
   if (reviewed === "true") {
     query.reviewed = true;
-  } else if (reviewed === "false") {
-    query.reviewed = false;
   }
+  // else if (reviewed === "false") {
+  //   query.reviewed = false;
+  // }
 
   // TODO: Uncomment this when we have a way to get the user's review status on a certain image
   // Filter by user's review status

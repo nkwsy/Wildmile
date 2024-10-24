@@ -19,6 +19,17 @@ const MediaSchema = new mongoose.Schema(
     filePublic: Boolean,
     fileName: String,
     fileMediatype: String,
+    fileLocations: [
+      {
+        publicURL: String,
+        relativePath: [String],
+        filePath: String,
+        filePublic: Boolean,
+        fileName: String,
+        createdAt: { type: Date, default: Date.now },
+        updatedAt: { type: Date, default: Date.now },
+      },
+    ],
     exifData: mongoose.Schema.Types.Mixed,
     favorite: Boolean,
     favoriteCount: {
@@ -200,7 +211,7 @@ MediaSchema.statics.addObservationAndUpdateConsensusForMedia = async function (
   mediaId,
   observation
 ) {
-  const media = await this.findById(mediaId);
+  const media = await this.findOne({ mediaID: mediaId });
   if (media) {
     await media.addObservationAndUpdateConsensus(observation);
   }

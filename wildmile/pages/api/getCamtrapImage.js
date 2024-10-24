@@ -52,7 +52,9 @@ export default async function handler(req, res) {
 
     // Handle next/previous image
     if (direction && currentImageId) {
-      const currentImage = await CameratrapMedia.findById(currentImageId);
+      const currentImage = await CameratrapMedia.findOne({
+        mediaID: currentImageId,
+      });
       if (!currentImage) {
         return res.status(404).json({ message: "Current image not found" });
       }

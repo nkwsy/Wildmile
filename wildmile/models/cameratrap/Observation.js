@@ -14,8 +14,12 @@ const ObservationSchema = new mongoose.Schema(
       // required: true,
     },
     mediaId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: "Media",
+    },
+    mediaInfo: {
+      md5: String,
+      imageHash: String,
     },
     eventId: String, // This should be a reference to an Event model? not even sure what this is
     eventStart: {

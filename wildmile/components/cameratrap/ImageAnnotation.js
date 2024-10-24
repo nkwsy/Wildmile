@@ -62,7 +62,11 @@ export function ImageAnnotation({ fetchNextImage }) {
     if (noAnimalsVisible || selection.length === 0) {
       observations = [
         {
-          mediaId: currentImage._id,
+          mediaId: currentImage.mediaID,
+          mediaInfo: {
+            md5: currentImage.mediaID,
+            imageHash: currentImage.imageHash,
+          },
           eventStart: currentImage.timestamp,
           eventEnd: currentImage.timestamp,
           observationLevel: "media",
@@ -71,7 +75,11 @@ export function ImageAnnotation({ fetchNextImage }) {
       ];
     } else {
       observations = selection.map((animal) => ({
-        mediaId: currentImage._id,
+        mediaId: currentImage.mediaID,
+        mediaInfo: {
+          md5: currentImage.mediaID,
+          imageHash: currentImage.imageHash,
+        },
         taxonId: animal.id,
         scientificName: animal.name,
         count: animalCounts[animal.id] || 1,
