@@ -47,19 +47,30 @@ export default function Species({ results }) {
   }
   const result_values = SpeciesCards(results);
 
+  const toggleSelection = (result) => {
+    setSelection(prev => {
+      const isSelected = prev.some(item => item.id === result.inat_result.id);
+      if (isSelected) {
+        return prev.filter(item => item.id !== result.inat_result.id);
+      } else {
+        return [...prev, result.inat_result];
+      }
+    });
+  };
+
   return (
     <>
       {result_values.map((result, index) => (
         <Card
           key={index}
-          onClick={() => setSelection([...selection, result.inat_result])}
+          onClick={() => toggleSelection(result)}
           withBorder
           padding="lg"
           radius="md"
-          //   component={Link}
-          //   href={`/plants/species/${result.id}`}
-
-          //   className={classes.mantineCard}
+          style={{
+            cursor: 'pointer',
+            border: selection.some(item => item.id === result.inat_result.id) ? '2px solid blue' : undefined,
+          }}
         >
           <CardSection mb="sm">
             <Image
@@ -102,7 +113,17 @@ export default function Species({ results }) {
               <Text size="sm" color="dimmed" className={classes.description}>
                 {result.family}
               </Text>
-              <Badge variant="light">{result.description}</Badge>
+              <Badge 
+                variant="light" 
+                color={
+                  result.inat_result.rank === 'species' ? 'blue' :
+                  result.inat_result.rank === 'genus' ? 'grape' :
+                  result.inat_result.rank === 'family' ? 'green' :
+                  'gray'
+                }
+              >
+                {result.description}
+              </Badge>
             </div>
           </Group>
         </Card>

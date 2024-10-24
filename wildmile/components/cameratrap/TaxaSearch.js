@@ -2,113 +2,59 @@
 // components/TaxaSearch.js
 import React, { useState, useEffect } from "react";
 import {
-  Sidebar,
-  Navbar,
   TextInput,
   Select,
-  Card,
-  Image,
-  Text,
   Paper,
-  Box,
   SimpleGrid,
   Button,
   Group,
+  Text,
+  Switch,
 } from "@mantine/core";
 import classes from "/styles/WildlifeSidebar.module.css";
 import SpeciesCard from "./SpeciesCard";
-import axios from "axios";
-import { useSelection } from "./ContextCamera";
 
-const TaxaSearch = () => {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-
-  const handleSearch = async () => {
-    try {
-      const response = await fetch(
-        `https://api.inaturalist.org/v1/taxa?q=${query}`
-      );
-      const data = await response.json();
-      setResults(data.results);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  return (
-    <div>
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search for taxa"
-      />
-      <button onClick={handleSearch}>Search</button>
-      <div>
-        {results.map((taxon) => (
-          <div key={taxon.id}>
-            <h3>{taxon.name}</h3>
-            <p>{taxon.preferred_common_name}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export const WildlifeSidebar = () => {
-  const [query, setQuery] = useState("");
+const TaxaSearch = ({ initialQuery = "" }) => {
+  const [query, setQuery] = useState(initialQuery);
   const [results, setResults] = useState([]);
   const [taxonomyClass, setTaxonomyClass] = useState("");
-  const [defaultAnimals, setDefaultAnimals] = useState([]);
-  // const [selected, setSelected] = useState(null);
-  const [selection, setSelection] = useSelection();
+  const [chicagoOnly, setChicagoOnly] = useState(true);
 
   const taxonomyClasses = [
-    { value: "Mammalia", label: "Mammals" },
-    { value: "Aves", label: "Birds" },
-    { value: "Reptilia", label: "Reptiles" },
-    { value: "Amphibia", label: "Amphibians" },
-    { value: "Insecta", label: "Insects" },
+    { value: "40151", label: "Mammals" },
+    { value: "3", label: "Birds" },
+    { value: "26036", label: "Reptiles" },
+    { value: "20978", label: "Amphibians" },
+    { value: "47158", label: "Insects" },
   ];
 
-  useEffect(() => {
-    // Fetch default animals (limited number)
-    const fetchDefaultAnimals = async () => {
-      try {
-        const response = await axios.get(
-          "https://api.inaturalist.org/v1/taxa",
-          {
-            params: {
-              rank: "species",
-              per_page: 10, // Limit the number of default animals
-            },
-          }
-        );
-        setDefaultAnimals(response.data.results);
-      } catch (error) {
-        console.error("Error fetching default animals:", error);
-      }
-    };
-    fetchDefaultAnimals();
-  }, []);
+  // You might want to add a useEffect to update the query when initialQuery changes
+  React.useEffect(() => {
+    setQuery(initialQuery);
+  }, [initialQuery]);
 
   const handleSearch = async () => {
     try {
-      const response = await fetch(
-        `https://api.inaturalist.org/v1/taxa?q=${query}&class=${taxonomyClass}`
-      );
+      let apiUrl = `https://api.inaturalist.org/v1/taxa?q=${query}`;
+      
+      if (taxonomyClass) {
+        apiUrl += `&taxon_id=${taxonomyClass}`;
+      }
+      
+      if (chicagoOnly) {
+        apiUrl += `&place_id=674`; // Chicago's place ID
+      }
+
+      const response = await fetch(apiUrl);
       const data = await response.json();
-      console.log("Search results:", data.results);
-      setResults(data.results);
+      setResults(data.results || []);
     } catch (error) {
       console.error("Error fetching data:", error);
+      setResults([]);
     }
   };
 
   return (
-    // <Sidebar className={classes.sidebar}>
     <Paper shadow="xs" p="xl">
       <h2>Wildlife Search</h2>
       <Group>
@@ -125,98 +71,30 @@ export const WildlifeSidebar = () => {
           placeholder="Filter by taxonomy class"
           className={classes.taxonomySelect}
         />
-        {selection && <Text>{selection}</Text>}
       </Group>
-      <Button onClick={handleSearch}>Search</Button>
-      <SimpleGrid
-        mt={40}
-        cols={{ base: 2, sm: 2, lg: 5, xl: 4 }}
-        breakpoints={[
-          { maxWidth: "62rem", cols: 3, spacing: "md" },
-          { maxWidth: "48rem", cols: 2, spacing: "sm" },
-          { maxWidth: "36rem", cols: 1, spacing: "sm" },
-        ]}
-      >
-        {selection &&
-          selection.map((taxon) => (
-            <Card
-              key={taxon.id}
-              shadow="sm"
-              p="lg"
-              m="md"
-              className={classes.resultItem}
-            >
-              <Card.Section>
-                <Image
-                  src={
-                    taxon.image
-                      ? taxon.default_photo.square_url
-                      : "https://via.placeholder.com/150"
-                  }
-                  fit="contain"
-                  height={160}
-                  className={classes.galleryImage}
-                  alt={taxon.title}
-                />
-              </Card.Section>
-              <Text>{taxon.title}</Text>
-            </Card>
-          ))}
-        {results.length > 0 && <SpeciesCard results={results} />}
-
-        {/* {results.length > 0
-            ? results.map((taxon) => (
-                <Card
-                  key={taxon.id}
-                  shadow="sm"
-                  p="lg"
-                  m="md"
-                  className={classes.resultItem}
-                >
-                  <Card.Section>
-                    <Image
-                      src={
-                        taxon.default_photo
-                          ? taxon.default_photo.square_url
-                          : "https://via.placeholder.com/150"
-                      }
-                      fit="contain"
-                      height={160}
-                      className={classes.galleryImage}
-                      alt={taxon.name}
-                    />
-                  </Card.Section>
-                  <Text>
-                    {taxon.preferred_common_name || taxon.name}
-                  </Text>
-
-                </Card>
-              ))
-            : defaultAnimals.map((taxon) => (
-                <Card
-                  key={taxon.id}
-                  shadow="sm"
-                  p="lg"
-                  m="md"
-                  className={classes.resultItem}
-                >
-                  <Card.Section>
-                    <Image
-                      src={
-                        taxon.default_photo
-                          ? taxon.default_photo.square_url
-                          : "https://via.placeholder.com/150"
-                      }
-                      height={160}
-                      alt={taxon.name}
-                    />
-                  </Card.Section>
-                  <Text weight={500}>
-                    {taxon.preferred_common_name || taxon.name}
-                  </Text>
-                </Card>
-              ))} */}
-      </SimpleGrid>
+      <Group mt="md">
+        <Switch
+          checked={chicagoOnly}
+          onChange={(event) => setChicagoOnly(event.currentTarget.checked)}
+          label="Chicago area only"
+        />
+        <Button onClick={handleSearch}>Search</Button>
+      </Group>
+      {results.length > 0 ? (
+        <SimpleGrid
+          mt={40}
+          cols={{ base: 2, sm: 2, lg: 5, xl: 4 }}
+          breakpoints={[
+            { maxWidth: "62rem", cols: 3, spacing: "md" },
+            { maxWidth: "48rem", cols: 2, spacing: "sm" },
+            { maxWidth: "36rem", cols: 1, spacing: "sm" },
+          ]}
+        >
+          <SpeciesCard results={results} />
+        </SimpleGrid>
+      ) : (
+        <Text mt={20}>No results found. Try a different search term or taxonomy class.</Text>
+      )}
     </Paper>
   );
 };
