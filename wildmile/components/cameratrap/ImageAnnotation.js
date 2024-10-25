@@ -61,6 +61,9 @@ export function ImageAnnotation({ fetchNextImage }) {
     if (!currentImage) return;
 
     setIsSaving(true);
+    if (comment.trim()) {
+      await handleAddComment();
+    }
 
     let observations = [];
 
@@ -134,6 +137,7 @@ export function ImageAnnotation({ fetchNextImage }) {
 
       if (response.ok) {
         // Instead of fetchRandomImage, use fetchNextImage
+
         await fetchNextImage();
         setSelection([]);
         setAnimalCounts({});
@@ -284,14 +288,14 @@ export function ImageAnnotation({ fetchNextImage }) {
               <IconSend size={24} />
             </ActionIcon>
           </Group>
+          <Stack spacing="xs" mt="md">
+            {comments.map((comment, index) => (
+              <Text key={index} size="sm">
+                <strong>{comment.author.name}:</strong> {comment.text}
+              </Text>
+            ))}
+          </Stack>
         </GridCol>
-        <Stack spacing="xs" mt="md">
-          {comments.map((comment, index) => (
-            <Text key={index} size="sm">
-              <strong>{comment.author.name}:</strong> {comment.text}
-            </Text>
-          ))}
-        </Stack>
 
         <Group mt="md">
           <Checkbox
