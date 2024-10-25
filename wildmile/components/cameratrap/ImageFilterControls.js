@@ -71,7 +71,7 @@ export function ImageFilterControls({ onApplyFilters }) {
     <Stack spacing="md">
       <Group align="flex-end">
         <Select
-          label="Location"
+          label="Location (optional)"
           placeholder="Select a location"
           data={locations}
           value={filters.locationId}
@@ -87,7 +87,7 @@ export function ImageFilterControls({ onApplyFilters }) {
         </ActionIcon>
 
         <DatePickerInput
-          label="Start Date"
+          label="Start Date (optional)"
           placeholder="Select start date"
           value={filters.startDate}
           onChange={(value) => handleFilterChange("startDate", value)}
@@ -101,7 +101,7 @@ export function ImageFilterControls({ onApplyFilters }) {
         </ActionIcon>
 
         <DatePickerInput
-          label="End Date"
+          label="End Date (optional)"
           placeholder="Select end date"
           value={filters.endDate}
           onChange={(value) => handleFilterChange("endDate", value)}
@@ -130,7 +130,7 @@ export function ImageFilterControls({ onApplyFilters }) {
         }
       /> */}
       <Group position="apart">
-        <Button onClick={handleApplyFilters}>Apply Filters</Button>
+        <Button onClick={handleApplyFilters}>Search Images</Button>
         <Button variant="outline" onClick={handleClearAllFilters}>
           Clear All Filters
         </Button>

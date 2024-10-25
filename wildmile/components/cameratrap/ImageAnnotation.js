@@ -20,6 +20,7 @@ import {
   IconHeartFilled,
   IconSend,
   IconMaximize,
+  IconLink,
 } from "@tabler/icons-react";
 import { useImage, useSelection } from "./ContextCamera";
 
@@ -121,7 +122,7 @@ export function ImageAnnotation({ fetchNextImage }) {
       const response = await fetch("/api/cameratrap/addComment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mediaId: currentImage._id, comment }),
+        body: JSON.stringify({ mediaId: currentImage.mediaID, comment }),
       });
 
       if (response.ok) {
@@ -142,7 +143,7 @@ export function ImageAnnotation({ fetchNextImage }) {
       const response = await fetch("/api/cameratrap/toggleFavorite", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mediaId: currentImage._id }),
+        body: JSON.stringify({ mediaId: currentImage.mediaID }),
       });
 
       if (response.ok) {
@@ -184,15 +185,33 @@ export function ImageAnnotation({ fetchNextImage }) {
         </div>
       </Card.Section>
 
-      <Text mt="md">
-        Image Timestamp: {new Date(currentImage.timestamp).toLocaleString()}
-      </Text>
+      <Group>
+        <ActionIcon
+          onClick={() => {
+            navigator.clipboard.writeText(currentImage.publicURL);
+            alert("Image URL copied to clipboard");
+          }}
+        >
+          <IconLink />
+        </ActionIcon>
 
+        <Text mt="md" style={{ fontFamily: "monospace" }}>
+          Image Timestamp:{" "}
+          {new Date(currentImage.timestamp).toLocaleString("en-US", {
+            timeZone: "America/Chicago",
+          })}
+        </Text>
+        <Text mt="md" style={{ fontFamily: "monospace" }}>
+          Media ID: {currentImage.mediaID}
+        </Text>
+      </Group>
       {!noAnimalsVisible && (
         <Stack spacing="xs" mt="md">
           {selection.map((animal) => (
             <Group key={animal.id} position="apart">
-              <Text>{animal.preferred_common_name || animal.name}</Text>
+              <Text style={{ fontWeight: "bold" }}>
+                {animal.preferred_common_name || animal.name}
+              </Text>
               <NumberInput
                 value={animalCounts[animal.id] || 1}
                 onChange={(value) => handleCountChange(animal.id, value)}
