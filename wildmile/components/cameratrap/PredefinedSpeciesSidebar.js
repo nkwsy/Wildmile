@@ -5,28 +5,89 @@ import Species from "./SpeciesCard";
 
 const predefinedSpecies = {
   Mammals: [
-    "Canis latrans", "Castor canadensis", "Ondatra zibethicus", "Marmota monax",
-    "Sylvilagus floridanus", "Sciurus carolinensis", "Sciurus niger", "Tamias Striatus",
-    "Lasionycteris noctivagans", "Myotis lucifugus", "Eptesicus fuscus", "Lasiurus borealis",
-    "Procyon lotor", "Rattus norvegicus", "Apodemus sylvaticus", "Peromyscus maniculatus",
-    "Microtus pennsylvanicus", "Mephitis mephitis", "Neovision vision", "Odocoileus virginianus",
-    "Vulpes vulpes", "Lontra canadensis", "Didelphis virginiana", "Mammalia"
+    "Canis latrans",
+    "Castor canadensis",
+    "Ondatra zibethicus",
+    "Marmota monax",
+    "Sylvilagus floridanus",
+    "Sciurus carolinensis",
+    "Sciurus niger",
+    "Tamias Striatus",
+    "Lasionycteris noctivagans",
+    "Myotis lucifugus",
+    "Eptesicus fuscus",
+    "Lasiurus borealis",
+    "Procyon lotor",
+    "Rattus norvegicus",
+    "Apodemus sylvaticus",
+    "Peromyscus maniculatus",
+    "Microtus pennsylvanicus",
+    "Mephitis mephitis",
+    "Neovision vision",
+    "Odocoileus virginianus",
+    "Vulpes vulpes",
+    "Lontra canadensis",
+    "Didelphis virginiana",
+    "Mammalia",
   ],
   Reptiles: [
-    "Trachemys scripta elegans", "Chelydra Serpentina", "Chrysemys picta", "Apalone spinifera",
-    "Thaminophis sirtalis", "Storeria dejaki", "Nerodia sipedon", "Reptilia"
+    "Trachemys scripta elegans",
+    "Chelydra Serpentina",
+    "Chrysemys picta",
+    "Apalone spinifera",
+    "Thaminophis sirtalis",
+    "Storeria dejaki",
+    "Nerodia sipedon",
+    "Reptilia",
   ],
   Amphibians: [
-    "Lithobates catesbeianus", "Anaxyrus americanus", "Pseudacris crucifer", "Pseudacris triseriata",
-    "Lithobates pipiens", "Rana clamitans", "Amphibia"
+    "Lithobates catesbeianus",
+    "Anaxyrus americanus",
+    "Pseudacris crucifer",
+    "Pseudacris triseriata",
+    "Lithobates pipiens",
+    "Rana clamitans",
+    "Amphibia",
   ],
   Birds: [
-    "Branta canadensis", "Branta hutchinsii", "Anser caerulescens", "Anser albifrons",
-    // ... (include all bird species)
-    "Cardinalis cardinalis", "Pheucticus ludovicianus", "Passerina cyanea", "Spiza americana",
-    "Aves"
+    "Branta canadensis",
+    "Aix sponsa",
+    "Anas platyrhynchos",
+    "Lophodytes cucullatus",
+    "Mergus merganser",
+    "Mergus serrator",
+    "Podilymus podiceps",
+    "Chaetura pelagica",
+    "Archilochus colubris",
+    "Actitis macularius",
+    "Larus argentatus",
+    "Gavia immer",
+    "Nannopterum auritum",
+    "Botaurus lentiginosus",
+    "Lxobrycus exilis",
+    "Nycticorax nycticorax",
+    "Nyctanassa Violacea",
+    "Butorides virescens",
+    "Ardea alba",
+    "Ardea herodias",
+    "Accipiter cooperii",
+    "Bubo virginianus",
+    "Megaceryle alcyon",
+    "Falco sparverius",
+    "Corvus brachyrrhynchos",
+    "Sturnus vulgaris",
+    "Podiceps auritus",
+    "Columba livia",
+    "Branta hutchinsii",
+    "Anser caerulescens",
+    "Anser albifrons",
+    "Cardinalis cardinalis",
+    "Pheucticus ludovicianus",
+    "Passerina cyanea",
+    "Spiza americana",
+    "Aves",
   ],
-  Insects: [] // Add insect species if available
+  Insects: [], // Add insect species if available
 };
 
 const PredefinedSpeciesSidebar = ({ onSpeciesSelect }) => {
@@ -36,23 +97,23 @@ const PredefinedSpeciesSidebar = ({ onSpeciesSelect }) => {
 
   const fetchSpeciesData = async (species) => {
     try {
-      const response = await fetch(`https://api.inaturalist.org/v1/taxa?q=${encodeURIComponent(species)}&limit=1`);
+      const response = await fetch(
+        `/api/species?species=${encodeURIComponent(species)}`
+      );
       const data = await response.json();
-      if (data.results && data.results.length > 0) {
-        return data.results[0];
-      }
+      return data;
     } catch (error) {
       console.error("Error fetching species data:", error);
+      return null;
     }
-    return null;
   };
 
   const fetchCategoryData = async (category) => {
     setLoading(true);
     const speciesPromises = predefinedSpecies[category].map(fetchSpeciesData);
     const results = await Promise.all(speciesPromises);
-    const newSpeciesData = results.filter(result => result !== null);
-    setSpeciesData(prevData => ({ ...prevData, [category]: newSpeciesData }));
+    const newSpeciesData = results.filter((result) => result !== null);
+    setSpeciesData((prevData) => ({ ...prevData, [category]: newSpeciesData }));
     setLoading(false);
   };
 
@@ -81,12 +142,12 @@ const PredefinedSpeciesSidebar = ({ onSpeciesSelect }) => {
                   cols={3}
                   spacing="md"
                   breakpoints={[
-                    { maxWidth: '62rem', cols: 2, spacing: 'md' },
-                    { maxWidth: '48rem', cols: 1, spacing: 'sm' },
+                    { maxWidth: "62rem", cols: 2, spacing: "md" },
+                    { maxWidth: "48rem", cols: 1, spacing: "sm" },
                   ]}
                 >
-                  <Species 
-                    results={speciesData[category] || []} 
+                  <Species
+                    results={speciesData[category] || []}
                     onSpeciesSelect={onSpeciesSelect}
                   />
                 </SimpleGrid>

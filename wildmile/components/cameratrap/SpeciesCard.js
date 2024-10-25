@@ -48,10 +48,10 @@ export default function Species({ results }) {
   const result_values = SpeciesCards(results);
 
   const toggleSelection = (result) => {
-    setSelection(prev => {
-      const isSelected = prev.some(item => item.id === result.inat_result.id);
+    setSelection((prev) => {
+      const isSelected = prev.some((item) => item.id === result.inat_result.id);
       if (isSelected) {
-        return prev.filter(item => item.id !== result.inat_result.id);
+        return prev.filter((item) => item.id !== result.inat_result.id);
       } else {
         return [...prev, result.inat_result];
       }
@@ -68,39 +68,61 @@ export default function Species({ results }) {
           padding="lg"
           radius="md"
           style={{
-            cursor: 'pointer',
-            border: selection.some(item => item.id === result.inat_result.id) ? '2px solid blue' : undefined,
+            cursor: "pointer",
+            border: selection.some((item) => item.id === result.inat_result.id)
+              ? "2px solid blue"
+              : undefined,
+            position: "relative",
+            overflow: "hidden",
+            height: "220px", // Adjust this value as needed
           }}
         >
-          <CardSection mb="sm">
-            <Image
-              src={result.image || "/No_plant_image.jpg"}
-              alt={result.title}
-              h={200}
-              //   w="auto"
-              //   fit="contain"
-            />
-          </CardSection>
-
-          <Group align="top" direction="column">
-            <div>
-              <Group align="middle" justify="space-between">
-                <Title className={classes.title}>{result.title}</Title>
-                {result.wiki && (
-                  <ActionIcon
-                    variant="default"
-                    component={Link}
-                    href={result.wiki}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    <IconBrandWikipedia
-                      style={{ width: "70%", height: "70%" }}
-                      stroke={1}
-                    />
-                  </ActionIcon>
-                )}
-              </Group>
+          <Image
+            src={result.image || "/No_plant_image.jpg"}
+            alt={result.title}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
+          {result.wiki && (
+            <ActionIcon
+              variant="default"
+              component={Link}
+              href={result.wiki}
+              rel="noopener noreferrer"
+              target="_blank"
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                zIndex: 2,
+                backgroundColor: "rgba(255, 255, 255, 0.8)",
+              }}
+            >
+              <IconBrandWikipedia
+                style={{ width: "70%", height: "70%" }}
+                stroke={1}
+              />
+            </ActionIcon>
+          )}
+          <div
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              background: "rgba(255, 255, 255, 0.8)",
+              padding: "0.5rem",
+              backdropFilter: "blur(5px)",
+            }}
+          >
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <Title className={classes.title}>{result.title}</Title>
               <Text
                 size="sm"
                 color="dimmed"
@@ -110,22 +132,28 @@ export default function Species({ results }) {
               >
                 {result.subtitle}
               </Text>
-              <Text size="sm" color="dimmed" className={classes.description}>
-                {result.family}
-              </Text>
-              <Badge 
-                variant="light" 
-                color={
-                  result.inat_result.rank === 'species' ? 'blue' :
-                  result.inat_result.rank === 'genus' ? 'grape' :
-                  result.inat_result.rank === 'family' ? 'green' :
-                  'gray'
-                }
-              >
-                {result.description}
-              </Badge>
+
+              <Group align="center" spacing="xs">
+                <Text size="sm" color="dimmed" className={classes.description}>
+                  {result.family}
+                </Text>
+                <Badge
+                  variant="light"
+                  color={
+                    result.inat_result.rank === "species"
+                      ? "blue"
+                      : result.inat_result.rank === "genus"
+                      ? "grape"
+                      : result.inat_result.rank === "family"
+                      ? "green"
+                      : "orange"
+                  }
+                >
+                  {result.description}
+                </Badge>
+              </Group>
             </div>
-          </Group>
+          </div>
         </Card>
       ))}
     </>
