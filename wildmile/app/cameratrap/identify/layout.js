@@ -35,7 +35,7 @@ export default async function Layout({ children }) {
                   ]}
                 /> */}
 
-      <WildlifeSidebar />
+      {/* <TaxaSearch /> */}
       <div>{children}</div>
     </IdentificationProvider>
   );
