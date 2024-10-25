@@ -74,7 +74,7 @@ export default function Species({ results }) {
               : undefined,
             position: "relative",
             overflow: "hidden",
-            height: "220px", // Adjust this value as needed
+            height: "180px", // Adjust this value as needed
           }}
         >
           <Image
@@ -118,7 +118,7 @@ export default function Species({ results }) {
               right: 0,
               background: "rgba(255, 255, 255, 0.8)",
               padding: "0.5rem",
-              backdropFilter: "blur(5px)",
+              backdropFilter: "blur(1px)",
             }}
           >
             <div style={{ display: "flex", flexDirection: "column" }}>
