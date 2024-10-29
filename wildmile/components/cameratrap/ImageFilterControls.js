@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-
-import { DatePickerInput } from "@mantine/dates";
+import { DateInput, DatePickerInput } from "@mantine/dates";
 import {
   Select,
   Button,
@@ -9,10 +8,18 @@ import {
   Stack,
   Switch,
   ActionIcon,
+  Drawer,
+  Text,
 } from "@mantine/core";
-import { IconX } from "@tabler/icons-react";
+import {
+  IconX,
+  IconAdjustmentsHorizontal,
+  IconRefresh,
+} from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
 
 export function ImageFilterControls({ onApplyFilters }) {
+  const [opened, { open, close }] = useDisclosure(false);
   const [filters, setFilters] = useState({
     locationId: null,
     startDate: null,
@@ -65,76 +72,115 @@ export function ImageFilterControls({ onApplyFilters }) {
 
   const handleApplyFilters = () => {
     onApplyFilters(filters);
+    close();
   };
 
+  const hasActiveFilters = Object.values(filters).some(
+    (value) => value !== null && value !== false
+  );
+
   return (
-    <Stack spacing="md">
-      <Group align="flex-end">
-        <Select
-          label="Location (optional)"
-          placeholder="Select a location"
-          data={locations}
-          value={filters.locationId}
-          onChange={(value) => handleFilterChange("locationId", value)}
-          clearable
-          style={{ flex: 1 }}
-        />
-        <ActionIcon
-          onClick={() => handleClearFilter("locationId")}
-          disabled={!filters.locationId}
-        >
-          <IconX size={16} />
-        </ActionIcon>
-
-        <DatePickerInput
-          label="Start Date (optional)"
-          placeholder="Select start date"
-          value={filters.startDate}
-          onChange={(value) => handleFilterChange("startDate", value)}
-          style={{ flex: 1 }}
-        />
-        <ActionIcon
-          onClick={() => handleClearFilter("startDate")}
-          disabled={!filters.startDate}
-        >
-          <IconX size={16} />
-        </ActionIcon>
-
-        <DatePickerInput
-          label="End Date (optional)"
-          placeholder="Select end date"
-          value={filters.endDate}
-          onChange={(value) => handleFilterChange("endDate", value)}
-          style={{ flex: 1 }}
-        />
-        <ActionIcon
-          onClick={() => handleClearFilter("endDate")}
-          disabled={!filters.endDate}
-        >
-          <IconX size={16} />
-        </ActionIcon>
-      </Group>
-      <Switch
-        label="Show only reviewed images"
-        checked={filters.reviewed}
-        onChange={(event) =>
-          handleFilterChange("reviewed", event.currentTarget.checked)
-        }
-      />
-      {/* // TODO: Implement filter to show images a user has reviewed */}
-      {/* <Switch
-        label="Show only images reviewed by me"
-        checked={filters.reviewedByUser}
-        onChange={(event) =>
-          handleFilterChange("reviewedByUser", event.currentTarget.checked)
-        }
-      /> */}
+    <>
       <Group position="apart">
-        <Button onClick={handleApplyFilters}>Search Images</Button>
-        <Button variant="outline" onClick={handleClearAllFilters}>
-          Clear All Filters
+        <Button
+          size="lg"
+          onClick={handleApplyFilters}
+          leftSection={<IconRefresh />}
+        >
+          Get Images
+        </Button>
+        <Button
+          onClick={open}
+          leftSection={<IconAdjustmentsHorizontal size={16} />}
+          variant={hasActiveFilters ? "default" : "outline"}
+          color="gray"
+        >
+          {hasActiveFilters ? "Filters Active" : "Filters"}
         </Button>
       </Group>
-    </Stack>
+
+      <Drawer
+        opened={opened}
+        onClose={close}
+        title="Image Filters"
+        position="right"
+        padding="lg"
+      >
+        <Stack spacing="md">
+          <Text size="sm" color="dimmed" mb="md">
+            Configure filters to narrow down your image search
+          </Text>
+
+          <Button onClick={handleApplyFilters}>Search Images</Button>
+          <DateInput
+            label="Start Date"
+            placeholder="Select start date"
+            value={filters.startDate}
+            onChange={(value) => handleFilterChange("startDate", value)}
+            rightSection={
+              filters.startDate && (
+                <ActionIcon
+                  onClick={() => handleClearFilter("startDate")}
+                  size="sm"
+                >
+                  <IconX size={14} />
+                </ActionIcon>
+              )
+            }
+          />
+
+          <DateInput
+            label="End Date"
+            placeholder="Select end date"
+            value={filters.endDate}
+            onChange={(value) => handleFilterChange("endDate", value)}
+            rightSection={
+              filters.endDate && (
+                <ActionIcon
+                  onClick={() => handleClearFilter("endDate")}
+                  size="sm"
+                >
+                  <IconX size={14} />
+                </ActionIcon>
+              )
+            }
+          />
+
+          <Select
+            label="Location"
+            placeholder="Select a location"
+            data={locations}
+            value={filters.locationId}
+            onChange={(value) => handleFilterChange("locationId", value)}
+            rightSection={
+              filters.locationId && (
+                <ActionIcon
+                  onClick={() => handleClearFilter("locationId")}
+                  size="sm"
+                >
+                  <IconX size={14} />
+                </ActionIcon>
+              )
+            }
+          />
+
+          <Switch
+            label="Show only reviewed images"
+            checked={filters.reviewed}
+            onChange={(event) =>
+              handleFilterChange("reviewed", event.currentTarget.checked)
+            }
+          />
+
+          <Switch
+            label="Show only images reviewed by me"
+            checked={filters.reviewedByUser}
+            onChange={(event) =>
+              handleFilterChange("reviewedByUser", event.currentTarget.checked)
+            }
+          />
+        </Stack>
+      </Drawer>
+    </>
   );
 }

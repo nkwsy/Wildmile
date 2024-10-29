@@ -1,11 +1,21 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Paper, Button, Group, Stack } from "@mantine/core";
+import {
+  Paper,
+  Button,
+  Group,
+  Stack,
+  ActionIcon,
+  ActionIconGroup,
+  Tooltip,
+  ButtonGroup,
+} from "@mantine/core";
 import { useImage } from "./ContextCamera";
 import { ImageAnnotation } from "./ImageAnnotation";
 import { ImageFilterControls } from "./ImageFilterControls";
 import WildlifeSearch from "./WildlifeSearch";
+import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 
 export const ImageAnnotationPage = () => {
   const [currentImage, setCurrentImage] = useImage();
@@ -88,13 +98,34 @@ export const ImageAnnotationPage = () => {
             onApplyFilters={handleApplyFilters}
             deployments={deployments}
           />
-          <Group>
-            <Button onClick={() => handleNavigateImage("previous")}>
-              Previous Image
-            </Button>
-            <Button onClick={() => handleNavigateImage("next")}>
-              Next Image
-            </Button>
+          <Group spacing="xs" position="center" mt="md">
+            <ButtonGroup>
+              <Tooltip label="Previous Image">
+                <Button
+                  onClick={() => handleNavigateImage("previous")}
+                  variant="default"
+                  // size="xl"
+                  radius="md"
+                  color="blue"
+                  // disabled={isSaving}
+                >
+                  <IconArrowLeft />
+                </Button>
+              </Tooltip>
+
+              <Tooltip label="Next Image">
+                <Button
+                  onClick={() => handleNavigateImage("next")}
+                  variant="default"
+                  // size="xl"
+                  radius="md"
+                  color="blue"
+                  // disabled={isSaving}
+                >
+                  <IconArrowRight />
+                </Button>
+              </Tooltip>
+            </ButtonGroup>
           </Group>
           <ImageAnnotation fetchNextImage={fetchNextImage} />
         </Stack>

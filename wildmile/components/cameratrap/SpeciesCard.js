@@ -15,9 +15,10 @@ import {
   Chip,
   ChipGroup,
   ActionIcon,
+  Paper,
 } from "@mantine/core";
 import Link from "next/link";
-import classes from "/styles/imagecard.module.css";
+import classes from "./SpeciesCard.module.css";
 import { IconBrandWikipedia } from "@tabler/icons-react";
 import { useSelection } from "components/cameratrap/ContextCamera";
 
@@ -61,34 +62,40 @@ export default function Species({ results }) {
   return (
     <>
       {result_values.map((result, index) => (
-        <Card
+        <Paper
           key={index}
           onClick={() => toggleSelection(result)}
-          withBorder
-          padding="lg"
-          radius="md"
-          style={{
-            cursor: "pointer",
-            border: selection.some((item) => item.id === result.inat_result.id)
-              ? "2px solid blue"
-              : undefined,
-            position: "relative",
-            overflow: "hidden",
-            height: "180px", // Adjust this value as needed
-          }}
+          className={classes.card}
+          data-selected={
+            selection.some((item) => item.id === result.inat_result.id) ||
+            undefined
+          }
         >
           <Image
             src={result.image || "/No_plant_image.jpg"}
             alt={result.title}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-            }}
+            className={classes.image}
           />
+          <Badge
+            variant="outline"
+            color={
+              result.inat_result.rank === "species"
+                ? "blue"
+                : result.inat_result.rank === "subspecies"
+                ? "blue"
+                : result.inat_result.rank === "genus"
+                ? "grape"
+                : result.inat_result.rank === "family"
+                ? "green"
+                : result.inat_result.rank === "class"
+                ? "orange"
+                : "yellow"
+            }
+            // style={{ marginLeft: "auto" }}
+            className={classes.badge}
+          >
+            {result.description}
+          </Badge>
           {result.wiki && (
             <ActionIcon
               variant="default"
@@ -96,65 +103,23 @@ export default function Species({ results }) {
               href={result.wiki}
               rel="noopener noreferrer"
               target="_blank"
-              style={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
-                zIndex: 2,
-                backgroundColor: "rgba(255, 255, 255, 0.8)",
-              }}
+              className={classes.wikiButton}
             >
-              <IconBrandWikipedia
-                style={{ width: "70%", height: "70%" }}
-                stroke={1}
-              />
+              <IconBrandWikipedia className={classes.wikiIcon} stroke={1} />
             </ActionIcon>
           )}
-          <div
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              background: "rgba(255, 255, 255, 0.8)",
-              padding: "0.5rem",
-              backdropFilter: "blur(1px)",
-            }}
-          >
-            <div style={{ display: "flex", flexDirection: "column" }}>
+
+          <div className={classes.overlay}>
+            <div className={classes.content}>
               <Title className={classes.title}>{result.title}</Title>
-              <Text
-                size="sm"
-                color="dimmed"
-                fs="italic"
-                c="dimmed"
-                className={classes.subtitle}
-              >
-                {result.subtitle}
-              </Text>
 
               <Group align="center" spacing="xs">
-                <Text size="sm" color="dimmed" className={classes.description}>
-                  {result.family}
-                </Text>
-                <Badge
-                  variant="light"
-                  color={
-                    result.inat_result.rank === "species"
-                      ? "blue"
-                      : result.inat_result.rank === "genus"
-                      ? "grape"
-                      : result.inat_result.rank === "family"
-                      ? "green"
-                      : "orange"
-                  }
-                >
-                  {result.description}
-                </Badge>
+                {/* <Text className={classes.description}>{result.family}</Text> */}
+                <Text className={classes.subtitle}>{result.subtitle}</Text>
               </Group>
             </div>
           </div>
-        </Card>
+        </Paper>
       ))}
     </>
   );

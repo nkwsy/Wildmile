@@ -18,11 +18,13 @@ import {
   GridCol,
 } from "@mantine/core";
 import {
+  IconHeartPlus,
   IconHeart,
   IconHeartFilled,
   IconSend,
   IconMaximize,
   IconLink,
+  IconX,
 } from "@tabler/icons-react";
 import { useImage, useSelection } from "./ContextCamera";
 
@@ -199,6 +201,15 @@ export function ImageAnnotation({ fetchNextImage }) {
     setEnlargedImage(!enlargedImage);
   };
 
+  const handleRemoveAnimal = (animalId) => {
+    setSelection((prev) => prev.filter((animal) => animal.id !== animalId));
+    setAnimalCounts((prev) => {
+      const newCounts = { ...prev };
+      delete newCounts[animalId];
+      return newCounts;
+    });
+  };
+
   if (!currentImage) {
     return <Text>No image selected</Text>;
   }
@@ -224,29 +235,50 @@ export function ImageAnnotation({ fetchNextImage }) {
       </Card.Section>
 
       <Grid>
+        <Group>
+          <Text mt="md" style={{ fontFamily: "monospace" }}>
+            Image Timestamp:{" "}
+            {new Date(currentImage.timestamp).toLocaleString("en-US", {
+              timeZone: "UTC",
+            })}
+          </Text>
+          <Text mt="md" style={{ fontFamily: "monospace" }}>
+            Media ID: {currentImage.mediaID}
+          </Text>
+        </Group>
         <GridCol span={6}>
           {!noAnimalsVisible && (
             <Stack spacing="xs" mt="md">
               {selection.map((animal) => (
-                <Group key={animal.id} position="apart">
-                  <Text style={{ fontWeight: "bold" }}>
+                <Group key={animal.id} position="apart" noWrap>
+                  <Text style={{ fontWeight: "bold", flex: 1 }}>
                     {animal.preferred_common_name || animal.name}
                   </Text>
-                  <NumberInput
-                    value={animalCounts[animal.id] || 1}
-                    onChange={(value) => handleCountChange(animal.id, value)}
-                    min={1}
-                    max={100}
-                    style={{ width: 80 }}
-                  />
+                  <Group spacing="xs" noWrap>
+                    <NumberInput
+                      value={animalCounts[animal.id] || 1}
+                      onChange={(value) => handleCountChange(animal.id, value)}
+                      min={1}
+                      max={100}
+                      style={{ width: 80 }}
+                    />
+                    <ActionIcon
+                      color="red"
+                      variant="subtle"
+                      onClick={() => handleRemoveAnimal(animal.id)}
+                    >
+                      <IconX size={16} />
+                    </ActionIcon>
+                  </Group>
                 </Group>
               ))}
             </Stack>
           )}
         </GridCol>
         <GridCol span={6}>
-          <Group>
+          <Group position="apart" mt="md">
             <ActionIcon
+              variant="outline"
               onClick={() => {
                 navigator.clipboard.writeText(currentImage.publicURL);
                 alert("Image URL copied to clipboard");
@@ -254,26 +286,15 @@ export function ImageAnnotation({ fetchNextImage }) {
             >
               <IconLink />
             </ActionIcon>
-
-            <Text mt="md" style={{ fontFamily: "monospace" }}>
-              Image Timestamp:{" "}
-              {new Date(currentImage.timestamp).toLocaleString("en-US", {
-                timeZone: "America/Chicago",
-              })}
-            </Text>
-            <Text mt="md" style={{ fontFamily: "monospace" }}>
-              Media ID: {currentImage.mediaID}
-            </Text>
-          </Group>
-          <Group position="apart" mt="md">
             <ActionIcon
               onClick={handleToggleFavorite}
-              color={isFavorite ? "red" : "lightgray"}
+              color={isFavorite ? "red" : "red"}
+              variant={isFavorite ? "filled" : "outline"}
             >
               {isFavorite ? (
-                <IconHeartFilled size={24} />
-              ) : (
                 <IconHeart size={24} />
+              ) : (
+                <IconHeartPlus size={24} />
               )}
             </ActionIcon>
             <Text size="sm">Favorites: {currentImage.favoriteCount || 0}</Text>
@@ -326,7 +347,8 @@ export function ImageAnnotation({ fetchNextImage }) {
           </Button>
         ) : (
           <Button
-            color="cyan"
+            color="blue"
+            variant="outline"
             fullWidth
             mt="md"
             radius="md"
