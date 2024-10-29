@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import CameratrapMedia from "models/cameratrap/Media";
 
-export async function GET() {
+export async function GET(request) {
   await dbConnect();
 
   try {
@@ -19,7 +19,13 @@ export async function GET() {
       );
     }
 
-    return NextResponse.json(randomFavorite[0]);
+    // Set Cache-Control to prevent caching
+    const response = NextResponse.json(randomFavorite[0]);
+    response.headers.set(
+      "Cache-Control",
+      "no-cache, no-store, must-revalidate"
+    );
+    return response;
   } catch (error) {
     console.error("Error fetching random favorite:", error);
     return NextResponse.json(

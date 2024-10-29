@@ -11,6 +11,7 @@ import {
   IconPokeball,
   IconCameraSearch,
   IconCameraPlus,
+  IconZoomIn,
 } from "@tabler/icons-react";
 // import TaxaSearch, { WildlifeSidebar } from "components/cameratrap/TaxaSearch";
 import { useUser } from "lib/hooks";
@@ -42,6 +43,12 @@ function CameraTrapCards({ user }) {
       title: "Identify wildlife",
       href: "/cameratrap/identify",
       description: "Find and catagorize wildlife",
+    },
+    {
+      icon: IconZoomIn,
+      title: "Explore Wildlife",
+      href: "/cameratrap/explore",
+      description: "Explore wildlife data",
     },
   ];
   if (user?.admin) {

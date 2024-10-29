@@ -1,0 +1,25 @@
+.statCard {
+  background-color: var(--mantine-color-body);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.imageCard {
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.modalContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--mantine-color-dark-7);
+  min-height: 100vh;
+  padding: var(--mantine-spacing-md);
+}

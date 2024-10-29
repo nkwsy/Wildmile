@@ -20,7 +20,9 @@ export function RandomFavorite() {
   const fetchRandomFavorite = async () => {
     setLoading(true);
     try {
-      const response = await fetch("/api/cameratrap/randomFavorite");
+      const response = await fetch("/api/cameratrap/randomFavorite", {
+        cache: "no-store",
+      });
       if (response.ok) {
         const data = await response.json();
         setFavoriteImage(data);
