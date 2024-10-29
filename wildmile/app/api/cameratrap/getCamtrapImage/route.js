@@ -32,7 +32,7 @@ export async function GET(request) {
   }
 
   if (reviewed === "true") {
-    query.reviewed = true;
+    query.reviewCount = { $gt: 0 };
   }
   // else if (reviewed === "false") {
   //   query.reviewed = false;

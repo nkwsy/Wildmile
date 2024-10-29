@@ -36,11 +36,11 @@ const TaxaSearch = ({ initialQuery = "" }) => {
   const handleSearch = async () => {
     try {
       let apiUrl = `https://api.inaturalist.org/v1/taxa?q=${query}`;
-      
+
       if (taxonomyClass) {
         apiUrl += `&taxon_id=${taxonomyClass}`;
       }
-      
+
       if (chicagoOnly) {
         apiUrl += `&place_id=674`; // Chicago's place ID
       }
@@ -55,7 +55,7 @@ const TaxaSearch = ({ initialQuery = "" }) => {
   };
 
   return (
-    <Paper shadow="xs" p="xl">
+    <Paper shadow="xs" p="xl" withBorder>
       <h2>Wildlife Search</h2>
       <Group>
         <TextInput
@@ -93,7 +93,9 @@ const TaxaSearch = ({ initialQuery = "" }) => {
           <SpeciesCard results={results} />
         </SimpleGrid>
       ) : (
-        <Text mt={20}>No results found. Try a different search term or taxonomy class.</Text>
+        <Text mt={20}>
+          No results found. Try a different search term or taxonomy class.
+        </Text>
       )}
     </Paper>
   );

@@ -1,0 +1,94 @@
+.card {
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  height: 180px;
+  border: 0.3rem solid var(--mantine-dark-5);
+  background-color: var(--mantine-dark-6);
+  padding: var(--mantine-spacing-lg);
+  border-radius: var(--mantine-radius-md);
+
+  &[data-selected] {
+    border: 2px solid var(--mantine-color-blue-6);
+  }
+
+  &:hover {
+    background-color: var(--mantine-gray-0);
+  }
+}
+
+.image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wikiButton {
+  position: absolute;
+  top: var(--mantine-spacing-xs);
+  right: var(--mantine-spacing-xs);
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.wikiIcon {
+  width: 70%;
+  height: 70%;
+}
+
+.badge {
+  position: absolute;
+  top: var(--mantine-spacing-xs);
+  left: var(--mantine-spacing-xs);
+  /* margin-right: auto; */
+  z-index: 2;
+  padding: 0.1rem 0.5rem;
+  /* background-color: var(--mantine-color-gray-0); */
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.8);
+  padding: var(--mantine-spacing-xs);
+  backdrop-filter: blur(1px);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 900;
+
+  @media (max-width: 600px) {
+    font-size: 1rem;
+  }
+
+  @media (min-width: 100px) {
+    font-size: 1rem;
+  }
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  font-weight: 300;
+  font-style: italic;
+  padding: 0 0;
+  color: var(--mantine-color-gray-8);
+}
+
+.description {
+  font-size: var(--mantine-font-size-sm);
+  max-width: 600px;
+  margin: auto;
+  text-decoration: none;
+}

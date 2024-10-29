@@ -1,6 +1,6 @@
 "use client";
-import { Title, Text, Container, Button } from "@mantine/core";
-import { LoadingOverlay } from '@mantine/core';
+import { Title, Text, Container, Button, Grid } from "@mantine/core";
+import { LoadingOverlay } from "@mantine/core";
 import { useEffect } from "react";
 import { IconCardGrid } from "/components/icon_card_grid";
 import classes from "/styles/card.module.css";
@@ -11,10 +11,12 @@ import {
   IconPokeball,
   IconCameraSearch,
   IconCameraPlus,
+  IconZoomIn,
 } from "@tabler/icons-react";
 // import TaxaSearch, { WildlifeSidebar } from "components/cameratrap/TaxaSearch";
 import { useUser } from "lib/hooks";
 import { useRouter } from "next/navigation";
+import { RandomFavorite } from "components/cameratrap/RandomFavorite";
 
 function CameraTrapCards({ user }) {
   const cards = [
@@ -42,19 +44,24 @@ function CameraTrapCards({ user }) {
       href: "/cameratrap/identify",
       description: "Find and catagorize wildlife",
     },
+    {
+      icon: IconZoomIn,
+      title: "Explore Wildlife",
+      href: "/cameratrap/explore",
+      description: "Explore wildlife data",
+    },
   ];
   if (user?.admin) {
     cards.push({
-            icon: IconBackhoe,
-            title: "New Project",
-            href: "/projects/project/new",
-            description: "Create a new project",
+      icon: IconBackhoe,
+      title: "New Project",
+      href: "/projects/project/new",
+      description: "Create a new project",
     });
   }
 
-  return <IconCardGrid cards={cards} />
+  return <IconCardGrid cards={cards} />;
 }
-
 
 export default function CameraTrapHomePage() {
   // const { classes, theme } = cardStyles()
@@ -66,7 +73,6 @@ export default function CameraTrapHomePage() {
     if (!loading && !user) router.replace("/login");
     console.log(user);
   }, [user, loading, router]);
-
 
   if (loading) {
     return <LoadingOverlay visible />;
@@ -81,13 +87,15 @@ export default function CameraTrapHomePage() {
         <Text c="dimmed" ta="center" mt="md">
           Collecting and sharing data about Urban River's projects.
         </Text>
-        <CameraTrapCards user={user} />
-        {/* <IconCardGrid cards={projects} />
-        <Button component={Link} href="/projects/new">
-          New Project
-        </Button> */}
-        {/* <TaxaSearch /> */}
-        {/* <WildlifeSidebar /> */}
+
+        <Grid mt="xl">
+          <Grid.Col span={6}>
+            <CameraTrapCards user={user} />
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <RandomFavorite />
+          </Grid.Col>
+        </Grid>
       </Container>
     </>
   );
