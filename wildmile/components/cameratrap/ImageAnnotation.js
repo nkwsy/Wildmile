@@ -137,10 +137,10 @@ export function ImageAnnotation({ fetchNextImage }) {
         body: JSON.stringify(observations),
       });
 
+      await fetchNextImage();
       if (response.ok) {
         // Instead of fetchRandomImage, use fetchNextImage
-
-        await fetchNextImage();
+        // await fetchNextImage();
         setSelection([]);
         setAnimalCounts({});
         setNoAnimalsVisible(false);
@@ -247,35 +247,6 @@ export function ImageAnnotation({ fetchNextImage }) {
           </Text>
         </Group>
         <GridCol span={6}>
-          {!noAnimalsVisible && (
-            <Stack spacing="xs" mt="md">
-              {selection.map((animal) => (
-                <Group key={animal.id} position="apart" noWrap>
-                  <Text style={{ fontWeight: "bold", flex: 1 }}>
-                    {animal.preferred_common_name || animal.name}
-                  </Text>
-                  <Group spacing="xs" noWrap>
-                    <NumberInput
-                      value={animalCounts[animal.id] || 1}
-                      onChange={(value) => handleCountChange(animal.id, value)}
-                      min={1}
-                      max={100}
-                      style={{ width: 80 }}
-                    />
-                    <ActionIcon
-                      color="red"
-                      variant="subtle"
-                      onClick={() => handleRemoveAnimal(animal.id)}
-                    >
-                      <IconX size={16} />
-                    </ActionIcon>
-                  </Group>
-                </Group>
-              ))}
-            </Stack>
-          )}
-        </GridCol>
-        <GridCol span={6}>
           <Group position="apart" mt="md">
             <ActionIcon
               variant="outline"
@@ -316,21 +287,50 @@ export function ImageAnnotation({ fetchNextImage }) {
               </Text>
             ))}
           </Stack>
+        </GridCol>{" "}
+        <GridCol span={6}>
+          {!noAnimalsVisible && (
+            <Stack spacing="xs" mt="md">
+              {selection.map((animal) => (
+                <Group key={animal.id} position="apart" noWrap>
+                  <Text style={{ fontWeight: "bold", flex: 1 }}>
+                    {animal.preferred_common_name || animal.name}
+                  </Text>
+                  <Group spacing="xs" noWrap>
+                    <NumberInput
+                      value={animalCounts[animal.id] || 1}
+                      onChange={(value) => handleCountChange(animal.id, value)}
+                      min={1}
+                      max={100}
+                      style={{ width: 80 }}
+                    />
+                    <ActionIcon
+                      color="red"
+                      variant="subtle"
+                      onClick={() => handleRemoveAnimal(animal.id)}
+                    >
+                      <IconX size={16} />
+                    </ActionIcon>
+                  </Group>
+                </Group>
+              ))}
+            </Stack>
+          )}
+          <Group mt="md">
+            <Checkbox
+              label="Human Present"
+              checked={humanPresent}
+              onChange={(event) => setHumanPresent(event.currentTarget.checked)}
+            />
+            <Checkbox
+              label="Vehicle Present"
+              checked={vehiclePresent}
+              onChange={(event) =>
+                setVehiclePresent(event.currentTarget.checked)
+              }
+            />
+          </Group>
         </GridCol>
-
-        <Group mt="md">
-          <Checkbox
-            label="Human Present"
-            checked={humanPresent}
-            onChange={(event) => setHumanPresent(event.currentTarget.checked)}
-          />
-          <Checkbox
-            label="Vehicle Present"
-            checked={vehiclePresent}
-            onChange={(event) => setVehiclePresent(event.currentTarget.checked)}
-          />
-        </Group>
-
         {noAnimalsVisible ||
         selection.length > 0 ||
         humanPresent ||
@@ -358,7 +358,6 @@ export function ImageAnnotation({ fetchNextImage }) {
             No Animals Visible
           </Button>
         )}
-
         {selection.length === 0 &&
           !noAnimalsVisible &&
           !humanPresent &&
@@ -368,7 +367,6 @@ export function ImageAnnotation({ fetchNextImage }) {
               as "No Animals Visible", or indicate human/vehicle presence
             </Text>
           )}
-
         <Modal
           opened={enlargedImage}
           onClose={() => setEnlargedImage(false)}
