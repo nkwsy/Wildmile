@@ -93,8 +93,9 @@ const predefinedSpecies = {
 const PredefinedSpeciesSidebar = ({ onSpeciesSelect }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [speciesData, setSpeciesData] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
+  // Fetch species data for a single species
   const fetchSpeciesData = async (species) => {
     try {
       const response = await fetch(
@@ -108,20 +109,35 @@ const PredefinedSpeciesSidebar = ({ onSpeciesSelect }) => {
     }
   };
 
-  const fetchCategoryData = async (category) => {
+  // Fetch all categories data at once
+  const fetchAllCategoriesData = async () => {
     setLoading(true);
-    const speciesPromises = predefinedSpecies[category].map(fetchSpeciesData);
-    const results = await Promise.all(speciesPromises);
-    const newSpeciesData = results.filter((result) => result !== null);
-    setSpeciesData((prevData) => ({ ...prevData, [category]: newSpeciesData }));
+    const allData = {};
+
+    // Create promises for all categories
+    const categoryPromises = Object.entries(predefinedSpecies).map(
+      async ([category, speciesList]) => {
+        const speciesPromises = speciesList.map(fetchSpeciesData);
+        const results = await Promise.all(speciesPromises);
+        return [category, results.filter((result) => result !== null)];
+      }
+    );
+
+    // Wait for all categories to complete
+    const results = await Promise.all(categoryPromises);
+
+    // Convert results array to object
+    results.forEach(([category, data]) => {
+      allData[category] = data;
+    });
+
+    setSpeciesData(allData);
     setLoading(false);
   };
 
   useEffect(() => {
-    if (selectedCategory) {
-      fetchCategoryData(selectedCategory);
-    }
-  }, [selectedCategory]);
+    fetchAllCategoriesData();
+  }, []);
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
