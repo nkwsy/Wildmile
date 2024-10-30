@@ -1,6 +1,17 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Accordion, List, Loader, SimpleGrid } from "@mantine/core";
+import {
+  Loader,
+  SimpleGrid,
+  SegmentedControl,
+  Stack,
+  Text,
+  Center,
+  Tooltip,
+  Group,
+  ActionIcon,
+} from "@mantine/core";
+import { IconClock, IconRefresh } from "@tabler/icons-react";
 import Species from "./SpeciesCard";
 
 const predefinedSpecies = {
@@ -91,9 +102,61 @@ const predefinedSpecies = {
 };
 
 const PredefinedSpeciesSidebar = ({ onSpeciesSelect }) => {
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("Mammals");
   const [speciesData, setSpeciesData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [recentSpecies, setRecentSpecies] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  // Fetch recent species data
+  const fetchRecentSpecies = async () => {
+    try {
+      const response = await fetch(`/api/cameratrap/recent-species`, {
+        cache: "no-store",
+      });
+      const data = await response.json();
+      const speciesDetails = await Promise.all(
+        data.map((item) => fetchSpeciesData(item.species))
+      );
+      return speciesDetails.filter((detail) => detail !== null);
+    } catch (error) {
+      console.error("Error fetching recent species:", error);
+      return [];
+    }
+  };
+
+  // Convert predefinedSpecies keys to format needed by SegmentedControl
+  const categoryData = [
+    {
+      value: "recent",
+      label: (
+        <Tooltip label="Recently Used">
+          <Center>
+            <IconClock size={20} stroke={1.5} />
+          </Center>
+        </Tooltip>
+      ),
+    },
+    ...Object.keys(predefinedSpecies).map((category) => ({
+      label: category,
+      value: category,
+    })),
+  ];
+
+  // Handle category selection/deselection
+  const handleCategoryChange = async (newValue) => {
+    if (newValue === selectedCategory) {
+      setSelectedCategory(null);
+    } else {
+      setSelectedCategory(newValue);
+      if (newValue === "recent" && !speciesData.recent) {
+        setLoading(true);
+        const recentData = await fetchRecentSpecies();
+        setSpeciesData((prev) => ({ ...prev, recent: recentData }));
+        setLoading(false);
+      }
+    }
+  };
 
   // Fetch species data for a single species
   const fetchSpeciesData = async (species) => {
@@ -139,40 +202,62 @@ const PredefinedSpeciesSidebar = ({ onSpeciesSelect }) => {
     fetchAllCategoriesData();
   }, []);
 
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
+  const handleRefresh = async () => {
+    if (selectedCategory === "recent") {
+      setRefreshing(true);
+      setLoading(true);
+      const recentData = await fetchRecentSpecies();
+      setSpeciesData((prev) => ({ ...prev, recent: recentData }));
+      setLoading(false);
+      setRefreshing(false);
+    }
   };
 
   return (
-    <>
-      <h2>Common Species</h2>
-      <Accordion onChange={handleCategorySelect}>
-        {Object.entries(predefinedSpecies).map(([category, species]) => (
-          <Accordion.Item key={category} value={category}>
-            <Accordion.Control>{category}</Accordion.Control>
-            <Accordion.Panel>
-              {loading ? (
-                <Loader />
-              ) : (
-                <SimpleGrid
-                  cols={3}
-                  spacing="md"
-                  breakpoints={[
-                    { maxWidth: "62rem", cols: 2, spacing: "md" },
-                    { maxWidth: "48rem", cols: 1, spacing: "sm" },
-                  ]}
-                >
-                  <Species
-                    results={speciesData[category] || []}
-                    onSpeciesSelect={onSpeciesSelect}
-                  />
-                </SimpleGrid>
-              )}
-            </Accordion.Panel>
-          </Accordion.Item>
-        ))}
-      </Accordion>
-    </>
+    <Stack spacing="md">
+      <Group position="apart">
+        <Text size="lg" fw={500}>
+          Common Species
+        </Text>
+        {selectedCategory === "recent" && (
+          <ActionIcon
+            onClick={handleRefresh}
+            loading={refreshing}
+            variant="subtle"
+            disabled={loading}
+          >
+            <IconRefresh size={20} />
+          </ActionIcon>
+        )}
+      </Group>
+
+      <SegmentedControl
+        value={selectedCategory}
+        onChange={handleCategoryChange}
+        data={categoryData}
+        fullWidth
+      />
+
+      {loading ? (
+        <Loader />
+      ) : (
+        selectedCategory && (
+          <SimpleGrid
+            cols={3}
+            spacing="md"
+            breakpoints={[
+              { maxWidth: "62rem", cols: 2, spacing: "md" },
+              { maxWidth: "48rem", cols: 1, spacing: "sm" },
+            ]}
+          >
+            <Species
+              results={speciesData[selectedCategory] || []}
+              onSpeciesSelect={onSpeciesSelect}
+            />
+          </SimpleGrid>
+        )
+      )}
+    </Stack>
   );
 };
 

@@ -83,7 +83,7 @@ export function ImageFilterControls({ onApplyFilters }) {
     <>
       <Group position="apart">
         <Button
-          size="lg"
+          size="md"
           onClick={handleApplyFilters}
           leftSection={<IconRefresh />}
         >

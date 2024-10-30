@@ -10,6 +10,9 @@ import {
   ActionIconGroup,
   Tooltip,
   ButtonGroup,
+  Grid,
+  GridCol,
+  ScrollArea,
 } from "@mantine/core";
 import { useImage } from "./ContextCamera";
 import { ImageAnnotation } from "./ImageAnnotation";
@@ -91,23 +94,26 @@ export const ImageAnnotationPage = () => {
   };
 
   return (
-    <Group align="flex-start" spacing="xl">
-      <Paper shadow="xs" p="xl" style={{ flex: 1 }}>
-        <Stack spacing="md">
-          <ImageFilterControls
-            onApplyFilters={handleApplyFilters}
-            deployments={deployments}
-          />
-          <Group spacing="xs" position="center" mt="md">
+    <Grid style={{ height: "calc(100vh - 60px)" }}>
+      <GridCol span={{ base: 12, md: 8 }} style={{ height: "100%" }}>
+        <Paper
+          shadow="xs"
+          p="md"
+          style={{
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+          }}
+        >
+          <Group spacing="xs" position="center" mb="md">
             <ButtonGroup>
               <Tooltip label="Previous Image">
                 <Button
                   onClick={() => handleNavigateImage("previous")}
                   variant="default"
-                  // size="xl"
                   radius="md"
                   color="blue"
-                  // disabled={isSaving}
                 >
                   <IconArrowLeft />
                 </Button>
@@ -117,24 +123,33 @@ export const ImageAnnotationPage = () => {
                 <Button
                   onClick={() => handleNavigateImage("next")}
                   variant="default"
-                  // size="xl"
                   radius="md"
                   color="blue"
-                  // disabled={isSaving}
                 >
                   <IconArrowRight />
                 </Button>
               </Tooltip>
             </ButtonGroup>
+            <ImageFilterControls
+              onApplyFilters={handleApplyFilters}
+              deployments={deployments}
+            />
           </Group>
-          <ImageAnnotation fetchNextImage={fetchNextImage} />
-        </Stack>
-      </Paper>
 
-      <Stack spacing="xl" style={{ flex: 1 }}>
-        <WildlifeSearch />
-      </Stack>
-    </Group>
+          <ScrollArea style={{ flex: 1 }} offsetScrollbars>
+            <ImageAnnotation fetchNextImage={fetchNextImage} />
+          </ScrollArea>
+        </Paper>
+      </GridCol>
+
+      <GridCol span={{ base: 12, md: 4 }} style={{ height: "100%" }}>
+        <ScrollArea style={{ height: "100%" }} offsetScrollbars>
+          <Stack spacing="md">
+            <WildlifeSearch />
+          </Stack>
+        </ScrollArea>
+      </GridCol>
+    </Grid>
   );
 };
 

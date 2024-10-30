@@ -215,7 +215,13 @@ export function ImageAnnotation({ fetchNextImage }) {
   }
   console.log(currentImage);
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder>
+    <Card
+      shadow="sm"
+      padding="lg"
+      radius="md"
+      withBorder
+      style={{ height: "100%" }}
+    >
       <Card.Section>
         <div style={{ position: "relative" }}>
           <Image
@@ -380,7 +386,7 @@ export function ImageAnnotation({ fetchNextImage }) {
           <div
             style={{
               width: "100vw",
-              height: "100vh",
+              height: "50vh",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
