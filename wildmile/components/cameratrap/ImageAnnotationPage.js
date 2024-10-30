@@ -94,8 +94,9 @@ export const ImageAnnotationPage = () => {
   };
 
   return (
-    <Grid style={{ height: "calc(100vh - 60px)" }}>
-      <GridCol span={{ base: 12, md: 8 }} style={{ height: "100%" }}>
+    // <Grid style={{ height: "calc(100vh - 60px)" }}>
+    <Grid>
+      <GridCol span={{ base: 12, md: 6, lg: 8 }}>
         <Paper
           shadow="xs"
           p="md"
@@ -103,7 +104,7 @@ export const ImageAnnotationPage = () => {
             height: "100%",
             display: "flex",
             flexDirection: "column",
-            overflow: "hidden",
+            // overflow: "hidden",
           }}
         >
           <Group spacing="xs" position="center" mb="md">
@@ -136,13 +137,13 @@ export const ImageAnnotationPage = () => {
             />
           </Group>
 
-          <ScrollArea style={{ flex: 1 }} offsetScrollbars>
-            <ImageAnnotation fetchNextImage={fetchNextImage} />
-          </ScrollArea>
+          {/* <ScrollArea style={{ flex: 1 }} offsetScrollbars> */}
+          <ImageAnnotation fetchNextImage={fetchNextImage} />
+          {/* </ScrollArea> */}
         </Paper>
       </GridCol>
 
-      <GridCol span={{ base: 12, md: 4 }} style={{ height: "100%" }}>
+      <GridCol span={{ base: 12, md: 6, lg: 4 }} style={{ height: "100%" }}>
         <ScrollArea style={{ height: "100%" }} offsetScrollbars>
           <Stack spacing="md">
             <WildlifeSearch />

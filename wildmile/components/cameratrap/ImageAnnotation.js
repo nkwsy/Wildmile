@@ -16,6 +16,7 @@ import {
   Modal,
   Grid,
   GridCol,
+  Indicator,
 } from "@mantine/core";
 import {
   IconHeartPlus,
@@ -241,7 +242,7 @@ export function ImageAnnotation({ fetchNextImage }) {
       </Card.Section>
 
       <Grid>
-        <Group>
+        <Group grow wrap="nowrap">
           <Text mt="md" style={{ fontFamily: "monospace" }}>
             Image Timestamp:{" "}
             {new Date(currentImage.timestamp).toLocaleString("en-US", {
@@ -252,7 +253,7 @@ export function ImageAnnotation({ fetchNextImage }) {
             Media ID: {currentImage.mediaID}
           </Text>
         </Group>
-        <GridCol span={6}>
+        <GridCol span={{ base: 12, md: 12, lg: 6 }}>
           <Group position="apart" mt="md">
             <ActionIcon
               variant="outline"
@@ -263,19 +264,24 @@ export function ImageAnnotation({ fetchNextImage }) {
             >
               <IconLink />
             </ActionIcon>
-            <ActionIcon
-              onClick={handleToggleFavorite}
-              color={isFavorite ? "red" : "red"}
-              variant={isFavorite ? "filled" : "outline"}
+            <Indicator
+              inline
+              label={currentImage.favoriteCount}
+              disabled={!currentImage.favoriteCount}
+              size={16}
             >
-              {isFavorite ? (
-                <IconHeart size={24} />
-              ) : (
-                <IconHeartPlus size={24} />
-              )}
-            </ActionIcon>
-            <Text size="sm">Favorites: {currentImage.favoriteCount || 0}</Text>
-
+              <ActionIcon
+                onClick={handleToggleFavorite}
+                color={isFavorite ? "red" : "red"}
+                variant={isFavorite ? "filled" : "outline"}
+              >
+                {isFavorite ? (
+                  <IconHeart size={24} />
+                ) : (
+                  <IconHeartPlus size={24} />
+                )}
+              </ActionIcon>
+            </Indicator>
             <TextInput
               placeholder="Add a comment..."
               value={comment}
@@ -293,8 +299,8 @@ export function ImageAnnotation({ fetchNextImage }) {
               </Text>
             ))}
           </Stack>
-        </GridCol>{" "}
-        <GridCol span={6}>
+        </GridCol>
+        <GridCol span={{ base: 12, md: 12, lg: 6 }}>
           {!noAnimalsVisible && (
             <Stack spacing="xs" mt="md">
               {selection.map((animal) => (
