@@ -215,15 +215,19 @@ export function ImageAnnotation({ fetchNextImage }) {
   }
   console.log(currentImage);
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder>
+    <Card
+      shadow="sm" padding="lg" radius="md" withBorder 
+      style={{ maxHeight: "90vh", overflow: "auto" }} // Should limit card height and allow scrolling
+    >
       <Card.Section>
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative", height: "100%", overflow: "hidden" }}>
           <Image
             src={currentImage.publicURL}
             fit="contain"
             // height={700}
             width="100%"
             alt="Wildlife image"
+            style= {{maxHeight: "400px" }} // Should control max height so image doesn't blow up
           />
           <ActionIcon
             style={{ position: "absolute", top: 10, right: 10 }}
