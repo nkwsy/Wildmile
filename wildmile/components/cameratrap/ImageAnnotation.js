@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Card,
+  CardSection,
   Image,
   Text,
   Button,
@@ -16,6 +17,8 @@ import {
   Modal,
   Grid,
   GridCol,
+  Indicator,
+  Flex,
 } from "@mantine/core";
 import {
   IconHeartPlus,
@@ -145,7 +148,7 @@ export function ImageAnnotation({ fetchNextImage }) {
         setAnimalCounts({});
         setNoAnimalsVisible(false);
       } else {
-        alert("Failed to save observations");
+        alert("Failed to save observations. Make sure you're logged in");
       }
     } catch (error) {
       console.error("Error saving observations:", error);
@@ -215,13 +218,13 @@ export function ImageAnnotation({ fetchNextImage }) {
   }
   console.log(currentImage);
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder>
-      <Card.Section>
+    <>
+      <Card shadow="sm" radius="md" withBorder style={{ height: "100%" }}>
         <div style={{ position: "relative" }}>
           <Image
             src={currentImage.publicURL}
             fit="contain"
-            // height={700}
+            // maxHeight={700}
             width="100%"
             alt="Wildlife image"
           />
@@ -232,171 +235,181 @@ export function ImageAnnotation({ fetchNextImage }) {
             <IconMaximize size={24} />
           </ActionIcon>
         </div>
-      </Card.Section>
-
-      <Grid>
-        <Group>
-          <Text mt="md" style={{ fontFamily: "monospace" }}>
+        <Grid>
+          {/* <Group grow wrap="nowrap"> */}
+          <Text mt="xs" size="xs" style={{ fontFamily: "monospace" }}>
             Image Timestamp:{" "}
             {new Date(currentImage.timestamp).toLocaleString("en-US", {
               timeZone: "UTC",
             })}
           </Text>
-          <Text mt="md" style={{ fontFamily: "monospace" }}>
+          <Text mt="xs" size="xs" style={{ fontFamily: "monospace" }}>
             Media ID: {currentImage.mediaID}
           </Text>
-        </Group>
-        <GridCol span={6}>
-          <Group position="apart" mt="md">
-            <ActionIcon
-              variant="outline"
-              onClick={() => {
-                navigator.clipboard.writeText(currentImage.publicURL);
-                alert("Image URL copied to clipboard");
-              }}
-            >
-              <IconLink />
-            </ActionIcon>
-            <ActionIcon
-              onClick={handleToggleFavorite}
-              color={isFavorite ? "red" : "red"}
-              variant={isFavorite ? "filled" : "outline"}
-            >
-              {isFavorite ? (
-                <IconHeart size={24} />
-              ) : (
-                <IconHeartPlus size={24} />
-              )}
-            </ActionIcon>
-            <Text size="sm">Favorites: {currentImage.favoriteCount || 0}</Text>
-
-            <TextInput
-              placeholder="Add a comment..."
-              value={comment}
-              onChange={(event) => setComment(event.currentTarget.value)}
-              style={{ flex: 1 }}
-            />
-            <ActionIcon onClick={handleAddComment} disabled={!comment.trim()}>
-              <IconSend size={24} />
-            </ActionIcon>
-          </Group>
-          <Stack spacing="xs" mt="md">
-            {comments.map((comment, index) => (
-              <Text key={index} size="sm">
-                <strong>{comment.author.name}:</strong> {comment.text}
-              </Text>
-            ))}
-          </Stack>
-        </GridCol>{" "}
-        <GridCol span={6}>
-          {!noAnimalsVisible && (
+          {/* </Group> */}
+          <GridCol span={{ base: 12, md: 12, lg: 6 }}>
+            <Group position="apart" mt="md">
+              <ActionIcon
+                variant="outline"
+                onClick={() => {
+                  navigator.clipboard.writeText(currentImage.publicURL);
+                  alert("Image URL copied to clipboard");
+                }}
+              >
+                <IconLink />
+              </ActionIcon>
+              <Indicator
+                inline
+                label={currentImage.favoriteCount}
+                disabled={!currentImage.favoriteCount}
+                size={16}
+              >
+                <ActionIcon
+                  onClick={handleToggleFavorite}
+                  color={isFavorite ? "red" : "red"}
+                  variant={isFavorite ? "filled" : "outline"}
+                >
+                  {isFavorite ? (
+                    <IconHeart size={24} />
+                  ) : (
+                    <IconHeartPlus size={24} />
+                  )}
+                </ActionIcon>
+              </Indicator>
+              <TextInput
+                placeholder="Add a comment..."
+                value={comment}
+                onChange={(event) => setComment(event.currentTarget.value)}
+                style={{ flex: 1 }}
+              />
+              <ActionIcon onClick={handleAddComment} disabled={!comment.trim()}>
+                <IconSend size={24} />
+              </ActionIcon>
+            </Group>
             <Stack spacing="xs" mt="md">
-              {selection.map((animal) => (
-                <Group key={animal.id} position="apart" noWrap>
-                  <Text style={{ fontWeight: "bold", flex: 1 }}>
-                    {animal.preferred_common_name || animal.name}
-                  </Text>
-                  <Group spacing="xs" noWrap>
-                    <NumberInput
-                      value={animalCounts[animal.id] || 1}
-                      onChange={(value) => handleCountChange(animal.id, value)}
-                      min={1}
-                      max={100}
-                      style={{ width: 80 }}
-                    />
-                    <ActionIcon
-                      color="red"
-                      variant="subtle"
-                      onClick={() => handleRemoveAnimal(animal.id)}
-                    >
-                      <IconX size={16} />
-                    </ActionIcon>
-                  </Group>
-                </Group>
+              {comments.map((comment, index) => (
+                <Text key={index} size="sm">
+                  <strong>{comment.author.name}:</strong> {comment.text}
+                </Text>
               ))}
             </Stack>
+          </GridCol>
+          <GridCol span={{ base: 12, md: 12, lg: 6 }}>
+            {!noAnimalsVisible && (
+              <Flex direction="column" gap="xs" mt="md">
+                {/* <Stack spacing="xs" mt="md"> */}
+                {selection.map((animal) => (
+                  <Group key={animal.id} position="apart" noWrap>
+                    <Text style={{ fontWeight: "bold", flex: 1 }}>
+                      {animal.preferred_common_name || animal.name}
+                    </Text>
+                    <Group spacing="xs" noWrap>
+                      <NumberInput
+                        value={animalCounts[animal.id] || 1}
+                        onChange={(value) =>
+                          handleCountChange(animal.id, value)
+                        }
+                        min={1}
+                        max={100}
+                        style={{ width: 80 }}
+                      />
+                      <ActionIcon
+                        color="red"
+                        variant="subtle"
+                        onClick={() => handleRemoveAnimal(animal.id)}
+                      >
+                        <IconX size={16} />
+                      </ActionIcon>
+                    </Group>
+                  </Group>
+                ))}
+                {/* </Stack> */}
+              </Flex>
+            )}
+            <Group mt="md">
+              <Checkbox
+                label="Human Present"
+                checked={humanPresent}
+                onChange={(event) =>
+                  setHumanPresent(event.currentTarget.checked)
+                }
+              />
+              <Checkbox
+                label="Vehicle Present"
+                checked={vehiclePresent}
+                onChange={(event) =>
+                  setVehiclePresent(event.currentTarget.checked)
+                }
+              />
+            </Group>
+          </GridCol>
+          {noAnimalsVisible ||
+          selection.length > 0 ||
+          humanPresent ||
+          vehiclePresent ? (
+            <Button
+              color="blue"
+              fullWidth
+              mt="md"
+              radius="md"
+              onClick={handleSaveObservations}
+              loading={isSaving}
+            >
+              {isSaving ? "Saving..." : "Save Observations"}
+            </Button>
+          ) : (
+            <Button
+              color="blue"
+              variant="outline"
+              fullWidth
+              mt="md"
+              radius="md"
+              onClick={handleNoAnimalsClick}
+              loading={isSaving}
+            >
+              No Animals Visible
+            </Button>
           )}
-          <Group mt="md">
-            <Checkbox
-              label="Human Present"
-              checked={humanPresent}
-              onChange={(event) => setHumanPresent(event.currentTarget.checked)}
-            />
-            <Checkbox
-              label="Vehicle Present"
-              checked={vehiclePresent}
-              onChange={(event) =>
-                setVehiclePresent(event.currentTarget.checked)
-              }
-            />
-          </Group>
-        </GridCol>
-        {noAnimalsVisible ||
-        selection.length > 0 ||
-        humanPresent ||
-        vehiclePresent ? (
-          <Button
-            color="blue"
-            fullWidth
-            mt="md"
-            radius="md"
-            onClick={handleSaveObservations}
-            loading={isSaving}
-          >
-            {isSaving ? "Saving..." : "Save Observations"}
-          </Button>
-        ) : (
-          <Button
-            color="blue"
-            variant="outline"
-            fullWidth
-            mt="md"
-            radius="md"
-            onClick={handleNoAnimalsClick}
-            loading={isSaving}
-          >
-            No Animals Visible
-          </Button>
-        )}
-        {selection.length === 0 &&
-          !noAnimalsVisible &&
-          !humanPresent &&
-          !vehiclePresent && (
-            <Text color="dimmed" align="center" mt="md">
-              Select animals from the search results to add observations, mark
-              as "No Animals Visible", or indicate human/vehicle presence
-            </Text>
-          )}
-        <Modal
-          opened={enlargedImage}
-          onClose={() => setEnlargedImage(false)}
-          size="100%"
-          padding={0}
-          styles={{
-            inner: { padding: 0 },
-            modal: { maxWidth: "100%" },
+          {selection.length === 0 &&
+            !noAnimalsVisible &&
+            !humanPresent &&
+            !vehiclePresent && (
+              <Text color="dimmed" align="center" mt="md">
+                Select animals from the search results to add observations, mark
+                as "No Animals Visible", or indicate human/vehicle presence
+              </Text>
+            )}
+        </Grid>
+      </Card>
+      <Modal
+        opened={enlargedImage}
+        onClose={() => setEnlargedImage(false)}
+        size="100%"
+        padding={0}
+        styles={{
+          inner: { padding: 0 },
+          modal: { maxWidth: "100%" },
+        }}
+      >
+        <div
+          style={{
+            // width: "90vw",
+            // height: "90vh",
+            display: "flex",
+            // justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "black",
           }}
         >
-          <div
-            style={{
-              width: "100vw",
-              height: "100vh",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "black",
-            }}
-          >
-            <Image
-              src={currentImage.publicURL}
-              fit="contain"
-              // height="100vh"
-              width="90%"
-              alt="Enlarged wildlife image"
-            />
-          </div>
-        </Modal>
-      </Grid>
-    </Card>
+          <Image
+            src={currentImage.publicURL}
+            fit="contain"
+            // height="100vh"
+            // width="90vw"
+            alt="Enlarged wildlife image"
+          />
+        </div>
+      </Modal>
+    </>
   );
 }

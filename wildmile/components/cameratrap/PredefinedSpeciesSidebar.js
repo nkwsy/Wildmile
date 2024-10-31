@@ -1,10 +1,22 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Accordion, List, Loader, SimpleGrid } from "@mantine/core";
+import {
+  Loader,
+  SimpleGrid,
+  SegmentedControl,
+  Stack,
+  Text,
+  Center,
+  Tooltip,
+  Group,
+  ActionIcon,
+} from "@mantine/core";
+import { IconClock, IconRefresh } from "@tabler/icons-react";
 import Species from "./SpeciesCard";
 
 const predefinedSpecies = {
   Mammals: [
+    "Mammalia",
     "Canis latrans",
     "Castor canadensis",
     "Ondatra zibethicus",
@@ -28,9 +40,9 @@ const predefinedSpecies = {
     "Vulpes vulpes",
     "Lontra canadensis",
     "Didelphis virginiana",
-    "Mammalia",
   ],
   Reptiles: [
+    "Reptilia",
     "Trachemys scripta elegans",
     "Chelydra Serpentina",
     "Chrysemys picta",
@@ -38,62 +50,167 @@ const predefinedSpecies = {
     "Thaminophis sirtalis",
     "Storeria dejaki",
     "Nerodia sipedon",
-    "Reptilia",
   ],
   Amphibians: [
+    "Amphibia",
     "Lithobates catesbeianus",
     "Anaxyrus americanus",
     "Pseudacris crucifer",
     "Pseudacris triseriata",
     "Lithobates pipiens",
     "Rana clamitans",
-    "Amphibia",
   ],
   Birds: [
-    "Branta canadensis",
-    "Aix sponsa",
+    "Aves",
+
     "Anas platyrhynchos",
+    "Branta canadensis",
+    "Larus delawarensis",
+    "Columba livia",
+    "Sturnus vulgaris",
+    "Passer domesticus",
+    "Turdus migratorius",
+    "Agelaius phoeniceus",
+    "Corvus brachyrrhynchos",
+    "Nannopterum auritum",
+    "Ardea herodias",
+    "Nycticorax nycticorax",
+    "Accipiter cooperii",
+    "Actitis macularius",
+    "Aix sponsa",
+    "Anas acuta",
+    "Anser albifrons",
+    "Anser caerulescens",
+    "Archilochus colubris",
+    "Ardea alba",
+    "Aythya affinis",
+    "Aythya americana",
+    "Aythya marila",
+    "Bombycilla cedrorum",
+    "Botaurus lentiginosus",
+    "Branta hutchinsii",
+    "Bubo virginianus",
+    "Bucephala albeola",
+    "Bucephala clangula",
+    "Buteo jamaicensis",
+    "Butorides virescens",
+    "Cardinalis cardinalis",
+    "Cathartes aura",
+    "Chaetura pelagica",
+    "Charadrius vociferus",
+    "Colaptes auratus",
+    "Cyanocitta cristata",
+    "Cygnus olor",
+    "Dumetella carolinensis",
+    "Falco peregrinus",
+    "Falco sparverius",
+    "Gavia immer",
+    "Grus canadensis",
+    "Ixobrychus exilis",
+    "Junco hyemalis",
+    "Larus argentatus",
     "Lophodytes cucullatus",
+    "Megaceryle alcyon",
+    "Melanerpes erythrocephalus",
+    "Melospiza melodia",
     "Mergus merganser",
     "Mergus serrator",
-    "Podilymus podiceps",
-    "Chaetura pelagica",
-    "Archilochus colubris",
-    "Actitis macularius",
-    "Larus argentatus",
-    "Gavia immer",
-    "Nannopterum auritum",
-    "Botaurus lentiginosus",
-    "Lxobrycus exilis",
-    "Nycticorax nycticorax",
-    "Nyctanassa Violacea",
-    "Butorides virescens",
-    "Ardea alba",
-    "Ardea herodias",
-    "Accipiter cooperii",
-    "Bubo virginianus",
-    "Megaceryle alcyon",
-    "Falco sparverius",
-    "Corvus brachyrrhynchos",
-    "Sturnus vulgaris",
-    "Podiceps auritus",
-    "Columba livia",
-    "Branta hutchinsii",
-    "Anser caerulescens",
-    "Anser albifrons",
-    "Cardinalis cardinalis",
-    "Pheucticus ludovicianus",
+    "Nyctanassa violacea",
+    "Pandion haliaetus",
     "Passerina cyanea",
+    "Pheucticus ludovicianus",
+    "Podiceps auritus",
+    "Podilymbus podiceps",
+    "Poecile atricapillus",
+    "Quiscalus quiscula",
+    "Spinus tristis",
     "Spiza americana",
-    "Aves",
+    "Tyrannus tyrannus",
+    "Zenaida macroura",
+    "Zonotrichia albicollis",
   ],
-  Insects: [], // Add insect species if available
+  // Insects: ["Arthropoda"], // Add insect species if available
+  Fish: [
+    "Chordata",
+    "Cyprinus carpio",
+    "Lepomis macrochirus",
+    "Micropterus salmoides",
+    "Ictalurus punctatus",
+    "Micropterus dolomieu",
+    "Esox lucius",
+    "Perca flavescens",
+    "Pomoxis nigromaculatus",
+    "Sander vitreus",
+    "Lepomis gibbosus",
+    "Ameiurus nebulosus",
+    "Aplodinotus grunniens",
+    "Amia calva",
+    "Catostomus commersonii",
+    "Dorosoma cepedianum",
+    "Hypophthalmichthys molitrix",
+    "Notemigonus crysoleucas",
+    "Oncorhynchus mykiss",
+    "Pimephales promelas",
+    "Salvelinus namaycush",
+  ],
 };
 
 const PredefinedSpeciesSidebar = ({ onSpeciesSelect }) => {
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("Mammals");
   const [speciesData, setSpeciesData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [recentSpecies, setRecentSpecies] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  // Fetch recent species data
+  const fetchRecentSpecies = async () => {
+    try {
+      const response = await fetch(`/api/cameratrap/recent-species`, {
+        cache: "no-store",
+      });
+      const data = await response.json();
+      const speciesDetails = await Promise.all(
+        data.map((item) => fetchSpeciesData(item.species))
+      );
+      return speciesDetails.filter((detail) => detail !== null);
+    } catch (error) {
+      console.error("Error fetching recent species:", error);
+      return [];
+    }
+  };
+
+  // Convert predefinedSpecies keys to format needed by SegmentedControl
+  const categoryData = [
+    {
+      value: "recent",
+      label: (
+        <Tooltip label="Recently Used">
+          <Center>
+            <IconClock size={20} stroke={1.5} />
+          </Center>
+        </Tooltip>
+      ),
+    },
+    ...Object.keys(predefinedSpecies).map((category) => ({
+      label: category,
+      value: category,
+    })),
+  ];
+
+  // Handle category selection/deselection
+  const handleCategoryChange = async (newValue) => {
+    if (newValue === selectedCategory) {
+      setSelectedCategory(null);
+    } else {
+      setSelectedCategory(newValue);
+      if (newValue === "recent" && !speciesData.recent) {
+        setLoading(true);
+        const recentData = await fetchRecentSpecies();
+        setSpeciesData((prev) => ({ ...prev, recent: recentData }));
+        setLoading(false);
+      }
+    }
+  };
 
   // Fetch species data for a single species
   const fetchSpeciesData = async (species) => {
@@ -139,39 +256,63 @@ const PredefinedSpeciesSidebar = ({ onSpeciesSelect }) => {
     fetchAllCategoriesData();
   }, []);
 
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
+  const handleRefresh = async () => {
+    if (selectedCategory === "recent") {
+      setRefreshing(true);
+      setLoading(true);
+      const recentData = await fetchRecentSpecies();
+      setSpeciesData((prev) => ({ ...prev, recent: recentData }));
+      setLoading(false);
+      setRefreshing(false);
+    }
   };
 
   return (
     <>
-      <h2>Common Species</h2>
-      <Accordion onChange={handleCategorySelect}>
-        {Object.entries(predefinedSpecies).map(([category, species]) => (
-          <Accordion.Item key={category} value={category}>
-            <Accordion.Control>{category}</Accordion.Control>
-            <Accordion.Panel>
-              {loading ? (
-                <Loader />
-              ) : (
-                <SimpleGrid
-                  cols={3}
-                  spacing="md"
-                  breakpoints={[
-                    { maxWidth: "62rem", cols: 2, spacing: "md" },
-                    { maxWidth: "48rem", cols: 1, spacing: "sm" },
-                  ]}
-                >
-                  <Species
-                    results={speciesData[category] || []}
-                    onSpeciesSelect={onSpeciesSelect}
-                  />
-                </SimpleGrid>
-              )}
-            </Accordion.Panel>
-          </Accordion.Item>
-        ))}
-      </Accordion>
+      <Stack spacing="md">
+        <Group position="apart">
+          <Text size="lg" fw={500}>
+            Common Species
+          </Text>
+          {selectedCategory === "recent" && (
+            <ActionIcon
+              onClick={handleRefresh}
+              loading={refreshing}
+              variant="subtle"
+              disabled={loading}
+            >
+              <IconRefresh size={20} />
+            </ActionIcon>
+          )}
+        </Group>
+
+        <SegmentedControl
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+          data={categoryData}
+          size="md"
+        />
+
+        {loading ? (
+          <Loader />
+        ) : (
+          selectedCategory && (
+            <SimpleGrid
+              cols={{ base: 3, lg: 3, xl: 4 }}
+              spacing="md"
+              // breakpoints={[
+              //   { maxWidth: "62rem", cols: 2, spacing: "md" },
+              //   { maxWidth: "48rem", cols: 1, spacing: "sm" },
+              // ]}
+            >
+              <Species
+                results={speciesData[selectedCategory] || []}
+                onSpeciesSelect={onSpeciesSelect}
+              />
+            </SimpleGrid>
+          )
+        )}
+      </Stack>
     </>
   );
 };
