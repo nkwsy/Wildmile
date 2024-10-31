@@ -1,5 +1,5 @@
 "use client";
-import { Title, Text, Container, Button, Grid } from "@mantine/core";
+import { Title, Text, Container, Button, Grid, Fieldset } from "@mantine/core";
 import { LoadingOverlay } from "@mantine/core";
 import { useEffect } from "react";
 import { IconCardGrid } from "/components/icon_card_grid";
@@ -22,34 +22,17 @@ import { InfoComponent } from "components/cameratrap/InfoComponent";
 function CameraTrapCards({ user }) {
   const cards = [
     {
-      icon: IconCameraPlus,
-      title: "New Camera",
-      href: "/cameratrap/camera/new",
-      description: "Add a new camera device",
-    },
-    {
-      icon: IconCameraSearch,
-      title: "Cameras",
-      href: "/cameratrap/camera",
-      description: "Manage the cameras",
-    },
-    {
-      icon: IconUsers,
-      title: "Deployments",
-      href: "/cameratrap/deployment",
-      description: "Manage the deployments",
-    },
-    {
       icon: IconPokeball,
       title: "Identify wildlife",
       href: "/cameratrap/identify",
-      description: "Find and catagorize wildlife",
+      description:
+        "Find and catagorize wildlife captured around the Chicago River",
     },
     {
       icon: IconZoomIn,
       title: "Explore Wildlife",
       href: "/cameratrap/explore",
-      description: "Explore wildlife data",
+      description: "Explore wildlife data which has been catagorized",
     },
   ];
   if (user?.admin) {
@@ -64,16 +47,40 @@ function CameraTrapCards({ user }) {
   return <IconCardGrid cards={cards} />;
 }
 
+function CameraTrapMgmtCards({ user }) {
+  const cards = [
+    {
+      icon: IconCameraPlus,
+      title: "New Camera",
+      href: "/cameratrap/camera/new",
+      description: "Add a new camera device",
+    },
+    {
+      icon: IconCameraSearch,
+      title: "Cameras",
+      href: "/cameratrap/camera",
+      description: "Manage the camera inventory",
+    },
+    {
+      icon: IconUsers,
+      title: "Deployments",
+      href: "/cameratrap/deployment",
+      description: "Manage the deployments",
+    },
+  ];
+  return <IconCardGrid cards={cards} />;
+}
+
 export default function CameraTrapHomePage() {
   // const { classes, theme } = cardStyles()
   const { user, loading } = useUser();
   const router = useRouter();
 
-  useEffect(() => {
-    // redirect user to login if not authenticated
-    if (!loading && !user) router.replace("/login");
-    console.log(user);
-  }, [user, loading, router]);
+  // useEffect(() => {
+  //   // redirect user to login if not authenticated
+  //   if (!loading && !user) router.replace("/login");
+  //   console.log(user);
+  // }, [user, loading, router]);
 
   if (loading) {
     return <LoadingOverlay visible />;
@@ -91,12 +98,16 @@ export default function CameraTrapHomePage() {
 
         <Grid mt="xl">
           <Grid.Col span={6}>
-
             <CameraTrapCards user={user} />
+            {user && (
+              <Fieldset legend="Management Tools">
+                <CameraTrapMgmtCards user={user} />
+              </Fieldset>
+            )}
           </Grid.Col>
           <Grid.Col span={6}>
             <RandomFavorite />
-          <InfoComponent />
+            <InfoComponent />
           </Grid.Col>
         </Grid>
       </Container>
