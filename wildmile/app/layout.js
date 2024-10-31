@@ -2,6 +2,9 @@
 // import "@mantine/core/styles/global.css";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
+
 // import dayjs from "dayjs";
 // import customParseFormat from "dayjs/plugin/customParseFormat";
 
@@ -51,6 +54,8 @@ export default function RootLayout({ children }) {
         <MantineProvider theme={theme}>
           {/* <HeaderNav /> */}
           {children}
+          <SpeedInsights />
+          <Analytics />
         </MantineProvider>
       </body>
     </html>

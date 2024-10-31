@@ -25,11 +25,13 @@ export function InfoComponent() {
     fetchStats();
   }, []);
 
-  const fetchStats = async () => {
+  const fetchStats = async (force = false) => {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch("/api/cameratrap/getStats");
+      const response = await fetch("/api/cameratrap/getStats", {
+        next: { revalidate: force ? 0 : 3600 },
+      });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -44,7 +46,7 @@ export function InfoComponent() {
   };
 
   const handleRefresh = () => {
-    fetchStats();
+    fetchStats(true);
   };
 
   if (loading) {
