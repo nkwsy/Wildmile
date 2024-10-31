@@ -30,9 +30,9 @@ function CameraTrapCards({ user }) {
     },
     {
       icon: IconZoomIn,
-      title: "Explore Wildlife",
+      title: "Explore Data",
       href: "/cameratrap/explore",
-      description: "Explore wildlife data which has been catagorized",
+      description: "Explore wildlife images which have been catagorized",
     },
   ];
   if (user?.admin) {
@@ -89,26 +89,26 @@ export default function CameraTrapHomePage() {
   return (
     <>
       <Container maw="85%" my="5rem">
-        <Title order={2} className={classes.title} ta="center" mt="sm">
-          Camera Trap Resources
-        </Title>
-        <Text c="dimmed" ta="center" mt="md">
-          Collecting and sharing data about Urban River's projects.
-        </Text>
-
         <Grid mt="xl">
-          <Grid.Col span={6}>
+          <Grid.Col span={7}>
+            <Title order={2} className={classes.title} ta="center" mt="sm">
+              Camera Trap Resources
+            </Title>
+            <Text c="dimmed" ta="center" mt="md">
+              Collecting and sharing data about Urban River's projects.
+            </Text>
             <CameraTrapCards user={user} />
+          </Grid.Col>
+          <Grid.Col span={5}>
+            <RandomFavorite />
+            <InfoComponent />
             {user && (
               <Fieldset legend="Management Tools">
                 <CameraTrapMgmtCards user={user} />
               </Fieldset>
             )}
           </Grid.Col>
-          <Grid.Col span={6}>
-            <RandomFavorite />
-            <InfoComponent />
-          </Grid.Col>
+          <Grid.Col span={5}></Grid.Col>
         </Grid>
       </Container>
     </>

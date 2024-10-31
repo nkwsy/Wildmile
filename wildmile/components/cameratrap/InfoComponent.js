@@ -78,7 +78,8 @@ export function InfoComponent() {
   }
 
   return (
-    <Paper p="md" shadow="xs">
+    <>
+      {/* <Paper p="md" shadow="xs"> */}
       <Stack spacing="lg">
         <Group position="apart">
           <Title order={3}>Camera Trap Statistics</Title>
@@ -182,7 +183,7 @@ export function InfoComponent() {
           </Group>
         </Card>
       </Stack>
-    </Paper>
+    </>
   );
 }
 

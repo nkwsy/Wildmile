@@ -30,7 +30,7 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import { useImage, useSelection } from "./ContextCamera";
-
+import checkboxClasses from "styles/checkbox.module.css";
 export function ImageAnnotation({ fetchNextImage }) {
   const [currentImage, setCurrentImage] = useImage();
   const [selection, setSelection] = useSelection();
@@ -55,14 +55,11 @@ export function ImageAnnotation({ fetchNextImage }) {
     setAnimalCounts((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleNoAnimalsClick = () => {
-    setNoAnimalsVisible(true);
-    setSelection([]);
-    setAnimalCounts({});
-    handleSaveObservations();
+  const handleNoAnimalsClick = async () => {
+    await handleSaveObservations(true);
   };
 
-  const handleSaveObservations = async () => {
+  const handleSaveObservations = async (forceNoAnimals = false) => {
     if (!currentImage) return;
 
     setIsSaving(true);
@@ -72,20 +69,22 @@ export function ImageAnnotation({ fetchNextImage }) {
 
     let observations = [];
 
-    if (noAnimalsVisible && !humanPresent && !vehiclePresent) {
-      observations = [
-        {
-          mediaId: currentImage.mediaID,
-          mediaInfo: {
-            md5: currentImage.mediaID,
-            imageHash: currentImage.imageHash,
-          },
-          eventStart: currentImage.timestamp,
-          eventEnd: currentImage.timestamp,
-          observationLevel: "media",
-          observationType: "blank",
+    if (
+      (forceNoAnimals || noAnimalsVisible) &&
+      !humanPresent &&
+      !vehiclePresent
+    ) {
+      observations.push({
+        mediaId: currentImage.mediaID,
+        mediaInfo: {
+          md5: currentImage.mediaID,
+          imageHash: currentImage.imageHash,
         },
-      ];
+        eventStart: currentImage.timestamp,
+        eventEnd: currentImage.timestamp,
+        observationLevel: "media",
+        observationType: "blank",
+      });
     } else {
       if (selection.length > 0) {
         observations = selection.map((animal) => ({
@@ -140,7 +139,7 @@ export function ImageAnnotation({ fetchNextImage }) {
         body: JSON.stringify(observations),
       });
 
-      await fetchNextImage();
+      fetchNextImage();
       if (response.ok) {
         // Instead of fetchRandomImage, use fetchNextImage
         // await fetchNextImage();
@@ -326,20 +325,28 @@ export function ImageAnnotation({ fetchNextImage }) {
                 {/* </Stack> */}
               </Flex>
             )}
-            <Group mt="md">
+            <Group mt="xs" grow wrap="nowrap">
               <Checkbox
+                classNames={checkboxClasses}
                 label="Human Present"
                 checked={humanPresent}
                 onChange={(event) =>
                   setHumanPresent(event.currentTarget.checked)
                 }
+                wrapperProps={{
+                  onClick: () => setHumanPresent((c) => !c),
+                }}
               />
               <Checkbox
+                classNames={checkboxClasses}
                 label="Vehicle Present"
                 checked={vehiclePresent}
                 onChange={(event) =>
                   setVehiclePresent(event.currentTarget.checked)
                 }
+                wrapperProps={{
+                  onClick: () => setVehiclePresent((c) => !c),
+                }}
               />
             </Group>
           </GridCol>
