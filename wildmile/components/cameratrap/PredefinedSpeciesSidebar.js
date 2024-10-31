@@ -214,50 +214,52 @@ const PredefinedSpeciesSidebar = ({ onSpeciesSelect }) => {
   };
 
   return (
-    <Stack spacing="md">
-      <Group position="apart">
-        <Text size="lg" fw={500}>
-          Common Species
-        </Text>
-        {selectedCategory === "recent" && (
-          <ActionIcon
-            onClick={handleRefresh}
-            loading={refreshing}
-            variant="subtle"
-            disabled={loading}
-          >
-            <IconRefresh size={20} />
-          </ActionIcon>
+    <>
+      <Stack spacing="md">
+        <Group position="apart">
+          <Text size="lg" fw={500}>
+            Common Species
+          </Text>
+          {selectedCategory === "recent" && (
+            <ActionIcon
+              onClick={handleRefresh}
+              loading={refreshing}
+              variant="subtle"
+              disabled={loading}
+            >
+              <IconRefresh size={20} />
+            </ActionIcon>
+          )}
+        </Group>
+
+        <SegmentedControl
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+          data={categoryData}
+          size="md"
+        />
+
+        {loading ? (
+          <Loader />
+        ) : (
+          selectedCategory && (
+            <SimpleGrid
+              cols={{ base: 3, lg: 3, xl: 4 }}
+              spacing="md"
+              // breakpoints={[
+              //   { maxWidth: "62rem", cols: 2, spacing: "md" },
+              //   { maxWidth: "48rem", cols: 1, spacing: "sm" },
+              // ]}
+            >
+              <Species
+                results={speciesData[selectedCategory] || []}
+                onSpeciesSelect={onSpeciesSelect}
+              />
+            </SimpleGrid>
+          )
         )}
-      </Group>
-
-      <SegmentedControl
-        value={selectedCategory}
-        onChange={handleCategoryChange}
-        data={categoryData}
-        fullWidth
-      />
-
-      {loading ? (
-        <Loader />
-      ) : (
-        selectedCategory && (
-          <SimpleGrid
-            cols={3}
-            spacing="md"
-            breakpoints={[
-              { maxWidth: "62rem", cols: 2, spacing: "md" },
-              { maxWidth: "48rem", cols: 1, spacing: "sm" },
-            ]}
-          >
-            <Species
-              results={speciesData[selectedCategory] || []}
-              onSpeciesSelect={onSpeciesSelect}
-            />
-          </SimpleGrid>
-        )
-      )}
-    </Stack>
+      </Stack>
+    </>
   );
 };
 
