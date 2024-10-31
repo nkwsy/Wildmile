@@ -26,6 +26,7 @@ export const ImageAnnotationPage = () => {
 
   useEffect(() => {
     fetchDeployments();
+    fetchCamtrapImage();
   }, []);
 
   const fetchDeployments = async () => {

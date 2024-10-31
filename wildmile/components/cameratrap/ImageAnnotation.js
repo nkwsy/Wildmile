@@ -148,7 +148,7 @@ export function ImageAnnotation({ fetchNextImage }) {
         setAnimalCounts({});
         setNoAnimalsVisible(false);
       } else {
-        alert("Failed to save observations");
+        alert("Failed to save observations. Make sure you're logged in");
       }
     } catch (error) {
       console.error("Error saving observations:", error);
