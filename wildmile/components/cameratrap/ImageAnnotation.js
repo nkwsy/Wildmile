@@ -56,10 +56,10 @@ export function ImageAnnotation({ fetchNextImage }) {
   };
 
   const handleNoAnimalsClick = async () => {
-    await handleSaveObservations(true);
+    await handleSaveObservations({ forceNoAnimals: true });
   };
 
-  const handleSaveObservations = async (forceNoAnimals = false) => {
+  const handleSaveObservations = async ({ forceNoAnimals = false } = {}) => {
     if (!currentImage) return;
 
     setIsSaving(true);
