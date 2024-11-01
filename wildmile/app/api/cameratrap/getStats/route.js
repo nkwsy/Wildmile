@@ -4,10 +4,14 @@ import CameratrapMedia from "models/cameratrap/Media";
 import Observation from "models/cameratrap/Observation";
 import User from "models/User";
 
-export async function GET() {
+export async function GET(request) {
   await dbConnect();
 
   try {
+    // Get the search params to check if this is a forced refresh
+    const { searchParams } = new URL(request.url);
+    const forceRefresh = searchParams.get("force") === "true";
+
     // Get total images
     const totalImages = await CameratrapMedia.countDocuments();
 
@@ -142,7 +146,7 @@ export async function GET() {
       },
     ]);
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       totalImages,
       uniqueMediaIds: uniqueMediaIds.length,
       newImages30Days,
@@ -153,6 +157,16 @@ export async function GET() {
       mostActive7Days: mostActive7Days || { name: "No activity", count: 0 },
       mostBlanks: mostBlanks || { name: "No blanks", count: 0 },
     });
+
+    // Set cache control headers
+    response.headers.set(
+      "Cache-Control",
+      forceRefresh
+        ? "no-store"
+        : "public, s-maxage=3600, stale-while-revalidate=3600"
+    );
+
+    return response;
   } catch (error) {
     console.error("Error fetching stats:", error);
     return NextResponse.json(

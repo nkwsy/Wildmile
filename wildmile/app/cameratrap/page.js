@@ -98,15 +98,15 @@ export default function CameraTrapHomePage() {
               Collecting and sharing data about Urban River's projects.
             </Text>
             <CameraTrapCards user={user} />
-          </Grid.Col>
-          <Grid.Col span={5}>
-            <RandomFavorite />
-            <InfoComponent />
             {user && (
               <Fieldset legend="Management Tools">
                 <CameraTrapMgmtCards user={user} />
               </Fieldset>
             )}
+          </Grid.Col>
+          <Grid.Col span={5}>
+            <RandomFavorite />
+            <InfoComponent />
           </Grid.Col>
           <Grid.Col span={5}></Grid.Col>
         </Grid>
