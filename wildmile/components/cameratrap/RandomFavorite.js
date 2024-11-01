@@ -1,16 +1,21 @@
 "use client";
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import {
   Card,
   Image,
   Text,
+  Title,
   Button,
-  Group,
   LoadingOverlay,
   Modal,
+  Flex,
+  Group,
+  ActionIcon,
   Fieldset,
 } from "@mantine/core";
 import { IconRefresh, IconMaximize } from "@tabler/icons-react";
+import classes from "styles/CameraTrap.module.css";
 
 export function RandomFavorite() {
   const [favoriteImage, setFavoriteImage] = useState(null);
@@ -33,7 +38,7 @@ export function RandomFavorite() {
     setLoading(false);
   };
 
-  useEffect(() => {
+  useState(() => {
     fetchRandomFavorite();
   }, []);
 
@@ -46,84 +51,78 @@ export function RandomFavorite() {
   }
 
   return (
-    <Fieldset legend="A Random Image">
-      <Card
-        shadow="sm"
-        padding="lg"
-        radius="md"
-        withBorder
-        style={{ position: "relative" }}
-      >
+    <>
+      <Fieldset legend="Random Favorite">
         <LoadingOverlay visible={loading} />
-        <Card.Section>
-          {favoriteImage && (
+        {favoriteImage && (
+          <div style={{ position: "relative", minHeight: 300 }}>
             <Image
               src={favoriteImage.publicURL}
-              // height={300}
               alt="Random favorite wildlife image"
+              className={classes.mainImage}
               style={{ objectFit: "contain" }}
             />
-          )}
-        </Card.Section>
-
-        <Group position="apart" mt="md">
-          <Text fw={500}>Random Favorite</Text>
-          <Group spacing={5}>
-            <Button
-              variant="light"
-              color="blue"
-              size="sm"
+            <ActionIcon
+              style={{ position: "absolute", top: 10, right: 10 }}
               onClick={() => setEnlargedImage(true)}
             >
-              <IconMaximize size={16} />
-            </Button>
-            <Button
-              variant="light"
-              color="blue"
-              size="sm"
-              onClick={fetchRandomFavorite}
-              loading={loading}
-            >
-              <IconRefresh size={16} />
-            </Button>
-          </Group>
-        </Group>
-
-        {favoriteImage && (
-          <Text size="sm" color="dimmed" mt="sm">
-            Captured on: {new Date(favoriteImage.timestamp).toLocaleString()}
-          </Text>
+              <IconMaximize size={24} />
+            </ActionIcon>
+            {/* <Group gap="sm"> */}
+            <Flex direction={{ base: "column", sm: "row" }} gap="sm">
+              <Text size="sm" c="dimmed" mt="md" flex="1">
+                Captured on:{" "}
+                {new Date(favoriteImage.timestamp).toLocaleString()}
+              </Text>
+              <Text size="sm" c="dimmed" mt="md" flex="1">
+                Favorite by: {favoriteImage.favoriteUsers[0].profile.name}
+              </Text>
+              <Button
+                mt="md"
+                // flex="1"
+                wrap="wrap"
+                variant="light"
+                color="blue"
+                onClick={fetchRandomFavorite}
+                loading={loading}
+                leftSection={<IconRefresh />}
+              >
+                New Image
+              </Button>
+            </Flex>
+            {/* </Group> */}
+          </div>
         )}
+      </Fieldset>
 
-        <Modal
-          opened={enlargedImage}
-          onClose={() => setEnlargedImage(false)}
-          size="100%"
-          padding={0}
-          styles={{
-            inner: { padding: 0 },
-            modal: { maxWidth: "100%" },
+      <Modal
+        opened={enlargedImage}
+        onClose={() => setEnlargedImage(false)}
+        size="100%"
+        padding={0}
+        styles={{
+          inner: { padding: 0 },
+          modal: { maxWidth: "100%" },
+        }}
+      >
+        <div
+          style={{
+            width: "100vw",
+            height: "100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "black",
           }}
         >
-          <div
-            style={{
-              width: "100vw",
-              height: "100vh",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "black",
-            }}
-          >
-            <Image
-              src={favoriteImage?.publicURL}
-              fit="contain"
-              width="90%"
-              alt="Enlarged favorite wildlife image"
-            />
-          </div>
-        </Modal>
-      </Card>
-    </Fieldset>
+          <Image
+            src={favoriteImage?.publicURL}
+            fit="contain"
+            width="90%"
+            alt="Enlarged favorite wildlife image"
+          />
+        </div>
+      </Modal>
+    </>
   );
 }
