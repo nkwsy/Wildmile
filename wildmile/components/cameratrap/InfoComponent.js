@@ -29,9 +29,13 @@ export function InfoComponent() {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch("/api/cameratrap/getStats", {
-        next: { revalidate: force ? 0 : 3600 },
+
+      const url = `/api/cameratrap/getStats${force ? "?force=true" : ""}`;
+
+      const response = await fetch(url, {
+        cache: force ? "no-store" : "force-cache",
       });
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
