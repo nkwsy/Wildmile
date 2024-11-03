@@ -40,7 +40,7 @@ export default function Page() {
     {
       icon: IconBackhoe,
       title: "New Deployment",
-      href: "/cameratrap/deployment/edit/new",
+      href: "/cameratrap/deployment/new",
       description: "Create a new deployment",
     },
   ];

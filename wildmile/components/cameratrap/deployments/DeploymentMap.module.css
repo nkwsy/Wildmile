@@ -1,0 +1,79 @@
+.mapContainer {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  border-radius: var(--mantine-radius-md);
+  overflow: hidden;
+}
+
+.map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.marker {
+  width: 25px;
+  height: 25px;
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.marker:hover {
+  transform: scale(1.1);
+}
+
+.active {
+  background-color: var(--mantine-color-green-6);
+}
+
+.active:hover {
+  background-color: var(--mantine-color-green-7);
+}
+
+.inactive {
+  background-color: var(--mantine-color-gray-6);
+}
+
+.inactive:hover {
+  background-color: var(--mantine-color-gray-7);
+}
+
+.popup {
+  padding: 5px;
+}
+
+.deploymentInfo {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.deploymentInfo ul {
+  margin: 5px 0;
+  padding-left: 20px;
+}
+
+.legend {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background-color: white;
+  padding: 10px;
+  border-radius: var(--mantine-radius-sm);
+  box-shadow: var(--mantine-shadow-sm);
+  z-index: 1;
+}
+
+.legendMarker {
+  width: 15px;
+  height: 15px;
+  border: 1px solid white;
+  border-radius: 50%;
+}

@@ -16,6 +16,7 @@ import {
   TextInput,
   Box,
   Grid,
+  Autocomplete,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 
@@ -44,6 +45,34 @@ export default function CameraForm(props) {
       purchaseDate: "",
     },
   });
+
+  const [manufacturers, setManufacturers] = useState([]);
+  const [modelOptions, setModelOptions] = useState([]);
+
+  // Fetch camera options on component mount
+  useEffect(() => {
+    async function fetchCameraOptions() {
+      try {
+        const response = await fetch("/api/cameratrap/camera-options");
+        if (!response.ok) throw new Error("Failed to fetch camera options");
+        const data = await response.json();
+
+        setManufacturers(data.manufacturers);
+        setModelOptions(data.models);
+      } catch (error) {
+        console.error("Error fetching camera options:", error);
+      }
+    }
+
+    fetchCameraOptions();
+  }, []);
+
+  // Filter model options based on selected manufacturer
+  const getModelsByManufacturer = (manufacturer) => {
+    return modelOptions
+      .filter((m) => m.make === manufacturer)
+      .map((m) => m.model);
+  };
 
   useEffect(() => {
     if (params.cameraId) {
@@ -103,14 +132,25 @@ export default function CameraForm(props) {
         <Grid>
           <Grid.Col span={4}>
             <TextInput label="UR ID" {...form.getInputProps("name")} />
-            <TextInput
-              label="Model"
-              key="model"
-              {...form.getInputProps("model")}
-            />
-            <Textarea
+            <Autocomplete
               label="Manufacturer"
+              data={manufacturers}
               {...form.getInputProps("manufacturer")}
+              onChange={(value) => {
+                form.setFieldValue("manufacturer", value);
+                // Clear model when manufacturer changes
+                form.setFieldValue("model", "");
+              }}
+            />
+            <Autocomplete
+              label="Model"
+              data={
+                form.values.manufacturer
+                  ? getModelsByManufacturer(form.values.manufacturer)
+                  : []
+              }
+              {...form.getInputProps("model")}
+              disabled={!form.values.manufacturer}
             />
             <TextInput
               label="Serial Number"

@@ -52,7 +52,8 @@ const EditDeploymentForm = ({ deploymentId, onSuccess }) => {
         setCameraOptions(
           cameras.map((camera) => ({
             value: camera._id,
-            label: camera.cameraName || camera.serialNumber || camera._id,
+            label:
+              camera.name + " - " + camera.model + " - " + camera.manufacturer,
           }))
         );
       } catch (err) {

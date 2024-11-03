@@ -46,7 +46,7 @@ export async function GET() {
       { $sort: { lastSeen: -1 } },
 
       // Get top 6 unique species
-      { $limit: 6 },
+      { $limit: 12 },
     ]);
 
     return NextResponse.json(recentSpecies, {

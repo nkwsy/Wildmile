@@ -9,6 +9,7 @@ const DeploymentLocationSchema = new mongoose.Schema(
       required: true,
     },
     zone: String,
+    projectArea: String,
     location: PointSchema,
     tags: [String],
     mount: String,

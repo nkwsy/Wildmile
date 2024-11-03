@@ -143,8 +143,8 @@ export function ImageAnnotation({ fetchNextImage }) {
       if (response.ok) {
         // Instead of fetchRandomImage, use fetchNextImage
         // await fetchNextImage();
-        setSelection([]);
-        setAnimalCounts({});
+        // setSelection([]);
+        // setAnimalCounts({});
         setNoAnimalsVisible(false);
       } else {
         alert("Failed to save observations. Make sure you're logged in");

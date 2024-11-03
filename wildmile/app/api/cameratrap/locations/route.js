@@ -1,13 +1,11 @@
 import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
-import DeploymentLocations from "models/cameratrap/DeploymentLocations";
+import DeploymentLocation from "models/cameratrap/DeploymentLocations";
 
 export async function GET() {
-  await dbConnect();
   try {
-    const locations = await DeploymentLocations.find({ retired: { $ne: true } })
-      .populate("creator")
-      .lean();
+    await dbConnect();
+    const locations = await DeploymentLocation.find().sort({ locationName: 1 });
     return NextResponse.json(locations);
   } catch (error) {
     return NextResponse.json(
@@ -18,10 +16,24 @@ export async function GET() {
 }
 
 export async function POST(request) {
-  await dbConnect();
   try {
+    await dbConnect();
     const data = await request.json();
-    const location = await DeploymentLocations.create(data);
+
+    const location = await DeploymentLocation.create({
+      locationName: data.locationName,
+      zone: data.zone,
+      location: {
+        type: "Point",
+        coordinates: data.coordinates,
+      },
+      tags: data.tags,
+      mount: data.mount,
+      notes: data.notes,
+      favorite: data.favorite || false,
+      retired: data.retired || false,
+    });
+
     return NextResponse.json(location);
   } catch (error) {
     return NextResponse.json(
