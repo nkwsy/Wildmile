@@ -30,6 +30,8 @@ import {
   IconPencil,
 } from "@tabler/icons-react";
 import EditDeploymentForm from "./EditDeploymentForm";
+import { DeploymentImageAssigner } from "./DeploymentImageAssigner";
+import { DeploymentImages } from "./DeploymentImages";
 
 // Separate component for camera details
 const CameraDetails = ({ camera }) => (
@@ -192,7 +194,12 @@ export default function DeploymentDash({ deploymentId }) {
           </Collapse>
         </Paper>
         {/* </Grid.Col> */}
+
+        <Grid.Col span={12}>
+          <DeploymentImages deploymentId={deploymentId} />
+        </Grid.Col>
       </Grid>
+      <DeploymentImageAssigner deploymentId={deploymentId} />
     </Box>
   );
 }

@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import CameratrapMedia from "models/cameratrap/Media";
-
+import CameratrapDeployment from "models/cameratrap/Deployment";
 export async function GET(request) {
   await dbConnect();
 
   const { searchParams } = new URL(request.url);
   const deploymentId = searchParams.get("deploymentId");
+  const locationId = searchParams.get("locationId");
   const startDate = searchParams.get("startDate");
   const endDate = searchParams.get("endDate");
   const startTime = searchParams.get("startTime");
@@ -20,6 +21,17 @@ export async function GET(request) {
   let timeQuery = [];
 
   if (deploymentId) {
+    query.deploymentId = deploymentId;
+  }
+
+  if (locationId) {
+    // Find all deployments with this locationId
+    const deployments = await CameratrapDeployment.find({
+      locationId: locationId,
+    });
+    const deploymentIds = deployments.map((d) => d._id);
+    query.deploymentId = { $in: deploymentIds };
+  } else if (deploymentId) {
     query.deploymentId = deploymentId;
   }
 

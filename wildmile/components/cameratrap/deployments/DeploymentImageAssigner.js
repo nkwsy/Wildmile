@@ -1,0 +1,418 @@
+import { useState, useEffect } from "react";
+import {
+  Box,
+  Grid,
+  Text,
+  Button,
+  Group,
+  Stack,
+  Paper,
+  Breadcrumbs,
+  Anchor,
+  Checkbox,
+  LoadingOverlay,
+  Pagination,
+  Image,
+  Modal,
+  List,
+  Alert,
+} from "@mantine/core";
+import {
+  IconFolder,
+  IconPhoto,
+  IconCheck,
+  IconExclamationCircle,
+} from "@tabler/icons-react";
+import { notifications } from "@mantine/notifications";
+
+export function DeploymentImageAssigner({ deploymentId }) {
+  const [loading, setLoading] = useState(false);
+  const [currentPath, setCurrentPath] = useState("");
+  const [folders, setFolders] = useState([]);
+  const [images, setImages] = useState([]);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [showAll, setShowAll] = useState(false);
+  const [totalImages, setTotalImages] = useState(0);
+  const [page, setPage] = useState(1);
+  const IMAGES_PER_PAGE = 40;
+  const [confirmationData, setConfirmationData] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  // Fetch folders and images for current path
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `/api/cameratrap/getMediaByPath?path=${currentPath}&limit=${
+            showAll ? 0 : IMAGES_PER_PAGE
+          }`
+        );
+        const data = await response.json();
+
+        setFolders(data.folders || []);
+        setImages(data.images || []);
+        setTotalImages(data.totalImages || 0);
+      } catch (error) {
+        console.error("Error fetching media:", error);
+        notifications.show({
+          title: "Error",
+          message: "Failed to fetch media",
+          color: "red",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [currentPath, showAll, page]);
+
+  // Handle folder navigation
+  const handleFolderClick = (folderName) => {
+    setCurrentPath(currentPath ? `${currentPath}/${folderName}` : folderName);
+    setPage(1);
+    setSelectedImages([]);
+  };
+
+  // Handle breadcrumb navigation
+  const handleBreadcrumbClick = (index) => {
+    const newPath = currentPath.split("/").slice(0, index).join("/");
+    setCurrentPath(newPath);
+    setPage(1);
+    setSelectedImages([]);
+  };
+
+  // Handle image selection
+  const handleImageSelect = (imageId) => {
+    setSelectedImages((prev) =>
+      prev.includes(imageId)
+        ? prev.filter((id) => id !== imageId)
+        : [...prev, imageId]
+    );
+  };
+
+  // Handle select all
+  const handleSelectAll = () => {
+    setSelectedImages((prev) =>
+      prev.length === images.length ? [] : images.map((img) => img._id)
+    );
+  };
+
+  const checkAndConfirmAssignment = async (isFolder = false, imageIds = []) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        "/api/cameratrap/checkImagesBeforeAssignment",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            deploymentId,
+            currentPath: isFolder ? currentPath : undefined,
+            imageIds: !isFolder ? imageIds : undefined,
+          }),
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to check images");
+
+      const data = await response.json();
+      setConfirmationData({
+        totalCount: data.totalCount,
+        conflictingImages: data.conflictingImages,
+        isFolder,
+        imageIds,
+      });
+      setShowConfirmModal(true);
+    } catch (error) {
+      notifications.show({
+        title: "Error",
+        message: "Failed to check images",
+        color: "red",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleConfirmAssignment = async () => {
+    setShowConfirmModal(false);
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/cameratrap/assignImagesToDeployment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          deploymentId,
+          currentPath: confirmationData.isFolder ? currentPath : undefined,
+          imageIds: !confirmationData.isFolder
+            ? confirmationData.imageIds
+            : undefined,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to assign images");
+
+      const data = await response.json();
+      notifications.show({
+        title: "Success",
+        message: data.message,
+        color: "green",
+      });
+
+      setSelectedImages([]);
+      setPage(1);
+    } catch (error) {
+      notifications.show({
+        title: "Error",
+        message: "Failed to assign images",
+        color: "red",
+      });
+    } finally {
+      setLoading(false);
+      setConfirmationData(null);
+    }
+  };
+
+  // Add new function to handle assigning all images in current folder
+  const handleAssignAllInFolder = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/cameratrap/assignImagesToDeployment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          deploymentId,
+          currentPath,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to assign images");
+
+      const data = await response.json();
+      notifications.show({
+        title: "Success",
+        message: data.message,
+        color: "green",
+      });
+
+      // Refresh images
+      setSelectedImages([]);
+      setPage(1);
+    } catch (error) {
+      console.error("Error assigning all images:", error);
+      notifications.show({
+        title: "Error",
+        message: "Failed to assign images to deployment",
+        color: "red",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <Paper p="md" radius="md" withBorder>
+        <LoadingOverlay visible={loading} />
+
+        <Stack spacing="md">
+          {/* Breadcrumbs */}
+          <Breadcrumbs>
+            <Anchor onClick={() => handleBreadcrumbClick(-1)}>Root</Anchor>
+            {currentPath.split("/").map((folder, index) => (
+              <Anchor
+                key={index}
+                onClick={() => handleBreadcrumbClick(index + 1)}
+              >
+                {folder}
+              </Anchor>
+            ))}
+          </Breadcrumbs>
+
+          {/* Controls */}
+          <Group position="apart">
+            <Button.Group>
+              <Button
+                onClick={handleSelectAll}
+                variant="default"
+                leftIcon={<IconCheck size={16} />}
+              >
+                {selectedImages.length === images.length
+                  ? "Deselect All"
+                  : "Select All"}
+              </Button>
+              <Button onClick={() => setShowAll(!showAll)} variant="default">
+                {showAll ? "Show Sample" : "Show All"}
+              </Button>
+              <Button
+                onClick={() => checkAndConfirmAssignment(true)}
+                variant="default"
+                color="blue"
+                leftIcon={<IconFolder size={16} />}
+              >
+                Assign All in Folder
+              </Button>
+            </Button.Group>
+
+            <Button
+              onClick={() => checkAndConfirmAssignment(false, selectedImages)}
+              disabled={selectedImages.length === 0}
+            >
+              Assign {selectedImages.length} Selected
+            </Button>
+          </Group>
+
+          {/* Folders Grid */}
+          {folders.length > 0 && (
+            <Paper withBorder p="md">
+              <Text weight={500} mb="sm">
+                Folders
+              </Text>
+              <Grid>
+                {folders.map((folder) => (
+                  <Grid.Col key={folder} span={3}>
+                    <Paper
+                      p="xs"
+                      withBorder
+                      sx={{ cursor: "pointer" }}
+                      onClick={() => handleFolderClick(folder)}
+                    >
+                      <Group>
+                        <IconFolder size={24} />
+                        <Text size="sm" truncate>
+                          {folder}
+                        </Text>
+                      </Group>
+                    </Paper>
+                  </Grid.Col>
+                ))}
+              </Grid>
+            </Paper>
+          )}
+
+          {/* Images Grid */}
+          {images.length > 0 && (
+            <Paper withBorder p="md">
+              <Text weight={500} mb="sm">
+                Images
+              </Text>
+              <Grid>
+                {images.map((image) => (
+                  <Grid.Col key={image._id} span={3}>
+                    <Paper
+                      p="xs"
+                      withBorder
+                      sx={{
+                        cursor: "pointer",
+                        border: selectedImages.includes(image._id)
+                          ? "2px solid blue"
+                          : undefined,
+                      }}
+                      onClick={() => handleImageSelect(image._id)}
+                    >
+                      <Stack spacing="xs">
+                        <Image
+                          src={image.publicURL}
+                          alt={
+                            Array.isArray(image.relativePath)
+                              ? image.relativePath[
+                                  image.relativePath.length - 1
+                                ]
+                              : "Image"
+                          }
+                          radius="sm"
+                          fit="contain"
+                          height={150}
+                          withPlaceholder
+                        />
+                        <Group position="apart">
+                          <Text size="xs" truncate>
+                            {Array.isArray(image.relativePath)
+                              ? image.relativePath[
+                                  image.relativePath.length - 1
+                                ]
+                              : "Unnamed Image"}
+                          </Text>
+                          <Checkbox
+                            checked={selectedImages.includes(image._id)}
+                            onChange={() => handleImageSelect(image._id)}
+                            onClick={(e) => e.stopPropagation()}
+                          />
+                        </Group>
+                      </Stack>
+                    </Paper>
+                  </Grid.Col>
+                ))}
+              </Grid>
+            </Paper>
+          )}
+
+          {/* Pagination */}
+          {!showAll && totalImages > IMAGES_PER_PAGE && (
+            <Pagination
+              total={Math.ceil(totalImages / IMAGES_PER_PAGE)}
+              value={page}
+              onChange={setPage}
+              position="center"
+            />
+          )}
+        </Stack>
+      </Paper>
+
+      <Modal
+        opened={showConfirmModal}
+        onClose={() => {
+          setShowConfirmModal(false);
+          setConfirmationData(null);
+        }}
+        title="Confirm Assignment"
+        size="lg"
+      >
+        <Stack spacing="md">
+          <Text>
+            You are about to assign {confirmationData?.totalCount} images to
+            this deployment.
+          </Text>
+
+          {confirmationData?.conflictingImages?.length > 0 && (
+            <Alert
+              icon={<IconExclamationCircle size={16} />}
+              color="yellow"
+              title="Warning"
+            >
+              <Text mb="sm">
+                The following images are already assigned to other deployments
+                and will be reassigned:
+              </Text>
+              <List size="sm" spacing="xs">
+                {confirmationData.conflictingImages.map((img, index) => (
+                  <List.Item key={index}>
+                    {Array.isArray(img.relativePath)
+                      ? img.relativePath.join("/")
+                      : img.relativePath}{" "}
+                    (Currently assigned to: {img.deploymentId})
+                  </List.Item>
+                ))}
+              </List>
+            </Alert>
+          )}
+
+          <Group position="right">
+            <Button
+              variant="default"
+              onClick={() => setShowConfirmModal(false)}
+            >
+              Cancel
+            </Button>
+            <Button color="blue" onClick={handleConfirmAssignment}>
+              Continue
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
+    </>
+  );
+}
