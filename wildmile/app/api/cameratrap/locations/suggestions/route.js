@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import DeploymentLocation from "models/cameratrap/DeploymentLocations";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     await dbConnect();

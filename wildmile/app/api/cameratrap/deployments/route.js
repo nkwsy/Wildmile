@@ -3,6 +3,8 @@ import dbConnect from "lib/db/setup";
 import Deployment from "models/cameratrap/Deployment";
 import Camera from "models/cameratrap/Camera";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     await dbConnect();
