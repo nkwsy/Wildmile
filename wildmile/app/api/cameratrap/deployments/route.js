@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import Deployment from "models/cameratrap/Deployment";
 import Camera from "models/cameratrap/Camera";
+import DeploymentLocation from "models/cameratrap/DeploymentLocations";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +19,7 @@ export async function GET() {
       })
       .populate({
         path: "locationId",
+        model: DeploymentLocation,
         select: "locationName projectArea zone", // Add any other location fields you need
       })
       .lean();
