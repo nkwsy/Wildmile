@@ -3,6 +3,8 @@ import dbConnect from "lib/db/setup";
 import DeploymentLocation from "/models/cameratrap/DeploymentLocations";
 import Deployment from "/models/cameratrap/Deployment";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   await dbConnect();
   try {
