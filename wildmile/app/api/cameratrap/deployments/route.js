@@ -20,7 +20,7 @@ export async function GET() {
       .populate({
         path: "locationId",
         model: DeploymentLocation,
-        select: "locationName projectArea zone", // Add any other location fields you need
+        select: "locationName projectArea zone location favorite retired notes", // Add any other location fields you need
       })
       .lean();
 

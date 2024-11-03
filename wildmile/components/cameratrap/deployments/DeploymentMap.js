@@ -2,7 +2,7 @@
 import { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { Card, Text, Group, Badge } from "@mantine/core";
+import { Card, Text, Group, Badge, SegmentedControl } from "@mantine/core";
 import classes from "./DeploymentMap.module.css";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY;
@@ -12,6 +12,7 @@ export default function DeploymentMap({ locations = [] }) {
   const map = useRef(null);
   const markersRef = useRef({});
   const [mapReady, setMapReady] = useState(false);
+  const [mapStyle, setMapStyle] = useState("outdoors-v12");
 
   const [lng] = useState(-87.65);
   const [lat] = useState(41.9);
@@ -23,7 +24,7 @@ export default function DeploymentMap({ locations = [] }) {
 
     const initializeMap = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/streets-v11",
+      style: `mapbox://styles/mapbox/${mapStyle}`,
       center: [lng, lat],
       zoom: zoom,
     });
@@ -38,6 +39,12 @@ export default function DeploymentMap({ locations = [] }) {
       initializeMap.remove();
     };
   }, []);
+
+  // Handle style changes
+  useEffect(() => {
+    if (!map.current) return;
+    map.current.setStyle(`mapbox://styles/mapbox/${mapStyle}`);
+  }, [mapStyle]);
 
   // Handle markers
   useEffect(() => {
@@ -110,6 +117,18 @@ export default function DeploymentMap({ locations = [] }) {
   return (
     <Card withBorder>
       <div className={classes.mapContainer}>
+        <SegmentedControl
+          className={classes.styleSwitch}
+          value={mapStyle}
+          onChange={setMapStyle}
+          data={[
+            { label: "Outdoors", value: "outdoors-v12" },
+            { label: "Streets", value: "streets-v11" },
+            { label: "Standard", value: "standard" },
+            { label: "Satellite", value: "satellite-v9" },
+            { label: "Satellite Streets", value: "satellite-streets-v12" },
+          ]}
+        />
         <div ref={mapContainer} className={classes.map} />
         <div className={classes.legend}>
           <Text size="sm" weight={500} mb={5}>

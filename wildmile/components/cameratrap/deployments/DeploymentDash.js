@@ -17,6 +17,7 @@ import {
   Stack,
   Badge,
   ThemeIcon,
+  Collapse,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
@@ -26,6 +27,7 @@ import {
   IconCalendar,
   IconMapPin,
   IconRuler,
+  IconPencil,
 } from "@tabler/icons-react";
 import EditDeploymentForm from "./EditDeploymentForm";
 
@@ -68,18 +70,13 @@ const DeploymentDetails = ({ deployment }) => (
       </Group>
       <Divider />
       <Grid>
-        <Grid.Col span={6}>
+        <Grid.Col span={3}>
           <Group spacing="xs">
             <IconRuler size={16} />
             <Text>
               <strong>Height:</strong> {deployment.cameraHeight}m
             </Text>
           </Group>
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <Text>
-            <strong>Tilt:</strong> {deployment.cameraTilt}°
-          </Text>
         </Grid.Col>
       </Grid>
       <Group spacing="xs">
@@ -100,6 +97,7 @@ export default function DeploymentDash({ deploymentId }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [deployment, setDeployment] = useState(null);
+  const [editFormVisible, setEditFormVisible] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -135,17 +133,17 @@ export default function DeploymentDash({ deploymentId }) {
         </Grid.Col>
 
         {/* Left column - Details */}
-        <Grid.Col sm={12} md={4} lg={3}>
+        <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
           <Stack spacing="md">
             <CameraDetails camera={deployment.cameraId} />
             <DeploymentDetails deployment={deployment} />
           </Stack>
         </Grid.Col>
 
-        {/* Right column - Map */}
-        <Grid.Col sm={12} md={4} lg={3}>
-          <Paper shadow="xs" p="md" radius="md">
-            <Stack spacing="xs">
+        {/* Center column - Map */}
+        <Grid.Col span={{ base: 12, sm: 6, lg: 8 }}>
+          <Paper shadow="xs" p="md" radius="md" h="100%">
+            <Stack spacing="xs" h="100%">
               <Group position="apart">
                 <Group>
                   <ThemeIcon size="lg" variant="light">
@@ -161,24 +159,39 @@ export default function DeploymentDash({ deploymentId }) {
                 {deployment.locationId?.zone || "No Zone Set"}
               </Text>
               <Divider />
-              <Box>
+              <Box sx={{ flex: 1 }}>
                 <DeploymentLocationMap
                   location={deployment.locationId?.location}
+                  style={{ height: "100%", minHeight: "300px" }}
                 />
               </Box>
             </Stack>
           </Paper>
         </Grid.Col>
 
-        {/* Edit Form - Full width */}
-        <Grid.Col span={12}>
-          <EditDeploymentForm
-            deploymentId={deploymentId}
-            onSuccess={() =>
-              router.push(`/cameratrap/deployment/edit/${deploymentId}`)
-            }
-          />
-        </Grid.Col>
+        {/* Right column - Additional Info */}
+        {/* <Grid.Col xs={12} sm={3} md={4}> */}
+        <Paper shadow="xs" p="md" radius="md">
+          {/* Your additional content */}
+
+          <Button
+            leftIcon={<IconPencil />}
+            onClick={() => setEditFormVisible((v) => !v)}
+            mb="md"
+          >
+            {editFormVisible ? "Hide Edit Form" : "Edit Deployment"}
+          </Button>
+
+          <Collapse in={editFormVisible}>
+            <EditDeploymentForm
+              deploymentId={deploymentId}
+              onSuccess={() =>
+                router.push(`/cameratrap/deployment/edit/${deploymentId}`)
+              }
+            />
+          </Collapse>
+        </Paper>
+        {/* </Grid.Col> */}
       </Grid>
     </Box>
   );

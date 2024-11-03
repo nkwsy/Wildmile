@@ -9,65 +9,93 @@ export async function GET(request) {
   const deploymentId = searchParams.get("deploymentId");
   const startDate = searchParams.get("startDate");
   const endDate = searchParams.get("endDate");
+  const startTime = searchParams.get("startTime");
+  const endTime = searchParams.get("endTime");
   const reviewed = searchParams.get("reviewed");
   const reviewedByUser = searchParams.get("reviewedByUser");
   const direction = searchParams.get("direction");
   const currentImageId = searchParams.get("currentImageId");
 
   let query = {};
-  let sort = null;
+  let timeQuery = [];
 
   if (deploymentId) {
     query.deploymentId = deploymentId;
   }
 
-  if (startDate || endDate) {
-    query.timestamp = {};
+  if (startDate || endDate || startTime || endTime) {
+    let timestampConditions = {};
+
     if (startDate && !isNaN(new Date(startDate).getTime())) {
-      query.timestamp.$gte = new Date(startDate);
+      timestampConditions.$gte = new Date(startDate);
     }
     if (endDate && !isNaN(new Date(endDate).getTime())) {
-      query.timestamp.$lte = new Date(endDate);
+      timestampConditions.$lte = new Date(endDate);
     }
+
+    if (Object.keys(timestampConditions).length > 0) {
+      query.timestamp = timestampConditions;
+    }
+
+    if (startTime || endTime) {
+      if (startTime) {
+        const [startHour, startMinute] = startTime.split(":").map(Number);
+        timeQuery.push({
+          $or: [
+            {
+              $and: [
+                { $eq: [{ $hour: "$timestamp" }, startHour] },
+                { $gte: [{ $minute: "$timestamp" }, startMinute] },
+              ],
+            },
+            { $gt: [{ $hour: "$timestamp" }, startHour] },
+          ],
+        });
+      }
+
+      if (endTime) {
+        const [endHour, endMinute] = endTime.split(":").map(Number);
+        timeQuery.push({
+          $or: [
+            {
+              $and: [
+                { $eq: [{ $hour: "$timestamp" }, endHour] },
+                { $lte: [{ $minute: "$timestamp" }, endMinute] },
+              ],
+            },
+            { $lt: [{ $hour: "$timestamp" }, endHour] },
+          ],
+        });
+      }
+    }
+  }
+
+  if (timeQuery.length > 0) {
+    query.$expr = { $and: timeQuery };
   }
 
   if (reviewed === "true") {
     query.reviewCount = { $gt: 0 };
-  }
-  // else if (reviewed === "false") {
-  //   query.reviewed = false;
-  // }
-
-  // TODO: Uncomment this when we have a way to get the user's review status on a certain image
-  // Filter by user's review status
-  // if (reviewedByUser === "true") {
-  //   query.reviewedByUser = true;
-  // } else if (reviewedByUser === "false") {
-  //   query.reviewedByUser = false;
-  // }
-
-  // Handle next/previous image
-  if (direction && currentImageId) {
-    const currentImage = await CameratrapMedia.findById(currentImageId);
-    if (currentImage) {
-      if (direction === "next") {
-        query.timestamp = { $gt: currentImage.timestamp };
-        sort = { timestamp: 1 };
-      } else if (direction === "previous") {
-        query.timestamp = { $lt: currentImage.timestamp };
-        sort = { timestamp: -1 };
-      }
-    }
   }
 
   try {
     let image;
     let totalImages = await CameratrapMedia.countDocuments(query);
 
-    if (sort) {
-      [image] = await CameratrapMedia.find(query).sort(sort).limit(1);
+    if (direction && currentImageId) {
+      const currentImage = await CameratrapMedia.findById(currentImageId);
+      if (currentImage) {
+        const sort =
+          direction === "next" ? { timestamp: 1 } : { timestamp: -1 };
+        const timeCondition =
+          direction === "next"
+            ? { $gt: currentImage.timestamp }
+            : { $lt: currentImage.timestamp };
+
+        query.timestamp = timeCondition;
+        [image] = await CameratrapMedia.find(query).sort(sort).limit(1);
+      }
     } else {
-      // Use aggregation for random sampling when no specific sort is required
       [image] = await CameratrapMedia.aggregate([
         { $match: query },
         { $sample: { size: 1 } },
