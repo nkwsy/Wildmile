@@ -42,7 +42,7 @@ const CameraDetails = ({ camera }) => (
           <ThemeIcon size="lg" variant="light">
             <IconCamera size={20} />
           </ThemeIcon>
-          <Title order={4}>Camera Information</Title>
+          <Title order={4}>{camera?.name || "N/A"}</Title>
         </Group>
         <Badge variant="outline">{camera?.status || "Active"}</Badge>
       </Group>
@@ -66,12 +66,12 @@ const DeploymentDetails = ({ deployment }) => (
     <Stack spacing="xs">
       <Group>
         <ThemeIcon size="lg" variant="light">
-          <IconMapPin size={20} />
+          <IconCalendar size={20} />
         </ThemeIcon>
         <Title order={4}>Deployment Details</Title>
       </Group>
       <Divider />
-      <Grid>
+      {/* <Grid>
         <Grid.Col span={3}>
           <Group spacing="xs">
             <IconRuler size={16} />
@@ -80,16 +80,29 @@ const DeploymentDetails = ({ deployment }) => (
             </Text>
           </Group>
         </Grid.Col>
-      </Grid>
+      </Grid> */}
       <Group spacing="xs">
-        <IconCalendar size={16} />
         <Text>
-          <strong>Duration:</strong>{" "}
-          {new Date(deployment.deploymentStart).toLocaleDateString()} -{" "}
+          <strong>Start:</strong>{" "}
+          {new Date(deployment.deploymentStart).toLocaleDateString()}
+        </Text>
+        <Text>
+          <strong>End:</strong>{" "}
           {deployment.deploymentEnd
             ? new Date(deployment.deploymentEnd).toLocaleDateString()
             : "Ongoing"}
         </Text>
+        {deployment.deploymentEnd && (
+          <Text>
+            <strong>Duration:</strong>{" "}
+            {Math.round(
+              (new Date(deployment.deploymentEnd) -
+                new Date(deployment.deploymentStart)) /
+                (1000 * 60 * 60 * 24)
+            )}{" "}
+            days
+          </Text>
+        )}
       </Group>
     </Stack>
   </Paper>
@@ -129,9 +142,21 @@ export default function DeploymentDash({ deploymentId }) {
     <Box p="md">
       <Grid gutter="md">
         <Grid.Col span={12}>
-          <Title order={2} align="center" mb="xl">
-            Deployment Dashboard
-          </Title>
+          <Group position="apart">
+            <Title order={2} align="center" mb="xl">
+              Deployment Dashboard
+            </Title>
+            <Button
+              justify="flex-end"
+              variant="outline"
+              color="yellow"
+              onClick={() => setEditFormVisible((v) => !v)}
+              mb="md"
+            >
+              <IconPencil size={16} />
+              {editFormVisible ? "Hide Edit Form" : "Edit Deployment"}
+            </Button>
+          </Group>
         </Grid.Col>
 
         {/* Left column - Details */}
@@ -144,6 +169,16 @@ export default function DeploymentDash({ deploymentId }) {
 
         {/* Center column - Map */}
         <Grid.Col span={{ base: 12, sm: 6, lg: 8 }}>
+          <Collapse in={editFormVisible}>
+            <Paper shadow="xs" p="md" radius="md">
+              <EditDeploymentForm
+                deploymentId={deploymentId}
+                onSuccess={() =>
+                  router.push(`/cameratrap/deployment/edit/${deploymentId}`)
+                }
+              />
+            </Paper>
+          </Collapse>
           <Paper shadow="xs" p="md" radius="md" h="100%">
             <Stack spacing="xs" h="100%">
               <Group position="apart">
@@ -173,26 +208,8 @@ export default function DeploymentDash({ deploymentId }) {
 
         {/* Right column - Additional Info */}
         {/* <Grid.Col xs={12} sm={3} md={4}> */}
-        <Paper shadow="xs" p="md" radius="md">
-          {/* Your additional content */}
+        {/* Your additional content */}
 
-          <Button
-            leftIcon={<IconPencil />}
-            onClick={() => setEditFormVisible((v) => !v)}
-            mb="md"
-          >
-            {editFormVisible ? "Hide Edit Form" : "Edit Deployment"}
-          </Button>
-
-          <Collapse in={editFormVisible}>
-            <EditDeploymentForm
-              deploymentId={deploymentId}
-              onSuccess={() =>
-                router.push(`/cameratrap/deployment/edit/${deploymentId}`)
-              }
-            />
-          </Collapse>
-        </Paper>
         {/* </Grid.Col> */}
 
         <Grid.Col span={12}>

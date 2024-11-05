@@ -17,7 +17,7 @@ export async function GET(request) {
 
     // Get all unique folders at current path level
     const folderQuery = {
-      deploymentId: null,
+      //   deploymentId: null,
       [`relativePath.${pathDepth}`]: { $exists: true },
     };
 
@@ -39,7 +39,7 @@ export async function GET(request) {
 
     // Get images from current path AND all subdirectories
     const imageQuery = {
-      deploymentId: null,
+      //   deploymentId: null,
       // Match the current path prefix
       relativePath: {
         $elemMatch: {
@@ -57,16 +57,21 @@ export async function GET(request) {
 
     const totalImages = await CameratrapMedia.countDocuments(imageQuery);
 
-    // Get random sample of images if limit is specified
-    const images = await CameratrapMedia.aggregate([
-      { $match: imageQuery },
-      ...(limit
-        ? [
-            { $sample: { size: limit } }, // Get random sample if limit specified
-          ]
-        : []),
-      { $sort: { timestamp: -1 } },
-    ]);
+    let images = [];
+    if (pathDepth > 1) {
+      // Get random sample of images if limit is specified
+      images = await CameratrapMedia.aggregate([
+        { $match: imageQuery },
+        ...(limit
+          ? [
+              { $sample: { size: limit } }, // Get random sample if limit specified
+            ]
+          : []),
+        { $sort: { timestamp: -1 } },
+      ]);
+    } else {
+      const images = [];
+    }
 
     return NextResponse.json({
       folders,

@@ -13,9 +13,11 @@ export async function POST(request) {
     if (currentPath !== undefined) {
       const pathParts = currentPath ? currentPath.split("/") : [];
       query = {
-        relativePath: {
-          $elemMatch: {
-            $regex: /\.(jpg|jpeg|png|gif)$/i,
+        fileLocations: {
+          relativePath: {
+            $elemMatch: {
+              $regex: /\.(jpg|jpeg|png|gif)$/i,
+            },
           },
         },
       };

@@ -77,3 +77,13 @@
   border: 1px solid white;
   border-radius: 50%;
 }
+
+.styleSwitch {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1;
+  background-color: white;
+  border-radius: var(--mantine-radius-sm);
+  box-shadow: var(--mantine-shadow-sm);
+}

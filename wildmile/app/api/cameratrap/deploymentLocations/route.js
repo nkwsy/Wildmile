@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import DeploymentLocation from "/models/cameratrap/DeploymentLocations";
 import Deployment from "/models/cameratrap/Deployment";
-
+import Camera from "/models/cameratrap/Camera";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
@@ -16,7 +16,13 @@ export async function GET() {
       locations.map(async (location) => {
         const deployments = await Deployment.find({
           locationId: location._id,
-        }).lean();
+        })
+          .populate({
+            path: "cameraId",
+            model: Camera,
+            select: "name model serialNumber", // Add any other camera fields you need
+          })
+          .lean();
 
         const activeDeployments = deployments.filter(
           (deployment) => !deployment.deploymentEnd

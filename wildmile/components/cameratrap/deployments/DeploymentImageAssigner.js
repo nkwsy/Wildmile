@@ -16,18 +16,21 @@ import {
   Modal,
   List,
   Alert,
+  Badge,
 } from "@mantine/core";
 import {
   IconFolder,
   IconPhoto,
   IconCheck,
   IconExclamationCircle,
+  IconTrash,
 } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
-
+import Link from "next/link";
 export function DeploymentImageAssigner({ deploymentId }) {
   const [loading, setLoading] = useState(false);
   const [currentPath, setCurrentPath] = useState("");
+  const [currentPathDepth, setCurrentPathDepth] = useState(0);
   const [folders, setFolders] = useState([]);
   const [images, setImages] = useState([]);
   const [selectedImages, setSelectedImages] = useState([]);
@@ -53,6 +56,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
         setFolders(data.folders || []);
         setImages(data.images || []);
         setTotalImages(data.totalImages || 0);
+        setCurrentPathDepth(currentPath.split("/").length || 0);
       } catch (error) {
         console.error("Error fetching media:", error);
         notifications.show({
@@ -213,6 +217,43 @@ export function DeploymentImageAssigner({ deploymentId }) {
     }
   };
 
+  // Add new function to handle removing images
+  const handleRemoveImages = async (imageIds) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        "/api/cameratrap/removeImagesFromDeployment",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ imageIds }),
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to remove images");
+
+      const data = await response.json();
+      notifications.show({
+        title: "Success",
+        message: data.message,
+        color: "green",
+      });
+
+      // Refresh images
+      setSelectedImages([]);
+      setPage(1);
+    } catch (error) {
+      console.error("Error removing images:", error);
+      notifications.show({
+        title: "Error",
+        message: "Failed to remove images from deployment",
+        color: "red",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <Paper p="md" radius="md" withBorder>
@@ -231,6 +272,9 @@ export function DeploymentImageAssigner({ deploymentId }) {
               </Anchor>
             ))}
           </Breadcrumbs>
+          <Badge size="md" align="flex-end">
+            {totalImages.toLocaleString()} images
+          </Badge>
 
           {/* Controls */}
           <Group position="apart">
@@ -247,22 +291,36 @@ export function DeploymentImageAssigner({ deploymentId }) {
               <Button onClick={() => setShowAll(!showAll)} variant="default">
                 {showAll ? "Show Sample" : "Show All"}
               </Button>
-              <Button
-                onClick={() => checkAndConfirmAssignment(true)}
-                variant="default"
-                color="blue"
-                leftIcon={<IconFolder size={16} />}
-              >
-                Assign All in Folder
-              </Button>
+              {currentPathDepth > 1 && (
+                <Button
+                  onClick={() => checkAndConfirmAssignment(true)}
+                  variant="default"
+                  color="blue"
+                  leftIcon={<IconFolder size={16} />}
+                >
+                  Assign All in Folder
+                </Button>
+              )}
             </Button.Group>
 
-            <Button
-              onClick={() => checkAndConfirmAssignment(false, selectedImages)}
-              disabled={selectedImages.length === 0}
-            >
-              Assign {selectedImages.length} Selected
-            </Button>
+            <Group>
+              {selectedImages.length > 0 && (
+                <Button
+                  onClick={() => handleRemoveImages(selectedImages)}
+                  color="red"
+                  variant="light"
+                  leftIcon={<IconTrash size={16} />}
+                >
+                  Remove {selectedImages.length} Selected
+                </Button>
+              )}
+              <Button
+                onClick={() => checkAndConfirmAssignment(false, selectedImages)}
+                disabled={selectedImages.length === 0}
+              >
+                Assign {selectedImages.length} Selected
+              </Button>
+            </Group>
           </Group>
 
           {/* Folders Grid */}
@@ -329,7 +387,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
                           withPlaceholder
                         />
                         <Group position="apart">
-                          <Text size="xs" truncate>
+                          <Text size="xs">
                             {Array.isArray(image.relativePath)
                               ? image.relativePath[
                                   image.relativePath.length - 1
@@ -341,6 +399,27 @@ export function DeploymentImageAssigner({ deploymentId }) {
                             onChange={() => handleImageSelect(image._id)}
                             onClick={(e) => e.stopPropagation()}
                           />
+                          {image.deploymentId &&
+                            image.deploymentId !== deploymentId && (
+                              <Badge
+                                size="sm"
+                                variant="filled"
+                                color="yellow"
+                                component={Link}
+                                href={`/cameratrap/deployment/edit/${image.deploymentId}`}
+                              >
+                                <IconExclamationCircle size={16} />
+                                {/* {image.deploymentId.locationName} */}
+                              </Badge>
+                            )}
+                          {image.deploymentId === deploymentId && (
+                            <Badge size="sm" variant="filled" color="green">
+                              <IconCheck size={16} />
+                            </Badge>
+                          )}
+                          <Text size="xs" color="dimmed">
+                            {new Date(image.timestamp).toLocaleString()}
+                          </Text>
                         </Group>
                       </Stack>
                     </Paper>

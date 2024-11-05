@@ -17,6 +17,7 @@ import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
 import { getAllCameras } from "app/actions/CameratrapActions";
+import { LocationDropdown } from "./LocationDropdown";
 
 const EditDeploymentForm = ({ deploymentId, onSuccess }) => {
   const [error, setError] = useState(null);
@@ -24,10 +25,12 @@ const EditDeploymentForm = ({ deploymentId, onSuccess }) => {
   const [fetchLoading, setFetchLoading] = useState(true);
   const [cameraOptions, setCameraOptions] = useState([]);
   const router = useRouter();
+  const [initialLocation, setInitialLocation] = useState(null);
 
   const form = useForm({
     initialValues: {
       locationName: "",
+      locationId: "",
       cameraHeight: 0,
       cameraTilt: 0,
       deploymentStart: new Date(),
@@ -40,6 +43,7 @@ const EditDeploymentForm = ({ deploymentId, onSuccess }) => {
       cameraTilt: (value) =>
         value < -90 || value > 360 ? "Invalid tilt angle" : null,
       cameraId: (value) => (!value ? "Camera selection is required" : null),
+      locationId: (value) => (!value ? "Location selection is required" : null),
     },
   });
 
@@ -74,8 +78,14 @@ const EditDeploymentForm = ({ deploymentId, onSuccess }) => {
         if (!response.ok) throw new Error("Failed to fetch deployment");
         const data = await response.json();
 
+        // Store the full location object if it exists
+        if (data.locationId && typeof data.locationId === "object") {
+          setInitialLocation(data.locationId);
+        }
+
         const initialValues = {
           locationName: data.locationName || "",
+          locationId: data.locationId?._id || data.locationId || "",
           cameraHeight: data.cameraHeight || 0,
           cameraTilt: data.cameraTilt || 0,
           deploymentStart: data.deploymentStart
@@ -204,11 +214,24 @@ const EditDeploymentForm = ({ deploymentId, onSuccess }) => {
             {...form.getInputProps("cameraId")}
             required
           />
-          <TextInput
-            label="Location Name"
-            placeholder="Enter location name"
-            {...form.getInputProps("locationName")}
+          <LocationDropdown
+            label="Location"
+            placeholder="Select a location"
+            value={form.values.locationId}
+            onChange={(value) => {
+              form.setFieldValue("locationId", value);
+              form.setFieldValue("locationName", "");
+            }}
+            required
+            initialLocation={initialLocation}
           />
+          {!form.values.locationId && (
+            <TextInput
+              label="Custom Location Name"
+              placeholder="Enter location name"
+              {...form.getInputProps("locationName")}
+            />
+          )}
           <Group grow>
             <DateInput
               label="Deployment Start"

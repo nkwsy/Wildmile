@@ -239,10 +239,10 @@ export default function DeploymentForm(props) {
                 required
                 // {...form.getInputProps("deploymentStart")}
               />
-              <DateInput
+              {/* <DateInput
                 label="Deployment End"
                 // {...form.getInputProps("deploymentEnd")}
-              />
+              /> */}
             </Group>
             <Group>
               <Textarea
@@ -259,10 +259,10 @@ export default function DeploymentForm(props) {
             </Group>
           </Grid.Col>
           <Grid.Col span={6}>
-            <LocationForm
+            {/* <LocationForm
               setLocation={setLocation}
               refreshLocations={setRefreshLocations}
-            />
+            /> */}
             <Select
               label="Select Location"
               data={locationOptions}

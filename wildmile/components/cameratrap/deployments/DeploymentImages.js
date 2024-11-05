@@ -86,27 +86,32 @@ export function DeploymentImages({ deploymentId }) {
                         src={image.publicURL}
                         alt={image.relativePath[image.relativePath.length - 1]}
                         radius="sm"
-                        height={200}
+                        // height={200}
                         fit="cover"
                         withPlaceholder
                       />
                       <Group position="apart" noWrap>
-                        <Text size="sm" truncate>
+                        <Text size="xs" truncate>
                           {image.relativePath[image.relativePath.length - 1]}
                         </Text>
-                        {image.reviewed && (
+                        {image.reviewCount > 0 && (
                           <Badge
                             size="sm"
                             variant="light"
-                            leftSection={<IconEye size={12} />}
+                            leftSection={<IconEye size={10} />}
                           >
-                            Reviewed
+                            {image.reviewCount}
                           </Badge>
                         )}
                       </Group>
                       <Text size="xs" color="dimmed">
                         {new Date(image.timestamp).toLocaleString()}
                       </Text>
+                      {image.deploymentId && (
+                        <Badge size="sm" variant="light">
+                          {image.deploymentId.locationName}
+                        </Badge>
+                      )}
                     </Stack>
                   </Paper>
                 </Grid.Col>

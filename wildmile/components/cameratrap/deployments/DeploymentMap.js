@@ -2,7 +2,21 @@
 import { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { Card, Text, Group, Badge, SegmentedControl } from "@mantine/core";
+import {
+  Card,
+  Text,
+  Group,
+  Badge,
+  SegmentedControl,
+  Drawer,
+  Stack,
+  Title,
+  Divider,
+  ActionIcon,
+  Tooltip,
+} from "@mantine/core";
+import { IconX, IconCalendar, IconCamera, IconEdit } from "@tabler/icons-react";
+import Link from "next/link";
 import classes from "./DeploymentMap.module.css";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY;
@@ -13,6 +27,7 @@ export default function DeploymentMap({ locations = [] }) {
   const markersRef = useRef({});
   const [mapReady, setMapReady] = useState(false);
   const [mapStyle, setMapStyle] = useState("outdoors-v12");
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
   const [lng] = useState(-87.65);
   const [lat] = useState(41.9);
@@ -67,44 +82,16 @@ export default function DeploymentMap({ locations = [] }) {
           activeDeployments.length > 0 ? classes.active : classes.inactive
         }`;
 
-        // Create popup content
-        const popupContent = `
-          <div class="${classes.popup}">
-            <h3>${location.locationName}</h3>
-            ${
-              activeDeployments.length > 0
-                ? `<div class="${classes.deploymentInfo}">
-                    <strong>Active Cameras (${
-                      activeDeployments.length
-                    }):</strong>
-                    <ul>
-                      ${activeDeployments
-                        .map(
-                          (dep) => `
-                        <li>
-                          ${dep.cameraId} - Since ${new Date(
-                            dep.deploymentStart
-                          ).toLocaleDateString()}
-                        </li>`
-                        )
-                        .join("")}
-                    </ul>
-                  </div>`
-                : ""
-            }
-            ${
-              inactiveDeployments.length > 0
-                ? `<div class="${classes.deploymentInfo}">
-                    <p>Previous deployments: ${inactiveDeployments.length}</p>
-                  </div>`
-                : ""
-            }
-          </div>
-        `;
+        // Add title attribute for hover effect
+        el.title = location.locationName;
+
+        // Add click handler
+        el.addEventListener("click", () => {
+          setSelectedLocation(location);
+        });
 
         const marker = new mapboxgl.Marker(el)
           .setLngLat(coordinates)
-          .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent))
           .addTo(map.current);
 
         markersRef.current[location._id] = marker;
@@ -114,36 +101,150 @@ export default function DeploymentMap({ locations = [] }) {
     });
   }, [locations, mapReady]);
 
-  return (
-    <Card withBorder>
-      <div className={classes.mapContainer}>
-        <SegmentedControl
-          className={classes.styleSwitch}
-          value={mapStyle}
-          onChange={setMapStyle}
-          data={[
-            { label: "Outdoors", value: "outdoors-v12" },
-            { label: "Streets", value: "streets-v11" },
-            { label: "Standard", value: "standard" },
-            { label: "Satellite", value: "satellite-v9" },
-            { label: "Satellite Streets", value: "satellite-streets-v12" },
-          ]}
-        />
-        <div ref={mapContainer} className={classes.map} />
-        <div className={classes.legend}>
-          <Text size="sm" weight={500} mb={5}>
-            Legend
+  const DeploymentItem = ({ deployment, isActive }) => (
+    <Card
+      withBorder
+      mb="xs"
+      component={Link}
+      href={`/cameratrap/deployment/edit/${deployment._id}`}
+      sx={{ cursor: "pointer" }}
+    >
+      <Stack spacing="xs">
+        <Group position="apart">
+          <Group spacing="xs">
+            <IconCamera size={16} />
+            <Text size="sm" weight={500}>
+              {deployment.cameraId.name}
+            </Text>
+            {deployment.cameraId.manufacturer && (
+              <Text size="xs" c="dimmed">
+                {deployment.cameraId.manufacturer}
+              </Text>
+            )}
+            {deployment.cameraId.model && (
+              <Text size="xs" c="dimmed">
+                {deployment.cameraId.model}
+              </Text>
+            )}
+          </Group>
+          <Group spacing="xs">
+            <Badge color={isActive ? "green" : "gray"}>
+              {isActive ? "Active" : "Inactive"}
+            </Badge>
+          </Group>
+        </Group>
+        <Group spacing="xs">
+          <IconCalendar size={16} />
+          <Text size="sm">
+            {new Date(deployment.deploymentStart).toLocaleDateString()}
+            {deployment.deploymentEnd
+              ? ` - ${new Date(deployment.deploymentEnd).toLocaleDateString()}`
+              : " - Present"}
           </Text>
-          <Group spacing="xs">
-            <div className={`${classes.legendMarker} ${classes.active}`} />
-            <Text size="sm">Active Cameras</Text>
-          </Group>
-          <Group spacing="xs">
-            <div className={`${classes.legendMarker} ${classes.inactive}`} />
-            <Text size="sm">Inactive Locations</Text>
-          </Group>
-        </div>
-      </div>
+        </Group>
+        {deployment.setupBy && (
+          <Text size="sm" color="dimmed">
+            Setup by: {deployment.setupBy}
+          </Text>
+        )}
+      </Stack>
     </Card>
+  );
+
+  return (
+    <>
+      <Card withBorder>
+        <div className={classes.mapContainer}>
+          <SegmentedControl
+            className={classes.styleSwitch}
+            value={mapStyle}
+            onChange={setMapStyle}
+            data={[
+              { label: "Outdoors", value: "outdoors-v12" },
+              { label: "Streets", value: "streets-v11" },
+              { label: "Standard", value: "standard" },
+              { label: "Satellite", value: "satellite-v9" },
+              { label: "Satellite Streets", value: "satellite-streets-v12" },
+            ]}
+          />
+          <div ref={mapContainer} className={classes.map} />
+          <div className={classes.legend}>
+            <Text size="sm" weight={500} mb={5}>
+              Legend
+            </Text>
+            <Group spacing="xs">
+              <div className={`${classes.legendMarker} ${classes.active}`} />
+              <Text size="sm">Active Cameras</Text>
+            </Group>
+            <Group spacing="xs">
+              <div className={`${classes.legendMarker} ${classes.inactive}`} />
+              <Text size="sm">Inactive Locations</Text>
+            </Group>
+          </div>
+        </div>
+      </Card>
+
+      <Drawer
+        opened={!!selectedLocation}
+        onClose={() => setSelectedLocation(null)}
+        position="right"
+        size="md"
+        title={
+          <Group position="apart">
+            <Title order={3}>{selectedLocation?.locationName}</Title>
+            <ActionIcon onClick={() => setSelectedLocation(null)}>
+              <IconX size={18} />
+            </ActionIcon>
+          </Group>
+        }
+      >
+        {selectedLocation && (
+          <Stack>
+            {/* Location Details */}
+            <Card withBorder>
+              <Stack spacing="xs">
+                {selectedLocation.projectArea && (
+                  <Text>Project Area: {selectedLocation.projectArea}</Text>
+                )}
+                {selectedLocation.zone && (
+                  <Text>Zone: {selectedLocation.zone}</Text>
+                )}
+                {selectedLocation.notes && (
+                  <Text>Notes: {selectedLocation.notes}</Text>
+                )}
+              </Stack>
+            </Card>
+
+            {/* Active Deployments */}
+            {selectedLocation.deployments.active.length > 0 && (
+              <>
+                <Title order={4}>Active Deployments</Title>
+                {selectedLocation.deployments.active.map((deployment) => (
+                  <DeploymentItem
+                    key={deployment._id}
+                    deployment={deployment}
+                    isActive={true}
+                  />
+                ))}
+              </>
+            )}
+
+            {/* Inactive Deployments */}
+            {selectedLocation.deployments.inactive.length > 0 && (
+              <>
+                <Title order={4}>Previous Deployments</Title>
+                {selectedLocation.deployments.inactive.map((deployment) => (
+                  <DeploymentItem
+                    key={deployment._id}
+                    deployment={deployment}
+                    isActive={false}
+                  />
+                ))}
+              </>
+            )}
+          </Stack>
+        )}
+      </Drawer>
+    </>
   );
 }
