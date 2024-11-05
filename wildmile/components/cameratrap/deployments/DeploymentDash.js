@@ -28,10 +28,12 @@ import {
   IconMapPin,
   IconRuler,
   IconPencil,
+  IconArrowLeft,
 } from "@tabler/icons-react";
 import EditDeploymentForm from "./DeploymentForm";
 import { DeploymentImageAssigner } from "./DeploymentImageAssigner";
 import { DeploymentImages } from "./DeploymentImages";
+import Link from "next/link";
 
 // Separate component for camera details
 const CameraDetails = ({ camera }) => (
@@ -142,20 +144,28 @@ export default function DeploymentDash({ deploymentId }) {
     <Box p="md">
       <Grid gutter="md">
         <Grid.Col span={12}>
-          <Group position="apart">
-            <Title order={2} align="center" mb="xl">
+          <Group position="apart" justify="flex-end">
+            <Title order={2} align="right" mb="xl">
               Deployment Dashboard
             </Title>
-            <Button
-              justify="flex-end"
-              variant="outline"
-              color="yellow"
-              onClick={() => setEditFormVisible((v) => !v)}
-              mb="md"
-            >
-              <IconPencil size={16} />
-              {editFormVisible ? "Hide Edit Form" : "Edit Deployment"}
-            </Button>
+            <Group justify="flex-end">
+              <Button
+                component={Link}
+                href="/cameratrap/deployment"
+                variant="outline"
+              >
+                <IconArrowLeft size={16} />
+                Back to Deployments
+              </Button>
+              <Button
+                variant="outline"
+                color="yellow"
+                onClick={() => setEditFormVisible((v) => !v)}
+                leftIcon={<IconPencil size={16} />}
+              >
+                {editFormVisible ? "Hide Edit Form" : "Edit Deployment"}
+              </Button>
+            </Group>
           </Group>
         </Grid.Col>
 

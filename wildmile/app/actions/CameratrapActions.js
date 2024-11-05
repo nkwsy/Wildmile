@@ -5,7 +5,7 @@ import CameratrapDeployment from "models/cameratrap/Deployment";
 import dbConnect from "lib/db/setup";
 import { cleanObject } from "lib/utils";
 import { getSession } from "lib/getSession";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { uploadFileToS3 } from "./UploadActions";
 import CameratrapMedia from "models/cameratrap/Media";
@@ -251,15 +251,28 @@ export async function getCamera(id) {
 
 export async function getAllCameras() {
   await dbConnect();
-  const cameras = await Camera.find({}, ["-__v"]);
-  return JSON.stringify(cameras);
+
+  try {
+    const cameras = await Camera.find({}, ["-__v"]);
+    return JSON.stringify(cameras);
+  } catch (error) {
+    console.error("Error fetching all cameras:", error);
+    throw error;
+  }
 }
 
 export async function getCameras() {
   await dbConnect();
-  const cameras = await Camera.find({}, ["-__v"]);
-  return cameras;
+
+  try {
+    const cameras = await Camera.find({}, ["-__v"]);
+    return cameras;
+  } catch (error) {
+    console.error("Error fetching cameras:", error);
+    throw error;
+  }
 }
+
 export async function newEditCamera(req) {
   await dbConnect();
   try {
@@ -267,6 +280,10 @@ export async function newEditCamera(req) {
 
     const camera = await Camera.create(req);
     console.log("newEditCamera camera:", camera);
+
+    // Revalidate all camera-related data after successful edit
+    revalidateTag("cameras");
+
     const result = { success: true, cameraId: camera._id };
     return result;
   } catch (error) {
