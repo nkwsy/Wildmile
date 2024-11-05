@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import Deployment from "models/cameratrap/Deployment";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request, { params }) {
   // Return empty response for new deployments
   if (params.id === "new") {

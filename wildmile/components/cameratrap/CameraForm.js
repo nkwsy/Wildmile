@@ -105,7 +105,7 @@ export default function CameraForm(props) {
     const result = await newEditCamera(form.values);
     console.log("Result:", result);
     if (result.success === true) {
-      router.push(`/cameratrap/camera/${result.cameraId}`);
+      router.push(`/cameratrap`);
     }
   }
   const initialState = {
