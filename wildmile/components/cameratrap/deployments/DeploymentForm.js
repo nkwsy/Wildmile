@@ -158,14 +158,16 @@ const EditDeploymentForm = ({ deploymentId, onSuccess }) => {
     setError(null);
 
     try {
-      const response = await fetch(
-        `/api/cameratrap/deployments/${deploymentId}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(changedValues),
-        }
-      );
+      const url = deploymentId
+        ? `/api/cameratrap/deployments/${deploymentId}`
+        : "/api/cameratrap/deployments/new";
+
+      const method = deploymentId ? "PUT" : "POST";
+      const response = await fetch(url, {
+        method: method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(changedValues),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -174,6 +176,10 @@ const EditDeploymentForm = ({ deploymentId, onSuccess }) => {
 
       const updatedDeployment = await response.json();
       onSuccess?.(updatedDeployment);
+
+      // Get the ID from either the existing deploymentId or the new deployment's _id
+      const redirectId = deploymentId || updatedDeployment._id;
+      router.push(`/cameratrap/deployment/edit/${redirectId}`);
       router.refresh();
     } catch (err) {
       setError(err.message);

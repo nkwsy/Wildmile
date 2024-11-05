@@ -29,7 +29,7 @@ import {
   IconRuler,
   IconPencil,
 } from "@tabler/icons-react";
-import EditDeploymentForm from "./EditDeploymentForm";
+import EditDeploymentForm from "./DeploymentForm";
 import { DeploymentImageAssigner } from "./DeploymentImageAssigner";
 import { DeploymentImages } from "./DeploymentImages";
 

@@ -3,6 +3,16 @@ import dbConnect from "lib/db/setup";
 import Deployment from "models/cameratrap/Deployment";
 
 export async function GET(request, { params }) {
+  // Return empty response for new deployments
+  if (params.id === "new") {
+    return NextResponse.json({
+      deploymentStart: new Date(),
+      deploymentEnd: null,
+      cameraHeight: 0,
+      cameraTilt: 0,
+    });
+  }
+
   await dbConnect();
   try {
     const deployment = await Deployment.findById(params.id).lean();
@@ -33,12 +43,68 @@ export async function GET(request, { params }) {
   }
 }
 
-export async function PUT(request, { params }) {
+export async function POST(request) {
   await dbConnect();
   try {
     const body = await request.json();
 
-    // Create update object with only valid fields
+    // Create deployment object with required fields
+    const deploymentData = {
+      cameraId: body.cameraId,
+      locationId: body.locationId,
+      deploymentStart: new Date(body.deploymentStart),
+      cameraHeight: body.cameraHeight || 0,
+      cameraTilt: body.cameraTilt || 0,
+    };
+
+    // Only add deploymentEnd if it exists and is valid
+    if (body.deploymentEnd) {
+      const endDate = new Date(body.deploymentEnd);
+      if (!isNaN(endDate.getTime())) {
+        deploymentData.deploymentEnd = endDate;
+
+        // Validate date order if end date is provided
+        if (deploymentData.deploymentEnd < deploymentData.deploymentStart) {
+          return NextResponse.json(
+            { error: "Deployment end date cannot be before start date" },
+            { status: 400 }
+          );
+        }
+      }
+    }
+
+    // Add locationName if locationId is not provided
+    if (!body.locationId && body.locationName) {
+      deploymentData.locationName = body.locationName;
+    }
+
+    const newDeployment = await Deployment.create(deploymentData);
+
+    // Populate the response with related data
+    const populatedDeployment = await Deployment.findById(
+      newDeployment._id
+    ).populate([
+      {
+        path: "locationId",
+        model: "DeploymentLocation",
+      },
+      { path: "cameraId", model: "Camera" },
+    ]);
+
+    return NextResponse.json(populatedDeployment);
+  } catch (error) {
+    console.error("Error creating deployment:", error);
+    return NextResponse.json(
+      { error: "Failed to create deployment" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(request, { params }) {
+  await dbConnect();
+  try {
+    const body = await request.json();
     const updateData = {};
 
     // Handle non-date fields
@@ -48,7 +114,7 @@ export async function PUT(request, { params }) {
       }
     });
 
-    // Validate and handle dates
+    // Validate and handle start date
     if (body.deploymentStart) {
       const startDate = new Date(body.deploymentStart);
       if (isNaN(startDate.getTime())) {
@@ -60,24 +126,30 @@ export async function PUT(request, { params }) {
       updateData.deploymentStart = startDate;
     }
 
-    if (body.deploymentEnd) {
-      const endDate = new Date(body.deploymentEnd);
-      if (isNaN(endDate.getTime())) {
-        return NextResponse.json(
-          { error: "Invalid end date" },
-          { status: 400 }
-        );
-      }
-      updateData.deploymentEnd = endDate;
-    }
+    // Handle end date (can be null)
+    if (body.hasOwnProperty("deploymentEnd")) {
+      if (body.deploymentEnd === null) {
+        updateData.deploymentEnd = null;
+      } else {
+        const endDate = new Date(body.deploymentEnd);
+        if (isNaN(endDate.getTime())) {
+          return NextResponse.json(
+            { error: "Invalid end date" },
+            { status: 400 }
+          );
+        }
+        updateData.deploymentEnd = endDate;
 
-    // Validate date order if both dates are present
-    if (updateData.deploymentStart && updateData.deploymentEnd) {
-      if (updateData.deploymentEnd < updateData.deploymentStart) {
-        return NextResponse.json(
-          { error: "Deployment end date cannot be before start date" },
-          { status: 400 }
-        );
+        // Only validate date order if end date is provided
+        if (
+          updateData.deploymentStart &&
+          updateData.deploymentEnd < updateData.deploymentStart
+        ) {
+          return NextResponse.json(
+            { error: "Deployment end date cannot be before start date" },
+            { status: 400 }
+          );
+        }
       }
     }
 

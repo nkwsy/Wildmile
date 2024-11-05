@@ -23,7 +23,7 @@
   border-radius: 50%;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  transition: all 0.2s ease;
+  /* transition: all 0.1s ease; */
 }
 
 .marker:hover {
