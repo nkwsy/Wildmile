@@ -103,6 +103,90 @@ export function DeploymentImages({ deploymentId }) {
             </Text>
             <Badge size="lg">{totalImages} images</Badge>
           </Group>
+
+          <Group>
+            {(filters.type !== 'all' || filters.date || filters.time) && (
+              <Button 
+                variant="light" 
+                color="red" 
+                size="xs"
+                leftIcon={<IconX size={14} />}
+                onClick={clearFilters}
+              >
+                Clear Filters
+              </Button>
+            )}
+            
+            <Menu position="bottom-end" withinPortal>
+              <Menu.Target>
+                <ActionIcon 
+                  variant="light"
+                  color={Object.values(filters).some(v => v) ? "blue" : "gray"}
+                >
+                  <IconFilter size={20} />
+                </ActionIcon>
+              </Menu.Target>
+
+              <Menu.Dropdown>
+                <Menu.Label>Filter Images</Menu.Label>
+                
+                <Menu.Item>
+                  <Stack spacing="xs">
+                    <Text size="sm" weight={500}>Type</Text>
+                    <SegmentedControl
+                      value={filters.type}
+                      onChange={(value) => setFilters(f => ({ ...f, type: value }))}
+                      data={[
+                        { label: 'All', value: 'all' },
+                        { 
+                          label: (
+                            <Group spacing={4}>
+                              <IconPaw size={14} />
+                              <span>Animals</span>
+                            </Group>
+                          ), 
+                          value: 'animals' 
+                        },
+                        { 
+                          label: (
+                            <Group spacing={4}>
+                              <IconUser size={14} />
+                              <span>Humans</span>
+                            </Group>
+                          ), 
+                          value: 'humans' 
+                        },
+                      ]}
+                    />
+                  </Stack>
+                </Menu.Item>
+
+                <Menu.Item>
+                  <Stack spacing="xs">
+                    <Text size="sm" weight={500}>Date</Text>
+                    <DatePicker
+                      value={filters.date}
+                      onChange={(date) => setFilters(f => ({ ...f, date }))}
+                      clearable
+                      placeholder="Pick date"
+                    />
+                  </Stack>
+                </Menu.Item>
+
+                <Menu.Item>
+                  <Stack spacing="xs">
+                    <Text size="sm" weight={500}>Time</Text>
+                    <TimeInput
+                      value={filters.time}
+                      onChange={(event) => setFilters(f => ({ ...f, time: event.currentTarget.value }))}
+                      clearable
+                      placeholder="Pick time"
+                    />
+                  </Stack>
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          </Group>
         </Group>
 
         {images.length === 0 && !loading ? (
