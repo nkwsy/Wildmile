@@ -16,6 +16,7 @@ import {
   ChipGroup,
 } from "@mantine/core";
 import Link from "next/link";
+import { unstable_cache } from "next/cache";
 
 import classes from "/styles/imagecard.module.css";
 
@@ -41,7 +42,14 @@ export function CameraCards(allCameras) {
 }
 
 export default async function AllCameras() {
-  const allCameras = await getCameras();
+  const allCameras = await unstable_cache(
+    async () => getCameras(),
+    ["cameras"],
+    {
+      tags: ["cameras"],
+      revalidate: 36000, // Cache for 1 hour unless invalidated
+    }
+  )();
   const cameras = CameraCards(allCameras);
 
   return (

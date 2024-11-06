@@ -83,27 +83,27 @@ const LocationMap = ({ onPointSelect, onPolygonSelect, existingLocations }) => {
     styles: pointStyle,
   });
   const updateArea = function (e) {
-      console.log(e.features);
-      console.log(Draw.getAll());
-      if (e.features[0].geometry.type === "Polygon") {
-        setPolygon(e.features[0]);
-        onPolygonSelect(e.features[0].geometry.coordinates);
+    console.log(e.features);
+    console.log(Draw.getAll());
+    if (e.features[0].geometry.type === "Polygon") {
+      setPolygon(e.features[0]);
+      onPolygonSelect(e.features[0].geometry.coordinates);
+    }
+    if (e.features[0].geometry.type === "Point") {
+      setPoint(e.features[0]);
+      onPointSelect(e.features[0].geometry.coordinates);
+    }
+    let newId = e.features[0].id;
+    const data = Draw.getAll();
+    // Remove all points except the last one added
+    data.features.forEach((feature) => {
+      if (feature.geometry.type === "Point" && feature.id !== newId) {
+        Draw.delete(feature.id);
       }
-      if (e.features[0].geometry.type === "Point") {
-        setPoint(e.features[0]);
-        onPointSelect(e.features[0].geometry.coordinates);
+      if (feature.geometry.type === "Polygon" && feature.id !== newId) {
+        Draw.delete(feature.id);
       }
-      let newId = e.features[0].id;
-      const data = Draw.getAll();
-      // Remove all points except the last one added
-      data.features.forEach((feature) => {
-        if (feature.geometry.type === "Point" && feature.id !== newId) {
-          Draw.delete(feature.id);
-        }
-        if (feature.geometry.type === "Polygon" && feature.id !== newId) {
-          Draw.delete(feature.id);
-        }
-      })
+    });
   };
 
   useEffect(() => {
@@ -118,14 +118,14 @@ const LocationMap = ({ onPointSelect, onPolygonSelect, existingLocations }) => {
     map.on("draw.create", updateArea);
     map.on("draw.delete", updateArea);
     map.on("draw.update", updateArea);
-    map.on('move', () => {
+    map.on("move", () => {
       setLng(map.getCenter().lng.toFixed(4));
       setLat(map.getCenter().lat.toFixed(4));
       setZoom(map.getZoom().toFixed(2));
     });
     return () => map.remove();
   }, []);
-  
+
   return (
     <>
       <div className={styles.container}>

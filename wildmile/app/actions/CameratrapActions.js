@@ -5,15 +5,19 @@ import CameratrapDeployment from "models/cameratrap/Deployment";
 import dbConnect from "lib/db/setup";
 import { cleanObject } from "lib/utils";
 import { getSession } from "lib/getSession";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { uploadFileToS3 } from "./UploadActions";
 import CameratrapMedia from "models/cameratrap/Media";
-import { S3Client, ListObjectsV2Command, GetObjectCommand } from "@aws-sdk/client-s3";
-import ExifReader from 'exifreader';
-import { parseISO } from 'date-fns';
-import mongoose from 'mongoose';
-const { exiftool } = require('exiftool-vendored');
+import {
+  S3Client,
+  ListObjectsV2Command,
+  GetObjectCommand,
+} from "@aws-sdk/client-s3";
+import ExifReader from "exifreader";
+import { parseISO } from "date-fns";
+import mongoose from "mongoose";
+const { exiftool } = require("exiftool-vendored");
 
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
@@ -33,9 +37,9 @@ export async function syncNewImagesFromS3() {
   do {
     const listParams = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Prefix: 'images/2024/',
+      Prefix: "images/2024/",
       MaxKeys: 1000,
-      ContinuationToken: continuationToken
+      ContinuationToken: continuationToken,
     };
 
     try {
@@ -44,19 +48,21 @@ export async function syncNewImagesFromS3() {
 
       for (const object of data.Contents) {
         try {
-          const fileExtension = object.Key.split('.').pop().toLowerCase();
-          const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension);
+          const fileExtension = object.Key.split(".").pop().toLowerCase();
+          const isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
 
           if (!isImage) {
             console.log(`Skipping non-image file: ${object.Key}`);
             skippedCount++;
-            continue;  // Skip to the next iteration of the loop
+            continue; // Skip to the next iteration of the loop
           }
 
-          const { Body } = await s3Client.send(new GetObjectCommand({
-            Bucket: process.env.AWS_BUCKET_NAME,
-            Key: object.Key
-          }));
+          const { Body } = await s3Client.send(
+            new GetObjectCommand({
+              Bucket: process.env.AWS_BUCKET_NAME,
+              Key: object.Key,
+            })
+          );
           const buffer = await streamToBuffer(Body);
 
           const processedData = await processFile(buffer, object);
@@ -68,7 +74,9 @@ export async function syncNewImagesFromS3() {
           }
 
           // Check if the image already exists in the database
-          const existingMedia = await CameratrapMedia.findOne({ mediaID: processedData.mediaID });
+          const existingMedia = await CameratrapMedia.findOne({
+            mediaID: processedData.mediaID,
+          });
 
           if (!existingMedia) {
             // New image, add to database
@@ -90,64 +98,72 @@ export async function syncNewImagesFromS3() {
             }
           }
         } catch (processError) {
-          console.error(`Error processing file ${object.Key}: ${processError.message}`);
+          console.error(
+            `Error processing file ${object.Key}: ${processError.message}`
+          );
           skippedCount++;
         }
       }
 
       continuationToken = data.NextContinuationToken;
-      console.log(`Processed batch. Total new: ${newCount}, updated: ${updatedCount}, skipped: ${skippedCount}`);
-
+      console.log(
+        `Processed batch. Total new: ${newCount}, updated: ${updatedCount}, skipped: ${skippedCount}`
+      );
     } catch (error) {
       console.error("Error processing S3 batch:", error);
       throw error;
     }
   } while (continuationToken);
 
-  console.log(`Sync complete. Added ${newCount} new images, updated ${updatedCount} existing images, skipped ${skippedCount} files.`);
-  return { success: true, message: `S3 images synced successfully. Added ${newCount} new images, updated ${updatedCount} existing images, skipped ${skippedCount} files.` };
+  console.log(
+    `Sync complete. Added ${newCount} new images, updated ${updatedCount} existing images, skipped ${skippedCount} files.`
+  );
+  return {
+    success: true,
+    message: `S3 images synced successfully. Added ${newCount} new images, updated ${updatedCount} existing images, skipped ${skippedCount} files.`,
+  };
 }
 
 function getMimeType(filename) {
-  const ext = filename.split('.').pop().toLowerCase();
+  const ext = filename.split(".").pop().toLowerCase();
   switch (ext) {
-    case 'jpg':
-    case 'jpeg':
-      return 'image/jpeg';
-    case 'png':
-      return 'image/png';
-    case 'gif':
-      return 'image/gif';
-    case 'mp4':
-      return 'video/mp4';
-    case 'mov':
-      return 'video/quicktime';
+    case "jpg":
+    case "jpeg":
+      return "image/jpeg";
+    case "png":
+      return "image/png";
+    case "gif":
+      return "image/gif";
+    case "mp4":
+      return "video/mp4";
+    case "mov":
+      return "video/quicktime";
     default:
-      return 'application/octet-stream';
+      return "application/octet-stream";
   }
 }
 
 async function streamToBuffer(stream) {
   return new Promise((resolve, reject) => {
     const chunks = [];
-    stream.on('data', (chunk) => chunks.push(chunk));
-    stream.on('error', reject);
-    stream.on('end', () => resolve(Buffer.concat(chunks)));
+    stream.on("data", (chunk) => chunks.push(chunk));
+    stream.on("error", reject);
+    stream.on("end", () => resolve(Buffer.concat(chunks)));
   });
 }
 
 function parseExifDate(dateString) {
   // EXIF date format: "YYYY:MM:DD HH:MM:SS"
-  const [datePart, timePart] = dateString.split(' ');
-  const [year, month, day] = datePart.split(':');
-  const [hour, minute, second] = timePart.split(':');
+  const [datePart, timePart] = dateString.split(" ");
+  const [year, month, day] = datePart.split(":");
+  const [hour, minute, second] = timePart.split(":");
   return new Date(Date.UTC(year, month - 1, day, hour, minute, second));
 }
 
 async function getMetadata(buffer, fileName) {
   try {
     // Use the -b option to exclude binary data
-    const tags = await exiftool.read(buffer, ['-File:all', '-b']);
+    const tags = await exiftool.read(buffer, ["-File:all", "-b"]);
     return tags;
   } catch (error) {
     console.error(`Error reading metadata for ${fileName}: ${error.message}`);
@@ -159,10 +175,10 @@ async function processFile(buffer, object) {
   let metadata;
   let timestamp;
 
-  const fileExtension = object.Key.split('.').pop().toLowerCase();
-  const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension);
+  const fileExtension = object.Key.split(".").pop().toLowerCase();
+  const isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
   // Skip files with 'THUMB' in their relativePath
-  if (object.Key.includes('THUMB')) {
+  if (object.Key.includes("THUMB")) {
     console.log(`Skipping thumbnail file: ${object.Key}`);
     return null;
   }
@@ -174,7 +190,7 @@ async function processFile(buffer, object) {
 
   try {
     metadata = await getImageMetadata(buffer);
-    
+
     // Use DateTimeOriginal as the basis for timestamp
     if (metadata && metadata.DateTimeOriginal) {
       timestamp = parseExifDate(metadata.DateTimeOriginal.description);
@@ -188,41 +204,44 @@ async function processFile(buffer, object) {
   }
 
   return {
-    mediaID: object.ETag.replace(/^"|"$/g, ''),
+    mediaID: object.ETag.replace(/^"|"$/g, ""),
     timestamp: timestamp,
     publicURL: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${object.Key}`,
-    relativePath: object.Key.split('/').slice(1),
+    relativePath: object.Key.split("/").slice(1),
     filePath: object.Key,
     filePublic: true,
-    fileName: object.Key.split('/').pop(),
-    fileMediatype: `image/${object.Key.split('.').pop().toLowerCase()}`,
-    exifData: metadata
+    fileName: object.Key.split("/").pop(),
+    fileMediatype: `image/${object.Key.split(".").pop().toLowerCase()}`,
+    exifData: metadata,
   };
 }
 
 async function getImageMetadata(buffer) {
   try {
     const tags = await ExifReader.load(buffer);
-    
+
     // Filter out base64 data, keep original tag names, and exclude large entries
     const filteredTags = Object.fromEntries(
       Object.entries(tags).filter(([key, value]) => {
-        return (typeof value !== 'object' || 
-               (typeof value === 'object' && !('base64' in value) && !Buffer.isBuffer(value))) &&
-               JSON.stringify(value).length <= 1024;
+        return (
+          (typeof value !== "object" ||
+            (typeof value === "object" &&
+              !("base64" in value) &&
+              !Buffer.isBuffer(value))) &&
+          JSON.stringify(value).length <= 1024
+        );
       })
     );
 
     return filteredTags;
   } catch (error) {
-    console.error('Error reading EXIF data:', error);
+    console.error("Error reading EXIF data:", error);
     return {};
   }
 }
 
 // Don't forget to close ExifTool when you're done
-process.on('exit', () => exiftool.end());
-
+process.on("exit", () => exiftool.end());
 
 // CAMERA ACTIONS
 export async function getCamera(id) {
@@ -232,21 +251,39 @@ export async function getCamera(id) {
 
 export async function getAllCameras() {
   await dbConnect();
-  const cameras = await Camera.find({}, ["-__v"]);
-  return JSON.stringify(cameras);
+
+  try {
+    const cameras = await Camera.find({}, ["-__v"]);
+    return JSON.stringify(cameras);
+  } catch (error) {
+    console.error("Error fetching all cameras:", error);
+    throw error;
+  }
 }
 
 export async function getCameras() {
   await dbConnect();
-  const cameras = await Camera.find({}, ["-__v"]);
-  return cameras;
+
+  try {
+    const cameras = await Camera.find({}, ["-__v"]);
+    return cameras;
+  } catch (error) {
+    console.error("Error fetching cameras:", error);
+    throw error;
+  }
 }
+
 export async function newEditCamera(req) {
+  await dbConnect();
   try {
     console.log("newEditCamera req:", req);
 
     const camera = await Camera.create(req);
     console.log("newEditCamera camera:", camera);
+
+    // Revalidate all camera-related data after successful edit
+    revalidateTag("cameras");
+
     const result = { success: true, cameraId: camera._id };
     return result;
   } catch (error) {
@@ -328,4 +365,3 @@ export async function getAllDeployments() {
   console.log(deployments);
   return deployments;
 }
-

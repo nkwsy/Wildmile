@@ -9,6 +9,10 @@ const MediaSchema = new mongoose.Schema(
       unique: true,
     },
     imageHash: String, // hash of the image without exif data
+    deploymentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Deployment",
+    },
     timestamp: {
       type: Date,
       required: true,

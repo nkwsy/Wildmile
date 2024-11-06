@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { DateInput, DatePickerInput } from "@mantine/dates";
+import { DateInput, DatePickerInput, TimeInput } from "@mantine/dates";
 import {
   Select,
   Button,
@@ -24,6 +24,8 @@ export function ImageFilterControls({ onApplyFilters }) {
     locationId: null,
     startDate: null,
     endDate: null,
+    startTime: null,
+    endTime: null,
     reviewed: false,
     reviewedByUser: false,
   });
@@ -65,6 +67,8 @@ export function ImageFilterControls({ onApplyFilters }) {
       locationId: null,
       startDate: null,
       endDate: null,
+      startTime: null,
+      endTime: null,
       reviewed: false,
       reviewedByUser: false,
     });
@@ -78,6 +82,12 @@ export function ImageFilterControls({ onApplyFilters }) {
   const hasActiveFilters = Object.values(filters).some(
     (value) => value !== null && value !== false
   );
+
+  const handleTimeChange = (key, value) => {
+    if (!value || /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)) {
+      handleFilterChange(key, value);
+    }
+  };
 
   return (
     <>
@@ -112,39 +122,82 @@ export function ImageFilterControls({ onApplyFilters }) {
           </Text>
 
           <Button onClick={handleApplyFilters}>Search Images</Button>
-          <DateInput
-            label="Start Date"
-            placeholder="Select start date"
-            value={filters.startDate}
-            onChange={(value) => handleFilterChange("startDate", value)}
-            rightSection={
-              filters.startDate && (
-                <ActionIcon
-                  onClick={() => handleClearFilter("startDate")}
-                  size="sm"
-                >
-                  <IconX size={14} />
-                </ActionIcon>
-              )
-            }
-          />
 
-          <DateInput
-            label="End Date"
-            placeholder="Select end date"
-            value={filters.endDate}
-            onChange={(value) => handleFilterChange("endDate", value)}
-            rightSection={
-              filters.endDate && (
-                <ActionIcon
-                  onClick={() => handleClearFilter("endDate")}
-                  size="sm"
-                >
-                  <IconX size={14} />
-                </ActionIcon>
-              )
-            }
-          />
+          <Group grow align="flex-start">
+            <DateInput
+              label="Start Date"
+              placeholder="Select start date"
+              value={filters.startDate}
+              onChange={(value) => handleFilterChange("startDate", value)}
+              rightSection={
+                filters.startDate && (
+                  <ActionIcon
+                    onClick={() => handleClearFilter("startDate")}
+                    size="sm"
+                  >
+                    <IconX size={14} />
+                  </ActionIcon>
+                )
+              }
+            />
+
+            <DateInput
+              label="End Date"
+              placeholder="Select end date"
+              value={filters.endDate}
+              onChange={(value) => handleFilterChange("endDate", value)}
+              rightSection={
+                filters.endDate && (
+                  <ActionIcon
+                    onClick={() => handleClearFilter("endDate")}
+                    size="sm"
+                  >
+                    <IconX size={12} />
+                  </ActionIcon>
+                )
+              }
+            />
+          </Group>
+
+          <Group grow align="flex-start">
+            <TimeInput
+              label="Start Time"
+              placeholder="Select start time"
+              value={filters.startTime}
+              onChange={(value) => handleTimeChange("startTime", value)}
+              onBlur={(e) =>
+                handleTimeChange("startTime", e.currentTarget.value)
+              }
+              rightSection={
+                filters.startTime && (
+                  <ActionIcon
+                    onClick={() => handleClearFilter("startTime")}
+                    size="sm"
+                  >
+                    <IconX size={14} />
+                  </ActionIcon>
+                )
+              }
+            />
+
+            <TimeInput
+              label="End Time"
+              placeholder="Select end time"
+              value={filters.endTime}
+              onChange={(value) => handleTimeChange("endTime", value)}
+              onBlur={(e) => handleTimeChange("endTime", e.currentTarget.value)}
+              rightSection={
+                filters.endTime && (
+                  <ActionIcon
+                    onClick={() => handleClearFilter("endTime")}
+                    size="sm"
+                  >
+                    <IconX size={14} />
+                  </ActionIcon>
+                )
+              }
+            />
+          </Group>
 
           <Select
             label="Location"

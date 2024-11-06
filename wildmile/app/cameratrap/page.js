@@ -12,6 +12,7 @@ import {
   IconCameraSearch,
   IconCameraPlus,
   IconZoomIn,
+  IconMapPin,
 } from "@tabler/icons-react";
 // import TaxaSearch, { WildlifeSidebar } from "components/cameratrap/TaxaSearch";
 import { useUser } from "lib/hooks";
@@ -66,6 +67,12 @@ function CameraTrapMgmtCards({ user }) {
       title: "Deployments",
       href: "/cameratrap/deployment",
       description: "Manage the deployments",
+    },
+    {
+      icon: IconMapPin,
+      title: "Locations",
+      href: "/cameratrap/locations",
+      description: "Manage the deployment locations",
     },
   ];
   return <IconCardGrid cards={cards} />;

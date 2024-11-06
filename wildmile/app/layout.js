@@ -2,6 +2,8 @@
 // import "@mantine/core/styles/global.css";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
+import "@mantine/notifications/styles.css";
+
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 
@@ -18,6 +20,7 @@ import {
   createTheme,
   DirectionProvider,
 } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 
 import { HeaderNav } from "/components/nav_bar";
 // import Footer from "../components/footer";

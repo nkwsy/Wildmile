@@ -37,7 +37,7 @@ export async function GET(request) {
         $sort: { count: -1 },
       },
       {
-        $limit: 3,
+        $limit: 5,
       },
       {
         $lookup: {
