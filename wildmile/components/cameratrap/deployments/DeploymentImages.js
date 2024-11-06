@@ -13,9 +13,13 @@ import {
   Menu,
   ActionIcon,
   SegmentedControl,
-  DatePicker,
-  TimeInput
 } from "@mantine/core";
+import {
+  DatePicker,
+  TimeInput,
+  DatePickerInput,
+  TimeInputInput,
+} from "@mantine/dates";
 import {
   IconPhoto,
   IconEye,
@@ -25,9 +29,9 @@ import {
   IconPaw,
   IconClock,
   IconCalendar,
-  IconX
+  IconX,
 } from "@tabler/icons-react";
-import { SpeciesConsensusBadges } from '../SpeciesConsensusBadges';
+import { SpeciesConsensusBadges } from "../SpeciesConsensusBadges";
 
 export function DeploymentImages({ deploymentId }) {
   const [images, setImages] = useState([]);
@@ -37,9 +41,9 @@ export function DeploymentImages({ deploymentId }) {
   const [totalImages, setTotalImages] = useState(0);
   const IMAGES_PER_PAGE = 12;
   const [filters, setFilters] = useState({
-    type: 'all', // 'all', 'animals', 'humans'
+    type: "all", // 'all', 'animals', 'humans'
     date: null,
-    time: null
+    time: null,
   });
 
   const fetchImages = async () => {
@@ -50,7 +54,7 @@ export function DeploymentImages({ deploymentId }) {
         limit: IMAGES_PER_PAGE,
         type: filters.type,
         ...(filters.date && { date: filters.date.toISOString() }),
-        ...(filters.time && { time: filters.time })
+        ...(filters.time && { time: filters.time }),
       });
 
       const response = await fetch(
@@ -76,9 +80,9 @@ export function DeploymentImages({ deploymentId }) {
 
   const clearFilters = () => {
     setFilters({
-      type: 'all',
+      type: "all",
       date: null,
-      time: null
+      time: null,
     });
   };
 
@@ -105,10 +109,10 @@ export function DeploymentImages({ deploymentId }) {
           </Group>
 
           <Group>
-            {(filters.type !== 'all' || filters.date || filters.time) && (
-              <Button 
-                variant="light" 
-                color="red" 
+            {(filters.type !== "all" || filters.date || filters.time) && (
+              <Button
+                variant="light"
+                color="red"
                 size="xs"
                 leftIcon={<IconX size={14} />}
                 onClick={clearFilters}
@@ -116,12 +120,14 @@ export function DeploymentImages({ deploymentId }) {
                 Clear Filters
               </Button>
             )}
-            
+
             <Menu position="bottom-end" withinPortal>
               <Menu.Target>
-                <ActionIcon 
+                <ActionIcon
                   variant="light"
-                  color={Object.values(filters).some(v => v) ? "blue" : "gray"}
+                  color={
+                    Object.values(filters).some((v) => v) ? "blue" : "gray"
+                  }
                 >
                   <IconFilter size={20} />
                 </ActionIcon>
@@ -129,32 +135,36 @@ export function DeploymentImages({ deploymentId }) {
 
               <Menu.Dropdown>
                 <Menu.Label>Filter Images</Menu.Label>
-                
+
                 <Menu.Item>
                   <Stack spacing="xs">
-                    <Text size="sm" weight={500}>Type</Text>
+                    <Text size="sm" weight={500}>
+                      Type
+                    </Text>
                     <SegmentedControl
                       value={filters.type}
-                      onChange={(value) => setFilters(f => ({ ...f, type: value }))}
+                      onChange={(value) =>
+                        setFilters((f) => ({ ...f, type: value }))
+                      }
                       data={[
-                        { label: 'All', value: 'all' },
-                        { 
+                        { label: "All", value: "all" },
+                        {
                           label: (
                             <Group spacing={4}>
                               <IconPaw size={14} />
                               <span>Animals</span>
                             </Group>
-                          ), 
-                          value: 'animals' 
+                          ),
+                          value: "animals",
                         },
-                        { 
+                        {
                           label: (
                             <Group spacing={4}>
                               <IconUser size={14} />
                               <span>Humans</span>
                             </Group>
-                          ), 
-                          value: 'humans' 
+                          ),
+                          value: "humans",
                         },
                       ]}
                     />
@@ -163,10 +173,12 @@ export function DeploymentImages({ deploymentId }) {
 
                 <Menu.Item>
                   <Stack spacing="xs">
-                    <Text size="sm" weight={500}>Date</Text>
+                    <Text size="sm" weight={500}>
+                      Date
+                    </Text>
                     <DatePicker
                       value={filters.date}
-                      onChange={(date) => setFilters(f => ({ ...f, date }))}
+                      onChange={(date) => setFilters((f) => ({ ...f, date }))}
                       clearable
                       placeholder="Pick date"
                     />
@@ -175,10 +187,17 @@ export function DeploymentImages({ deploymentId }) {
 
                 <Menu.Item>
                   <Stack spacing="xs">
-                    <Text size="sm" weight={500}>Time</Text>
+                    <Text size="sm" weight={500}>
+                      Time
+                    </Text>
                     <TimeInput
                       value={filters.time}
-                      onChange={(event) => setFilters(f => ({ ...f, time: event.currentTarget.value }))}
+                      onChange={(event) =>
+                        setFilters((f) => ({
+                          ...f,
+                          time: event.currentTarget.value,
+                        }))
+                      }
                       clearable
                       placeholder="Pick time"
                     />
@@ -230,7 +249,9 @@ export function DeploymentImages({ deploymentId }) {
                       </Text>
                       <Group spacing="xs">
                         {image.speciesConsensus && (
-                          <SpeciesConsensusBadges speciesConsensus={image.speciesConsensus} />
+                          <SpeciesConsensusBadges
+                            speciesConsensus={image.speciesConsensus}
+                          />
                         )}
                         {image.favoriteCount > 0 && (
                           <Badge size="sm" variant="light" color="pink">
