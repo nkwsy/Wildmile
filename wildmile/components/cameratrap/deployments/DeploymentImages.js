@@ -11,7 +11,8 @@ import {
   LoadingOverlay,
   Badge,
 } from "@mantine/core";
-import { IconPhoto, IconEye } from "@tabler/icons-react";
+import { IconPhoto, IconEye, IconHeart } from "@tabler/icons-react";
+import { SpeciesConsensusBadges } from '../SpeciesConsensusBadges';
 
 export function DeploymentImages({ deploymentId }) {
   const [images, setImages] = useState([]);
@@ -107,11 +108,16 @@ export function DeploymentImages({ deploymentId }) {
                       <Text size="xs" color="dimmed">
                         {new Date(image.timestamp).toLocaleString()}
                       </Text>
-                      {image.deploymentId && (
-                        <Badge size="sm" variant="light">
-                          {image.deploymentId.locationName}
-                        </Badge>
-                      )}
+                      <Group spacing="xs">
+                        {image.speciesConsensus && (
+                          <SpeciesConsensusBadges speciesConsensus={image.speciesConsensus} />
+                        )}
+                        {image.favoriteCount > 0 && (
+                          <Badge size="sm" variant="light" color="pink">
+                            <IconHeart size={10} /> {image.favoriteCount}
+                          </Badge>
+                        )}
+                      </Group>
                     </Stack>
                   </Paper>
                 </Grid.Col>

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidateTag } from 'next/cache';
 import dbConnect from "lib/db/setup";
 import CameratrapMedia from "models/cameratrap/Media";
 
@@ -32,6 +33,9 @@ export async function POST(request) {
       const result = await CameratrapMedia.updateMany(query, {
         $set: { deploymentId },
       });
+
+      // Revalidate the media cache
+      revalidateTag('media');
 
       return NextResponse.json({
         message: `Successfully assigned ${result.modifiedCount} images to deployment`,

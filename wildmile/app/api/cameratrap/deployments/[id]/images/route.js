@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import CameratrapMedia from "models/cameratrap/Media";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET(request, { params }) {
   await dbConnect();
 
@@ -21,12 +24,20 @@ export async function GET(request, { params }) {
       CameratrapMedia.countDocuments(query),
     ]);
 
-    return NextResponse.json({
-      images,
-      totalImages,
-      page,
-      totalPages: Math.ceil(totalImages / limit),
-    });
+    return NextResponse.json(
+      {
+        images,
+        totalImages,
+        page,
+        totalPages: Math.ceil(totalImages / limit),
+      },
+      {
+        headers: {
+          'Cache-Control': 'no-store',
+          'tags': ['media']
+        }
+      }
+    );
   } catch (error) {
     console.error("Error fetching deployment images:", error);
     return NextResponse.json(

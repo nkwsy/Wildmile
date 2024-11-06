@@ -23,7 +23,7 @@ export async function POST(request) {
       };
 
       // Add file extension check
-      if (pathParts.length > 0) {
+      if (pathParts.length > 1) {
         query["fileLocations.relativePath"] = {
           $elemMatch: { $regex: /\.(jpg|jpeg|png|gif)$/i }
         };
