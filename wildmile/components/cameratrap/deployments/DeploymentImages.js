@@ -10,8 +10,23 @@ import {
   Pagination,
   LoadingOverlay,
   Badge,
+  Menu,
+  ActionIcon,
+  SegmentedControl,
+  DatePicker,
+  TimeInput
 } from "@mantine/core";
-import { IconPhoto, IconEye, IconHeart } from "@tabler/icons-react";
+import {
+  IconPhoto,
+  IconEye,
+  IconHeart,
+  IconFilter,
+  IconUser,
+  IconPaw,
+  IconClock,
+  IconCalendar,
+  IconX
+} from "@tabler/icons-react";
 import { SpeciesConsensusBadges } from '../SpeciesConsensusBadges';
 
 export function DeploymentImages({ deploymentId }) {
@@ -21,12 +36,25 @@ export function DeploymentImages({ deploymentId }) {
   const [page, setPage] = useState(1);
   const [totalImages, setTotalImages] = useState(0);
   const IMAGES_PER_PAGE = 12;
+  const [filters, setFilters] = useState({
+    type: 'all', // 'all', 'animals', 'humans'
+    date: null,
+    time: null
+  });
 
   const fetchImages = async () => {
     setLoading(true);
     try {
+      const params = new URLSearchParams({
+        page: page,
+        limit: IMAGES_PER_PAGE,
+        type: filters.type,
+        ...(filters.date && { date: filters.date.toISOString() }),
+        ...(filters.time && { time: filters.time })
+      });
+
       const response = await fetch(
-        `/api/cameratrap/deployments/${deploymentId}/images?page=${page}&limit=${IMAGES_PER_PAGE}`
+        `/api/cameratrap/deployments/${deploymentId}/images?${params}`
       );
       if (!response.ok) throw new Error("Failed to fetch images");
       const data = await response.json();
@@ -44,7 +72,15 @@ export function DeploymentImages({ deploymentId }) {
     if (deploymentId) {
       fetchImages();
     }
-  }, [deploymentId, page]);
+  }, [deploymentId, page, filters]);
+
+  const clearFilters = () => {
+    setFilters({
+      type: 'all',
+      date: null,
+      time: null
+    });
+  };
 
   if (error) {
     return (
