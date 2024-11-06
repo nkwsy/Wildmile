@@ -13,21 +13,21 @@ export async function POST(request) {
       const pathParts = currentPath ? currentPath.split("/") : [];
 
       const query = {
-        fileLocations: {
-          relativePath: {
-            $elemMatch: {
-              $regex: /\.(jpg|jpeg|png|gif)$/i,
-            },
-          },
-        },
+        "fileLocations": {
+          $elemMatch: {
+            "relativePath": {
+              $all: pathParts.filter(Boolean)
+            }
+          }
+        }
       };
 
-      // Add path matching conditions
-      pathParts.forEach((part, index) => {
-        if (part) {
-          query[`relativePath.${index}`] = part;
-        }
-      });
+      // Add file extension check
+      if (pathParts.length > 0) {
+        query["fileLocations.relativePath"] = {
+          $elemMatch: { $regex: /\.(jpg|jpeg|png|gif)$/i }
+        };
+      }
 
       const result = await CameratrapMedia.updateMany(query, {
         $set: { deploymentId },

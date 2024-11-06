@@ -13,20 +13,21 @@ export async function POST(request) {
     if (currentPath !== undefined) {
       const pathParts = currentPath ? currentPath.split("/") : [];
       query = {
-        fileLocations: {
-          relativePath: {
-            $elemMatch: {
-              $regex: /\.(jpg|jpeg|png|gif)$/i,
-            },
-          },
-        },
+        "fileLocations": {
+          $elemMatch: {
+            "relativePath": {
+              $all: pathParts.filter(Boolean)
+            }
+          }
+        }
       };
 
-      pathParts.forEach((part, index) => {
-        if (part) {
-          query[`relativePath.${index}`] = part;
-        }
-      });
+      // Add file extension check
+      if (pathParts.length > 0) {
+        query["fileLocations.relativePath"] = {
+          $elemMatch: { $regex: /\.(jpg|jpeg|png|gif)$/i }
+        };
+      }
     } else if (imageIds?.length) {
       query = { _id: { $in: imageIds } };
     }
