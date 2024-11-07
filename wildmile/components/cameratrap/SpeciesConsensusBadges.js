@@ -37,8 +37,9 @@ export function SpeciesConsensusBadges({ speciesConsensus }) {
                 size="sm"
                 variant={consensus.accepted ? "filled" : "light"}
                 leftSection={<IconPaw size={14} />}
+                color="green"
               >
-                {consensus.scientificName} ({consensus.count})
+                {/* {consensus.scientificName} */}
               </Badge>
             </Tooltip>
           );
