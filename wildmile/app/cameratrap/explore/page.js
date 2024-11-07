@@ -7,25 +7,24 @@ import {
   Text,
   Title,
   Group,
-  Select,
   LoadingOverlay,
   SimpleGrid,
   Card,
   Image,
   Badge,
-  ActionIcon,
-  Pagination,
   Modal,
+  ScrollArea,
+  Pagination,
 } from "@mantine/core";
-import { IconHeart, IconZoomIn } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import classes from "styles/ExploreWildlife.module.css";
+import { GalleryFilter } from "components/cameratrap/images/GalleryFilter";
+import { IdentificationProvider } from "components/cameratrap/ContextCamera";
+import { ImageGallery } from "components/cameratrap/images/ImageGallery";
 
 const ITEMS_PER_PAGE = 20;
 
-export default function ExploreWildlife() {
-  const [speciesStats, setSpeciesStats] = useState([]);
-  const [selectedSpecies, setSelectedSpecies] = useState(null);
+export default function Page() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -33,57 +32,40 @@ export default function ExploreWildlife() {
   const [imageModalOpened, { open: openImageModal, close: closeImageModal }] =
     useDisclosure(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [currentFilters, setCurrentFilters] = useState({});
 
-  const fetchSpeciesData = async (species) => {
-    try {
-      const response = await fetch(
-        `/api/species?species=${encodeURIComponent(species)}`
-      );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error fetching species data:", error);
-      return null;
-    }
-  };
-
-  // Fetch species statistics on initial load
-  useEffect(() => {
-    fetchSpeciesStats();
-  }, []);
-
-  // Fetch images when species or page changes
-  useEffect(() => {
-    if (selectedSpecies) {
-      fetchImages();
-    }
-  }, [selectedSpecies, page]);
-
-  const fetchSpeciesStats = async () => {
+  const fetchImages = async (filters = {}) => {
     setLoading(true);
     try {
-      const response = await fetch("/api/cameratrap/explore/species-stats");
-      const data = await response.json();
-      setSpeciesStats(data);
-    } catch (error) {
-      console.error("Error fetching species stats:", error);
-    }
-    setLoading(false);
-  };
+      const params = new URLSearchParams({
+        ...filters,
+        page: page,
+        limit: ITEMS_PER_PAGE,
+      });
 
-  const fetchImages = async () => {
-    setLoading(true);
-    try {
       const response = await fetch(
-        `/api/cameratrap/explore/species-images?species=${selectedSpecies}&page=${page}&limit=${ITEMS_PER_PAGE}`
+        `/api/cameratrap/getCameratrapImages?${params}`
       );
       const data = await response.json();
+
       setImages(data.images);
-      setTotalPages(Math.ceil(data.total / ITEMS_PER_PAGE));
+      setTotalPages(Math.ceil(data.totalImages / ITEMS_PER_PAGE));
     } catch (error) {
       console.error("Error fetching images:", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
+  };
+
+  // Fetch images when page changes
+  useEffect(() => {
+    fetchImages(currentFilters);
+  }, [page]);
+
+  const handleFilterChange = (filters) => {
+    setPage(1); // Reset to first page when filters change
+    setCurrentFilters(filters);
+    fetchImages(filters);
   };
 
   const handleImageClick = (image) => {
@@ -92,65 +74,57 @@ export default function ExploreWildlife() {
   };
 
   return (
-    <Container size="xl" py="xl">
-      <LoadingOverlay visible={loading} />
+    <>
+      <IdentificationProvider>
+        <Container size="xl" py="xl">
+          {/* <LoadingOverlay visible={loading} /> */}
 
-      <Title order={1} mb="xl">
-        Explore Wildlife
-      </Title>
-
-      <Grid>
-        {/* Species Statistics */}
-        <Grid.Col span={12}>
-          <SimpleGrid
-            cols={4}
-            spacing="lg"
-            breakpoints={[
-              { maxWidth: "md", cols: 2 },
-              { maxWidth: "sm", cols: 1 },
-            ]}
-          >
-            {speciesStats.map((stat) => (
-              <Paper key={stat.species} p="md" className={classes.statCard}>
-                <Title order={3}>{stat.species}</Title>
-                <Text size="xl" weight={700}>
-                  {stat.count} sightings
-                </Text>
-                <Text size="sm" c="dimmed">
-                  Last seen: {new Date(stat.lastSeen).toLocaleDateString()}
-                </Text>
-              </Paper>
-            ))}
-          </SimpleGrid>
-        </Grid.Col>
-
-        {/* Species Selection and Image Gallery */}
-        <Grid.Col span={12}>
-          <Select
-            label="Select Species"
-            placeholder="Choose a species to view images"
-            data={speciesStats.map((stat) => ({
-              value: stat.species,
-              label: stat.species,
-            }))}
-            value={selectedSpecies}
-            onChange={setSelectedSpecies}
-            searchable
-            mb="xl"
-          />
-
-          {selectedSpecies && (
-            <>
-              <SimpleGrid
-                cols={4}
-                spacing="lg"
-                breakpoints={[
-                  { maxWidth: "md", cols: 3 },
-                  { maxWidth: "sm", cols: 2 },
-                  { maxWidth: "xs", cols: 1 },
-                ]}
-              >
-                {images.map((image) => (
+          <Title order={1} mb="xl">
+            Explore Wildlife
+          </Title>
+          <Grid>
+            <Grid.Col
+              span={{ base: 12, md: 6, lg: 5, xl: 5 }}
+              style={{ height: "100%" }}
+            >
+              <ScrollArea style={{ height: "100%" }} offsetScrollbars>
+                <Paper p="md" mb="xl">
+                  <GalleryFilter onFilterChange={handleFilterChange} />
+                </Paper>
+              </ScrollArea>
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 7 }}>
+              <ImageGallery
+                images={images}
+                totalImages={totalPages}
+                page={page}
+                setPage={setPage}
+                loading={loading}
+                emptyMessage="No images found"
+                onPageChange={setPage}
+              />
+            </Grid.Col>
+            {/* <Grid.Col span={{ base: 12, md: 7 }}>
+            {totalPages > 1 && (
+              <Group position="center" mt="xl">
+                <Pagination
+                  total={totalPages}
+                  value={page}
+                  onChange={setPage}
+                />
+              </Group>
+            )}
+            <SimpleGrid
+              cols={4}
+              spacing="lg"
+              breakpoints={[
+                { maxWidth: "md", cols: 3 },
+                { maxWidth: "sm", cols: 2 },
+                { maxWidth: "xs", cols: 1 },
+              ]}
+            >
+              {images &&
+                images.map((image) => (
                   <Card
                     key={image.mediaID}
                     shadow="sm"
@@ -162,7 +136,7 @@ export default function ExploreWildlife() {
                       <Image
                         src={image.publicURL}
                         height={200}
-                        alt={selectedSpecies}
+                        alt="Wildlife"
                         onClick={() => handleImageClick(image)}
                         style={{ cursor: "pointer" }}
                       />
@@ -173,41 +147,45 @@ export default function ExploreWildlife() {
                       </Text>
                       <Badge variant="light">{image.consensusStatus}</Badge>
                     </Group>
+                    {image.speciesConsensus &&
+                      image.speciesConsensus.length > 0 && (
+                        <Group mt="xs" spacing="xs">
+                          {image.speciesConsensus.map((species, idx) => (
+                            <Badge key={idx} size="sm" variant="outline">
+                              {species.scientificName ||
+                                species.observationType}
+                              {species.count > 1 && ` (${species.count})`}
+                            </Badge>
+                          ))}
+                        </Group>
+                      )}
                   </Card>
                 ))}
-              </SimpleGrid>
+            </SimpleGrid>
+          </Grid.Col> */}
+          </Grid>
 
-              <Group position="center" mt="xl">
-                <Pagination
-                  total={totalPages}
-                  value={page}
-                  onChange={setPage}
-                />
-              </Group>
-            </>
-          )}
-        </Grid.Col>
-      </Grid>
-
-      {/* Image Modal */}
-      {selectedImage && (
-        <Modal
-          opened={imageModalOpened}
-          onClose={closeImageModal}
-          size="100%"
-          padding={0}
-          withCloseButton={false}
-        >
-          <div className={classes.modalContent}>
-            <Image
-              src={selectedImage.publicURL}
-              fit="contain"
-              height="90vh"
-              alt={selectedSpecies}
-            />
-          </div>
-        </Modal>
-      )}
-    </Container>
+          {/* Image Modal */}
+          {/* {selectedImage && (
+          <Modal
+            opened={imageModalOpened}
+            onClose={closeImageModal}
+            size="100%"
+            padding={0}
+            withCloseButton={false}
+          >
+            <div className={classes.modalContent}>
+              <Image
+                src={selectedImage.publicURL}
+                fit="contain"
+                height="90vh"
+                alt="Wildlife"
+              />
+            </div>
+          </Modal>
+        )} */}
+        </Container>
+      </IdentificationProvider>
+    </>
   );
 }

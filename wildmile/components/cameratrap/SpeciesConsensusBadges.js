@@ -1,22 +1,26 @@
-import { Group, Badge, Tooltip } from '@mantine/core';
-import { IconUser, IconPaw } from '@tabler/icons-react';
+import { Group, Badge, Tooltip } from "@mantine/core";
+import { IconUser, IconPaw } from "@tabler/icons-react";
+import { useHover } from "@mantine/hooks";
 
 export function SpeciesConsensusBadges({ speciesConsensus }) {
   if (!speciesConsensus || speciesConsensus.length === 0) {
+    return null;
+  }
+  if (speciesConsensus.length > 1) {
     return null;
   }
 
   return (
     <Group spacing="xs">
       {speciesConsensus.map((consensus) => {
-        if (consensus.observationType === 'human') {
+        if (consensus.observationType === "human") {
           return (
-            <Tooltip 
-              key={consensus._id} 
+            <Tooltip
+              key={consensus._id}
               label={`Human (${consensus.observationCount} observations)`}
             >
-              <Badge 
-                size="sm" 
+              <Badge
+                size="sm"
                 variant={consensus.accepted ? "filled" : "light"}
                 leftSection={<IconUser size={14} />}
               >
@@ -25,26 +29,37 @@ export function SpeciesConsensusBadges({ speciesConsensus }) {
             </Tooltip>
           );
         }
-        
-        if (consensus.observationType === 'animal') {
+
+        if (consensus.observationType === "animal") {
           return (
-            <Tooltip 
-              key={consensus._id} 
-              label={`${consensus.scientificName} - Count: ${consensus.count} (${consensus.observationCount} observations)`}
+            <Tooltip
+              key={consensus._id}
+              label={speciesConsensus
+                .filter((species) => species.observationType === "animal")
+                .map(
+                  (species) =>
+                    `${species.scientificName} - Count: ${species.count} (${species.observationCount} observations)`
+                )
+                .join("\n")}
             >
-              <Badge 
-                size="sm" 
+              <Badge
+                size="sm"
                 variant={consensus.accepted ? "filled" : "light"}
                 leftSection={<IconPaw size={14} />}
+                color="green"
               >
-                {consensus.scientificName} ({consensus.count})
+                {
+                  speciesConsensus.filter(
+                    (species) => species.observationType === "animal"
+                  ).length
+                }{" "}
               </Badge>
             </Tooltip>
           );
         }
-        
+
         return null;
       })}
     </Group>
   );
-} 
+}
