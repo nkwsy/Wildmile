@@ -20,10 +20,11 @@ import { useDisclosure } from "@mantine/hooks";
 import classes from "styles/ExploreWildlife.module.css";
 import { GalleryFilter } from "components/cameratrap/images/GalleryFilter";
 import { IdentificationProvider } from "components/cameratrap/ContextCamera";
+import { ImageGallery } from "components/cameratrap/images/ImageGallery";
 
 const ITEMS_PER_PAGE = 20;
 
-export default function ExploreWildlife() {
+export default function Page() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -73,25 +74,37 @@ export default function ExploreWildlife() {
   };
 
   return (
-    <IdentificationProvider>
-      <Container size="xl" py="xl">
-        {/* <LoadingOverlay visible={loading} /> */}
+    <>
+      <IdentificationProvider>
+        <Container size="xl" py="xl">
+          {/* <LoadingOverlay visible={loading} /> */}
 
-        <Title order={1} mb="xl">
-          Explore Wildlife
-        </Title>
-        <Grid>
-          <Grid.Col
-            span={{ base: 12, md: 6, lg: 5, xl: 5 }}
-            style={{ height: "100%" }}
-          >
-            <ScrollArea style={{ height: "100%" }} offsetScrollbars>
-              <Paper p="md" mb="xl">
-                <GalleryFilter onFilterChange={handleFilterChange} />
-              </Paper>
-            </ScrollArea>
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 7 }}>
+          <Title order={1} mb="xl">
+            Explore Wildlife
+          </Title>
+          <Grid>
+            <Grid.Col
+              span={{ base: 12, md: 6, lg: 5, xl: 5 }}
+              style={{ height: "100%" }}
+            >
+              <ScrollArea style={{ height: "100%" }} offsetScrollbars>
+                <Paper p="md" mb="xl">
+                  <GalleryFilter onFilterChange={handleFilterChange} />
+                </Paper>
+              </ScrollArea>
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 7 }}>
+              <ImageGallery
+                images={images}
+                totalImages={totalPages}
+                page={page}
+                setPage={setPage}
+                loading={loading}
+                emptyMessage="No images found"
+                onPageChange={setPage}
+              />
+            </Grid.Col>
+            {/* <Grid.Col span={{ base: 12, md: 7 }}>
             {totalPages > 1 && (
               <Group position="center" mt="xl">
                 <Pagination
@@ -149,11 +162,11 @@ export default function ExploreWildlife() {
                   </Card>
                 ))}
             </SimpleGrid>
-          </Grid.Col>
-        </Grid>
+          </Grid.Col> */}
+          </Grid>
 
-        {/* Image Modal */}
-        {selectedImage && (
+          {/* Image Modal */}
+          {/* {selectedImage && (
           <Modal
             opened={imageModalOpened}
             onClose={closeImageModal}
@@ -170,8 +183,9 @@ export default function ExploreWildlife() {
               />
             </div>
           </Modal>
-        )}
-      </Container>
-    </IdentificationProvider>
+        )} */}
+        </Container>
+      </IdentificationProvider>
+    </>
   );
 }
