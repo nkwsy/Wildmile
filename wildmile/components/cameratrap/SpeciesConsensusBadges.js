@@ -6,6 +6,9 @@ export function SpeciesConsensusBadges({ speciesConsensus }) {
   if (!speciesConsensus || speciesConsensus.length === 0) {
     return null;
   }
+  if (speciesConsensus.length > 1) {
+    return null;
+  }
 
   return (
     <Group spacing="xs">
@@ -31,7 +34,13 @@ export function SpeciesConsensusBadges({ speciesConsensus }) {
           return (
             <Tooltip
               key={consensus._id}
-              label={`${consensus.scientificName} - Count: ${consensus.count} (${consensus.observationCount} observations)`}
+              label={speciesConsensus
+                .filter((species) => species.observationType === "animal")
+                .map(
+                  (species) =>
+                    `${species.scientificName} - Count: ${species.count} (${species.observationCount} observations)`
+                )
+                .join("\n")}
             >
               <Badge
                 size="sm"
@@ -39,7 +48,11 @@ export function SpeciesConsensusBadges({ speciesConsensus }) {
                 leftSection={<IconPaw size={14} />}
                 color="green"
               >
-                {/* {consensus.scientificName} */}
+                {
+                  speciesConsensus.filter(
+                    (species) => species.observationType === "animal"
+                  ).length
+                }{" "}
               </Badge>
             </Tooltip>
           );

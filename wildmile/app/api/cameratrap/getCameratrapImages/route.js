@@ -26,6 +26,7 @@ export async function GET(request) {
   const startTime = searchParams.get("startTime");
   const endTime = searchParams.get("endTime");
   const reviewed = searchParams.get("reviewed");
+  const favorites = searchParams.get("favorites");
   const reviewedByUser = searchParams.get("reviewedByUser");
   const userFavorite = searchParams.get("userFavorite"); // boolean must also have reviewedByUser present
   const accepted = searchParams.get("accepted"); // boolean
@@ -67,6 +68,10 @@ export async function GET(request) {
     } else {
       query["speciesConsensus.scientificName"] = species;
     }
+  }
+
+  if (favorites === "true") {
+    query.favorites = { $ne: null };
   }
 
   if (reviewedByUser && reviewedByUser !== "false") {

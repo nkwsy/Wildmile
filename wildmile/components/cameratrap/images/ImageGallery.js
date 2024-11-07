@@ -8,10 +8,12 @@ import {
   Badge,
   Image,
   Pagination,
+  Modal,
 } from "@mantine/core";
 import { IconEye, IconHeart } from "@tabler/icons-react";
 import { SpeciesConsensusBadges } from "../SpeciesConsensusBadges";
 import { LoadingOverlay } from "@mantine/core";
+import { useState } from "react";
 
 export function ImageGallery({
   images = [],
@@ -55,6 +57,8 @@ export function ImageGallery({
 }
 
 function ImageCard({ image, imageHeight }) {
+  const [opened, setOpened] = useState(false);
+
   return (
     <Paper p="xs" withBorder>
       <Stack spacing="xs">
@@ -65,8 +69,24 @@ function ImageCard({ image, imageHeight }) {
           height={imageHeight}
           fit="cover"
           withPlaceholder
+          style={{ cursor: "pointer" }}
+          onClick={() => setOpened(true)}
         />
         <ImageInfo image={image} />
+
+        <Modal
+          opened={opened}
+          onClose={() => setOpened(false)}
+          size="xl"
+          padding="xs"
+        >
+          <Image
+            src={image.publicURL}
+            alt={image.relativePath?.[image.relativePath.length - 1] || "Image"}
+            fit="cover"
+            height="90%"
+          />
+        </Modal>
       </Stack>
     </Paper>
   );
@@ -76,19 +96,14 @@ function ImageInfo({ image }) {
   return (
     <>
       <Group position="apart" noWrap>
-        <Text size="xs" truncate>
+        {/* <Text size="xs" truncate>
           {image.relativePath?.[image.relativePath.length - 1]}
-        </Text>
+        </Text> */}
         {image.reviewCount > 0 && (
           <Badge size="sm" variant="light" leftSection={<IconEye size={10} />}>
             {image.reviewCount}
           </Badge>
         )}
-      </Group>
-      <Text size="xs" color="dimmed">
-        {new Date(image.timestamp).toLocaleString()}
-      </Text>
-      <Group spacing="xs">
         {image.speciesConsensus && (
           <SpeciesConsensusBadges speciesConsensus={image.speciesConsensus} />
         )}
@@ -98,6 +113,9 @@ function ImageInfo({ image }) {
           </Badge>
         )}
       </Group>
+      <Text size="xs" color="dimmed">
+        {new Date(image.timestamp).toLocaleString()}
+      </Text>
     </>
   );
 }

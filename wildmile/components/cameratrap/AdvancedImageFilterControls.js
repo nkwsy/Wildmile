@@ -34,6 +34,7 @@ export function AdvancedImageFilterControls({ onApplyFilters }) {
     reviewed: false,
     reviewedByUser: false,
     userFavorite: false,
+    favorites: false,
     type: null,
     consensusStatus: null,
     species: [],
@@ -246,6 +247,13 @@ export function AdvancedImageFilterControls({ onApplyFilters }) {
             checked={filters.userFavorite}
             onChange={(e) =>
               handleFilterChange("userFavorite", e.currentTarget.checked)
+            }
+          />
+          <Switch
+            label="Show Favorites"
+            checked={filters.favorites}
+            onChange={(e) =>
+              handleFilterChange("favorites", e.currentTarget.checked)
             }
           />
           <Switch
