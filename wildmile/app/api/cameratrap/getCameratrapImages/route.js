@@ -5,6 +5,8 @@ import Deployment from "models/cameratrap/Deployment";
 import DeploymentLocation from "models/cameratrap/DeploymentLocations";
 import Observation from "models/cameratrap/Observation";
 import User from "models/User";
+import { getSession } from "lib/getSession";
+import { headers } from "next/headers";
 
 export async function GET(request) {
   await dbConnect();
@@ -36,6 +38,7 @@ export async function GET(request) {
   const sortDirection = searchParams.get("sortDirection");
   const currentImageId = searchParams.get("currentImageId");
 
+  const session = await getSession({ headers });
   let query = {};
   let sortQuery = {};
   let timeQuery = [];
@@ -77,22 +80,21 @@ export async function GET(request) {
   if (reviewedByUser && reviewedByUser !== "false") {
     try {
       // Ensure it's a valid ObjectId
-      const mongoose = require("mongoose");
-      if (mongoose.Types.ObjectId.isValid(reviewedByUser)) {
-        query.reviewers = reviewedByUser;
+      if (session) {
+        query.reviewers = session._id;
       }
     } catch (error) {
       console.warn("Invalid reviewedByUser ID:", reviewedByUser);
     }
   }
 
-  if (userFavorite === "true" && reviewedByUser && reviewedByUser !== "false") {
+  if (userFavorite === "true") {
     try {
-      if (mongoose.Types.ObjectId.isValid(reviewedByUser)) {
-        query.favorites = reviewedByUser;
+      if (session) {
+        query.favorites = session._id;
       }
     } catch (error) {
-      console.warn("Invalid reviewedByUser ID for favorites:", reviewedByUser);
+      console.warn("Invalid session ID for favorites:", session);
     }
   }
 

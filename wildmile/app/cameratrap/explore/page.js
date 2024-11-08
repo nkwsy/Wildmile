@@ -76,7 +76,7 @@ export default function Page() {
   return (
     <>
       <IdentificationProvider>
-        <Container size="xl" py="xl">
+        <Container fluid size="xl" py="xl">
           {/* <LoadingOverlay visible={loading} /> */}
 
           <Title order={1} mb="xl">
@@ -84,7 +84,7 @@ export default function Page() {
           </Title>
           <Grid>
             <Grid.Col
-              span={{ base: 12, md: 6, lg: 5, xl: 5 }}
+              span={{ base: 12, md: 6, lg: 5, xl: 3 }}
               style={{ height: "100%" }}
             >
               <ScrollArea style={{ height: "100%" }} offsetScrollbars>
