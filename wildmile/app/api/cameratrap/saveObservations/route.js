@@ -15,6 +15,18 @@ export async function POST(request) {
     }
 
     const observations = await request.json();
+    const mediaId = observations[0]?.mediaId;
+
+    // If this user has already reviewed this media, delete their previous observations
+    if (mediaId) {
+      const media = await CameratrapMedia.findOne({ mediaID: mediaId });
+      if (media?.reviewers?.includes(session._id)) {
+        await Observation.deleteMany({
+          mediaId,
+          creator: session._id,
+        });
+      }
+    }
 
     const observationsWithCreator = observations.map((obs) => ({
       ...obs,

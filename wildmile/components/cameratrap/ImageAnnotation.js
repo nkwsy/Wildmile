@@ -31,7 +31,11 @@ import {
 } from "@tabler/icons-react";
 import { useImage, useSelection } from "./ContextCamera";
 import checkboxClasses from "styles/checkbox.module.css";
+import { useUser } from "lib/hooks";
+
 export function ImageAnnotation({ fetchNextImage }) {
+  const { user, loading } = useUser();
+
   const [currentImage, setCurrentImage] = useImage();
   const [selection, setSelection] = useSelection();
   const [animalCounts, setAnimalCounts] = useState({});
@@ -49,7 +53,50 @@ export function ImageAnnotation({ fetchNextImage }) {
       setComments(currentImage.mediaComments || []);
       setIsFavorite(currentImage.favorite || false);
     }
+    if (currentImage && user && currentImage.reviewers?.includes(user._id)) {
+      fetchExistingObservations();
+    }
   }, [currentImage]);
+
+  const fetchExistingObservations = async () => {
+    try {
+      // Fetch observations directly from the media document's speciesConsensus
+      const consensusData = currentImage.speciesConsensus || [];
+
+      // Handle animal observations
+      const animalObs = consensusData.filter(
+        (obs) => obs.observationType === "animal"
+      );
+      if (animalObs.length > 0) {
+        setSelection(
+          animalObs.map((obs) => ({
+            id: obs.taxonID,
+            name: obs.scientificName,
+            // preferred_common_name will need to be fetched separately if needed
+          }))
+        );
+
+        const counts = {};
+        animalObs.forEach((obs) => {
+          counts[obs.taxonID] = obs.count;
+        });
+        setAnimalCounts(counts);
+      }
+
+      // Handle other observation types
+      setHumanPresent(
+        consensusData.some((obs) => obs.observationType === "human")
+      );
+      setVehiclePresent(
+        consensusData.some((obs) => obs.observationType === "vehicle")
+      );
+      setNoAnimalsVisible(
+        consensusData.some((obs) => obs.observationType === "blank")
+      );
+    } catch (error) {
+      console.error("Error loading existing observations:", error);
+    }
+  };
 
   const handleCountChange = (id, value) => {
     setAnimalCounts((prev) => ({ ...prev, [id]: value }));
