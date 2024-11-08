@@ -251,7 +251,9 @@ export function ImageAnnotation({ fetchNextImage }) {
               <ActionIcon
                 variant="outline"
                 onClick={() => {
-                  navigator.clipboard.writeText(currentImage.publicURL);
+                  navigator.clipboard.writeText(
+                    `${window.location.origin}/cameratrap/identify/${currentImage.mediaID}`
+                  );
                   alert("Image URL copied to clipboard");
                 }}
               >

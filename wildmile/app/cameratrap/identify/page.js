@@ -6,7 +6,7 @@ export default function Page() {
       <Container maw="95%">
         {/* <div className="prose prose-sm prose-invert max-w-none"> */}
         {/* <h1 className="text-xl font-bold">Image Annotation</h1> */}
-        <ImageAnnotationPage />
+        <ImageAnnotationPage initialImageId={null} />
         {/* </div> */}
       </Container>
     </>

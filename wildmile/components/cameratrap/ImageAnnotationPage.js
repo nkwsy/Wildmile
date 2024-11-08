@@ -20,14 +20,21 @@ import { ImageFilterControls } from "./ImageFilterControls";
 import WildlifeSearch from "./WildlifeSearch";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 
-export const ImageAnnotationPage = () => {
+export const ImageAnnotationPage = ({ initialImageId }) => {
   const [currentImage, setCurrentImage] = useImage();
   const [deployments, setDeployments] = useState([]);
 
+  // In your component, use initialImageId to fetch and set the initial image
   useEffect(() => {
     fetchDeployments();
-    fetchCamtrapImage();
-  }, []);
+    if (initialImageId) {
+      // Fetch and set the specific image
+      fetchCamtrapImage({ selectedImageId: initialImageId });
+    } else {
+      // Your existing logic for getting the next image
+      fetchCamtrapImage();
+    }
+  }, [initialImageId]);
 
   const fetchDeployments = async () => {
     try {

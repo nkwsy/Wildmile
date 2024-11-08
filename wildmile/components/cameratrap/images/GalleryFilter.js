@@ -1,6 +1,6 @@
 "use client";
 import { AdvancedImageFilterControls } from "../AdvancedImageFilterControls";
-import { Button, Group, Drawer } from "@mantine/core";
+import { Button, Group, Drawer, Stack, Collapse } from "@mantine/core";
 import { IconRefresh, IconAdjustmentsHorizontal } from "@tabler/icons-react";
 import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
@@ -53,7 +53,12 @@ export function GalleryFilter({ onFilterChange }) {
       </Group> */}
 
       <AdvancedImageFilterControls onApplyFilters={handleApplyFilters} />
-      <WildlifeSearch />
+      <Group justify="center" mb={5}>
+        <Button onClick={toggle}>Filter by Wildlife</Button>
+      </Group>
+      <Collapse in={opened}>
+        <WildlifeSearch />
+      </Collapse>
     </>
   );
 }
