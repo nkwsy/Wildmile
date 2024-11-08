@@ -10,8 +10,12 @@ import {
   Tooltip,
   Group,
   ActionIcon,
+  Image,
 } from "@mantine/core";
 import { IconClock, IconRefresh } from "@tabler/icons-react";
+import { Fish, Turtle, Bird, Rabbit, Bug } from "lucide-react";
+import { FrogIcon } from "/styles/icons/Frog";
+
 import Species from "./SpeciesCard";
 
 const predefinedSpecies = {
@@ -179,7 +183,11 @@ const PredefinedSpeciesSidebar = ({ onSpeciesSelect }) => {
     }
   };
 
-  // Convert predefinedSpecies keys to format needed by SegmentedControl
+  // Update the categoryData array
+  //   ...Object.keys(predefinedSpecies).map((category) => ({
+  //   label: category,
+  //   value: category,
+  // })),
   const categoryData = [
     {
       value: "recent",
@@ -191,10 +199,56 @@ const PredefinedSpeciesSidebar = ({ onSpeciesSelect }) => {
         </Tooltip>
       ),
     },
-    ...Object.keys(predefinedSpecies).map((category) => ({
-      label: category,
-      value: category,
-    })),
+    {
+      value: "Mammals",
+      label: (
+        <Tooltip label="Mammals">
+          <Center>
+            <Rabbit strokeWidth={1.5} />
+          </Center>
+        </Tooltip>
+      ),
+    },
+    {
+      value: "Reptiles",
+      label: (
+        <Tooltip label="Reptiles">
+          <Center>
+            <Turtle strokeWidth={1.5} />
+          </Center>
+        </Tooltip>
+      ),
+    },
+    {
+      value: "Amphibians",
+      label: (
+        <Tooltip label="Amphibians">
+          <Center>
+            <FrogIcon strokeWidth={1.5} />
+          </Center>
+        </Tooltip>
+      ),
+    },
+    {
+      value: "Birds",
+      label: (
+        <Tooltip label="Birds">
+          <Center>
+            <Bird />
+          </Center>
+        </Tooltip>
+      ),
+    },
+    {
+      value: "Fish",
+      label: (
+        <Tooltip label="Fish">
+          <Center>
+            <Fish />
+          </Center>
+        </Tooltip>
+      ),
+    },
   ];
 
   // Handle category selection/deselection

@@ -11,7 +11,7 @@ export function SpeciesConsensusBadges({ speciesConsensus }) {
   }
 
   return (
-    <Group spacing="xs">
+    <Group justify="flex-start" gap="xs">
       {speciesConsensus.map((consensus) => {
         if (consensus.observationType === "human") {
           return (
@@ -21,10 +21,14 @@ export function SpeciesConsensusBadges({ speciesConsensus }) {
             >
               <Badge
                 size="sm"
+                color="gray"
                 variant={consensus.accepted ? "filled" : "light"}
-                leftSection={<IconUser size={14} />}
+                circle
+                center
               >
-                {consensus.observationCount}
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <IconUser size={14} />
+                </div>
               </Badge>
             </Tooltip>
           );

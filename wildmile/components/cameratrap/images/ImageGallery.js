@@ -9,8 +9,13 @@ import {
   Image,
   Pagination,
   Modal,
+  Tooltip,
+  ActionIcon,
+  Box,
 } from "@mantine/core";
-import { IconEye, IconHeart } from "@tabler/icons-react";
+import { IconEye, IconHeart, IconLink } from "@tabler/icons-react";
+import Link from "next/link";
+
 import { SpeciesConsensusBadges } from "../SpeciesConsensusBadges";
 import { LoadingOverlay } from "@mantine/core";
 import { useState } from "react";
@@ -94,11 +99,8 @@ function ImageCard({ image, imageHeight }) {
 
 function ImageInfo({ image }) {
   return (
-    <>
+    <Stack justify="flex-start" gap={1}>
       <Group position="apart" noWrap>
-        {/* <Text size="xs" truncate>
-          {image.relativePath?.[image.relativePath.length - 1]}
-        </Text> */}
         {image.reviewCount > 0 && (
           <Badge size="sm" variant="light" leftSection={<IconEye size={10} />}>
             {image.reviewCount}
@@ -113,9 +115,29 @@ function ImageInfo({ image }) {
           </Badge>
         )}
       </Group>
-      <Text size="xs" color="dimmed">
-        {new Date(image.timestamp).toLocaleString()}
-      </Text>
-    </>
+
+      <Group wrap="nowrap" justify="space-between">
+        <Text size="xs" mb={0} color="dimmed">
+          {new Date(image.timestamp).toLocaleDateString("en-US", {
+            year: "2-digit",
+            month: "numeric",
+            day: "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+          })}
+        </Text>
+        <Tooltip label="Go to image">
+          <ActionIcon
+            component={Link}
+            href={`/cameratrap/identify/${image.mediaID}`}
+            variant="subtle"
+            size="xs"
+            justify="flex-end"
+          >
+            <IconLink size={14} />
+          </ActionIcon>
+        </Tooltip>
+      </Group>
+    </Stack>
   );
 }

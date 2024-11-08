@@ -16,10 +16,13 @@ export async function GET(request) {
   const reviewedByUser = searchParams.get("reviewedByUser");
   const direction = searchParams.get("direction");
   const currentImageId = searchParams.get("currentImageId");
-
+  const selectedImageId = searchParams.get("selectedImageId");
   let query = {};
   let timeQuery = [];
 
+  if (selectedImageId) {
+    query.mediaID = selectedImageId;
+  }
   if (deploymentId) {
     query.deploymentId = deploymentId;
   }

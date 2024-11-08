@@ -13,6 +13,7 @@ import {
   MultiSelect,
   SegmentedControl,
   TextInput,
+  Grid,
 } from "@mantine/core";
 import {
   IconX,
@@ -147,27 +148,33 @@ export function AdvancedImageFilterControls({ onApplyFilters }) {
   return (
     <>
       <Stack spacing="md">
-        <Button onClick={handleApplyFilters}>Apply Filters</Button>
-
-        <Select
-          label="Location"
-          placeholder="Select a location"
-          data={locations}
-          value={filters.locationId}
-          onChange={(value) => handleFilterChange("locationId", value)}
-          clearable
-        />
-
-        {filters.locationId && (
+        <Group justify="flex-start" grow>
+          <Button onClick={handleApplyFilters}>Apply Filters</Button>
+          <Button variant="subtle" color="gray" onClick={handleClearAllFilters}>
+            Clear All Filters
+          </Button>
+        </Group>
+        <Group grow>
           <Select
-            label="Deployment"
-            placeholder="Select a deployment"
-            data={deployments}
-            value={filters.deploymentId}
-            onChange={(value) => handleFilterChange("deploymentId", value)}
+            label="Location"
+            placeholder="Select a location"
+            data={locations}
+            value={filters.locationId}
+            onChange={(value) => handleFilterChange("locationId", value)}
             clearable
           />
-        )}
+
+          {filters.locationId && (
+            <Select
+              label="Deployment"
+              placeholder="Select a deployment"
+              data={deployments}
+              value={filters.deploymentId}
+              onChange={(value) => handleFilterChange("deploymentId", value)}
+              clearable
+            />
+          )}
+        </Group>
 
         {/* <TaxaSearch onSpeciesSelect={handleSpeciesSelect} /> */}
 
@@ -227,43 +234,26 @@ export function AdvancedImageFilterControls({ onApplyFilters }) {
           />
         </Group>
 
-        <Stack spacing="xs">
-          <Switch
-            label="Show only reviewed images"
-            checked={filters.reviewed}
-            onChange={(e) =>
-              handleFilterChange("reviewed", e.currentTarget.checked)
-            }
-          />
-          <Switch
-            label="Show only images reviewed by me"
-            checked={filters.reviewedByUser}
-            onChange={(e) =>
-              handleFilterChange("reviewedByUser", e.currentTarget.checked)
-            }
-          />
-          <Switch
-            label="Show only my favorites"
-            checked={filters.userFavorite}
-            onChange={(e) =>
-              handleFilterChange("userFavorite", e.currentTarget.checked)
-            }
-          />
-          <Switch
-            label="Show Favorites"
-            checked={filters.favorites}
-            onChange={(e) =>
-              handleFilterChange("favorites", e.currentTarget.checked)
-            }
-          />
-          <Switch
-            label="Show only accepted images"
-            checked={filters.accepted}
-            onChange={(e) =>
-              handleFilterChange("accepted", e.currentTarget.checked)
-            }
-          />
-        </Stack>
+        <Grid>
+          {[
+            { label: "Reviewed", key: "reviewed" },
+            { label: "Reviewed by me", key: "reviewedByUser" },
+            { label: "All favorites", key: "favorites" },
+            { label: "My favorites", key: "userFavorite" },
+            { label: "Accepted", key: "accepted" },
+          ].map(({ label, key }) => (
+            <Grid.Col span={6} key={key}>
+              <Switch
+                size="sm"
+                label={label}
+                checked={filters[key]}
+                onChange={(e) =>
+                  handleFilterChange(key, e.currentTarget.checked)
+                }
+              />
+            </Grid.Col>
+          ))}
+        </Grid>
 
         <Select
           label="Sort By"
@@ -280,10 +270,6 @@ export function AdvancedImageFilterControls({ onApplyFilters }) {
             handleFilterChange("sortDirection", direction);
           }}
         />
-
-        <Button variant="subtle" color="gray" onClick={handleClearAllFilters}>
-          Clear All Filters
-        </Button>
       </Stack>
     </>
   );
