@@ -40,6 +40,15 @@ export function ImageGallery({
 
   return (
     <>
+      {totalImages > imagesPerPage && (
+        <Pagination
+          total={Math.ceil(totalImages / imagesPerPage)}
+          value={page}
+          onChange={onPageChange}
+          position="center"
+          mt="md"
+        />
+      )}
       <Grid>
         {images.map((image) => (
           <Grid.Col key={image._id} span={{ base: 12, sm: 6, md: 4, lg: 3 }}>

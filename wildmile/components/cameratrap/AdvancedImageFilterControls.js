@@ -14,6 +14,7 @@ import {
   SegmentedControl,
   TextInput,
   Grid,
+  Collapse,
 } from "@mantine/core";
 import {
   IconX,
@@ -23,8 +24,19 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import TaxaSearch from "./TaxaSearch";
 
-export function AdvancedImageFilterControls({ onApplyFilters }) {
+export function AdvancedImageFilterControls({
+  onApplyFilters,
+  onClearFilters,
+  onMinimize,
+}) {
   const [opened, { open, close }] = useDisclosure(false);
+  // useEffect(() => {
+  //   if (onMinimize === true) {
+  //     opened.close();
+  //   } else if (onMinimize === false) {
+  //     opened.open();
+  //   }
+  // }, [onMinimize]);
   const [filters, setFilters] = useState({
     locationId: null,
     deploymentId: null,
@@ -127,11 +139,14 @@ export function AdvancedImageFilterControls({ onApplyFilters }) {
       sort: "timestamp",
       sortDirection: "desc",
     });
+    if (onClearFilters) {
+      onClearFilters();
+    }
   };
 
   const handleApplyFilters = () => {
     onApplyFilters(filters);
-    close();
+    // close();
   };
 
   const hasActiveFilters = Object.entries(filters).some(([key, value]) => {
@@ -154,122 +169,124 @@ export function AdvancedImageFilterControls({ onApplyFilters }) {
             Clear All Filters
           </Button>
         </Group>
-        <Group grow>
-          <Select
-            label="Location"
-            placeholder="Select a location"
-            data={locations}
-            value={filters.locationId}
-            onChange={(value) => handleFilterChange("locationId", value)}
-            clearable
-          />
-
-          {filters.locationId && (
+        <Collapse in={onMinimize}>
+          <Group grow>
             <Select
-              label="Deployment"
-              placeholder="Select a deployment"
-              data={deployments}
-              value={filters.deploymentId}
-              onChange={(value) => handleFilterChange("deploymentId", value)}
+              label="Location"
+              placeholder="Select a location"
+              data={locations}
+              value={filters.locationId}
+              onChange={(value) => handleFilterChange("locationId", value)}
               clearable
             />
-          )}
-        </Group>
 
-        {/* <TaxaSearch onSpeciesSelect={handleSpeciesSelect} /> */}
-
-        <SegmentedControl
-          data={[
-            { label: "All", value: "" },
-            { label: "Animals", value: "animals" },
-            { label: "Humans", value: "humans" },
-          ]}
-          value={filters.type || ""}
-          onChange={(value) => handleFilterChange("type", value)}
-        />
-
-        <Select
-          label="Consensus Status"
-          placeholder="Select status"
-          data={[
-            { label: "Pending", value: "Pending" },
-            { label: "Consensus Reached", value: "ConsensusReached" },
-            {
-              label: "More Annotations Needed",
-              value: "MoreAnnotationsNeeded",
-            },
-          ]}
-          value={filters.consensusStatus}
-          onChange={(value) => handleFilterChange("consensusStatus", value)}
-          clearable
-        />
-
-        <Group grow align="flex-start">
-          <DateInput
-            label="Start Date"
-            value={filters.startDate}
-            onChange={(value) => handleFilterChange("startDate", value)}
-            clearable
-          />
-          <DateInput
-            label="End Date"
-            value={filters.endDate}
-            onChange={(value) => handleFilterChange("endDate", value)}
-            clearable
-          />
-        </Group>
-
-        <Group grow align="flex-start">
-          <TextInput
-            type="time"
-            label="Start Time"
-            value={filters.startTime || ""}
-            onChange={(e) => handleFilterChange("startTime", e.target.value)}
-          />
-          <TextInput
-            type="time"
-            label="End Time"
-            value={filters.endTime || ""}
-            onChange={(e) => handleFilterChange("endTime", e.target.value)}
-          />
-        </Group>
-
-        <Grid>
-          {[
-            { label: "Reviewed", key: "reviewed" },
-            { label: "Reviewed by me", key: "reviewedByUser" },
-            { label: "All favorites", key: "favorites" },
-            { label: "My favorites", key: "userFavorite" },
-            { label: "Accepted", key: "accepted" },
-          ].map(({ label, key }) => (
-            <Grid.Col span={6} key={key}>
-              <Switch
-                size="sm"
-                label={label}
-                checked={filters[key]}
-                onChange={(e) =>
-                  handleFilterChange(key, e.currentTarget.checked)
-                }
+            {filters.locationId && (
+              <Select
+                label="Deployment"
+                placeholder="Select a deployment"
+                data={deployments}
+                value={filters.deploymentId}
+                onChange={(value) => handleFilterChange("deploymentId", value)}
+                clearable
               />
-            </Grid.Col>
-          ))}
-        </Grid>
+            )}
+          </Group>
 
-        <Select
-          label="Sort By"
-          data={[
-            { label: "Date (Newest)", value: "timestamp-desc" },
-            { label: "Date (Oldest)", value: "timestamp-asc" },
-            { label: "Most Reviewed", value: "reviewCount-desc" },
-            { label: "Most Favorites", value: "favoriteCount-desc" },
-          ]}
-          value={`${filters.sort}-${filters.sortDirection}`}
-          onChange={(value) => {
-            const [sort, direction] = value.split("-");
-            handleFilterChange("sort", sort);
-            handleFilterChange("sortDirection", direction);
-          }}
-        />
+          {/* <TaxaSearch onSpeciesSelect={handleSpeciesSelect} /> */}
+
+          <SegmentedControl
+            data={[
+              { label: "All", value: "" },
+              { label: "Animals", value: "animals" },
+              { label: "Humans", value: "humans" },
+            ]}
+            value={filters.type || ""}
+            onChange={(value) => handleFilterChange("type", value)}
+          />
+
+          <Select
+            label="Consensus Status"
+            placeholder="Select status"
+            data={[
+              { label: "Pending", value: "Pending" },
+              { label: "Consensus Reached", value: "ConsensusReached" },
+              {
+                label: "More Annotations Needed",
+                value: "MoreAnnotationsNeeded",
+              },
+            ]}
+            value={filters.consensusStatus}
+            onChange={(value) => handleFilterChange("consensusStatus", value)}
+            clearable
+          />
+
+          <Group grow align="flex-start">
+            <DateInput
+              label="Start Date"
+              value={filters.startDate}
+              onChange={(value) => handleFilterChange("startDate", value)}
+              clearable
+            />
+            <DateInput
+              label="End Date"
+              value={filters.endDate}
+              onChange={(value) => handleFilterChange("endDate", value)}
+              clearable
+            />
+          </Group>
+
+          <Group grow align="flex-start">
+            <TextInput
+              type="time"
+              label="Start Time"
+              value={filters.startTime || ""}
+              onChange={(e) => handleFilterChange("startTime", e.target.value)}
+            />
+            <TextInput
+              type="time"
+              label="End Time"
+              value={filters.endTime || ""}
+              onChange={(e) => handleFilterChange("endTime", e.target.value)}
+            />
+          </Group>
+
+          <Grid>
+            {[
+              { label: "Reviewed", key: "reviewed" },
+              { label: "Reviewed by me", key: "reviewedByUser" },
+              { label: "All favorites", key: "favorites" },
+              { label: "My favorites", key: "userFavorite" },
+              { label: "Accepted", key: "accepted" },
+            ].map(({ label, key }) => (
+              <Grid.Col span={6} key={key}>
+                <Switch
+                  size="sm"
+                  label={label}
+                  checked={filters[key]}
+                  onChange={(e) =>
+                    handleFilterChange(key, e.currentTarget.checked)
+                  }
+                />
+              </Grid.Col>
+            ))}
+          </Grid>
+
+          <Select
+            label="Sort By"
+            data={[
+              { label: "Date (Newest)", value: "timestamp-desc" },
+              { label: "Date (Oldest)", value: "timestamp-asc" },
+              { label: "Most Reviewed", value: "reviewCount-desc" },
+              { label: "Most Favorites", value: "favoriteCount-desc" },
+            ]}
+            value={`${filters.sort}-${filters.sortDirection}`}
+            onChange={(value) => {
+              const [sort, direction] = value.split("-");
+              handleFilterChange("sort", sort);
+              handleFilterChange("sortDirection", direction);
+            }}
+          />
+        </Collapse>
       </Stack>
     </>
   );
