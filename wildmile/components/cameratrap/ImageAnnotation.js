@@ -35,6 +35,8 @@ import {
 } from "@tabler/icons-react";
 import { useImage, useSelection } from "./ContextCamera";
 import checkboxClasses from "styles/checkbox.module.css";
+import styles from "styles/animalSelection.module.css";
+
 export function ImageAnnotation({ fetchNextImage }) {
   const [currentImage, setCurrentImage] = useImage();
   const [selection, setSelection] = useSelection();
@@ -365,33 +367,34 @@ export function ImageAnnotation({ fetchNextImage }) {
           <GridCol span={{ base: 12, md: 12, lg: 6 }}>
             {!noAnimalsVisible && (
               <Flex direction="column" gap="xs" mt="md">
-                {/* <Stack spacing="xs" mt="md"> */}
                 {selection.map((animal) => (
-                  <Group key={animal.id} position="apart" noWrap>
-                    <Text style={{ fontWeight: "bold", flex: 1 }}>
-                      {animal.preferred_common_name || animal.name}
-                    </Text>
-                    <Group spacing="xs" noWrap>
-                      <NumberInput
-                        value={animalCounts[animal.id] || 1}
-                        onChange={(value) =>
-                          handleCountChange(animal.id, value)
-                        }
-                        min={1}
-                        max={100}
-                        style={{ width: 80 }}
-                      />
-                      <ActionIcon
-                        color="red"
-                        variant="subtle"
-                        onClick={() => handleRemoveAnimal(animal.id)}
-                      >
-                        <IconX size={16} />
-                      </ActionIcon>
-                    </Group>
-                  </Group>
+                  <div key={animal.id} className={styles.selectionContainer}>
+                    <div className={styles.selectionContent}>
+                      <Text className={styles.speciesName}>
+                        {animal.preferred_common_name || animal.name}
+                      </Text>
+                      <div className={styles.controls}>
+                        <NumberInput
+                          value={animalCounts[animal.id] || 1}
+                          onChange={(value) =>
+                            handleCountChange(animal.id, value)
+                          }
+                          min={1}
+                          max={100}
+                          style={{ width: 80 }}
+                        />
+                        <ActionIcon
+                          color="red"
+                          variant="subtle"
+                          onClick={() => handleRemoveAnimal(animal.id)}
+                          className={styles.removeButton}
+                        >
+                          <IconX size={16} />
+                        </ActionIcon>
+                      </div>
+                    </div>
+                  </div>
                 ))}
-                {/* </Stack> */}
               </Flex>
             )}
             <Group mt="xs" grow wrap="nowrap">
