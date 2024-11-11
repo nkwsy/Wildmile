@@ -19,6 +19,7 @@ import {
   GridCol,
   Indicator,
   Flex,
+  Tooltip,
 } from "@mantine/core";
 import {
   IconHeartPlus,
@@ -28,6 +29,9 @@ import {
   IconMaximize,
   IconLink,
   IconX,
+  IconPhotoSearch,
+  IconZoomQuestion,
+  IconMoodWrrr,
 } from "@tabler/icons-react";
 import { useImage, useSelection } from "./ContextCamera";
 import checkboxClasses from "styles/checkbox.module.css";
@@ -43,11 +47,14 @@ export function ImageAnnotation({ fetchNextImage }) {
   const [enlargedImage, setEnlargedImage] = useState(false);
   const [humanPresent, setHumanPresent] = useState(false);
   const [vehiclePresent, setVehiclePresent] = useState(false);
-
+  const [needsReview, setNeedsReview] = useState(false);
+  const [flagged, setFlagged] = useState(false);
   useEffect(() => {
     if (currentImage) {
       setComments(currentImage.mediaComments || []);
       setIsFavorite(currentImage.favorite || false);
+      setNeedsReview(currentImage.needsReview || false);
+      setFlagged(currentImage.flagged || false);
     }
   }, [currentImage]);
 
@@ -199,6 +206,48 @@ export function ImageAnnotation({ fetchNextImage }) {
     }
   };
 
+  const handleNeedsReview = async () => {
+    try {
+      const response = await fetch("/api/cameratrap/toggleNeedsReview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mediaId: currentImage.mediaID }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setNeedsReview(data.needsReview);
+      } else {
+        const error = await response.json();
+        alert(error.error || "Failed to toggle needs review");
+      }
+    } catch (error) {
+      console.error("Error toggling needs review:", error);
+      alert("Error toggling needs review");
+    }
+  };
+
+  const handleFlagged = async () => {
+    try {
+      const response = await fetch("/api/cameratrap/toggleFlagged", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mediaId: currentImage.mediaID }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setFlagged(data.flagged);
+      } else {
+        const error = await response.json();
+        alert(error.error || "Failed to toggle flagged status");
+      }
+    } catch (error) {
+      console.error("Error toggling flagged status:", error);
+      alert("Error toggling flagged status");
+    }
+  };
+
   const toggleEnlargedImage = () => {
     setEnlargedImage(!enlargedImage);
   };
@@ -259,6 +308,24 @@ export function ImageAnnotation({ fetchNextImage }) {
               >
                 <IconLink />
               </ActionIcon>
+              <Tooltip label="Need Help with ID">
+                <ActionIcon
+                  onClick={handleNeedsReview}
+                  variant={needsReview ? "filled" : "outline"}
+                  color="yellow"
+                >
+                  <IconPhotoSearch />
+                </ActionIcon>
+              </Tooltip>
+              <Tooltip label="Report Inappropriate">
+                <ActionIcon
+                  onClick={handleFlagged}
+                  variant={flagged ? "filled" : "outline"}
+                  color="red"
+                >
+                  <IconMoodWrrr />
+                </ActionIcon>
+              </Tooltip>
               <Indicator
                 inline
                 label={currentImage.favoriteCount}
