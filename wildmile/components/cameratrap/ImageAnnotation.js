@@ -19,6 +19,7 @@ import {
   GridCol,
   Indicator,
   Flex,
+  Tooltip,
 } from "@mantine/core";
 import {
   IconHeartPlus,
@@ -28,9 +29,14 @@ import {
   IconMaximize,
   IconLink,
   IconX,
+  IconPhotoSearch,
+  IconZoomQuestion,
+  IconMoodWrrr,
 } from "@tabler/icons-react";
 import { useImage, useSelection } from "./ContextCamera";
 import checkboxClasses from "styles/checkbox.module.css";
+import styles from "styles/animalSelection.module.css";
+
 export function ImageAnnotation({ fetchNextImage }) {
   const [currentImage, setCurrentImage] = useImage();
   const [selection, setSelection] = useSelection();
@@ -43,11 +49,14 @@ export function ImageAnnotation({ fetchNextImage }) {
   const [enlargedImage, setEnlargedImage] = useState(false);
   const [humanPresent, setHumanPresent] = useState(false);
   const [vehiclePresent, setVehiclePresent] = useState(false);
-
+  const [needsReview, setNeedsReview] = useState(false);
+  const [flagged, setFlagged] = useState(false);
   useEffect(() => {
     if (currentImage) {
       setComments(currentImage.mediaComments || []);
       setIsFavorite(currentImage.favorite || false);
+      setNeedsReview(currentImage.needsReview || false);
+      setFlagged(currentImage.flagged || false);
     }
   }, [currentImage]);
 
@@ -199,6 +208,48 @@ export function ImageAnnotation({ fetchNextImage }) {
     }
   };
 
+  const handleNeedsReview = async () => {
+    try {
+      const response = await fetch("/api/cameratrap/toggleNeedsReview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mediaId: currentImage.mediaID }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setNeedsReview(data.needsReview);
+      } else {
+        const error = await response.json();
+        alert(error.error || "Failed to toggle needs review");
+      }
+    } catch (error) {
+      console.error("Error toggling needs review:", error);
+      alert("Error toggling needs review");
+    }
+  };
+
+  const handleFlagged = async () => {
+    try {
+      const response = await fetch("/api/cameratrap/toggleFlagged", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mediaId: currentImage.mediaID }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setFlagged(data.flagged);
+      } else {
+        const error = await response.json();
+        alert(error.error || "Failed to toggle flagged status");
+      }
+    } catch (error) {
+      console.error("Error toggling flagged status:", error);
+      alert("Error toggling flagged status");
+    }
+  };
+
   const toggleEnlargedImage = () => {
     setEnlargedImage(!enlargedImage);
   };
@@ -259,6 +310,24 @@ export function ImageAnnotation({ fetchNextImage }) {
               >
                 <IconLink />
               </ActionIcon>
+              <Tooltip label="Need Help with ID">
+                <ActionIcon
+                  onClick={handleNeedsReview}
+                  variant={needsReview ? "filled" : "outline"}
+                  color="yellow"
+                >
+                  <IconPhotoSearch />
+                </ActionIcon>
+              </Tooltip>
+              <Tooltip label="Report Inappropriate">
+                <ActionIcon
+                  onClick={handleFlagged}
+                  variant={flagged ? "filled" : "outline"}
+                  color="red"
+                >
+                  <IconMoodWrrr />
+                </ActionIcon>
+              </Tooltip>
               <Indicator
                 inline
                 label={currentImage.favoriteCount}
@@ -298,33 +367,34 @@ export function ImageAnnotation({ fetchNextImage }) {
           <GridCol span={{ base: 12, md: 12, lg: 6 }}>
             {!noAnimalsVisible && (
               <Flex direction="column" gap="xs" mt="md">
-                {/* <Stack spacing="xs" mt="md"> */}
                 {selection.map((animal) => (
-                  <Group key={animal.id} position="apart" noWrap>
-                    <Text style={{ fontWeight: "bold", flex: 1 }}>
-                      {animal.preferred_common_name || animal.name}
-                    </Text>
-                    <Group spacing="xs" noWrap>
-                      <NumberInput
-                        value={animalCounts[animal.id] || 1}
-                        onChange={(value) =>
-                          handleCountChange(animal.id, value)
-                        }
-                        min={1}
-                        max={100}
-                        style={{ width: 80 }}
-                      />
-                      <ActionIcon
-                        color="red"
-                        variant="subtle"
-                        onClick={() => handleRemoveAnimal(animal.id)}
-                      >
-                        <IconX size={16} />
-                      </ActionIcon>
-                    </Group>
-                  </Group>
+                  <div key={animal.id} className={styles.selectionContainer}>
+                    <div className={styles.selectionContent}>
+                      <Text className={styles.speciesName}>
+                        {animal.preferred_common_name || animal.name}
+                      </Text>
+                      <div className={styles.controls}>
+                        <NumberInput
+                          value={animalCounts[animal.id] || 1}
+                          onChange={(value) =>
+                            handleCountChange(animal.id, value)
+                          }
+                          min={1}
+                          max={100}
+                          style={{ width: 80 }}
+                        />
+                        <ActionIcon
+                          color="red"
+                          variant="subtle"
+                          onClick={() => handleRemoveAnimal(animal.id)}
+                          className={styles.removeButton}
+                        >
+                          <IconX size={16} />
+                        </ActionIcon>
+                      </div>
+                    </div>
+                  </div>
                 ))}
-                {/* </Stack> */}
               </Flex>
             )}
             <Group mt="xs" grow wrap="nowrap">

@@ -102,6 +102,18 @@ const MediaSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    needsReview: {
+      type: Boolean,
+      default: false,
+    },
+    flagged: {
+      type: Boolean,
+      default: false,
+    },
+    removed: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
