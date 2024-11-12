@@ -100,6 +100,7 @@ function ImageCard({ image, imageHeight }) {
             fit="cover"
             height="90%"
           />
+          <ImageInfo image={image} />
         </Modal>
       </Stack>
     </Paper>
@@ -128,6 +129,7 @@ function ImageInfo({ image }) {
       <Group wrap="nowrap" justify="space-between">
         <Text size="xs" mb={0} color="dimmed">
           {new Date(image.timestamp).toLocaleDateString("en-US", {
+            timeZone: "UTC",
             year: "2-digit",
             month: "numeric",
             day: "numeric",

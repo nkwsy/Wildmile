@@ -32,7 +32,7 @@ export async function GET(request) {
   const reviewedByUser = searchParams.get("reviewedByUser");
   const userFavorite = searchParams.get("userFavorite"); // boolean must also have reviewedByUser present
   const accepted = searchParams.get("accepted"); // boolean
-
+  const needsReview = searchParams.get("needsReview"); // boolean
   // Sorting methods
   const sort = searchParams.get("sort");
   const sortDirection = searchParams.get("sortDirection");
@@ -74,7 +74,7 @@ export async function GET(request) {
   }
 
   if (favorites === "true") {
-    query.favorites = { $ne: null };
+    query.favoriteCount = { $gt: 0 };
   }
 
   if (reviewedByUser && reviewedByUser !== "false") {
@@ -96,6 +96,10 @@ export async function GET(request) {
     } catch (error) {
       console.warn("Invalid session ID for favorites:", session);
     }
+  }
+
+  if (needsReview === "true") {
+    query.needsReview = true;
   }
 
   if (locationId) {

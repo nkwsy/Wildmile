@@ -23,6 +23,7 @@ import {
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import TaxaSearch from "./TaxaSearch";
+import styles from "styles/components/YesNoButtonGroup.module.css";
 
 export function AdvancedImageFilterControls({
   onApplyFilters,
@@ -44,14 +45,15 @@ export function AdvancedImageFilterControls({
     endDate: null,
     startTime: null,
     endTime: null,
-    reviewed: false,
-    reviewedByUser: false,
-    userFavorite: false,
-    favorites: false,
+    reviewed: null,
+    reviewedByUser: null,
+    userFavorite: null,
+    favorites: null,
     type: null,
     consensusStatus: null,
     species: [],
-    accepted: false,
+    accepted: null,
+    needsReview: null,
     sort: "timestamp",
     sortDirection: "desc",
   });
@@ -68,6 +70,10 @@ export function AdvancedImageFilterControls({
       fetchDeployments(filters.locationId);
     }
   }, [filters.locationId]);
+
+  useEffect(() => {
+    handleApplyFilters();
+  }, [filters]);
 
   const fetchLocations = async () => {
     try {
@@ -129,13 +135,13 @@ export function AdvancedImageFilterControls({
       endDate: null,
       startTime: null,
       endTime: null,
-      reviewed: false,
-      reviewedByUser: false,
-      userFavorite: false,
+      reviewed: null,
+      reviewedByUser: null,
+      userFavorite: null,
       type: null,
       consensusStatus: null,
       species: [],
-      accepted: false,
+      accepted: null,
       sort: "timestamp",
       sortDirection: "desc",
     });
@@ -171,6 +177,17 @@ export function AdvancedImageFilterControls({
         </Group>
         <Collapse in={onMinimize}>
           <Group grow>
+            <SegmentedControl
+              data={[
+                { label: "All", value: "" },
+                { label: "Animals", value: "animals" },
+                { label: "Humans", value: "humans" },
+              ]}
+              value={filters.type || ""}
+              onChange={(value) => handleFilterChange("type", value)}
+            />
+          </Group>
+          <Group grow>
             <Select
               label="Location"
               placeholder="Select a location"
@@ -194,31 +211,38 @@ export function AdvancedImageFilterControls({
 
           {/* <TaxaSearch onSpeciesSelect={handleSpeciesSelect} /> */}
 
-          <SegmentedControl
-            data={[
-              { label: "All", value: "" },
-              { label: "Animals", value: "animals" },
-              { label: "Humans", value: "humans" },
-            ]}
-            value={filters.type || ""}
-            onChange={(value) => handleFilterChange("type", value)}
-          />
-
-          <Select
-            label="Consensus Status"
-            placeholder="Select status"
-            data={[
-              { label: "Pending", value: "Pending" },
-              { label: "Consensus Reached", value: "ConsensusReached" },
-              {
-                label: "More Annotations Needed",
-                value: "MoreAnnotationsNeeded",
-              },
-            ]}
-            value={filters.consensusStatus}
-            onChange={(value) => handleFilterChange("consensusStatus", value)}
-            clearable
-          />
+          <Group grow>
+            <Select
+              label="Consensus Status"
+              placeholder="Select status"
+              data={[
+                { label: "Pending", value: "Pending" },
+                { label: "Consensus Reached", value: "ConsensusReached" },
+                {
+                  label: "More Annotations Needed",
+                  value: "MoreAnnotationsNeeded",
+                },
+              ]}
+              value={filters.consensusStatus}
+              onChange={(value) => handleFilterChange("consensusStatus", value)}
+              clearable
+            />
+            <Select
+              label="Sort By"
+              data={[
+                { label: "Date (Newest)", value: "timestamp-desc" },
+                { label: "Date (Oldest)", value: "timestamp-asc" },
+                { label: "Most Reviewed", value: "reviewCount-desc" },
+                { label: "Most Favorites", value: "favoriteCount-desc" },
+              ]}
+              value={`${filters.sort}-${filters.sortDirection}`}
+              onChange={(value) => {
+                const [sort, direction] = value.split("-");
+                handleFilterChange("sort", sort);
+                handleFilterChange("sortDirection", direction);
+              }}
+            />
+          </Group>
 
           <Group grow align="flex-start">
             <DateInput
@@ -254,38 +278,46 @@ export function AdvancedImageFilterControls({
             {[
               { label: "Reviewed", key: "reviewed" },
               { label: "Reviewed by me", key: "reviewedByUser" },
+              { label: "Needs ID", key: "needsReview" },
+              { label: "Accepted", key: "accepted" },
               { label: "All favorites", key: "favorites" },
               { label: "My favorites", key: "userFavorite" },
-              { label: "Accepted", key: "accepted" },
             ].map(({ label, key }) => (
               <Grid.Col span={6} key={key}>
-                <Switch
-                  size="sm"
-                  label={label}
-                  checked={filters[key]}
-                  onChange={(e) =>
-                    handleFilterChange(key, e.currentTarget.checked)
-                  }
-                />
+                <Group className={styles.filterRow}>
+                  <Text className={styles.label}>{label}</Text>
+                  {/* <Group className={styles.buttonGroup}> */}
+                  <Button.Group>
+                    <Button
+                      className={styles.button}
+                      variant={filters[key] === true ? "filled" : "outline"}
+                      onClick={() =>
+                        handleFilterChange(
+                          key,
+                          filters[key] === true ? null : true
+                        )
+                      }
+                    >
+                      ✓
+                    </Button>
+                    <Button
+                      className={styles.button}
+                      variant={filters[key] === false ? "filled" : "outline"}
+                      onClick={() =>
+                        handleFilterChange(
+                          key,
+                          filters[key] === false ? null : false
+                        )
+                      }
+                    >
+                      ✕
+                    </Button>
+                  </Button.Group>
+                </Group>
+                {/* </Group> */}
               </Grid.Col>
             ))}
           </Grid>
-
-          <Select
-            label="Sort By"
-            data={[
-              { label: "Date (Newest)", value: "timestamp-desc" },
-              { label: "Date (Oldest)", value: "timestamp-asc" },
-              { label: "Most Reviewed", value: "reviewCount-desc" },
-              { label: "Most Favorites", value: "favoriteCount-desc" },
-            ]}
-            value={`${filters.sort}-${filters.sortDirection}`}
-            onChange={(value) => {
-              const [sort, direction] = value.split("-");
-              handleFilterChange("sort", sort);
-              handleFilterChange("sortDirection", direction);
-            }}
-          />
         </Collapse>
       </Stack>
     </>
