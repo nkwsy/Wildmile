@@ -14,6 +14,7 @@ import { useSelection } from "../ContextCamera";
 export function GalleryFilter({ onFilterChange }) {
   const [opened, { toggle }] = useDisclosure(true);
   const [selection, setSelection] = useSelection();
+  const [filters, setFilters] = useState({});
   const [minimized, { toggle: toggleMinimized }] = useDisclosure(true);
 
   const handleApplyFilters = (filters) => {
@@ -35,8 +36,13 @@ export function GalleryFilter({ onFilterChange }) {
       return acc;
     }, {});
     onFilterChange(validParams);
+    setFilters(validParams);
     // }
   };
+
+  useEffect(() => {
+    handleApplyFilters(filters);
+  }, [selection]);
 
   const handleClearFilters = () => {
     setSelection([]);
@@ -68,23 +74,25 @@ export function GalleryFilter({ onFilterChange }) {
         </Button>
       </Group> */}
       <Group justify="flex-start" mb={5}>
-        <Button
-          onClick={toggle}
-          variant="subtle"
-          color="yellow"
-          leftSection={<IconPaw size={16} />}
-        >
-          {opened ? "Hide Wildlife" : "Show Wildlife"}
-        </Button>
+        <Button.Group>
+          <Button
+            onClick={toggle}
+            variant="outline"
+            color="yellow"
+            leftSection={<IconPaw size={16} />}
+          >
+            {opened ? "Hide Wildlife" : "Show Wildlife"}
+          </Button>
 
-        <Button
-          onClick={toggleMinimized}
-          variant="outline"
-          color="yellow"
-          leftSection={<IconAdjustmentsHorizontal size={16} />}
-        >
-          {minimized ? "Hide Filters" : "Show Filters"}
-        </Button>
+          <Button
+            onClick={toggleMinimized}
+            variant="outline"
+            color="yellow"
+            leftSection={<IconAdjustmentsHorizontal size={16} />}
+          >
+            {minimized ? "Hide Filters" : "Show Filters"}
+          </Button>
+        </Button.Group>
       </Group>
       <AdvancedImageFilterControls
         onApplyFilters={handleApplyFilters}

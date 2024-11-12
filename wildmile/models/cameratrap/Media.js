@@ -35,7 +35,10 @@ const MediaSchema = new mongoose.Schema(
       },
     ],
     exifData: mongoose.Schema.Types.Mixed,
-    favorite: Boolean,
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
     favoriteCount: {
       type: Number,
       default: 0,
