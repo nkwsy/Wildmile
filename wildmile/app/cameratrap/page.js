@@ -1,6 +1,6 @@
 "use client";
-import { Title, Text, Container, Button } from "@mantine/core";
-import { LoadingOverlay } from '@mantine/core';
+import { Title, Text, Container, Button, Grid, Fieldset } from "@mantine/core";
+import { LoadingOverlay } from "@mantine/core";
 import { useEffect } from "react";
 import { IconCardGrid } from "/components/icon_card_grid";
 import classes from "/styles/card.module.css";
@@ -11,12 +11,44 @@ import {
   IconPokeball,
   IconCameraSearch,
   IconCameraPlus,
+  IconZoomIn,
+  IconMapPin,
 } from "@tabler/icons-react";
-import TaxaSearch, { WildlifeSidebar } from "components/cameratrap/TaxaSearch";
+// import TaxaSearch, { WildlifeSidebar } from "components/cameratrap/TaxaSearch";
 import { useUser } from "lib/hooks";
 import { useRouter } from "next/navigation";
+import { RandomFavorite } from "components/cameratrap/RandomFavorite";
+import { InfoComponent } from "components/cameratrap/InfoComponent";
 
 function CameraTrapCards({ user }) {
+  const cards = [
+    {
+      icon: IconPokeball,
+      title: "Identify wildlife",
+      href: "/cameratrap/identify",
+      description:
+        "Find and catagorize wildlife captured around the Chicago River",
+    },
+    {
+      icon: IconZoomIn,
+      title: "Explore Data",
+      href: "/cameratrap/explore",
+      description: "Explore wildlife images which have been catagorized",
+    },
+  ];
+  if (user?.admin) {
+    cards.push({
+      icon: IconBackhoe,
+      title: "New Project",
+      href: "/projects/project/new",
+      description: "Create a new project",
+    });
+  }
+
+  return <IconCardGrid cards={cards} />;
+}
+
+function CameraTrapMgmtCards({ user }) {
   const cards = [
     {
       icon: IconCameraPlus,
@@ -28,7 +60,7 @@ function CameraTrapCards({ user }) {
       icon: IconCameraSearch,
       title: "Cameras",
       href: "/cameratrap/camera",
-      description: "Manage the cameras",
+      description: "Manage the camera inventory",
     },
     {
       icon: IconUsers,
@@ -37,36 +69,25 @@ function CameraTrapCards({ user }) {
       description: "Manage the deployments",
     },
     {
-      icon: IconPokeball,
-      title: "Identify wildlife",
-      href: "/cameratrap/identify",
-      description: "Find and catagorize wildlife",
+      icon: IconMapPin,
+      title: "Locations",
+      href: "/cameratrap/locations",
+      description: "Manage the deployment locations",
     },
   ];
-  if (user?.admin) {
-    cards.push({
-            icon: IconBackhoe,
-            title: "New Project",
-            href: "/projects/project/new",
-            description: "Create a new project",
-    });
-  }
-
-  return <IconCardGrid cards={cards} />
+  return <IconCardGrid cards={cards} />;
 }
-
 
 export default function CameraTrapHomePage() {
   // const { classes, theme } = cardStyles()
   const { user, loading } = useUser();
   const router = useRouter();
 
-  useEffect(() => {
-    // redirect user to login if not authenticated
-    if (!loading && !user) router.replace("/login");
-    console.log(user);
-  }, [user, loading, router]);
-
+  // useEffect(() => {
+  //   // redirect user to login if not authenticated
+  //   if (!loading && !user) router.replace("/login");
+  //   console.log(user);
+  // }, [user, loading, router]);
 
   if (loading) {
     return <LoadingOverlay visible />;
@@ -75,19 +96,27 @@ export default function CameraTrapHomePage() {
   return (
     <>
       <Container maw="85%" my="5rem">
-        <Title order={2} className={classes.title} ta="center" mt="sm">
-          Camera Trap Resources
-        </Title>
-        <Text c="dimmed" ta="center" mt="md">
-          Collecting and sharing data about Urban River's projects.
-        </Text>
-        <CameraTrapCards user={user} />
-        {/* <IconCardGrid cards={projects} />
-        <Button component={Link} href="/projects/new">
-          New Project
-        </Button> */}
-        {/* <TaxaSearch /> */}
-        <WildlifeSidebar />
+        <Grid mt="xl">
+          <Grid.Col span={7}>
+            <Title order={2} className={classes.title} ta="center" mt="sm">
+              Camera Trap Resources
+            </Title>
+            <Text c="dimmed" ta="center" mt="md">
+              Collecting and sharing data about Urban River's projects.
+            </Text>
+            <CameraTrapCards user={user} />
+            {user && (
+              <Fieldset legend="Management Tools">
+                <CameraTrapMgmtCards user={user} />
+              </Fieldset>
+            )}
+          </Grid.Col>
+          <Grid.Col span={5}>
+            <RandomFavorite />
+            <InfoComponent />
+          </Grid.Col>
+          <Grid.Col span={5}></Grid.Col>
+        </Grid>
       </Container>
     </>
   );

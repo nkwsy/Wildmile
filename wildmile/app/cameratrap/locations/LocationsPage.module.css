@@ -1,0 +1,45 @@
+.selected {
+  border: 2px solid var(--mantine-color-blue-6);
+  background-color: var(--mantine-color-blue-0);
+}
+
+.locationCard {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.locationCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--mantine-shadow-md);
+}
+
+.locationList {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.mapWrapper {
+  height: 70vh;
+  position: relative;
+}
+
+.retired {
+  opacity: 0.6;
+}
+
+.favorite {
+  background-color: var(--mantine-color-yellow-0);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tag {
+  background-color: var(--mantine-color-gray-1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: var(--mantine-font-size-xs);
+}

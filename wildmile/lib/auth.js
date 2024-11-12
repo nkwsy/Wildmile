@@ -1,14 +1,15 @@
 import { getIronSession, sealData, unsealData } from "iron-session";
 import { cookies } from "next/headers";
 
-const fifteenMinutesInSeconds = 60 * 15;
+const oneMonthInSeconds = 60 * 60 * 24 * 30; // 30 days
+const loginDuration = oneMonthInSeconds;
 
 export async function createLoginSession(session, secret) {
   const createdAt = Date.now()
   const obj = { ...session, createdAt }
   const token = await sealData(obj, {
     password: secret,
-    ttl:  fifteenMinutesInSeconds
+    ttl:  loginDuration
   })
 
   return token
@@ -17,7 +18,7 @@ export async function createLoginSession(session, secret) {
 export async function getLoginSession(token, secret) {
   const session = await unsealData(token, {
     password: secret,
-    ttl: fifteenMinutesInSeconds
+    ttl: loginDuration
   })
   const expiresAt = session.createdAt + session.maxAge * 1000
 

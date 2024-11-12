@@ -2,6 +2,8 @@
 import { Children, useState, useEffect } from "react";
 import {
   Stepper,
+  Stack,
+  Space,
   Button,
   Group,
   Textarea,
@@ -19,6 +21,7 @@ import {
   Grid,
   Checkbox,
   Modal,
+  ScrollArea,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { DatePickerInput } from "@mantine/dates";
@@ -26,12 +29,17 @@ import { useForm } from "@mantine/form";
 import { useParams, useRouter, useFetch, usePathname } from "next/navigation";
 // import { newEditProject, getProject } from "/app/actions";
 import { newEditLocation } from "app/actions/CameratrapActions";
+import MyLocationButton from "components/maps/MyLocationButton";
 // import LocationModal from "./maps/LocationModal";
 import LocationMap from "components/maps/LocationMap";
 
 export default function LocationForm({ refreshLocations, setLocation }) {
   const [loading, { toggle }] = useDisclosure();
   const [point, setPoint] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState({
+    latitude: null,
+    longitude: null,
+  });
   const [polygon, setPolygon] = useState(null);
   const [opened, { open, close }] = useDisclosure(false);
   const router = useRouter();
@@ -101,27 +109,48 @@ export default function LocationForm({ refreshLocations, setLocation }) {
   // const [visible, handlers] = useDisclosure(false);
 
   // const [errorMsg, setErrorMsg] = useState('')
+  const onLocationSelect = (location) => {
+    setPoint(location);
+    setCurrentLocation({
+      latitude: location.latitude,
+      longitude: location.longitude,
+    });
+  };
 
   return (
     <>
-      <Modal opened={opened} onClose={close} title="Location">
+      <Modal
+        opened={opened}
+        onClose={close}
+        title="Location"
+        size="xl"
+        centered
+        scrollAreaComponent={ScrollArea.Autosize}
+      >
         <Box>
           <Grid>
-            <Grid.Col span={4}>
-              <TextInput
-                label="Name"
-                key="name"
-                {...form.getInputProps("locationName")}
-              />
-              <Group>
-                <Checkbox label="Retired" {...form.getInputProps("retired")} />
-              </Group>
-              <Textarea label="Notes" {...form.getInputProps("notes")} />
-              <TagsInput label="Tags" {...form.getInputProps("tags")} />
+            <Grid.Col span={{ base: 12, md: 4 }} pb={2}>
+              <Stack spacing="md">
+                <TextInput
+                  label="Name"
+                  key="name"
+                  {...form.getInputProps("locationName")}
+                />
+                <Group>
+                  <Checkbox
+                    label="Retired"
+                    {...form.getInputProps("retired")}
+                  />
+                </Group>
+                <Textarea label="Notes" {...form.getInputProps("notes")} />
+                <TagsInput label="Tags" {...form.getInputProps("tags")} />
 
-              <SubmitButton />
+                <SubmitButton />
+              </Stack>
+              <Space h="md" />
+              <MyLocationButton onLocationSelect={onLocationSelect} />
             </Grid.Col>
-            <Grid.Col span={8}>
+            <Grid.Col span={{ base: 12, md: 8 }}>
               <LocationMap
                 onPointSelect={setPoint}
                 //   onPolygonSelect={setPolygon}

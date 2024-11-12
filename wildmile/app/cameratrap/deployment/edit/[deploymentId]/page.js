@@ -3,7 +3,7 @@
 import { getSession } from "lib/getSession";
 import { cookies, headers } from "next/headers";
 import { AlertLogin } from "components/alert";
-import DeploymentForm from "components/cameratrap/DeploymentForm";
+import DeploymentDash from "components/cameratrap/deployments/DeploymentDash";
 
 export const metadata = {
   title: "Camera Trap Edit Deployment",
@@ -15,7 +15,7 @@ export default async function Page({ params }) {
 
   if (params.deploymentId) {
     // if (params.deploymentId === "new") {
-    return <DeploymentForm />;
+    return <DeploymentDash deploymentId={params.deploymentId} />;
     console.log("New Deployment");
     // }
 

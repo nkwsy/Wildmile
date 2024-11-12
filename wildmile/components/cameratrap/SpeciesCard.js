@@ -15,9 +15,10 @@ import {
   Chip,
   ChipGroup,
   ActionIcon,
+  Paper,
 } from "@mantine/core";
 import Link from "next/link";
-import classes from "/styles/imagecard.module.css";
+import classes from "./SpeciesCard.module.css";
 import { IconBrandWikipedia } from "@tabler/icons-react";
 import { useSelection } from "components/cameratrap/ContextCamera";
 
@@ -47,65 +48,78 @@ export default function Species({ results }) {
   }
   const result_values = SpeciesCards(results);
 
+  const toggleSelection = (result) => {
+    setSelection((prev) => {
+      const isSelected = prev.some((item) => item.id === result.inat_result.id);
+      if (isSelected) {
+        return prev.filter((item) => item.id !== result.inat_result.id);
+      } else {
+        return [...prev, result.inat_result];
+      }
+    });
+  };
+
   return (
     <>
       {result_values.map((result, index) => (
-        <Card
+        <Paper
           key={index}
-          onClick={() => setSelection([...selection, result.inat_result])}
-          withBorder
-          padding="lg"
-          radius="md"
-          //   component={Link}
-          //   href={`/plants/species/${result.id}`}
-
-          //   className={classes.mantineCard}
+          onClick={() => toggleSelection(result)}
+          className={classes.card}
+          data-selected={
+            selection.some((item) => item.id === result.inat_result.id) ||
+            undefined
+          }
         >
-          <CardSection mb="sm">
-            <Image
-              src={result.image || "/No_plant_image.jpg"}
-              alt={result.title}
-              h={200}
-              //   w="auto"
-              //   fit="contain"
-            />
-          </CardSection>
+          <Image
+            src={result.image || "/No_plant_image.jpg"}
+            alt={result.title}
+            className={classes.image}
+          />
+          <Badge
+            variant="outline"
+            color={
+              result.inat_result.rank === "species"
+                ? "blue"
+                : result.inat_result.rank === "subspecies"
+                ? "blue"
+                : result.inat_result.rank === "genus"
+                ? "grape"
+                : result.inat_result.rank === "family"
+                ? "green"
+                : result.inat_result.rank === "class"
+                ? "orange"
+                : "yellow"
+            }
+            // style={{ marginLeft: "auto" }}
+            className={classes.badge}
+          >
+            {result.description}
+          </Badge>
+          {result.wiki && (
+            <ActionIcon
+              variant="default"
+              component={Link}
+              href={result.wiki}
+              rel="noopener noreferrer"
+              target="_blank"
+              className={classes.wikiButton}
+            >
+              <IconBrandWikipedia className={classes.wikiIcon} stroke={1} />
+            </ActionIcon>
+          )}
 
-          <Group align="top" direction="column">
-            <div>
-              <Group align="middle" justify="space-between">
-                <Title className={classes.title}>{result.title}</Title>
-                {result.wiki && (
-                  <ActionIcon
-                    variant="default"
-                    component={Link}
-                    href={result.wiki}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    <IconBrandWikipedia
-                      style={{ width: "70%", height: "70%" }}
-                      stroke={1}
-                    />
-                  </ActionIcon>
-                )}
+          <div className={classes.overlay}>
+            <div className={classes.content}>
+              <Title className={classes.title}>{result.title}</Title>
+
+              <Group align="center" spacing="xs">
+                {/* <Text className={classes.description}>{result.family}</Text> */}
+                <Text className={classes.subtitle}>{result.subtitle}</Text>
               </Group>
-              <Text
-                size="sm"
-                color="dimmed"
-                fs="italic"
-                c="dimmed"
-                className={classes.subtitle}
-              >
-                {result.subtitle}
-              </Text>
-              <Text size="sm" color="dimmed" className={classes.description}>
-                {result.family}
-              </Text>
-              <Badge variant="light">{result.description}</Badge>
             </div>
-          </Group>
-        </Card>
+          </div>
+        </Paper>
       ))}
     </>
   );

@@ -99,11 +99,11 @@ export default function DeploymentForm(props) {
 
   // Load existing info
   useEffect(() => {
+    if (!params.deploymentId) {
+      setDisabled(false);
+      return;
+    }
     if (params.deploymentId) {
-      if (params.deploymentId === "new") {
-        setDisabled(false);
-        return;
-      }
       const fetchData = async () => {
         const project_result = await getDeployment(params.deploymentId);
         const result = JSON.parse(project_result);
@@ -239,16 +239,16 @@ export default function DeploymentForm(props) {
                 required
                 // {...form.getInputProps("deploymentStart")}
               />
-              <DateInput
+              {/* <DateInput
                 label="Deployment End"
                 // {...form.getInputProps("deploymentEnd")}
-              />
+              /> */}
             </Group>
             <Group>
               <Textarea
                 miw="80%"
                 label="Notes"
-                // {...props.form.getInputProps("notes")}
+                {...form.getInputProps("deploymentComments")}
               />
             </Group>
             <Group py="lg">
@@ -259,10 +259,10 @@ export default function DeploymentForm(props) {
             </Group>
           </Grid.Col>
           <Grid.Col span={6}>
-            <LocationForm
+            {/* <LocationForm
               setLocation={setLocation}
               refreshLocations={setRefreshLocations}
-            />
+            /> */}
             <Select
               label="Select Location"
               data={locationOptions}

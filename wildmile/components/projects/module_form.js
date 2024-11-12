@@ -54,6 +54,7 @@ import { PlantCards } from "components/projects/PlantCards";
 import PlantingToolbar from "./PlantingToolbar";
 import classes from "/styles/toolbar.module.css";
 import PlantInfoBox from "./PlantInfoBox";
+import ModuleTagger from "./ModuleTagger";
 // const [visible, handlers] = useDisclosure(false);
 
 // const [errorMsg, setErrorMsg] = useState('')
@@ -177,6 +178,7 @@ export default function ModuleToolbar() {
             {selectedCell.size >= 1 && (
               <Group>
                 <MultiModuleForm returnSelectedCells={returnSelectedCells} />
+                <ModuleTagger returnSelectedCells={returnSelectedCells} />
               </Group>
             )}
           </CardSection>

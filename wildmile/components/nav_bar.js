@@ -61,6 +61,10 @@ const nav_tabs = [
     label: "Projects",
     link: "/projects",
   },
+  {
+    label: "Camera Traps",
+    link: "/cameratrap",
+  },
 ];
 
 export function HeaderNav({ children }) {
@@ -68,7 +72,7 @@ export function HeaderNav({ children }) {
     useDisclosure(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   // const { classes, theme, cx } = useStyles()
-  const { user, loading, mutate }  = useUser();
+  const { user, loading, mutate } = useUser();
 
   let photoSrc = "https://api.multiavatar.com/noname.png";
 
