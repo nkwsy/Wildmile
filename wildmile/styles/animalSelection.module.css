@@ -5,6 +5,7 @@
   margin-bottom: var(--mantine-spacing-xs);
   background-color: var(--mantine-color-white);
   transition: all 0.2s ease;
+  display: flex;
 }
 
 .selectionContainer:hover {

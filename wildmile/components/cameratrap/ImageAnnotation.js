@@ -287,6 +287,7 @@ export function ImageAnnotation({ fetchNextImage }) {
         </div>
         <Grid>
           {/* <Group grow wrap="nowrap"> */}
+
           <Text mt="xs" size="xs" style={{ fontFamily: "monospace" }}>
             Image Timestamp:{" "}
             {new Date(currentImage.timestamp).toLocaleString("en-US", {
@@ -296,77 +297,64 @@ export function ImageAnnotation({ fetchNextImage }) {
           <Text mt="xs" size="xs" style={{ fontFamily: "monospace" }}>
             Media ID: {currentImage.mediaID}
           </Text>
-          {/* </Group> */}
-          <GridCol span={{ base: 12, md: 12, lg: 6 }}>
-            <Group position="apart" mt="md">
+          <Group position="apart" mt="md">
+            <ActionIcon
+              variant="outline"
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  `${window.location.origin}/cameratrap/identify/${currentImage.mediaID}`
+                );
+                alert("Image URL copied to clipboard");
+              }}
+            >
+              <IconLink />
+            </ActionIcon>
+            <Tooltip label="Need Help with ID">
               <ActionIcon
-                variant="outline"
-                onClick={() => {
-                  navigator.clipboard.writeText(
-                    `${window.location.origin}/cameratrap/identify/${currentImage.mediaID}`
-                  );
-                  alert("Image URL copied to clipboard");
-                }}
+                onClick={handleNeedsReview}
+                variant={needsReview ? "filled" : "outline"}
+                color="yellow"
               >
-                <IconLink />
+                <IconPhotoSearch />
               </ActionIcon>
-              <Tooltip label="Need Help with ID">
-                <ActionIcon
-                  onClick={handleNeedsReview}
-                  variant={needsReview ? "filled" : "outline"}
-                  color="yellow"
-                >
-                  <IconPhotoSearch />
-                </ActionIcon>
-              </Tooltip>
-              <Tooltip label="Report Inappropriate">
-                <ActionIcon
-                  onClick={handleFlagged}
-                  variant={flagged ? "filled" : "outline"}
-                  color="red"
-                >
-                  <IconMoodWrrr />
-                </ActionIcon>
-              </Tooltip>
-              <Indicator
-                inline
-                label={currentImage.favoriteCount}
-                disabled={!currentImage.favoriteCount}
-                size={16}
+            </Tooltip>
+            <Tooltip label="Report Inappropriate">
+              <ActionIcon
+                onClick={handleFlagged}
+                variant={flagged ? "filled" : "outline"}
+                color="red"
               >
-                <ActionIcon
-                  onClick={handleToggleFavorite}
-                  color={isFavorite ? "red" : "red"}
-                  variant={isFavorite ? "filled" : "outline"}
-                >
-                  {isFavorite ? (
-                    <IconHeart size={24} />
-                  ) : (
-                    <IconHeartPlus size={24} />
-                  )}
-                </ActionIcon>
-              </Indicator>
-              <TextInput
-                placeholder="Add a comment..."
-                value={comment}
-                onChange={(event) => setComment(event.currentTarget.value)}
-                style={{ flex: 1 }}
-              />
-              <ActionIcon onClick={handleAddComment} disabled={!comment.trim()}>
-                <IconSend size={24} />
+                <IconMoodWrrr />
               </ActionIcon>
-            </Group>
-            <Stack spacing="xs" mt="md">
-              {comments.map((comment, index) => (
-                <Text key={index} size="sm">
-                  <strong>{comment.author.name}:</strong> {comment.text}
-                </Text>
-              ))}
-            </Stack>
-          </GridCol>
-          <GridCol span={{ base: 12, md: 12, lg: 6 }}>
+            </Tooltip>
+            <Indicator
+              inline
+              label={currentImage.favoriteCount}
+              disabled={!currentImage.favoriteCount}
+              size={16}
+            >
+              <ActionIcon
+                onClick={handleToggleFavorite}
+                color={isFavorite ? "red" : "red"}
+                variant={isFavorite ? "filled" : "outline"}
+              >
+                {isFavorite ? (
+                  <IconHeart size={24} />
+                ) : (
+                  <IconHeartPlus size={24} />
+                )}
+              </ActionIcon>
+            </Indicator>
+          </Group>
+          {/* </Group> */}
+          <Group>
             {!noAnimalsVisible && (
-              <Flex direction="column" gap="xs" mt="md">
+              <Flex
+                direction="column"
+                gap="xs"
+                mt="md"
+                span={{ base: 12, md: 12, lg: 6 }}
+              >
                 {selection.map((animal) => (
                   <div key={animal.id} className={styles.selectionContainer}>
                     <div className={styles.selectionContent}>
@@ -397,31 +385,29 @@ export function ImageAnnotation({ fetchNextImage }) {
                 ))}
               </Flex>
             )}
-            <Group mt="xs" grow wrap="nowrap">
-              <Checkbox
-                classNames={checkboxClasses}
-                label="Human Present"
-                checked={humanPresent}
-                onChange={(event) =>
-                  setHumanPresent(event.currentTarget.checked)
-                }
-                wrapperProps={{
-                  onClick: () => setHumanPresent((c) => !c),
-                }}
-              />
-              <Checkbox
-                classNames={checkboxClasses}
-                label="Vehicle Present"
-                checked={vehiclePresent}
-                onChange={(event) =>
-                  setVehiclePresent(event.currentTarget.checked)
-                }
-                wrapperProps={{
-                  onClick: () => setVehiclePresent((c) => !c),
-                }}
-              />
-            </Group>
-          </GridCol>
+          </Group>
+          <Group mt="xs" grow wrap="nowrap" span={{ base: 6, md: 6, lg: 4 }}>
+            <Checkbox
+              classNames={checkboxClasses}
+              label="Human Present"
+              checked={humanPresent}
+              onChange={(event) => setHumanPresent(event.currentTarget.checked)}
+              wrapperProps={{
+                onClick: () => setHumanPresent((c) => !c),
+              }}
+            />
+            <Checkbox
+              classNames={checkboxClasses}
+              label="Vehicle Present"
+              checked={vehiclePresent}
+              onChange={(event) =>
+                setVehiclePresent(event.currentTarget.checked)
+              }
+              wrapperProps={{
+                onClick: () => setVehiclePresent((c) => !c),
+              }}
+            />
+          </Group>
           {noAnimalsVisible ||
           selection.length > 0 ||
           humanPresent ||
@@ -458,6 +444,24 @@ export function ImageAnnotation({ fetchNextImage }) {
                 as "No Animals Visible", or indicate human/vehicle presence
               </Text>
             )}
+          <Grid.Col span={{ base: 12, md: 12, lg: 6 }}>
+            <Stack spacing="xs" mt="md">
+              {comments.map((comment, index) => (
+                <Text key={index} size="sm">
+                  <strong>{comment.author.name}:</strong> {comment.text}
+                </Text>
+              ))}
+            </Stack>
+          </Grid.Col>
+          <TextInput
+            placeholder="Add a comment..."
+            value={comment}
+            onChange={(event) => setComment(event.currentTarget.value)}
+            style={{ flex: 1 }}
+          />
+          <ActionIcon onClick={handleAddComment} disabled={!comment.trim()}>
+            <IconSend size={24} />
+          </ActionIcon>
         </Grid>
       </Card>
       <Modal
