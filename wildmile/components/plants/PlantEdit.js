@@ -36,22 +36,27 @@ export default function PlantEdit() {
   };
 
   async function updatePlant(e) {
-    e.preventDefault(); // Prevent form submission
+    e.preventDefault();
     let body = form.values;
     const id = body._id;
 
-    const res = await fetch("/api/plant/" + id, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
+    try {
+      const res = await fetch(`/api/plants/editPlant/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
 
-    if (res.status === 200) {
-      console.log(await res.json());
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
+      const data = await res.json();
+      console.log("Plant updated:", data);
       close();
-    } else {
-      // Handle error
-      console.error("Failed to update plant");
+    } catch (error) {
+      console.error("Failed to update plant:", error);
+      // You might want to show an error notification here
     }
   }
   return (
