@@ -39,3 +39,4 @@ next-env.d.ts
 .idea
 .nyc_output
 .vscode/launch.json
+wildmile/package-lock.json
