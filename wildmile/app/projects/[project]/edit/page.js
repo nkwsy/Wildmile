@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Stepper,
@@ -14,7 +15,7 @@ import {
 } from "@mantine/core";
 
 // import ProjectForm from "components/project_form";
-import dbConnect from "/lib/db/setup";
+// import dbConnect from "/lib/db/setup";
 // import mapboxgl from "!mapbox-gl";
 import dynamic from "next/dynamic";
 
