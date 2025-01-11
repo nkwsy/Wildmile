@@ -4,7 +4,8 @@ import Deployment from "models/cameratrap/Deployment";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(request, { params }) {
+export async function GET(request, props) {
+  const params = await props.params;
   // Return empty response for new deployments
   if (params.id === "new") {
     return NextResponse.json({
@@ -103,7 +104,8 @@ export async function POST(request) {
   }
 }
 
-export async function PUT(request, { params }) {
+export async function PUT(request, props) {
+  const params = await props.params;
   await dbConnect();
   try {
     const body = await request.json();

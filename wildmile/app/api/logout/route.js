@@ -10,7 +10,7 @@ export async function GET() {
     }
 
     // Clear the session cookie
-    cookies().delete("session");
+    (await cookies()).delete("session");
 
     return new NextResponse(null, { status: 204 });
   } catch (error) {

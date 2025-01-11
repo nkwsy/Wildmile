@@ -8,7 +8,7 @@ import { getLoginSession } from "lib/auth";
 import { cookies, headers } from "next/headers";
 
 async function getData() {
-  const authHeader = headers().get("authorization");
+  const authHeader = (await headers()).get("authorization");
   console.log("Auth Header: ", authHeader);
   return "...";
 }

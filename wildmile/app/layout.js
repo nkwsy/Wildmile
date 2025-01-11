@@ -45,7 +45,7 @@ const theme = createTheme({
 export default function RootLayout({ children }) {
   // dayjs.extend(customParseFormat);
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <ColorSchemeScript />
       </head>

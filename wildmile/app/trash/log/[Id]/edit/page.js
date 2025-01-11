@@ -33,7 +33,8 @@ export async function renderTrashForm(logId) {
   return <TrashForm props={props} />;
 }
 
-export default async function page({ params }) {
+export default async function page(props0) {
+  const params = await props0.params;
   console.log("Params:", params);
 
   const props = await getTrashLogById(params.Id);

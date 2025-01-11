@@ -26,7 +26,7 @@ export async function POST(request) {
     };
 
     const token = await createLoginSession(session, process.env.TOKEN_SECRET);
-    cookies().set("session", token, {
+    (await cookies()).set("session", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",

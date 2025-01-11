@@ -5,7 +5,8 @@ import CameratrapMedia from "models/cameratrap/Media";
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export async function GET(request, { params }) {
+export async function GET(request, props) {
+  const params = await props.params;
   await dbConnect();
 
   const { searchParams } = new URL(request.url);

@@ -5,7 +5,14 @@ import IndividualPlant from "models/IndividualPlant";
 import mongoose from "mongoose";
 import dbConnect from "lib/db/setup";
 
-export async function GET(request, { params, query, res }) {
+export async function GET(request, props) {
+  const params = await props.params;
+
+  const {
+    query,
+    res
+  } = props;
+
   await dbConnect();
   console.log(params);
   const plant_id = params.id;

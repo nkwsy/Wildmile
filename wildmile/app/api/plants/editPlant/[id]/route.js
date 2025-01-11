@@ -3,7 +3,8 @@ import { getPlantByID, updatePlantByID } from "lib/db/plants";
 import { getSession } from "lib/getSession";
 
 // GET handler
-export async function GET(request, { params }) {
+export async function GET(request, props) {
+  const params = await props.params;
   const session = await getSession();
 
   // Auth check
@@ -28,7 +29,8 @@ export async function GET(request, { params }) {
 }
 
 // PUT handler
-export async function PUT(request, { params }) {
+export async function PUT(request, props) {
+  const params = await props.params;
   const session = await getSession();
 
   // Auth check
