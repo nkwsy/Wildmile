@@ -161,7 +161,7 @@ export default function DeploymentDash({ deploymentId }) {
                 variant="outline"
                 color="yellow"
                 onClick={() => setEditFormVisible((v) => !v)}
-                leftIcon={<IconPencil size={16} />}
+                leftSection={<IconPencil size={16} />}
               >
                 {editFormVisible ? "Hide Edit Form" : "Edit Deployment"}
               </Button>

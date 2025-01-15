@@ -74,7 +74,7 @@ export function InfoComponent() {
           <Button
             variant="light"
             onClick={handleRefresh}
-            leftIcon={<IconRefresh size={16} />}
+            leftSection={<IconRefresh size={16} />}
           >
             Retry
           </Button>
@@ -95,7 +95,7 @@ export function InfoComponent() {
               size="sm"
               onClick={handleRefresh}
               loading={loading}
-              leftIcon={<IconRefresh size={16} />}
+              leftSection={<IconRefresh size={16} />}
             >
               Refresh
             </Button>

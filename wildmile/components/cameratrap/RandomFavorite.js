@@ -14,7 +14,11 @@ import {
   ActionIcon,
   Fieldset,
 } from "@mantine/core";
-import { IconRefresh, IconMaximize } from "@tabler/icons-react";
+import {
+  IconRefresh,
+  IconMaximize,
+  IconArrowsShuffle,
+} from "@tabler/icons-react";
 import classes from "styles/CameraTrap.module.css";
 
 export function RandomFavorite() {
@@ -85,7 +89,7 @@ export function RandomFavorite() {
                 color="blue"
                 onClick={fetchRandomFavorite}
                 loading={loading}
-                leftSection={<IconRefresh />}
+                leftSection={<IconArrowsShuffle />}
               >
                 New Image
               </Button>

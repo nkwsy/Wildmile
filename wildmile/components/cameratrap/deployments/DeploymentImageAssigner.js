@@ -282,7 +282,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
               <Button
                 onClick={handleSelectAll}
                 variant="default"
-                leftIcon={<IconCheck size={16} />}
+                leftSection={<IconCheck size={16} />}
               >
                 {selectedImages.length === images.length
                   ? "Deselect All"
@@ -296,7 +296,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
                   onClick={() => checkAndConfirmAssignment(true)}
                   variant="default"
                   color="blue"
-                  leftIcon={<IconFolder size={16} />}
+                  leftSection={<IconFolder size={16} />}
                 >
                   Assign All in Folder
                 </Button>
@@ -309,7 +309,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
                   onClick={() => handleRemoveImages(selectedImages)}
                   color="red"
                   variant="light"
-                  leftIcon={<IconTrash size={16} />}
+                  leftSection={<IconTrash size={16} />}
                 >
                   Remove {selectedImages.length} Selected
                 </Button>

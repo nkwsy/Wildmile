@@ -114,7 +114,7 @@ export function DeploymentImages({ deploymentId }) {
                 variant="light"
                 color="red"
                 size="xs"
-                leftIcon={<IconX size={14} />}
+                leftSection={<IconX size={14} />}
                 onClick={clearFilters}
               >
                 Clear Filters
