@@ -117,8 +117,8 @@ export default function CameraForm(props) {
         const { exists } = await checkResponse.json();
 
         if (exists) {
-          form.setFieldError("name", "A camera with this name already exists");
           toggle(); // Stop loading
+          form.setFieldError("name", "A camera with this name already exists");
           return;
         }
       }
@@ -144,7 +144,7 @@ export default function CameraForm(props) {
       }
 
       const result = await response.json();
-      router.push("/cameratrap");
+      router.push("/cameratrap/camera");
     } catch (error) {
       console.error("Error saving camera:", error);
       // You might want to show an error message to the user here

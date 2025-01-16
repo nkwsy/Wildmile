@@ -6,7 +6,7 @@ export async function GET(request) {
   try {
     await dbConnect();
     const { searchParams } = new URL(request.url);
-    const name = searchParams.get("name");
+    const name = searchParams.get("name").toUpperCase();
 
     if (!name) {
       return NextResponse.json(
@@ -15,7 +15,9 @@ export async function GET(request) {
       );
     }
 
-    const exists = await Camera.exists({ name });
+    const exists = await Camera.exists({
+      name: { $regex: new RegExp(name, "i") },
+    });
     return NextResponse.json({ exists: !!exists });
   } catch (error) {
     return NextResponse.json(
