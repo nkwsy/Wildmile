@@ -189,7 +189,6 @@ export function DeploymentImageAssigner({ deploymentId }) {
     } finally {
       setLoading(false);
       setConfirmationData(null);
-      window.location.reload();
     }
   };
 
