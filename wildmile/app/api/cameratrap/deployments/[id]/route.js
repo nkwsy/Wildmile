@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import Deployment from "models/cameratrap/Deployment";
-
+import { revalidatePath } from "next/cache";
 export const dynamic = "force-dynamic";
 
-export async function GET(request, { params }) {
+export async function GET(request, props) {
+  const params = await props.params;
   // Return empty response for new deployments
   if (params.id === "new") {
     return NextResponse.json({
@@ -103,7 +104,8 @@ export async function POST(request) {
   }
 }
 
-export async function PUT(request, { params }) {
+export async function PUT(request, props) {
+  const params = await props.params;
   await dbConnect();
   try {
     const body = await request.json();
@@ -174,6 +176,7 @@ export async function PUT(request, { params }) {
       );
     }
 
+    revalidatePath("/cameratrap/deployment");
     return NextResponse.json(updatedDeployment);
   } catch (error) {
     console.error("Error updating deployment:", error);

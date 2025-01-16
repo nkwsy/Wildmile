@@ -9,7 +9,8 @@ export const metadata = {
   title: "Camera Trap Edit Deployment",
   description: "Edit a deployment of a camera trap.",
 };
-export default async function Page({ params }) {
+export default async function Page(props) {
+  const params = await props.params;
   const session = await getSession({ headers });
   if (!session) return <AlertLogin />;
 

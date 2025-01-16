@@ -40,6 +40,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
   const IMAGES_PER_PAGE = 40;
   const [confirmationData, setConfirmationData] = useState(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [deployment, setDeployment] = useState(null);
 
   // Fetch folders and images for current path
   useEffect(() => {
@@ -71,6 +72,17 @@ export function DeploymentImageAssigner({ deploymentId }) {
 
     fetchData();
   }, [currentPath, showAll, page]);
+
+  useEffect(() => {
+    const fetchDeployment = async () => {
+      const response = await fetch(
+        `/api/cameratrap/deployments/${deploymentId}`
+      );
+      const data = await response.json();
+      setDeployment(data);
+    };
+    fetchDeployment();
+  }, [deploymentId]);
 
   // Handle folder navigation
   const handleFolderClick = (folderName) => {
@@ -258,7 +270,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
     <>
       <Paper p="md" radius="md" withBorder>
         <LoadingOverlay visible={loading} />
-
+        <Text>Add New Images to Deployment</Text>
         <Stack spacing="md">
           {/* Breadcrumbs */}
           <Breadcrumbs>
@@ -282,7 +294,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
               <Button
                 onClick={handleSelectAll}
                 variant="default"
-                leftIcon={<IconCheck size={16} />}
+                leftSection={<IconCheck size={16} />}
               >
                 {selectedImages.length === images.length
                   ? "Deselect All"
@@ -296,7 +308,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
                   onClick={() => checkAndConfirmAssignment(true)}
                   variant="default"
                   color="blue"
-                  leftIcon={<IconFolder size={16} />}
+                  leftSection={<IconFolder size={16} />}
                 >
                   Assign All in Folder
                 </Button>
@@ -309,7 +321,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
                   onClick={() => handleRemoveImages(selectedImages)}
                   color="red"
                   variant="light"
-                  leftIcon={<IconTrash size={16} />}
+                  leftSection={<IconTrash size={16} />}
                 >
                   Remove {selectedImages.length} Selected
                 </Button>

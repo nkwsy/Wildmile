@@ -8,7 +8,8 @@ export const metadata = {
   title: "B.U.R.P.  Samples",
   description: "Bugs In Urban Rivers Project.",
 };
-export default async function Page({ params }) {
+export default async function Page(props) {
+  const params = await props.params;
   const session = await getSession({ headers });
   if (!session) return <AlertLogin />;
 

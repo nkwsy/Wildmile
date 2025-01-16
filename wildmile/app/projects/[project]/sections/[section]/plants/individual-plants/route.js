@@ -27,7 +27,14 @@ import dbConnect from "lib/db/setup";
 //   console.log("Individual Plants:", individual_plants);
 //   return individual_plants;
 // }
-export async function GET(request, { params, query, res }) {
+export async function GET(request, props) {
+  const params = await props.params;
+
+  const {
+    query,
+    res
+  } = props;
+
   await dbConnect();
 
   const project_name = params.project; // 'a', 'b', or 'c'

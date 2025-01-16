@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import DeploymentLocation from "models/cameratrap/DeploymentLocations";
 
-export async function GET(request, { params }) {
+export async function GET(request, props) {
+  const params = await props.params;
   try {
     await dbConnect();
     const location = await DeploymentLocation.findById(params.id);
@@ -21,7 +22,8 @@ export async function GET(request, { params }) {
   }
 }
 
-export async function PUT(request, { params }) {
+export async function PUT(request, props) {
+  const params = await props.params;
   try {
     await dbConnect();
     const data = await request.json();
@@ -61,7 +63,8 @@ export async function PUT(request, { params }) {
   }
 }
 
-export async function DELETE(request, { params }) {
+export async function DELETE(request, props) {
+  const params = await props.params;
   try {
     await dbConnect();
     const location = await DeploymentLocation.findByIdAndDelete(params.id);

@@ -12,7 +12,7 @@ import { getPdf } from "/lib/pdfgen";
 
 export default async function Page(context) {
   // const router = useRouter();
-  const projectName = context.params.project;
+  const projectName = (await context.params).project;
   const sections = await getSections(projectName);
   const sectionCards = await (<IconCardGrid cards={sections.sections_card} />);
   // GeneratePDF("new2");

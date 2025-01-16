@@ -15,7 +15,7 @@ export async function getSession() {
       sameSite: "lax",
     }
   };
-  const session = await getIronSession(cookies(), sessionOptions);
+  const session = await getIronSession(await cookies(), sessionOptions);
   if (!session || !session.passport || !session.passport.user) {
     console.log("Session is invalid or incomplete");
     return null;
