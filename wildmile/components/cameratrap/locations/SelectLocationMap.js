@@ -2,7 +2,10 @@
 import { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import classes from "./LocationsMap.module.css";
+// import classes from "./LocationsMap.module.css";
+import classes from "/components/cameratrap/deployments/DeploymentMap.module.css";
+
+import { TextInput, Group, Button, SegmentedControl } from "@mantine/core";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY;
 
@@ -14,10 +17,12 @@ export default function SelectLocationMap({
   const map = useRef(null);
   const marker = useRef(null);
   const [mapReady, setMapReady] = useState(false);
+  const [mapStyle, setMapStyle] = useState("outdoors-v12");
 
   const [lng] = useState(-87.65);
   const [lat] = useState(41.9);
   const [zoom] = useState(15);
+  const [manualCoords, setManualCoords] = useState("");
 
   // Initialize map
   useEffect(() => {
@@ -49,6 +54,12 @@ export default function SelectLocationMap({
     };
   }, []);
 
+  // Handle style changes
+  useEffect(() => {
+    if (!map.current) return;
+    map.current.setStyle(`mapbox://styles/mapbox/${mapStyle}`);
+  }, [mapStyle]);
+
   // Handle initial coordinates
   useEffect(() => {
     if (!mapReady || !map.current) return;
@@ -57,7 +68,7 @@ export default function SelectLocationMap({
       updateMarker(initialCoordinates);
       map.current.flyTo({
         center: initialCoordinates,
-        zoom: 15,
+        // zoom: 15,
       });
     }
   }, [initialCoordinates, mapReady]);
@@ -75,12 +86,63 @@ export default function SelectLocationMap({
       .addTo(map.current);
   };
 
+  const handleManualCoordinates = () => {
+    // Split the input and clean up whitespace
+    const [lngStr, latStr] = manualCoords.split(",").map((s) => s.trim());
+    const lng = parseFloat(lngStr);
+    const lat = parseFloat(latStr);
+
+    // Validate coordinates
+    if (
+      isNaN(lng) ||
+      isNaN(lat) ||
+      lng < -180 ||
+      lng > 180 ||
+      lat < -90 ||
+      lat > 90
+    ) {
+      alert("Please enter valid coordinates in format: longitude, latitude");
+      return;
+    }
+
+    const coordinates = [lng, lat];
+    updateMarker(coordinates);
+    onLocationSelect?.(coordinates);
+
+    map.current.flyTo({
+      center: coordinates,
+      // zoom: 15,
+    });
+  };
+
   return (
-    <div className={classes.mapContainer}>
-      <div ref={mapContainer} className={classes.map} />
-      <div className={classes.instructions}>
-        Click on the map to select a location
+    <>
+      <div className={classes.mapContainer}>
+        <div ref={mapContainer} className={classes.map} />
+
+        <SegmentedControl
+          className={classes.styleSwitch}
+          value={mapStyle}
+          onChange={setMapStyle}
+          data={[
+            { label: "Outdoors", value: "outdoors-v12" },
+            { label: "Satellite ", value: "satellite-streets-v12" },
+          ]}
+        />
       </div>
-    </div>
+      <Group mt="sm">
+        <TextInput
+          label="Coordinates"
+          placeholder="-87.65, 41.9"
+          description="Format: longitude, latitude"
+          value={manualCoords}
+          onChange={(e) => setManualCoords(e.target.value)}
+          style={{ flex: 1 }}
+        />
+        <Button onClick={handleManualCoordinates} style={{ marginTop: "auto" }}>
+          Set Location
+        </Button>
+      </Group>
+    </>
   );
 }
