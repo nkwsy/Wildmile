@@ -142,7 +142,7 @@ export function AdvancedImageFilterControls({
       consensusStatus: null,
       species: [],
       accepted: null,
-      sort: "timestamp",
+      sort: "timestamp-desc",
       sortDirection: "desc",
     });
     if (onClearFilters) {
