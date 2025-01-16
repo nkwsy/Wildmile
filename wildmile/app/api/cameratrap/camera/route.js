@@ -1,10 +1,19 @@
 import { NextResponse } from "next/server";
 import dbConnect from "/lib/db/setup";
 import Camera from "/models/cameratrap/Camera";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { getSession } from "lib/getSession";
+import { headers } from "next/headers";
+
 export async function POST(request) {
   try {
     await dbConnect();
+
+    const session = await getSession({ headers });
+    if (!session) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
     const data = await request.json();
 
     if (!data.name || !data.model) {
@@ -30,6 +39,7 @@ export async function POST(request) {
       connectivity: data.connectivity,
       purchaseDate: data.purchaseDate,
       notes: data.notes,
+      creator: session._id,
       features: {
         nightVision: false,
         motionDetection: false,
@@ -41,6 +51,7 @@ export async function POST(request) {
     };
 
     const camera = await Camera.create(cameraData);
+    revalidateTag("cameras");
     return NextResponse.json(camera);
   } catch (error) {
     console.error("Camera creation error:", error);
@@ -100,6 +111,7 @@ export async function PUT(request) {
       );
     }
     revalidatePath("/cameratrap/camera");
+    revalidateTag("cameras");
     return NextResponse.json(camera);
   } catch (error) {
     console.error("Camera update error:", error);

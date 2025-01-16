@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import Deployment from "models/cameratrap/Deployment";
 import { revalidatePath } from "next/cache";
+import { getSession } from "lib/getSession";
+import { headers } from "next/headers";
 export const dynamic = "force-dynamic";
 
 export async function GET(request, props) {
@@ -48,6 +50,10 @@ export async function GET(request, props) {
 
 export async function POST(request) {
   await dbConnect();
+  const session = await getSession({ headers });
+  if (!session) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
   try {
     const body = await request.json();
 
@@ -58,6 +64,7 @@ export async function POST(request) {
       deploymentStart: new Date(body.deploymentStart),
       cameraHeight: body.cameraHeight || 0,
       cameraTilt: body.cameraTilt || 0,
+      creator: session._id,
     };
 
     // Only add deploymentEnd if it exists and is valid

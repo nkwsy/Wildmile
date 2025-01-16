@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import DeploymentLocation from "models/cameratrap/DeploymentLocations";
+import { getSession } from "lib/getSession";
+import { headers } from "next/headers";
 
 export async function GET() {
   try {
@@ -18,6 +20,12 @@ export async function GET() {
 export async function POST(request) {
   try {
     await dbConnect();
+
+    const session = await getSession({ headers });
+    if (!session) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
     const data = await request.json();
 
     const location = await DeploymentLocation.create({
@@ -32,6 +40,7 @@ export async function POST(request) {
       notes: data.notes,
       favorite: data.favorite || false,
       retired: data.retired || false,
+      creator: session._id,
     });
 
     return NextResponse.json(location);

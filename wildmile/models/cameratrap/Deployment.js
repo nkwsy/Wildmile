@@ -79,6 +79,10 @@ const DeploymentSchema = new mongoose.Schema(
     deploymentGroups: String,
     deploymentTags: [String],
     deploymentComments: String,
+    creator: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true, strictPopulate: false }
 );

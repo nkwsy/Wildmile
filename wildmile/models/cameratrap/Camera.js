@@ -27,6 +27,7 @@ const cameraSchema = new mongoose.Schema(
     notes: {
       type: String,
     },
+    comments: [{ type: String }],
     model: {
       // could store this info somewhere else and just reference it if using a lot of the same model
       // maybe in Resources?
@@ -84,6 +85,10 @@ const cameraSchema = new mongoose.Schema(
     location: {
       // don't no if this is needed.
       type: String, // E.g., "Front door", "Backyard"
+    },
+    creator: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   },
   { timestamps: true }
