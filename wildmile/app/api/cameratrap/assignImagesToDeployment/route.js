@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { revalidateTag, revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import dbConnect from "lib/db/setup";
 import CameratrapMedia from "models/cameratrap/Media";
 
@@ -37,6 +38,7 @@ export async function POST(request) {
       // Revalidate the media cache
       revalidateTag("media");
       revalidatePath("/cameratrap/deployment");
+      redirect(`/cameratrap/deployment/${deploymentId}`);
       return NextResponse.json({
         message: `Successfully assigned ${result.modifiedCount} images to deployment`,
       });

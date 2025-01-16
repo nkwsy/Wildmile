@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import Deployment from "models/cameratrap/Deployment";
-
+import { revalidatePath } from "next/cache";
 export const dynamic = "force-dynamic";
 
 export async function GET(request, props) {
@@ -176,6 +176,7 @@ export async function PUT(request, props) {
       );
     }
 
+    revalidatePath("/cameratrap/deployment");
     return NextResponse.json(updatedDeployment);
   } catch (error) {
     console.error("Error updating deployment:", error);
