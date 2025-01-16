@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { revalidateTag } from 'next/cache';
+import { revalidateTag, revalidatePath } from "next/cache";
 import dbConnect from "lib/db/setup";
 import CameratrapMedia from "models/cameratrap/Media";
 
@@ -14,19 +14,19 @@ export async function POST(request) {
       const pathParts = currentPath ? currentPath.split("/") : [];
 
       const query = {
-        "fileLocations": {
+        fileLocations: {
           $elemMatch: {
-            "relativePath": {
-              $all: pathParts.filter(Boolean)
-            }
-          }
-        }
+            relativePath: {
+              $all: pathParts.filter(Boolean),
+            },
+          },
+        },
       };
 
       // Add file extension check
       if (pathParts.length > 0) {
         query["fileLocations.relativePath"] = {
-          $elemMatch: { $regex: /\.(jpg|jpeg|png|gif)$/i }
+          $elemMatch: { $regex: /\.(jpg|jpeg|png|gif)$/i },
         };
       }
 
@@ -35,8 +35,8 @@ export async function POST(request) {
       });
 
       // Revalidate the media cache
-      revalidateTag('media');
-
+      revalidateTag("media");
+      revalidatePath("/cameratrap/deployment");
       return NextResponse.json({
         message: `Successfully assigned ${result.modifiedCount} images to deployment`,
       });

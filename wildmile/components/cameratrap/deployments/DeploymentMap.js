@@ -14,12 +14,64 @@ import {
   Divider,
   ActionIcon,
   Tooltip,
+  LoadingOverlay,
 } from "@mantine/core";
 import { IconX, IconCalendar, IconCamera, IconEdit } from "@tabler/icons-react";
 import Link from "next/link";
 import classes from "./DeploymentMap.module.css";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY;
+
+export function DeploymentMapObject() {
+  const [locations, setLocations] = useState([]);
+  const [deployments, setDeployments] = useState([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [deploymentsRes, locationsRes] = await Promise.all([
+          fetch("/api/cameratrap/deployments"),
+          fetch("/api/cameratrap/deploymentLocations"),
+        ]);
+
+        const [deploymentsData, locationsData] = await Promise.all([
+          deploymentsRes.json(),
+          locationsRes.json(),
+        ]);
+
+        setDeployments(deploymentsData);
+        setLocations(locationsData);
+        // const locationsRes = await Promise.all([
+        //   // fetch("/api/cameratrap/deployments"),
+        //   fetch("/api/cameratrap/deploymentLocations"),
+        // ]);
+
+        // // const [deploymentsData, locationsData] = await Promise.all([
+        // //   deploymentsRes.json(),
+        // //   locationsRes.json(),
+        // // ]);
+
+        // // setDeployments(deploymentsData);
+        // const locationsData = await Promise.all(locationsRes.json());
+        // setLocations(locationsData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return (
+    <>
+      <LoadingOverlay visible={loading} />
+      <DeploymentMap locations={locations} />
+    </>
+  );
+}
 
 export default function DeploymentMap({ locations = [] }) {
   const mapContainer = useRef(null);

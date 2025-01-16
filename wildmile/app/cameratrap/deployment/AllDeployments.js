@@ -13,16 +13,22 @@ import {
   Divider,
   Tooltip,
   ActionIcon,
+  Menu,
+  TextInput,
 } from "@mantine/core";
 import {
   IconMapPin,
   IconCamera,
   IconCalendar,
   IconTag,
+  IconDots,
+  IconEdit,
+  IconTrash,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import DeploymentMap from "components/cameratrap/deployments/DeploymentMap";
 import classes from "/styles/imagecard.module.css";
+import { DataTable } from "mantine-datatable";
 
 const DeploymentCard = ({ deployment }) => (
   <Card
@@ -138,6 +144,14 @@ export default function AllDeployments() {
   const [deployments, setDeployments] = useState([]);
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedRecords, setSelectedRecords] = useState([]);
+  const [sortStatus, setSortStatus] = useState({
+    columnAccessor: "locationName",
+    direction: "asc",
+  });
+  const [isAddingNew, setIsAddingNew] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [editedRecord, setEditedRecord] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -190,17 +204,224 @@ export default function AllDeployments() {
     isActive: !deployment.deploymentEnd,
   }));
 
+  const columns = [
+    {
+      accessor: "locationName",
+      title: "Location",
+      render: (record) => (
+        <Tooltip label={record.locationName} multiline width={220}>
+          <Text lineClamp={1}>{record.locationName}</Text>
+        </Tooltip>
+      ),
+    },
+    {
+      accessor: "camera",
+      title: "Camera",
+      render: (record) => (
+        <Stack spacing={0}>
+          <Text lineClamp={1}>{record.camera}</Text>
+          {record.cameraModel && (
+            <Text size="xs" c="dimmed" lineClamp={1}>
+              {record.cameraModel}
+              {record.serialNumber && ` (${record.serialNumber})`}
+            </Text>
+          )}
+        </Stack>
+      ),
+    },
+    {
+      accessor: "dates",
+      title: "Deployment Period",
+      render: (record) => (
+        <Text size="sm">
+          {new Date(record.start).toLocaleDateString()}
+          {record.end
+            ? ` - ${new Date(record.end).toLocaleDateString()}`
+            : " - Present"}
+        </Text>
+      ),
+    },
+    {
+      accessor: "status",
+      title: "Status",
+      render: (record) => (
+        <Badge
+          size="sm"
+          variant="light"
+          color={record.isActive ? "green" : "gray"}
+        >
+          {record.isActive ? "Active" : "Inactive"}
+        </Badge>
+      ),
+    },
+    {
+      accessor: "projectArea",
+      title: "Project Area",
+      render: (record) => {
+        if (editingId === record.id) {
+          return (
+            <TextInput
+              value={editedRecord.projectArea || ""}
+              onChange={(e) =>
+                setEditedRecord({
+                  ...editedRecord,
+                  projectArea: e.target.value,
+                })
+              }
+            />
+          );
+        }
+        return <Text>{record.projectArea || "-"}</Text>;
+      },
+    },
+    {
+      accessor: "zone",
+      title: "Zone",
+      render: (record) => {
+        if (editingId === record.id) {
+          return (
+            <TextInput
+              value={editedRecord.zone || ""}
+              onChange={(e) =>
+                setEditedRecord({ ...editedRecord, zone: e.target.value })
+              }
+            />
+          );
+        }
+        return <Text>{record.zone || "-"}</Text>;
+      },
+    },
+    {
+      accessor: "tags",
+      title: "Tags",
+      render: (record) => {
+        if (editingId === record.id) {
+          return (
+            <TextInput
+              value={editedRecord.tags.join(", ")}
+              onChange={(e) =>
+                setEditedRecord({
+                  ...editedRecord,
+                  tags: e.target.value
+                    .split(",")
+                    .map((tag) => tag.trim())
+                    .filter(Boolean),
+                })
+              }
+              placeholder="Comma-separated tags"
+            />
+          );
+        }
+        return (
+          <Group spacing={4}>
+            {record.tags.map((tag, i) => (
+              <Badge key={i} size="xs" variant="light">
+                {tag}
+              </Badge>
+            ))}
+          </Group>
+        );
+      },
+    },
+    {
+      accessor: "comments",
+      title: "Comments",
+      render: (record) => {
+        if (editingId === record.id) {
+          return (
+            <TextInput
+              value={editedRecord.comments || ""}
+              onChange={(e) =>
+                setEditedRecord({ ...editedRecord, comments: e.target.value })
+              }
+            />
+          );
+        }
+        return (
+          <Tooltip label={record.comments} multiline width={200}>
+            <Text lineClamp={1}>{record.comments || "-"}</Text>
+          </Tooltip>
+        );
+      },
+    },
+    {
+      accessor: "actions",
+      title: "",
+      render: (record) => (
+        <Menu position="bottom-end" withinPortal>
+          <Menu.Target>
+            <ActionIcon variant="subtle">
+              <IconDots size={16} />
+            </ActionIcon>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item
+              component={Link}
+              href={`/cameratrap/deployment/edit/${record.id}`}
+              leftSection={<IconEdit size={14} />}
+            >
+              Edit
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+      ),
+    },
+  ];
+
+  const sortedRecords = [
+    ...(isAddingNew ? [...deploymentCards, newDeployment] : deploymentCards),
+  ].sort((a, b) => {
+    const { columnAccessor, direction } = sortStatus;
+
+    let compareA = a[columnAccessor] ?? "";
+    let compareB = b[columnAccessor] ?? "";
+
+    // Special handling for dates column
+    if (columnAccessor === "dates") {
+      compareA = new Date(a.start || "").getTime();
+      compareB = new Date(b.start || "").getTime();
+    }
+
+    // Handle string comparison
+    if (typeof compareA === "string") {
+      compareA = compareA.toLowerCase();
+      compareB = compareB.toLowerCase();
+    }
+
+    if (compareA < compareB) {
+      return direction === "asc" ? -1 : 1;
+    }
+    if (compareA > compareB) {
+      return direction === "asc" ? 1 : -1;
+    }
+    return 0;
+  });
+
   return (
     <Container size="xl" pos="relative">
       <LoadingOverlay visible={loading} />
       <Stack spacing="xl">
         <DeploymentMap locations={locations} />
 
-        <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing="sm">
-          {deploymentCards.map((deployment) => (
-            <DeploymentCard key={deployment.id} deployment={deployment} />
-          ))}
-        </SimpleGrid>
+        <DataTable
+          withBorder
+          borderRadius="sm"
+          withColumnBorders
+          striped
+          highlightOnHover
+          records={sortedRecords}
+          selectedRecords={selectedRecords}
+          onSelectedRecordsChange={setSelectedRecords}
+          sortStatus={sortStatus}
+          onSortStatusChange={setSortStatus}
+          defaultColumnProps={{
+            sortable: true,
+          }}
+          columns={columns.map((column) => ({
+            ...column,
+            sortable: column.accessor !== "actions",
+          }))}
+        />
       </Stack>
     </Container>
   );

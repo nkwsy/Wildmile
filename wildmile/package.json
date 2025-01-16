@@ -49,6 +49,7 @@
     "jspdf-autotable": "^3.8.4",
     "konva": "^9.3.18",
     "lucide-react": "^0.471.0",
+    "mantine-datatable": "^7.15.1",
     "mapbox-gl": "^3.9.2",
     "mongoose": "^8.9.4",
     "mongoose-delete": "^1.0.2",

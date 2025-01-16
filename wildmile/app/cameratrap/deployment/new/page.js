@@ -8,10 +8,17 @@ export const metadata = {
   description: "Create or edit a camera trap deployment.",
 };
 
+import { DeploymentMapObject } from "components/cameratrap/deployments/DeploymentMap";
+
 export default async function Page({ params }) {
   const session = await getSession({ headers });
   if (!session) return <AlertLogin />;
 
   // Pass null deploymentId for new deployments
-  return <DeploymentForm deploymentId={null} />;
+  return (
+    <>
+      <DeploymentForm deploymentId={null} />
+      <DeploymentMapObject />
+    </>
+  );
 }

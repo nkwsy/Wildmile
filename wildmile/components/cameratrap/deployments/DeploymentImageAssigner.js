@@ -40,6 +40,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
   const IMAGES_PER_PAGE = 40;
   const [confirmationData, setConfirmationData] = useState(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [deployment, setDeployment] = useState(null);
 
   // Fetch folders and images for current path
   useEffect(() => {
@@ -71,6 +72,17 @@ export function DeploymentImageAssigner({ deploymentId }) {
 
     fetchData();
   }, [currentPath, showAll, page]);
+
+  useEffect(() => {
+    const fetchDeployment = async () => {
+      const response = await fetch(
+        `/api/cameratrap/deployments/${deploymentId}`
+      );
+      const data = await response.json();
+      setDeployment(data);
+    };
+    fetchDeployment();
+  }, [deploymentId]);
 
   // Handle folder navigation
   const handleFolderClick = (folderName) => {
@@ -177,6 +189,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
     } finally {
       setLoading(false);
       setConfirmationData(null);
+      window.location.reload();
     }
   };
 
@@ -258,7 +271,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
     <>
       <Paper p="md" radius="md" withBorder>
         <LoadingOverlay visible={loading} />
-
+        <Text>Add New Images to Deployment</Text>
         <Stack spacing="md">
           {/* Breadcrumbs */}
           <Breadcrumbs>
