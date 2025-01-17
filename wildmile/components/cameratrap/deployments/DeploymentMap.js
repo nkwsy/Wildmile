@@ -76,6 +76,123 @@ export function DeploymentMapObject() {
   );
 }
 
+function LocationDrawer() {
+  const { selectedLocation, setSelectedLocation } = useDeploymentMap();
+  const DeploymentItem = ({ deployment, isActive }) => (
+    <Card
+      withBorder
+      mb="xs"
+      component={Link}
+      href={`/cameratrap/deployment/edit/${deployment._id}`}
+      sx={{ cursor: "pointer" }}
+    >
+      <Stack spacing="xs">
+        <Group position="apart">
+          <Group spacing="xs">
+            <IconCamera size={16} />
+            <Text size="sm" weight={500}>
+              {deployment.cameraId.name}
+            </Text>
+            {deployment.cameraId.manufacturer && (
+              <Text size="xs" c="dimmed">
+                {deployment.cameraId.manufacturer}
+              </Text>
+            )}
+            {deployment.cameraId.model && (
+              <Text size="xs" c="dimmed">
+                {deployment.cameraId.model}
+              </Text>
+            )}
+          </Group>
+          <Group spacing="xs">
+            <Badge color={isActive ? "green" : "gray"}>
+              {isActive ? "Active" : "Inactive"}
+            </Badge>
+          </Group>
+        </Group>
+        <Group spacing="xs">
+          <IconCalendar size={16} />
+          <Text size="sm">
+            {new Date(deployment.deploymentStart).toLocaleDateString()}
+            {deployment.deploymentEnd
+              ? ` - ${new Date(deployment.deploymentEnd).toLocaleDateString()}`
+              : " - Present"}
+          </Text>
+        </Group>
+        {deployment.setupBy && (
+          <Text size="sm" color="dimmed">
+            Setup by: {deployment.setupBy}
+          </Text>
+        )}
+      </Stack>
+    </Card>
+  );
+
+  return (
+    <Drawer
+      opened={!!selectedLocation}
+      onClose={() => setSelectedLocation(null)}
+      position="right"
+      size="md"
+      title={
+        <Group position="apart">
+          <Title order={3}>{selectedLocation?.locationName}</Title>
+          <ActionIcon onClick={() => setSelectedLocation(null)}>
+            <IconX size={18} />
+          </ActionIcon>
+        </Group>
+      }
+    >
+      {selectedLocation && (
+        <Stack>
+          {/* Location Details */}
+          <Card withBorder>
+            <Stack spacing="xs">
+              {selectedLocation.projectArea && (
+                <Text>Project Area: {selectedLocation.projectArea}</Text>
+              )}
+              {selectedLocation.zone && (
+                <Text>Zone: {selectedLocation.zone}</Text>
+              )}
+              {selectedLocation.notes && (
+                <Text>Notes: {selectedLocation.notes}</Text>
+              )}
+            </Stack>
+          </Card>
+
+          {/* Active Deployments */}
+          {selectedLocation.deployments.active.length > 0 && (
+            <>
+              <Title order={4}>Active Deployments</Title>
+              {selectedLocation.deployments.active.map((deployment) => (
+                <DeploymentItem
+                  key={deployment._id}
+                  deployment={deployment}
+                  isActive={true}
+                />
+              ))}
+            </>
+          )}
+
+          {/* Inactive Deployments */}
+          {selectedLocation.deployments.inactive.length > 0 && (
+            <>
+              <Title order={4}>Previous Deployments</Title>
+              {selectedLocation.deployments.inactive.map((deployment) => (
+                <DeploymentItem
+                  key={deployment._id}
+                  deployment={deployment}
+                  isActive={false}
+                />
+              ))}
+            </>
+          )}
+        </Stack>
+      )}
+    </Drawer>
+  );
+}
+
 export default function DeploymentMap({ locations = [] }) {
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -252,56 +369,6 @@ export default function DeploymentMap({ locations = [] }) {
     };
   }, [locations, mapReady, showLabels]);
 
-  const DeploymentItem = ({ deployment, isActive }) => (
-    <Card
-      withBorder
-      mb="xs"
-      component={Link}
-      href={`/cameratrap/deployment/edit/${deployment._id}`}
-      sx={{ cursor: "pointer" }}
-    >
-      <Stack spacing="xs">
-        <Group position="apart">
-          <Group spacing="xs">
-            <IconCamera size={16} />
-            <Text size="sm" weight={500}>
-              {deployment.cameraId.name}
-            </Text>
-            {deployment.cameraId.manufacturer && (
-              <Text size="xs" c="dimmed">
-                {deployment.cameraId.manufacturer}
-              </Text>
-            )}
-            {deployment.cameraId.model && (
-              <Text size="xs" c="dimmed">
-                {deployment.cameraId.model}
-              </Text>
-            )}
-          </Group>
-          <Group spacing="xs">
-            <Badge color={isActive ? "green" : "gray"}>
-              {isActive ? "Active" : "Inactive"}
-            </Badge>
-          </Group>
-        </Group>
-        <Group spacing="xs">
-          <IconCalendar size={16} />
-          <Text size="sm">
-            {new Date(deployment.deploymentStart).toLocaleDateString()}
-            {deployment.deploymentEnd
-              ? ` - ${new Date(deployment.deploymentEnd).toLocaleDateString()}`
-              : " - Present"}
-          </Text>
-        </Group>
-        {deployment.setupBy && (
-          <Text size="sm" color="dimmed">
-            Setup by: {deployment.setupBy}
-          </Text>
-        )}
-      </Stack>
-    </Card>
-  );
-
   return (
     <>
       <Card withBorder>
@@ -334,68 +401,6 @@ export default function DeploymentMap({ locations = [] }) {
           </div>
         </div>
       </Card>
-
-      <Drawer
-        opened={!!selectedLocation}
-        onClose={() => setSelectedLocation(null)}
-        position="right"
-        size="md"
-        title={
-          <Group position="apart">
-            <Title order={3}>{selectedLocation?.locationName}</Title>
-            <ActionIcon onClick={() => setSelectedLocation(null)}>
-              <IconX size={18} />
-            </ActionIcon>
-          </Group>
-        }
-      >
-        {selectedLocation && (
-          <Stack>
-            {/* Location Details */}
-            <Card withBorder>
-              <Stack spacing="xs">
-                {selectedLocation.projectArea && (
-                  <Text>Project Area: {selectedLocation.projectArea}</Text>
-                )}
-                {selectedLocation.zone && (
-                  <Text>Zone: {selectedLocation.zone}</Text>
-                )}
-                {selectedLocation.notes && (
-                  <Text>Notes: {selectedLocation.notes}</Text>
-                )}
-              </Stack>
-            </Card>
-
-            {/* Active Deployments */}
-            {selectedLocation.deployments.active.length > 0 && (
-              <>
-                <Title order={4}>Active Deployments</Title>
-                {selectedLocation.deployments.active.map((deployment) => (
-                  <DeploymentItem
-                    key={deployment._id}
-                    deployment={deployment}
-                    isActive={true}
-                  />
-                ))}
-              </>
-            )}
-
-            {/* Inactive Deployments */}
-            {selectedLocation.deployments.inactive.length > 0 && (
-              <>
-                <Title order={4}>Previous Deployments</Title>
-                {selectedLocation.deployments.inactive.map((deployment) => (
-                  <DeploymentItem
-                    key={deployment._id}
-                    deployment={deployment}
-                    isActive={false}
-                  />
-                ))}
-              </>
-            )}
-          </Stack>
-        )}
-      </Drawer>
     </>
   );
 }

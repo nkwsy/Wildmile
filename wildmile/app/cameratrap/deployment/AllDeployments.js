@@ -402,7 +402,7 @@ export default function AllDeployments() {
       <LoadingOverlay visible={loading} />
       <Stack spacing="xl">
         <DeploymentMap locations={locations} />
-
+        <LocationDrawer />
         <DataTable
           withBorder
           borderRadius="sm"
