@@ -27,6 +27,7 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import DeploymentMap from "components/cameratrap/deployments/DeploymentMap";
+import { LocationDrawer } from "components/cameratrap/deployments/DeploymentMap";
 import classes from "/styles/imagecard.module.css";
 import { DataTable } from "mantine-datatable";
 
