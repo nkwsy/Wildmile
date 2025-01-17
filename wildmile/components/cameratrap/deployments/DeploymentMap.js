@@ -80,10 +80,13 @@ export default function DeploymentMap({ locations = [] }) {
   const [mapReady, setMapReady] = useState(false);
   const [mapStyle, setMapStyle] = useState("outdoors-v12");
   const [selectedLocation, setSelectedLocation] = useState(null);
-
+  const [hoveredLocation, setHoveredLocation] = useState(null);
   const [lng] = useState(-87.65);
   const [lat] = useState(41.9);
   const [zoom] = useState(9);
+  const [showLabels, setShowLabels] = useState(false);
+  const labelsRef = useRef({});
+  const LABEL_ZOOM_THRESHOLD = 14; // Adjust this value as needed
 
   // Initialize map
   useEffect(() => {
@@ -113,45 +116,137 @@ export default function DeploymentMap({ locations = [] }) {
     map.current.setStyle(`mapbox://styles/mapbox/${mapStyle}`);
   }, [mapStyle]);
 
-  // Handle markers
+  // Add this effect to handle zoom changes
+  useEffect(() => {
+    if (!map.current) return;
+
+    const handleZoom = () => {
+      const currentZoom = map.current.getZoom();
+      setShowLabels(currentZoom >= LABEL_ZOOM_THRESHOLD);
+    };
+
+    map.current.on("zoom", handleZoom);
+
+    return () => {
+      if (map.current) {
+        map.current.off("zoom", handleZoom);
+      }
+    };
+  }, []);
+
+  // Modify the markers effect to include labels
   useEffect(() => {
     if (!mapReady || !map.current || !locations.length) return;
 
-    // Clear existing markers
+    // Clear existing markers and labels
     Object.values(markersRef.current).forEach((marker) => marker.remove());
+    Object.values(labelsRef.current).forEach((label) => label.remove());
     markersRef.current = {};
+    labelsRef.current = {};
+
+    const getRandomAngle = () => {
+      const angles = [30, 60, 90, -30, -60, -90];
+      return angles[Math.floor(Math.random() * angles.length)];
+    };
 
     locations.forEach((location) => {
       if (!location.location?.coordinates) return;
 
       const coordinates = location.location.coordinates;
       const activeDeployments = location.deployments?.active || [];
-      const inactiveDeployments = location.deployments?.inactive || [];
+      const angle = getRandomAngle();
+      const lineLength = 60;
 
       try {
+        // Create marker element
         const el = document.createElement("div");
         el.className = `${classes.marker} ${
           activeDeployments.length > 0 ? classes.active : classes.inactive
         }`;
-
-        // Add title attribute for hover effect
         el.title = location.locationName;
-
-        // Add click handler
-        el.addEventListener("click", () => {
-          setSelectedLocation(location);
+        el.addEventListener("click", () => setSelectedLocation(location));
+        el.addEventListener("mouseenter", () => {
+          labelEl.style.opacity = "1";
+          labelEl.style.zIndex = "2000";
+        });
+        el.addEventListener("mouseleave", () => {
+          labelEl.style.opacity = "0.5";
+          labelEl.style.zIndex = "1000";
         });
 
+        // Create label container
+        const labelContainer = document.createElement("div");
+        labelContainer.style.position = "relative";
+        labelContainer.style.width = "0";
+        labelContainer.style.height = "0";
+
+        // Create leader line element
+        const lineEl = document.createElement("div");
+        // lineEl.className = classes.leaderLine;
+        // lineEl.style.height = `${lineLength}px`;
+        // lineEl.style.transform = `rotate(${angle}deg)`;
+
+        // Create label element
+        const labelEl = document.createElement("div");
+        labelEl.className = classes.markerLabel;
+        labelEl.textContent = location.locationName;
+        labelEl.style.zIndex = 1000;
+
+        // Position label at end of line
+        const radians = (angle * Math.PI) / 180;
+        // const labelX = Math.sin(radians) * lineLength;
+        // const labelY = -Math.cos(radians) * lineLength;
+
+        const offset = 12;
+        const labelX = offset;
+        const labelY = -offset;
+
+        labelEl.style.transform = `translate(${labelX}px, ${labelY}px)`;
+
+        // Append elements to container
+        // labelContainer.appendChild(lineEl);
+        labelContainer.appendChild(labelEl);
+
+        // Set initial visibility
+        const currentZoom = map.current.getZoom();
+        labelContainer.style.display =
+          currentZoom >= LABEL_ZOOM_THRESHOLD ? "block" : "none";
+
+        // Create and add marker
         const marker = new mapboxgl.Marker(el)
           .setLngLat(coordinates)
           .addTo(map.current);
 
+        // Create and add label
+        const label = new mapboxgl.Marker(labelContainer)
+          .setLngLat(coordinates)
+          .addTo(map.current);
+
+        const updateLabelVisibility = () => {
+          if (!map.current) return;
+          const currentZoom = map.current.getZoom();
+          labelContainer.style.display =
+            currentZoom >= LABEL_ZOOM_THRESHOLD ? "block" : "none";
+        };
+
+        map.current.on("move", updateLabelVisibility);
+        map.current.on("zoom", updateLabelVisibility);
+        updateLabelVisibility();
+
         markersRef.current[location._id] = marker;
+        labelsRef.current[location._id] = label;
       } catch (error) {
         console.error("Error adding marker:", error, location);
       }
     });
-  }, [locations, mapReady]);
+
+    return () => {
+      if (map.current) {
+        map.current.off("move", null);
+        map.current.off("zoom", null);
+      }
+    };
+  }, [locations, mapReady, showLabels]);
 
   const DeploymentItem = ({ deployment, isActive }) => (
     <Card
