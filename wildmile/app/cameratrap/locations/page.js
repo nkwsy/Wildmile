@@ -8,17 +8,19 @@ import {
   Card,
   Text,
   ActionIcon,
+  Alert,
 } from "@mantine/core";
 import { IconEdit, IconTrash, IconStar } from "@tabler/icons-react";
 import LocationForm from "components/cameratrap/locations/LocationForm";
-import LocationsMap from "components/cameratrap/locations/LocationsMap";
+import { useDeploymentMap } from "components/cameratrap/deployments/DeploymentMapContext";
+import { DeploymentMapObject } from "components/cameratrap/deployments/DeploymentMap";
 import classes from "./LocationsPage.module.css";
 
 export default function LocationsPage() {
   const [locations, setLocations] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { selectedLocation, setSelectedLocation } = useDeploymentMap();
 
   const fetchLocations = async () => {
     try {
@@ -131,11 +133,7 @@ export default function LocationsPage() {
           </Card>
 
           <Card>
-            <LocationsMap
-              locations={locations}
-              selectedLocation={selectedLocation}
-              onLocationSelect={setSelectedLocation}
-            />
+            <DeploymentMapObject />
           </Card>
         </Group>
       </Stack>

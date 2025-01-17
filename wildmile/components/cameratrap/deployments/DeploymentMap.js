@@ -19,13 +19,14 @@ import {
 import { IconX, IconCalendar, IconCamera, IconEdit } from "@tabler/icons-react";
 import Link from "next/link";
 import classes from "./DeploymentMap.module.css";
+import { useDeploymentMap } from "./DeploymentMapContext";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY;
 
 export function DeploymentMapObject() {
   const [locations, setLocations] = useState([]);
   const [deployments, setDeployments] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -65,9 +66,11 @@ export function DeploymentMapObject() {
     fetchData();
   }, []);
 
+  if (loading) return <LoadingOverlay visible={loading} />;
+
   return (
     <>
-      <LoadingOverlay visible={loading} />
+      {/* <LoadingOverlay visible={loading} /> */}
       <DeploymentMap locations={locations} />
     </>
   );
@@ -79,7 +82,7 @@ export default function DeploymentMap({ locations = [] }) {
   const markersRef = useRef({});
   const [mapReady, setMapReady] = useState(false);
   const [mapStyle, setMapStyle] = useState("outdoors-v12");
-  const [selectedLocation, setSelectedLocation] = useState(null);
+  const { selectedLocation, setSelectedLocation } = useDeploymentMap();
   const [hoveredLocation, setHoveredLocation] = useState(null);
   const [lng] = useState(-87.65);
   const [lat] = useState(41.9);
@@ -88,6 +91,7 @@ export default function DeploymentMap({ locations = [] }) {
   const labelsRef = useRef({});
   const LABEL_ZOOM_THRESHOLD = 14; // Adjust this value as needed
 
+  console.log("locations", locations);
   // Initialize map
   useEffect(() => {
     if (map.current) return;
