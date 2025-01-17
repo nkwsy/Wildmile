@@ -21,6 +21,7 @@ import Species from "./SpeciesCard";
 const predefinedSpecies = {
   Mammals: [
     "Mammalia",
+    "Canis familiaris",
     "Canis latrans",
     "Castor canadensis",
     "Ondatra zibethicus",
