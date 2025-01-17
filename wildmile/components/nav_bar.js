@@ -15,7 +15,12 @@ import {
   Center,
   rem,
 } from "@mantine/core";
-import { IconLogout, IconSettings, IconChevronDown } from "@tabler/icons-react";
+import {
+  IconLogout,
+  IconSettings,
+  IconChevronDown,
+  IconAdmin,
+} from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useUser } from "../lib/hooks";
@@ -210,6 +215,15 @@ export function HeaderNav({ children }) {
                         Account settings
                       </Menu.Item>
                     </Link>
+                    {user.roles.length > 0 && (
+                      <Link href="/admin">
+                        <Menu.Item
+                          icon={<IconAdmin size="0.9rem" stroke={1.5} />}
+                        >
+                          Admin
+                        </Menu.Item>
+                      </Link>
+                    )}
                     <Menu.Item
                       icon={<IconLogout size="0.9rem" stroke={1.5} />}
                       onClick={handleLogout}

@@ -12,13 +12,14 @@ export async function GET() {
       return NextResponse.json({});
     }
 
-    const { email, ranger, admin, profile, _id } = user;
+    const { email, ranger, admin, profile, _id, roles } = user;
     return NextResponse.json({
       user: {
         email,
         ranger: ranger || false,
         admin: admin || false,
         profile,
+        roles,
         _id,
       },
     });
