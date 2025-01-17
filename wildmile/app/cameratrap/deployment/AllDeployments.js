@@ -324,27 +324,27 @@ export default function AllDeployments() {
         );
       },
     },
-    {
-      accessor: "comments",
-      title: "Comments",
-      render: (record) => {
-        if (editingId === record.id) {
-          return (
-            <TextInput
-              value={editedRecord.comments || ""}
-              onChange={(e) =>
-                setEditedRecord({ ...editedRecord, comments: e.target.value })
-              }
-            />
-          );
-        }
-        return (
-          <Tooltip label={record.comments} multiline width={200}>
-            <Text lineClamp={1}>{record.comments || "-"}</Text>
-          </Tooltip>
-        );
-      },
-    },
+    // {
+    //   accessor: "comments",
+    //   title: "Comments",
+    //   render: (record) => {
+    //     if (editingId === record.id) {
+    //       return (
+    //         <TextInput
+    //           value={editedRecord.comments || ""}
+    //           onChange={(e) =>
+    //             setEditedRecord({ ...editedRecord, comments: e.target.value })
+    //           }
+    //         />
+    //       );
+    //     }
+    //     return (
+    //       <Tooltip label={record.comments} multiline width={200}>
+    //         <Text lineClamp={1}>{record.comments || "-"}</Text>
+    //       </Tooltip>
+    //     );
+    //   },
+    // },
     {
       accessor: "actions",
       title: "",
