@@ -76,7 +76,7 @@ export function DeploymentMapObject() {
   );
 }
 
-function LocationDrawer() {
+export function LocationDrawer() {
   const { selectedLocation, setSelectedLocation } = useDeploymentMap();
   const DeploymentItem = ({ deployment, isActive }) => (
     <Card
