@@ -67,7 +67,18 @@ export async function DELETE(request, props) {
   const params = await props.params;
   try {
     await dbConnect();
+    const deployments = await Deployment.find({ location: params.id });
+    if (deployments.length > 0) {
+      return NextResponse.json(
+        {
+          error:
+            "Location has deployments, location should be retired rather than deleted",
+        },
+        { status: 400 }
+      );
+    }
     const location = await DeploymentLocation.findByIdAndDelete(params.id);
+
     if (!location) {
       return NextResponse.json(
         { error: "Location not found" },
