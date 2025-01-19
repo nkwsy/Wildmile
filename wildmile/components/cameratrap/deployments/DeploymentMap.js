@@ -206,7 +206,7 @@ export default function DeploymentMap({ locations = [] }) {
   const [zoom] = useState(9);
   const [showLabels, setShowLabels] = useState(false);
   const labelsRef = useRef({});
-  const LABEL_ZOOM_THRESHOLD = 14; // Adjust this value as needed
+  const LABEL_ZOOM_THRESHOLD = 12; // Adjust this value as needed
 
   console.log("locations", locations);
   // Initialize map

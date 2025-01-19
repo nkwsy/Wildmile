@@ -32,6 +32,7 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import { SpeciesConsensusBadges } from "../SpeciesConsensusBadges";
+import { ImageGallery } from "../images/ImageGallery";
 
 export function DeploymentImages({ deploymentId }) {
   const [images, setImages] = useState([]);
@@ -207,74 +208,12 @@ export function DeploymentImages({ deploymentId }) {
             </Menu>
           </Group>
         </Group>
-
         {images.length === 0 && !loading ? (
           <Text color="dimmed" align="center" py="xl">
             No images found for this deployment
           </Text>
         ) : (
-          <>
-            <Grid>
-              {images.map((image) => (
-                <Grid.Col
-                  key={image._id}
-                  span={{ base: 12, sm: 6, md: 4, lg: 3 }}
-                >
-                  <Paper p="xs" withBorder>
-                    <Stack spacing="xs">
-                      <Image
-                        src={image.publicURL}
-                        alt={image.relativePath[image.relativePath.length - 1]}
-                        radius="sm"
-                        // height={200}
-                        fit="cover"
-                        withPlaceholder
-                      />
-                      <Group position="apart" noWrap>
-                        <Text size="xs" truncate>
-                          {image.relativePath[image.relativePath.length - 1]}
-                        </Text>
-                        {image.reviewCount > 0 && (
-                          <Badge
-                            size="sm"
-                            variant="light"
-                            leftSection={<IconEye size={10} />}
-                          >
-                            {image.reviewCount}
-                          </Badge>
-                        )}
-                      </Group>
-                      <Text size="xs" color="dimmed">
-                        {new Date(image.timestamp).toLocaleString()}
-                      </Text>
-                      <Group spacing="xs">
-                        {image.speciesConsensus && (
-                          <SpeciesConsensusBadges
-                            speciesConsensus={image.speciesConsensus}
-                          />
-                        )}
-                        {image.favoriteCount > 0 && (
-                          <Badge size="sm" variant="light" color="pink">
-                            <IconHeart size={10} /> {image.favoriteCount}
-                          </Badge>
-                        )}
-                      </Group>
-                    </Stack>
-                  </Paper>
-                </Grid.Col>
-              ))}
-            </Grid>
-
-            {totalImages > IMAGES_PER_PAGE && (
-              <Pagination
-                total={Math.ceil(totalImages / IMAGES_PER_PAGE)}
-                value={page}
-                onChange={setPage}
-                position="center"
-                mt="md"
-              />
-            )}
-          </>
+            <ImageGallery images={images} />
         )}
       </Stack>
     </Paper>

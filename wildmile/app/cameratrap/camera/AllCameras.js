@@ -27,7 +27,7 @@ export function CameraCards(allCameras) {
       manufacturer: camera.manufacturer || "",
       tags: camera.cameraTags || "",
       actions: {
-        edit: `/cameratrap/camera/${camera._id}/edit`,
+        edit: `/cameratrap/camera/${camera._id}`,
         view: `/cameratrap/camera/${camera._id}`,
       },
     }))

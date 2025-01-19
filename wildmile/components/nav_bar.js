@@ -19,7 +19,7 @@ import {
   IconLogout,
   IconSettings,
   IconChevronDown,
-  IconAdmin,
+  IconBriefcase,
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
@@ -218,7 +218,7 @@ export function HeaderNav({ children }) {
                     {user.roles.length > 0 && (
                       <Link href="/admin">
                         <Menu.Item
-                          icon={<IconAdmin size="0.9rem" stroke={1.5} />}
+                          icon={<IconBriefcase size="0.9rem" stroke={1.5} />}
                         >
                           Admin
                         </Menu.Item>
