@@ -93,6 +93,8 @@ export default function CameraTrapHomePage() {
     return <LoadingOverlay visible />;
   }
 
+  console.log(user);
+
   return (
     <>
       <Container maw="85%" my="5rem">
@@ -105,7 +107,7 @@ export default function CameraTrapHomePage() {
               Collecting and sharing data about Urban River's projects.
             </Text>
             <CameraTrapCards user={user} />
-            {user && (
+            {user && user.roles.includes("CameraManager") && (
               <Fieldset legend="Management Tools">
                 <CameraTrapMgmtCards user={user} />
               </Fieldset>

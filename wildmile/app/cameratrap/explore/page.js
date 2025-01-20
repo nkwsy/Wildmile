@@ -29,6 +29,7 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalImages, setTotalImages] = useState(0);
   const [imageModalOpened, { open: openImageModal, close: closeImageModal }] =
     useDisclosure(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -47,9 +48,11 @@ export default function Page() {
         `/api/cameratrap/getCameratrapImages?${params}`
       );
       const data = await response.json();
-
+      console.log(data);
       setImages(data.images);
-      setTotalPages(Math.ceil(data.totalImages / ITEMS_PER_PAGE));
+      // setTotalPages(Math.ceil(data.totalImages / ITEMS_PER_PAGE));
+      setTotalImages(data.totalImages);
+      setTotalPages(data.totalPages);
     } catch (error) {
       console.error("Error fetching images:", error);
     } finally {
@@ -96,7 +99,8 @@ export default function Page() {
             <Grid.Col span={{ base: 12, md: 7 }}>
               <ImageGallery
                 images={images}
-                totalImages={totalPages}
+                totalImages={totalImages}
+                totalPages={totalPages}
                 page={page}
                 setPage={setPage}
                 loading={loading}

@@ -27,7 +27,10 @@ export function SpeciesCards(results) {
     id: result.id,
     title: result.preferred_common_name || result.name || "",
     subtitle: result.name || "",
-    image: result.default_photo?.medium_url || "/No_plant_image.jpg",
+    image:
+      result.name === "Canis familiaris"
+        ? "/dog.jpg"
+        : result.default_photo?.medium_url || "/No_plant_image.jpg",
     description: result.rank,
     family: result.iconic_taxon_name || "",
     wiki: result.wikipedia_url || "",

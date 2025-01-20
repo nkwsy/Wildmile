@@ -17,6 +17,8 @@ import {
   List,
   Alert,
   Badge,
+  Title,
+  Collapse,
 } from "@mantine/core";
 import {
   IconFolder,
@@ -24,7 +26,9 @@ import {
   IconCheck,
   IconExclamationCircle,
   IconTrash,
+  IconPlus,
 } from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import Link from "next/link";
 export function DeploymentImageAssigner({ deploymentId }) {
@@ -36,12 +40,13 @@ export function DeploymentImageAssigner({ deploymentId }) {
   const [selectedImages, setSelectedImages] = useState([]);
   const [showAll, setShowAll] = useState(false);
   const [totalImages, setTotalImages] = useState(0);
+  const [timestamps, setTimestamps] = useState(null);
   const [page, setPage] = useState(1);
   const IMAGES_PER_PAGE = 40;
   const [confirmationData, setConfirmationData] = useState(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [deployment, setDeployment] = useState(null);
-
+  const [opened, { toggle }] = useDisclosure(false);
   // Fetch folders and images for current path
   useEffect(() => {
     const fetchData = async () => {
@@ -58,6 +63,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
         setImages(data.images || []);
         setTotalImages(data.totalImages || 0);
         setCurrentPathDepth(currentPath.split("/").length || 0);
+        setTimestamps(data.timestamps || null);
       } catch (error) {
         console.error("Error fetching media:", error);
         notifications.show({
@@ -270,187 +276,213 @@ export function DeploymentImageAssigner({ deploymentId }) {
     <>
       <Paper p="md" radius="md" withBorder>
         <LoadingOverlay visible={loading} />
-        <Text>Add New Images to Deployment</Text>
-        <Stack spacing="md">
-          {/* Breadcrumbs */}
-          <Breadcrumbs>
-            <Anchor onClick={() => handleBreadcrumbClick(-1)}>Root</Anchor>
-            {currentPath.split("/").map((folder, index) => (
-              <Anchor
-                key={index}
-                onClick={() => handleBreadcrumbClick(index + 1)}
-              >
-                {folder}
-              </Anchor>
-            ))}
-          </Breadcrumbs>
-          <Badge size="md" align="flex-end">
-            {totalImages.toLocaleString()} images
-          </Badge>
-
-          {/* Controls */}
-          <Group position="apart">
-            <Button.Group>
-              <Button
-                onClick={handleSelectAll}
-                variant="default"
-                leftSection={<IconCheck size={16} />}
-              >
-                {selectedImages.length === images.length
-                  ? "Deselect All"
-                  : "Select All"}
-              </Button>
-              <Button onClick={() => setShowAll(!showAll)} variant="default">
-                {showAll ? "Show Sample" : "Show All"}
-              </Button>
-              {currentPathDepth > 1 && (
-                <Button
-                  onClick={() => checkAndConfirmAssignment(true)}
-                  variant="default"
-                  color="blue"
-                  leftSection={<IconFolder size={16} />}
+        <Group position="apart">
+          <Title order={4}>Add New Images to Deployment</Title>
+          <Text size="sm" color="dimmed">
+            Select images from the folder structure below to add to this
+            deployment. Pay attention to the images that are already assigned to
+            this deployment.
+          </Text>
+          <Button
+            variant="default"
+            leftSection={<IconPlus size={16} />}
+            onClick={toggle}
+          >
+            Add Images
+          </Button>
+        </Group>
+        <Collapse in={opened}>
+          <Stack spacing="md">
+            {/* Breadcrumbs */}
+            <Breadcrumbs>
+              <Anchor onClick={() => handleBreadcrumbClick(-1)}>Root</Anchor>
+              {currentPath.split("/").map((folder, index) => (
+                <Anchor
+                  key={index}
+                  onClick={() => handleBreadcrumbClick(index + 1)}
                 >
-                  Assign All in Folder
-                </Button>
-              )}
-            </Button.Group>
-
+                  {folder}
+                </Anchor>
+              ))}
+            </Breadcrumbs>
             <Group>
-              {selectedImages.length > 0 && (
-                <Button
-                  onClick={() => handleRemoveImages(selectedImages)}
-                  color="red"
-                  variant="light"
-                  leftSection={<IconTrash size={16} />}
-                >
-                  Remove {selectedImages.length} Selected
-                </Button>
+              <Badge size="md" align="flex-end">
+                {totalImages.toLocaleString()} images
+              </Badge>
+              {timestamps && (
+                <Text size="sm" color="dimmed">
+                  Time Range: {new Date(timestamps.earliest).toLocaleString()} -{" "}
+                  {new Date(timestamps.latest).toLocaleString()}
+                </Text>
               )}
-              <Button
-                onClick={() => checkAndConfirmAssignment(false, selectedImages)}
-                disabled={selectedImages.length === 0}
-              >
-                Assign {selectedImages.length} Selected
-              </Button>
             </Group>
-          </Group>
 
-          {/* Folders Grid */}
-          {folders.length > 0 && (
-            <Paper withBorder p="md">
-              <Text weight={500} mb="sm">
-                Folders
-              </Text>
-              <Grid>
-                {folders.map((folder) => (
-                  <Grid.Col key={folder} span={3}>
-                    <Paper
-                      p="xs"
-                      withBorder
-                      sx={{ cursor: "pointer" }}
-                      onClick={() => handleFolderClick(folder)}
-                    >
-                      <Group>
-                        <IconFolder size={24} />
-                        <Text size="sm" truncate>
-                          {folder}
-                        </Text>
-                      </Group>
-                    </Paper>
-                  </Grid.Col>
-                ))}
-              </Grid>
-            </Paper>
-          )}
+            {/* Controls */}
+            <Group position="apart">
+              <Button.Group>
+                <Button
+                  onClick={handleSelectAll}
+                  variant="default"
+                  leftSection={<IconCheck size={16} />}
+                >
+                  {selectedImages.length === images.length
+                    ? "Deselect All"
+                    : "Select All"}
+                </Button>
+                <Button onClick={() => setShowAll(!showAll)} variant="default">
+                  {showAll ? "Show Sample" : "Show All"}
+                </Button>
+                {currentPathDepth > 1 && (
+                  <Button
+                    onClick={() => checkAndConfirmAssignment(true)}
+                    variant="filled"
+                    color="blue"
+                    leftSection={<IconFolder size={16} />}
+                  >
+                    Assign All in Folder
+                  </Button>
+                )}
+              </Button.Group>
 
-          {/* Images Grid */}
-          {images.length > 0 && (
-            <Paper withBorder p="md">
-              <Text weight={500} mb="sm">
-                Images
-              </Text>
-              <Grid>
-                {images.map((image) => (
-                  <Grid.Col key={image._id} span={3}>
-                    <Paper
-                      p="xs"
-                      withBorder
-                      sx={{
-                        cursor: "pointer",
-                        border: selectedImages.includes(image._id)
-                          ? "2px solid blue"
-                          : undefined,
-                      }}
-                      onClick={() => handleImageSelect(image._id)}
-                    >
-                      <Stack spacing="xs">
-                        <Image
-                          src={image.publicURL}
-                          alt={
-                            Array.isArray(image.relativePath)
-                              ? image.relativePath[
-                                  image.relativePath.length - 1
-                                ]
-                              : "Image"
-                          }
-                          radius="sm"
-                          fit="contain"
-                          height={150}
-                          withPlaceholder
-                        />
-                        <Group position="apart">
-                          <Text size="xs">
-                            {Array.isArray(image.relativePath)
-                              ? image.relativePath[
-                                  image.relativePath.length - 1
-                                ]
-                              : "Unnamed Image"}
-                          </Text>
-                          <Checkbox
-                            checked={selectedImages.includes(image._id)}
-                            onChange={() => handleImageSelect(image._id)}
-                            onClick={(e) => e.stopPropagation()}
-                          />
-                          {image.deploymentId &&
-                            image.deploymentId !== deploymentId && (
-                              <Badge
-                                size="sm"
-                                variant="filled"
-                                color="yellow"
-                                component={Link}
-                                href={`/cameratrap/deployment/edit/${image.deploymentId}`}
-                              >
-                                <IconExclamationCircle size={16} />
-                                {/* {image.deploymentId.locationName} */}
-                              </Badge>
-                            )}
-                          {image.deploymentId === deploymentId && (
-                            <Badge size="sm" variant="filled" color="green">
-                              <IconCheck size={16} />
-                            </Badge>
-                          )}
-                          <Text size="xs" color="dimmed">
-                            {new Date(image.timestamp).toLocaleString()}
+              <Group>
+                {selectedImages.length > 0 && (
+                  <Button
+                    onClick={() => handleRemoveImages(selectedImages)}
+                    color="red"
+                    variant="light"
+                    leftSection={<IconTrash size={16} />}
+                  >
+                    Remove {selectedImages.length} Selected
+                  </Button>
+                )}
+                <Button
+                  onClick={() =>
+                    checkAndConfirmAssignment(false, selectedImages)
+                  }
+                  disabled={selectedImages.length === 0}
+                >
+                  Assign {selectedImages.length} Selected
+                </Button>
+              </Group>
+            </Group>
+
+            {/* Folders Grid */}
+            {folders.length > 0 && (
+              <Paper withBorder p="md">
+                <Text weight={500} mb="sm">
+                  Folders
+                </Text>
+                <Grid>
+                  {folders.map((folder) => (
+                    <Grid.Col key={folder} span={3}>
+                      <Paper
+                        p="xs"
+                        withBorder
+                        sx={{ cursor: "pointer" }}
+                        onClick={() => handleFolderClick(folder)}
+                      >
+                        <Group>
+                          <IconFolder size={24} />
+                          <Text size="sm" truncate>
+                            {folder}
                           </Text>
                         </Group>
-                      </Stack>
-                    </Paper>
-                  </Grid.Col>
-                ))}
-              </Grid>
-            </Paper>
-          )}
+                      </Paper>
+                    </Grid.Col>
+                  ))}
+                </Grid>
+              </Paper>
+            )}
 
-          {/* Pagination */}
-          {!showAll && totalImages > IMAGES_PER_PAGE && (
-            <Pagination
-              total={Math.ceil(totalImages / IMAGES_PER_PAGE)}
-              value={page}
-              onChange={setPage}
-              position="center"
-            />
-          )}
-        </Stack>
+            {/* Images Grid */}
+            {images.length > 0 && (
+              <Paper withBorder p="md">
+                <Text weight={500} mb="sm">
+                  Images
+                </Text>
+                <Grid>
+                  {images.map((image) => (
+                    <Grid.Col key={image._id} span={3}>
+                      <Paper
+                        p="xs"
+                        withBorder
+                        sx={{
+                          cursor: "pointer",
+                          border: selectedImages.includes(image._id)
+                            ? "2px solid blue"
+                            : undefined,
+                        }}
+                        onClick={() => handleImageSelect(image._id)}
+                      >
+                        <Stack spacing="xs">
+                          <Image
+                            src={image.publicURL}
+                            alt={
+                              Array.isArray(image.relativePath)
+                                ? image.relativePath[
+                                    image.relativePath.length - 1
+                                  ]
+                                : "Image"
+                            }
+                            radius="sm"
+                            fit="contain"
+                            height={150}
+                            withPlaceholder
+                          />
+                          <Group position="apart">
+                            <Text size="xs">
+                              {Array.isArray(image.relativePath)
+                                ? image.relativePath[
+                                    image.relativePath.length - 1
+                                  ]
+                                : "Unnamed Image"}
+                            </Text>
+                            <Checkbox
+                              checked={selectedImages.includes(image._id)}
+                              onChange={() => handleImageSelect(image._id)}
+                              onClick={(e) => e.stopPropagation()}
+                            />
+                            {image.deploymentId &&
+                              image.deploymentId !== deploymentId && (
+                                <Badge
+                                  size="sm"
+                                  variant="filled"
+                                  color="yellow"
+                                  component={Link}
+                                  href={`/cameratrap/deployment/edit/${image.deploymentId}`}
+                                >
+                                  <IconExclamationCircle size={16} />
+                                  {/* {image.deploymentId.locationName} */}
+                                </Badge>
+                              )}
+                            {image.deploymentId === deploymentId && (
+                              <Badge size="sm" variant="filled" color="green">
+                                <IconCheck size={16} />
+                              </Badge>
+                            )}
+                            <Text size="xs" color="dimmed">
+                              {new Date(image.timestamp).toLocaleString()}
+                            </Text>
+                          </Group>
+                        </Stack>
+                      </Paper>
+                    </Grid.Col>
+                  ))}
+                </Grid>
+              </Paper>
+            )}
+
+            {/* Pagination */}
+            {!showAll && totalImages > IMAGES_PER_PAGE && (
+              <Pagination
+                total={Math.ceil(totalImages / IMAGES_PER_PAGE)}
+                value={page}
+                onChange={setPage}
+                position="center"
+              />
+            )}
+          </Stack>
+        </Collapse>
       </Paper>
 
       <Modal

@@ -27,6 +27,7 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import DeploymentMap from "components/cameratrap/deployments/DeploymentMap";
+import { LocationDrawer } from "components/cameratrap/deployments/DeploymentMap";
 import classes from "/styles/imagecard.module.css";
 import { DataTable } from "mantine-datatable";
 
@@ -323,27 +324,27 @@ export default function AllDeployments() {
         );
       },
     },
-    {
-      accessor: "comments",
-      title: "Comments",
-      render: (record) => {
-        if (editingId === record.id) {
-          return (
-            <TextInput
-              value={editedRecord.comments || ""}
-              onChange={(e) =>
-                setEditedRecord({ ...editedRecord, comments: e.target.value })
-              }
-            />
-          );
-        }
-        return (
-          <Tooltip label={record.comments} multiline width={200}>
-            <Text lineClamp={1}>{record.comments || "-"}</Text>
-          </Tooltip>
-        );
-      },
-    },
+    // {
+    //   accessor: "comments",
+    //   title: "Comments",
+    //   render: (record) => {
+    //     if (editingId === record.id) {
+    //       return (
+    //         <TextInput
+    //           value={editedRecord.comments || ""}
+    //           onChange={(e) =>
+    //             setEditedRecord({ ...editedRecord, comments: e.target.value })
+    //           }
+    //         />
+    //       );
+    //     }
+    //     return (
+    //       <Tooltip label={record.comments} multiline width={200}>
+    //         <Text lineClamp={1}>{record.comments || "-"}</Text>
+    //       </Tooltip>
+    //     );
+    //   },
+    // },
     {
       accessor: "actions",
       title: "",
@@ -402,7 +403,7 @@ export default function AllDeployments() {
       <LoadingOverlay visible={loading} />
       <Stack spacing="xl">
         <DeploymentMap locations={locations} />
-
+        <LocationDrawer />
         <DataTable
           withBorder
           borderRadius="sm"
@@ -410,8 +411,8 @@ export default function AllDeployments() {
           striped
           highlightOnHover
           records={sortedRecords}
-          selectedRecords={selectedRecords}
-          onSelectedRecordsChange={setSelectedRecords}
+          // selectedRecords={selectedRecords}
+          // onSelectedRecordsChange={setSelectedRecords}
           sortStatus={sortStatus}
           onSortStatusChange={setSortStatus}
           defaultColumnProps={{

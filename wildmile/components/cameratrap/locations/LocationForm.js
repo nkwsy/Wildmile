@@ -13,6 +13,8 @@ import {
   Text,
   Loader,
   Card,
+  Grid,
+  SimpleGrid,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
@@ -174,87 +176,120 @@ export default function LocationForm({
         size="xl"
       >
         <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stack>
-            <Autocomplete
-              label="Project Area"
-              placeholder="Enter or select a project area"
-              data={suggestions.projectAreas}
-              value={form.values.projectArea}
-              onChange={handleProjectAreaChange}
-              disabled={loadingSuggestions}
-              rightSection={loadingSuggestions ? <Loader size="xs" /> : null}
-            />
-            <Autocomplete
-              label="Zone"
-              placeholder="Enter or select a zone"
-              data={suggestions.zones}
-              value={form.values.zone}
-              onChange={handleZoneChange}
-              disabled={loadingSuggestions}
-              rightSection={loadingSuggestions ? <Loader size="xs" /> : null}
-            />
-            <TextInput
-              label="Location Name"
-              description={
-                !nameModified && !form.isTouched("locationName")
-                  ? "Auto-generated from Project Area and Zone"
-                  : ""
-              }
-              required
-              {...form.getInputProps("locationName")}
-              onChange={handleLocationNameChange}
-            />
-            <Card withBorder>
+          <Grid gutter="md">
+            {/* Left side - Map */}
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <Card withBorder>
+                <Stack>
+                  <Text size="sm" weight={500}>
+                    Location
+                  </Text>
+                  <SelectLocationMap
+                    initialCoordinates={form.values.coordinates}
+                    onLocationSelect={handlePointSelect}
+                  />
+                  {Array.isArray(form.values.coordinates) &&
+                    form.values.coordinates.length === 2 && (
+                      <Text size="sm" c="dimmed">
+                        Selected: {form.values.coordinates[0].toFixed(6)},{" "}
+                        {form.values.coordinates[1].toFixed(6)}
+                      </Text>
+                    )}
+                </Stack>
+              </Card>
+            </Grid.Col>
+
+            {/* Right side - Form inputs */}
+            <Grid.Col span={{ base: 12, md: 6 }}>
               <Stack>
-                <Text size="sm" weight={500}>
-                  Location
-                </Text>
-                <SelectLocationMap
-                  initialCoordinates={form.values.coordinates}
-                  onLocationSelect={handlePointSelect}
+                {/* Project Area and Zone on same line */}
+                <SimpleGrid cols={2}>
+                  <Autocomplete
+                    label="Project Area"
+                    placeholder="Enter or select"
+                    data={suggestions.projectAreas}
+                    value={form.values.projectArea}
+                    onChange={handleProjectAreaChange}
+                    disabled={loadingSuggestions}
+                    rightSection={
+                      loadingSuggestions ? <Loader size="xs" /> : null
+                    }
+                  />
+                  <Autocomplete
+                    label="Zone"
+                    placeholder="Enter or select"
+                    data={suggestions.zones}
+                    value={form.values.zone}
+                    onChange={handleZoneChange}
+                    disabled={loadingSuggestions}
+                    rightSection={
+                      loadingSuggestions ? <Loader size="xs" /> : null
+                    }
+                  />
+                </SimpleGrid>
+
+                <TextInput
+                  label="Location Name"
+                  description={
+                    !nameModified && !form.isTouched("locationName")
+                      ? "Auto-generated from Project Area and Zone"
+                      : ""
+                  }
+                  required
+                  {...form.getInputProps("locationName")}
+                  onChange={handleLocationNameChange}
                 />
-                {Array.isArray(form.values.coordinates) &&
-                  form.values.coordinates.length === 2 && (
-                    <Text size="sm" c="dimmed">
-                      Selected coordinates:{" "}
-                      {form.values.coordinates[0].toFixed(6)},{" "}
-                      {form.values.coordinates[1].toFixed(6)}
-                    </Text>
-                  )}
+
+                {/* Mount Type and Tags on same line */}
+                <SimpleGrid cols={2}>
+                  <TextInput
+                    label="Mount Type"
+                    {...form.getInputProps("mount")}
+                  />
+                  <TagsInput
+                    label="Tags"
+                    {...form.getInputProps("tags")}
+                    data={suggestions.tags}
+                    splitChars={[",", " "]}
+                  />
+                </SimpleGrid>
+
+                <Textarea
+                  label="Notes"
+                  {...form.getInputProps("notes")}
+                  minRows={3}
+                />
+
+                {/* Switches in a group */}
+                <Group spacing="xl">
+                  <Switch
+                    label="Favorite"
+                    {...form.getInputProps("favorite", { type: "checkbox" })}
+                  />
+                  <Switch
+                    label="Retired"
+                    {...form.getInputProps("retired", { type: "checkbox" })}
+                  />
+                </Group>
+
+                {error && (
+                  <Text color="red" size="sm">
+                    {error}
+                  </Text>
+                )}
+
+                {/* Action buttons */}
+                <Group position="right" mt="md">
+                  <Button variant="subtle" onClick={close}>
+                    Cancel
+                  </Button>
+                  <Button type="submit" loading={loading}>
+                    {initialData ? "Save Changes" : "Create Location"}
+                  </Button>
+                </Group>
               </Stack>
-            </Card>
-            <TagsInput
-              label="Tags"
-              {...form.getInputProps("tags")}
-              data={suggestions.tags}
-              splitChars={[",", " "]}
-            />
-            <TextInput label="Mount Type" {...form.getInputProps("mount")} />
-            <Textarea label="Notes" {...form.getInputProps("notes")} />
-            <Group>
-              <Switch
-                label="Favorite"
-                {...form.getInputProps("favorite", { type: "checkbox" })}
-              />
-              <Switch
-                label="Retired"
-                {...form.getInputProps("retired", { type: "checkbox" })}
-              />
-            </Group>
-            {error && (
-              <Text color="red" size="sm">
-                {error}
-              </Text>
-            )}
-            <Group position="right">
-              <Button variant="subtle" onClick={close}>
-                Cancel
-              </Button>
-              <Button type="submit" loading={loading}>
-                {initialData ? "Save Changes" : "Create Location"}
-              </Button>
-            </Group>
-          </Stack>
+            </Grid.Col>
+          </Grid>
         </form>
       </Modal>
 

@@ -224,6 +224,7 @@ export default function DeploymentDash({ deploymentId }) {
 
         <Grid.Col span={12}>
           <DeploymentImages deploymentId={deploymentId} />
+          {/* <ImageGallery images={deployment.images} /> */}
         </Grid.Col>
       </Grid>
       <DeploymentImageAssigner deploymentId={deploymentId} />
