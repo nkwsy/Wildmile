@@ -18,6 +18,7 @@ import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
 import { getAllCameras } from "app/actions/CameratrapActions";
 import { LocationDropdown } from "./LocationDropdown";
+import { useDeploymentMap } from "./DeploymentMapContext";
 
 const EditDeploymentForm = ({ deploymentId, onSuccess }) => {
   const [error, setError] = useState(null);
@@ -26,6 +27,7 @@ const EditDeploymentForm = ({ deploymentId, onSuccess }) => {
   const [cameraOptions, setCameraOptions] = useState([]);
   const router = useRouter();
   const [initialLocation, setInitialLocation] = useState(null);
+  const { selectedLocation, setSelectedLocation } = useDeploymentMap();
 
   const form = useForm({
     initialValues: {
@@ -112,6 +114,12 @@ const EditDeploymentForm = ({ deploymentId, onSuccess }) => {
       setFetchLoading(false);
     }
   }, [deploymentId]);
+
+  useEffect(() => {
+    if (selectedLocation) {
+      form.setFieldValue("locationId", selectedLocation._id);
+    }
+  }, [selectedLocation]);
 
   const handleSubmit = async (values) => {
     // Check if any fields are dirty (changed)

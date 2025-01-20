@@ -7,6 +7,7 @@ export async function GET(request) {
 
   const { searchParams } = new URL(request.url);
   const path = searchParams.get("path") || "";
+  const deploymentId = searchParams.get("deploymentId") || null;
   const limit = parseInt(searchParams.get("limit")) || 40;
   const page = parseInt(searchParams.get("page")) || 1;
   const skip = (page - 1) * limit;
@@ -57,6 +58,28 @@ export async function GET(request) {
 
     const totalImages = await CameratrapMedia.countDocuments(imageQuery);
 
+    // Get the earliest and latest timestamps for the images
+    const timeRange = await CameratrapMedia.aggregate([
+      { $match: imageQuery },
+      {
+        $group: {
+          _id: null,
+          earliestTimestamp: { $min: "$timestamp" },
+          latestTimestamp: { $max: "$timestamp" },
+        },
+      },
+    ]);
+
+    const timestamps =
+      timeRange.length > 0
+        ? {
+            earliest: timeRange[0].earliestTimestamp,
+            latest: timeRange[0].latestTimestamp,
+          }
+        : null;
+
+    console.log(timestamps);
+
     let images = [];
     if (pathDepth > 1) {
       // Get random sample of images if limit is specified
@@ -77,6 +100,7 @@ export async function GET(request) {
       folders,
       images,
       totalImages,
+      timestamps,
     });
   } catch (error) {
     console.error("Error in getMediaByPath:", error);

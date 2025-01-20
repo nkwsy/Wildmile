@@ -411,8 +411,8 @@ export default function AllDeployments() {
           striped
           highlightOnHover
           records={sortedRecords}
-          selectedRecords={selectedRecords}
-          onSelectedRecordsChange={setSelectedRecords}
+          // selectedRecords={selectedRecords}
+          // onSelectedRecordsChange={setSelectedRecords}
           sortStatus={sortStatus}
           onSortStatusChange={setSortStatus}
           defaultColumnProps={{

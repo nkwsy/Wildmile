@@ -40,6 +40,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
   const [selectedImages, setSelectedImages] = useState([]);
   const [showAll, setShowAll] = useState(false);
   const [totalImages, setTotalImages] = useState(0);
+  const [timestamps, setTimestamps] = useState(null);
   const [page, setPage] = useState(1);
   const IMAGES_PER_PAGE = 40;
   const [confirmationData, setConfirmationData] = useState(null);
@@ -62,6 +63,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
         setImages(data.images || []);
         setTotalImages(data.totalImages || 0);
         setCurrentPathDepth(currentPath.split("/").length || 0);
+        setTimestamps(data.timestamps || null);
       } catch (error) {
         console.error("Error fetching media:", error);
         notifications.show({
@@ -303,9 +305,17 @@ export function DeploymentImageAssigner({ deploymentId }) {
                 </Anchor>
               ))}
             </Breadcrumbs>
-            <Badge size="md" align="flex-end">
-              {totalImages.toLocaleString()} images
-            </Badge>
+            <Group>
+              <Badge size="md" align="flex-end">
+                {totalImages.toLocaleString()} images
+              </Badge>
+              {timestamps && (
+                <Text size="sm" color="dimmed">
+                  Time Range: {new Date(timestamps.earliest).toLocaleString()} -{" "}
+                  {new Date(timestamps.latest).toLocaleString()}
+                </Text>
+              )}
+            </Group>
 
             {/* Controls */}
             <Group position="apart">
