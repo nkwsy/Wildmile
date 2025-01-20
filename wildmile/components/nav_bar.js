@@ -215,7 +215,7 @@ export function HeaderNav({ children }) {
                         Account settings
                       </Menu.Item>
                     </Link>
-                    {user.roles.length > 0 && (
+                    {user.roles && user.roles.length > 0 && (
                       <Link href="/admin">
                         <Menu.Item
                           icon={<IconBriefcase size="0.9rem" stroke={1.5} />}
