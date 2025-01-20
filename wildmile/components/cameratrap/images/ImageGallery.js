@@ -26,6 +26,7 @@ export function ImageGallery({
   page = 1,
   totalImages = 0,
   imagesPerPage = 12,
+  totalPages = null,
   onPageChange,
   emptyMessage = "No images found",
   imageHeight = 200,
@@ -37,12 +38,15 @@ export function ImageGallery({
       </Text>
     );
   }
+  if (!totalPages) {
+    totalPages = Math.ceil(totalImages / imagesPerPage);
+  }
 
   return (
     <>
-      {totalImages > imagesPerPage && (
+      {totalPages > 1 && (
         <Pagination
-          total={Math.ceil(totalImages / imagesPerPage)}
+          total={totalPages}
           value={page}
           onChange={onPageChange}
           position="center"
@@ -57,9 +61,9 @@ export function ImageGallery({
         ))}
       </Grid>
 
-      {totalImages > imagesPerPage && (
+      {totalPages > 1 && (
         <Pagination
-          total={Math.ceil(totalImages / imagesPerPage)}
+          total={totalPages}
           value={page}
           onChange={onPageChange}
           position="center"

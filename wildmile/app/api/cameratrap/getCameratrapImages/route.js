@@ -66,11 +66,12 @@ export async function GET(request) {
     query.consensusStatus = consensusStatus;
   }
   if (species) {
-    if (Array.isArray(species)) {
-      query["speciesConsensus.scientificName"] = { $in: species };
-    } else {
-      query["speciesConsensus.scientificName"] = species;
-    }
+    // Split the species string into an array if it contains commas
+    const speciesArray = Array.isArray(species)
+      ? species
+      : species.split(",").map((s) => s.trim());
+
+    query["speciesConsensus.scientificName"] = { $in: speciesArray };
   }
 
   if (favorites === "true") {

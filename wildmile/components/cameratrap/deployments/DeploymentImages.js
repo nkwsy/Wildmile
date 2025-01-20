@@ -52,6 +52,7 @@ export function DeploymentImages({ deploymentId }) {
     try {
       const params = new URLSearchParams({
         page: page,
+        deploymentId: deploymentId,
         limit: IMAGES_PER_PAGE,
         type: filters.type,
         ...(filters.date && { date: filters.date.toISOString() }),
@@ -59,7 +60,7 @@ export function DeploymentImages({ deploymentId }) {
       });
 
       const response = await fetch(
-        `/api/cameratrap/deployments/${deploymentId}/images?${params}`
+        `/api/cameratrap/getCameratrapImages?${params}`
       );
       if (!response.ok) throw new Error("Failed to fetch images");
       const data = await response.json();
@@ -78,6 +79,10 @@ export function DeploymentImages({ deploymentId }) {
       fetchImages();
     }
   }, [deploymentId, page, filters]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [filters]);
 
   const clearFilters = () => {
     setFilters({
@@ -213,7 +218,14 @@ export function DeploymentImages({ deploymentId }) {
             No images found for this deployment
           </Text>
         ) : (
-            <ImageGallery images={images} />
+          <ImageGallery
+            images={images}
+            totalImages={totalImages}
+            page={page}
+            setPage={setPage}
+            onPageChange={setPage}
+            loading={loading}
+          />
         )}
       </Stack>
     </Paper>
