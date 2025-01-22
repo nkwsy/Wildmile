@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
-
+import User from "models/User";
 import Observation from "models/cameratrap/Observation";
 
 export async function GET(request) {
@@ -18,7 +18,7 @@ export async function GET(request) {
 
   try {
     const observations = await Observation.find({ mediaId })
-      .populate("creator", "profile.name profile.image")
+      .populate("creator", "profile.name profile.picture")
       .sort({ createdAt: -1 });
 
     return NextResponse.json(observations);

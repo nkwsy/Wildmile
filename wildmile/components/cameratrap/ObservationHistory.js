@@ -67,7 +67,7 @@ export function ObservationHistory({ previousObservations }) {
       {Object.values(observationsByCreator).map((group, index) => (
         <Stack key={index} spacing="xs">
           <Group spacing="xs">
-            <Avatar size="sm" src={group.creator?.profile?.image} radius="xl">
+            <Avatar size="sm" src={group.creator?.profile?.picture} radius="xl">
               {group.creator?.profile?.name?.charAt(0) || "?"}
             </Avatar>
             <Text size="sm" weight={500}>
@@ -99,7 +99,7 @@ export function ObservationHistory({ previousObservations }) {
 export function ObservationHistoryPopover({ mediaID }) {
   const [previousObservations, setPreviousObservations] = useState([]);
   useEffect(() => {
-    async function fetchObservations() {
+    const fetchObservations = async () => {
       if (mediaID) {
         // Fetch previous observations
         const response = await fetch(
@@ -108,24 +108,26 @@ export function ObservationHistoryPopover({ mediaID }) {
         const data = await response.json();
         setPreviousObservations(data);
       }
-    }
+    };
     fetchObservations();
   }, [mediaID]);
 
   if (previousObservations.length === 0) {
-    return null;
+    return <></>;
   }
 
   return (
-    <Popover>
-      <Popover.Target>
-        <Button variant="outline" size="xs">
-          View Observation History
-        </Button>
-      </Popover.Target>
-      <Popover.Dropdown>
-        <ObservationHistory previousObservations={previousObservations} />
-      </Popover.Dropdown>
-    </Popover>
+    <>
+      <Popover>
+        <Popover.Target>
+          <Button variant="outline" size="xs">
+            View Observation History
+          </Button>
+        </Popover.Target>
+        <Popover.Dropdown>
+          <ObservationHistory previousObservations={previousObservations} />
+        </Popover.Dropdown>
+      </Popover>
+    </>
   );
 }
