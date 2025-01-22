@@ -82,16 +82,22 @@ export async function GET(request) {
 
     let images = [];
     if (pathDepth > 1) {
+      images = await CameratrapMedia.find(imageQuery)
+        .sort({
+          timestamp: 1,
+        })
+        .skip(skip)
+        .limit(limit);
       // Get random sample of images if limit is specified
-      images = await CameratrapMedia.aggregate([
-        { $match: imageQuery },
-        ...(limit
-          ? [
-              { $sample: { size: limit } }, // Get random sample if limit specified
-            ]
-          : []),
-        { $sort: { timestamp: -1 } },
-      ]);
+      // images = await CameratrapMedia.aggregate([
+      //   { $match: imageQuery },
+      //   ...(limit
+      //     ? [
+      //         { $sample: { size: limit } }, // Get random sample if limit specified
+      //       ]
+      //     : []),
+      //   { $sort: { timestamp: -1 } },
+      // ]);
     } else {
       const images = [];
     }
