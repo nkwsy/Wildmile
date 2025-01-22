@@ -19,6 +19,9 @@ import { useUser } from "lib/hooks";
 import { useRouter } from "next/navigation";
 import { RandomFavorite } from "components/cameratrap/RandomFavorite";
 import { InfoComponent } from "components/cameratrap/InfoComponent";
+import { UserInfoComponent } from "components/cameratrap/UserInfoComponent";
+
+// In your page component:
 
 function CameraTrapCards({ user }) {
   const cards = [
@@ -99,7 +102,7 @@ export default function CameraTrapHomePage() {
     <>
       <Container maw="85%" my="5rem">
         <Grid mt="xl">
-          <Grid.Col span={7}>
+          <Grid.Col span={{ base: 12, md: 7 }}>
             <Title order={2} className={classes.title} ta="center" mt="sm">
               Camera Trap Resources
             </Title>
@@ -113,9 +116,10 @@ export default function CameraTrapHomePage() {
               </Fieldset>
             )}
           </Grid.Col>
-          <Grid.Col span={5}>
+          <Grid.Col span={{ base: 12, md: 5 }}>
             <RandomFavorite />
             <InfoComponent />
+            <UserInfoComponent />
           </Grid.Col>
           <Grid.Col span={5}></Grid.Col>
         </Grid>

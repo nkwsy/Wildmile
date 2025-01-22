@@ -42,7 +42,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
   const [totalImages, setTotalImages] = useState(0);
   const [timestamps, setTimestamps] = useState(null);
   const [page, setPage] = useState(1);
-  const IMAGES_PER_PAGE = 40;
+  const IMAGES_PER_PAGE = 16;
   const [confirmationData, setConfirmationData] = useState(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [deployment, setDeployment] = useState(null);
@@ -55,7 +55,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
         const response = await fetch(
           `/api/cameratrap/getMediaByPath?path=${currentPath}&limit=${
             showAll ? 0 : IMAGES_PER_PAGE
-          }`
+          }&page=${page}`
         );
         const data = await response.json();
 

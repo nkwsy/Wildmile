@@ -36,6 +36,8 @@ import {
 import { useImage, useSelection } from "./ContextCamera";
 import checkboxClasses from "styles/checkbox.module.css";
 import styles from "styles/animalSelection.module.css";
+import { ObservationHistoryPopover } from "./ObservationHistory";
+import { SpeciesConsensusBadges } from "./SpeciesConsensusBadges";
 
 export function ImageAnnotation({ fetchNextImage }) {
   const [currentImage, setCurrentImage] = useImage();
@@ -51,6 +53,7 @@ export function ImageAnnotation({ fetchNextImage }) {
   const [vehiclePresent, setVehiclePresent] = useState(false);
   const [needsReview, setNeedsReview] = useState(false);
   const [flagged, setFlagged] = useState(false);
+
   useEffect(() => {
     if (currentImage) {
       setComments(currentImage.mediaComments || []);
@@ -104,6 +107,7 @@ export function ImageAnnotation({ fetchNextImage }) {
           },
           taxonId: animal.id,
           scientificName: animal.name,
+          commonName: animal.preferred_common_name || animal.name,
           count: animalCounts[animal.id] || 1,
           eventStart: currentImage.timestamp,
           eventEnd: currentImage.timestamp,
@@ -365,6 +369,9 @@ export function ImageAnnotation({ fetchNextImage }) {
             </Stack>
           </GridCol>
           <GridCol span={{ base: 12, md: 12, lg: 6 }}>
+            <Text size="sm" weight={500} mb="xs">
+              Previous Observations
+            </Text>
             {!noAnimalsVisible && (
               <Flex direction="column" gap="xs" mt="md">
                 {selection.map((animal) => (
@@ -458,6 +465,12 @@ export function ImageAnnotation({ fetchNextImage }) {
                 as "No Animals Visible", or indicate human/vehicle presence
               </Text>
             )}
+          <Group mt="md">
+            <SpeciesConsensusBadges
+              speciesConsensus={currentImage.speciesConsensus}
+            />
+            <ObservationHistoryPopover mediaID={currentImage.mediaID} />
+          </Group>
         </Grid>
       </Card>
       <Modal

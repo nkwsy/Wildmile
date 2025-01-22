@@ -241,7 +241,7 @@ async function getImageMetadata(buffer) {
 }
 
 // Don't forget to close ExifTool when you're done
-process.on("exit", () => exiftool.end());
+// process.on("exit", () => exiftool.end());
 
 // CAMERA ACTIONS
 export async function getCamera(id) {
