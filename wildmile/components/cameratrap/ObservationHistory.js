@@ -67,7 +67,7 @@ export function ObservationHistory({ previousObservations }) {
       {Object.values(observationsByCreator).map((group, index) => (
         <Stack key={index} spacing="xs">
           <Group spacing="xs">
-            <Avatar size="sm" src={group.creator?.profile?.image} radius="xl">
+            <Avatar size="sm" src={group.creator?.profile?.picture} radius="xl">
               {group.creator?.profile?.name?.charAt(0) || "?"}
             </Avatar>
             <Text size="sm" weight={500}>
