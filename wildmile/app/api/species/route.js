@@ -1,41 +1,39 @@
-import { cache } from "react";
-
-const fetchSpeciesData = cache(async (species) => {
-  try {
-    const response = await fetch(
-      `https://api.inaturalist.org/v1/taxa?q=${encodeURIComponent(
-        species
-      )}&limit=1`,
-      { next: { revalidate: 360000 } } // Cache for 10 hours
-    );
-    const data = await response.json();
-    if (data.results && data.results.length > 0) {
-      return data.results[0];
-    }
-  } catch (error) {
-    console.error("Error fetching species data:", error);
-  }
-  return null;
-});
+import { NextResponse } from "next/server";
+import dbConnect from "/lib/db/setup";
+import Species from "/models/Species";
 
 export async function GET(request) {
+  await dbConnect();
   const { searchParams } = new URL(request.url);
   const species = searchParams.get("species");
+  const id = searchParams.get("id");
 
-  if (!species) {
-    return new Response(
-      JSON.stringify({ error: "Species parameter is required" }),
-      {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      }
+  if (!species && !id) {
+    return NextResponse.json(
+      { error: "Species or ID parameter is required" },
+      { status: 400 }
     );
   }
 
-  const data = await fetchSpeciesData(species);
+  try {
+    let result;
 
-  return new Response(JSON.stringify(data), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
+    if (id) {
+      result = await Species.findById(id);
+    } else {
+      result = await Species.findOrFetchByName(species);
+    }
+
+    if (!result) {
+      return NextResponse.json({ error: "Species not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error("Error in species route:", error);
+    return NextResponse.json(
+      { error: "Error processing request" },
+      { status: 500 }
+    );
+  }
 }
