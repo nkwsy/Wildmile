@@ -223,6 +223,7 @@ export default function DeploymentMap({ locations = [] }) {
     initializeMap.on("load", () => {
       map.current = initializeMap;
       map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
+
       setMapReady(true);
     });
 
@@ -235,6 +236,39 @@ export default function DeploymentMap({ locations = [] }) {
   useEffect(() => {
     if (!map.current) return;
     map.current.setStyle(`mapbox://styles/mapbox/${mapStyle}`);
+
+    // Re-add custom layer after style change
+    map.current.once("style.load", () => {
+      // Only add drone imagery for satellite streets view
+      if (mapStyle === "satellite-streets-v12") {
+        if (!map.current.getSource("drone-imagery")) {
+          map.current.addSource("drone-imagery", {
+            type: "raster",
+            tiles: [
+              "https://public_tiles.dronedeploy.com/v1/tiles_images/66abc7ee3f8af3299aedf542/orthomosaic/{z}/{x}/{y}?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJleHAiOjIxNDU5MTY4MDAwMDAsInVzZXJuYW1lIjoibmlja0B1cmJhbnJpdi5vcmciLCJwbGFuX2lkIjoiNjZhYmM3ZWUzZjhhZjMyOTlhZWRmNTQyIiwibGF5ZXIiOiJvcnRob21vc2FpYyJ9.dKgmW0zenzR8XV-74YvmUhRvo0Zq1YBkgAXrrDV_fL1dgJx0-rxKrcHWaI_WRxm2Ivc2kSqWIKmucRyuphLMEQ",
+              "https://public_tiles.dronedeploy.com/v1/tiles_images/67381a3b8f4836639c4f2eaf/orthomosaic/{z}/{x}/{y}?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJleHAiOjIxNDU5MTY4MDAwMDAsInVzZXJuYW1lIjoibmlja0B1cmJhbnJpdi5vcmciLCJwbGFuX2lkIjoiNjczODFhM2I4ZjQ4MzY2MzljNGYyZWFmIiwibGF5ZXIiOiJvcnRob21vc2FpYyJ9.oylH1nFR7UKcP17OCbTIBDe-TSamjhhqY16z4WAMY6FfcL352iF13dg4UkekrwiNVF7i-GWHjHjCfgzzXhgI1g",
+              "https://public_tiles.dronedeploy.com/v1/tiles_images/66832330645d9248355fcde8/orthomosaic/{z}/{x}/{y}?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJleHAiOjIxNDU5MTY4MDAwMDAsInVzZXJuYW1lIjoibmlja0B1cmJhbnJpdi5vcmciLCJwbGFuX2lkIjoiNjY4MzIzMzA2NDVkOTI0ODM1NWZjZGU4IiwibGF5ZXIiOiJvcnRob21vc2FpYyJ9.jkanUtiBQ0fm6Xzu50z8AZWCjcnnT9LnwJW6UEgAJYXdlKMhJcWgWAD_eFAhZ0oHOmhXRqt9faJUdsg1IKAJJA",
+            ],
+            tileSize: 256,
+          });
+
+          map.current.addLayer({
+            id: "drone-layer",
+            type: "raster",
+            source: "drone-imagery",
+            paint: {
+              "raster-opacity": 0.7,
+            },
+          });
+        }
+      } else {
+        // Remove drone imagery for other map styles
+        if (map.current.getSource("drone-imagery")) {
+          map.current.removeLayer("drone-layer");
+          map.current.removeSource("drone-imagery");
+        }
+      }
+    });
   }, [mapStyle]);
 
   // Add this effect to handle zoom changes
@@ -379,10 +413,8 @@ export default function DeploymentMap({ locations = [] }) {
             onChange={setMapStyle}
             data={[
               { label: "Outdoors", value: "outdoors-v12" },
-              { label: "Streets", value: "streets-v11" },
               { label: "Standard", value: "standard" },
-              { label: "Satellite", value: "satellite-v9" },
-              { label: "Satellite Streets", value: "satellite-streets-v12" },
+              { label: "Satellite", value: "satellite-streets-v12" },
             ]}
           />
           <div ref={mapContainer} className={classes.map} />
