@@ -203,6 +203,8 @@ export default function AllDeployments() {
     tags: deployment.deploymentTags || [],
     comments: deployment.deploymentComments,
     isActive: !deployment.deploymentEnd,
+    mediaCount: deployment.mediaCount,
+    observationCount: deployment.observationCount,
   }));
 
   const columns = [
@@ -211,7 +213,9 @@ export default function AllDeployments() {
       title: "Location",
       render: (record) => (
         <Tooltip label={record.locationName} multiline width={220}>
-          <Text lineClamp={1}>{record.locationName}</Text>
+          <Text size="sm" lineClamp={1}>
+            {record.locationName}
+          </Text>
         </Tooltip>
       ),
     },
@@ -272,7 +276,7 @@ export default function AllDeployments() {
             />
           );
         }
-        return <Text>{record.projectArea || "-"}</Text>;
+        return <Text size="sm">{record.projectArea || "-"}</Text>;
       },
     },
     {
@@ -313,6 +317,7 @@ export default function AllDeployments() {
             />
           );
         }
+
         return (
           <Group spacing={4}>
             {record.tags.map((tag, i) => (
@@ -323,6 +328,11 @@ export default function AllDeployments() {
           </Group>
         );
       },
+    },
+    {
+      accessor: "mediaCount",
+      title: "Photos",
+      render: (record) => <Text size="xs">{record.mediaCount}</Text>,
     },
     // {
     //   accessor: "comments",
@@ -405,12 +415,14 @@ export default function AllDeployments() {
         <DeploymentMap locations={locations} />
         <LocationDrawer />
         <DataTable
-          withBorder
+          withTableBorder
           borderRadius="sm"
           withColumnBorders
           striped
           highlightOnHover
+          horizontalSpacing="xs"
           records={sortedRecords}
+          fz="sm"
           // selectedRecords={selectedRecords}
           // onSelectedRecordsChange={setSelectedRecords}
           sortStatus={sortStatus}

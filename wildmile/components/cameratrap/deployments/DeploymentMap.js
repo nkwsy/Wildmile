@@ -119,9 +119,9 @@ export function LocationDrawer() {
               : " - Present"}
           </Text>
         </Group>
-        {deployment.setupBy && (
+        {deployment.creator && (
           <Text size="sm" color="dimmed">
-            Setup by: {deployment.setupBy}
+            Setup by: {deployment.creator.name}
           </Text>
         )}
       </Stack>

@@ -3,7 +3,7 @@ import dbConnect from "lib/db/setup";
 import Deployment from "models/cameratrap/Deployment";
 import Camera from "models/cameratrap/Camera";
 import DeploymentLocation from "models/cameratrap/DeploymentLocations";
-
+import User from "models/User";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
@@ -22,6 +22,13 @@ export async function GET() {
         model: DeploymentLocation,
         select: "locationName projectArea zone location favorite retired notes", // Add any other location fields you need
       })
+      .populate({
+        path: "creator",
+        model: User,
+        select: "name",
+      })
+      .populate("mediaCount")
+      .populate("observationCount")
       .lean();
 
     // Sort deployments by start date (most recent first)

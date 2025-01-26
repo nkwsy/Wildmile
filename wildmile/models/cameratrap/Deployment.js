@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
-
 const { PointSchema } = require("models/locationSchemas");
+const Media = require("models/cameratrap/Media"); // Add this import
+const Observation = require("models/cameratrap/Observation"); // Add this import
 
 const DeploymentSchema = new mongoose.Schema(
   {
@@ -84,8 +85,29 @@ const DeploymentSchema = new mongoose.Schema(
       ref: "User",
     },
   },
-  { timestamps: true, strictPopulate: false }
+  {
+    timestamps: true,
+    strictPopulate: false,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
 );
+
+// Add virtual for media count
+DeploymentSchema.virtual("mediaCount", {
+  ref: "CameratrapMedia",
+  localField: "_id",
+  foreignField: "deploymentId",
+  count: true,
+});
+
+// Add virtual for observation count
+DeploymentSchema.virtual("observationCount", {
+  ref: "Observation",
+  localField: "_id",
+  foreignField: "deploymentId",
+  count: true,
+});
 
 export default mongoose.models.CameratrapDeployment ||
   mongoose.model("CameratrapDeployment", DeploymentSchema);

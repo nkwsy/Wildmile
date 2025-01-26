@@ -2,7 +2,10 @@ import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import Observation from "models/cameratrap/Observation";
 import User from "models/User";
+import UserProgress from "models/users/UserProgress";
+import { updateUserStats } from "lib/db/updateUserStats";
 
+// Update single user
 export async function GET(request) {
   await dbConnect();
 
@@ -14,8 +17,47 @@ export async function GET(request) {
   }
 
   try {
+    // Update user stats
+    const progress = await updateUserStats(userId);
+
     // Get user info
     const user = await User.findById(userId, "profile roles");
+
+    // Get achievements with populated details
+    await progress.populate({
+      path: "achievements.achievement",
+      model: "Achievement",
+      select: "name description icon badge level type domain criteria points",
+    });
+
+    // Find the highest level RANK achievement that has been earned
+    const rankAchievements = progress.achievements
+      .filter(
+        (a) => a.achievement.type === "RANK" && a.progress === 100 && a.earnedAt
+      )
+      .sort((a, b) => b.achievement.level - a.achievement.level);
+
+    // Get the avatar from the highest rank achievement or use poop emoji
+    const avatar =
+      rankAchievements.length > 0
+        ? rankAchievements[0].achievement.badge
+        : "💩";
+
+    // Format achievements for response
+    const achievements = progress.achievements.map((achievement) => ({
+      id: achievement.achievement._id,
+      name: achievement.achievement.name,
+      description: achievement.achievement.description,
+      icon: achievement.achievement.icon,
+      badge: achievement.achievement.badge,
+      level: achievement.achievement.level,
+      type: achievement.achievement.type,
+      domain: achievement.achievement.domain,
+      points: achievement.achievement.points,
+      progress: achievement.progress,
+      earnedAt: achievement.earnedAt,
+      criteria: achievement.achievement.criteria,
+    }));
 
     // Get all observations by the user
     const observations = await Observation.find({ creator: userId });
@@ -61,17 +103,28 @@ export async function GET(request) {
       .sort((a, b) => b.count - a.count)
       .slice(0, 5);
 
+    // Format response
     const stats = {
-      user,
+      user: {
+        ...user.toObject(),
+        avatar, // Add avatar to user object
+      },
+      stats: progress.stats,
+      streaks: progress.streaks,
+      achievements,
+      totalPoints: progress.totalPoints,
+      level: progress.level,
+      domainRanks: Object.fromEntries(progress.domainRanks),
+      lastActive:
+        progress.stats.lastActive ||
+        (progress.streaks.lastLoginDate
+          ? new Date(progress.streaks.lastLoginDate)
+          : null),
       totalImagesReviewed,
       totalAnimalsObserved,
       totalBlanksLogged,
       uniqueSpeciesCount: uniqueSpecies.size,
       topSpecies,
-      lastActive:
-        observations.length > 0
-          ? Math.max(...observations.map((obs) => new Date(obs.createdAt)))
-          : null,
     };
 
     return NextResponse.json(stats);
