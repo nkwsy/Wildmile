@@ -24,6 +24,7 @@ import {
   IconMedal,
   IconTrophy,
   IconStars,
+  IconCalendarStats,
 } from "@tabler/icons-react";
 import { useUser } from "lib/hooks";
 
@@ -116,6 +117,53 @@ export function UserInfoComponent() {
             </div>
           </Group>
         </Group>
+        {/* Recent Achievements */}
+        {stats?.achievements?.length > 0 && (
+          <Stack spacing={4}>
+            <Text size="xs" weight={500}>
+              Recent Achievements
+            </Text>
+            <Group spacing={4}>
+              {stats.achievements
+                .filter((a) => a.progress === 100)
+                .slice(0, 5)
+                .map((achievement) => (
+                  <Tooltip
+                    key={achievement.id}
+                    label={`${achievement.name}: ${achievement.description}`}
+                  >
+                    <Avatar
+                      size="sm"
+                      src={achievement.icon || achievement.badge || "💩"}
+                    >
+                      {achievement.points}
+                    </Avatar>
+                  </Tooltip>
+                ))}
+            </Group>
+          </Stack>
+        )}
+
+        {/* Domain Ranks */}
+        {stats?.domainRanks && Object.entries(stats.domainRanks).length > 0 && (
+          <Stack spacing={4}>
+            <Text size="xs" weight={500}>
+              Domain Ranks
+            </Text>
+            <Group spacing={4}>
+              {Object.entries(stats.domainRanks).map(([domain, rank]) => (
+                <Tooltip
+                  key={domain}
+                  label={`${domain}: ${rank.points} points`}
+                >
+                  <Badge size="sm" variant="light">
+                    {domain}: {rank.points}
+                  </Badge>
+                </Tooltip>
+              ))}
+            </Group>
+          </Stack>
+        )}
 
         <Tabs defaultValue="stats">
           <Tabs.List>
@@ -128,63 +176,56 @@ export function UserInfoComponent() {
           </Tabs.List>
 
           <Tabs.Panel value="stats" pt="xs">
-            <Grid>
-              <Grid.Col span={6} sm={3}>
-                <Card withBorder p="md">
-                  <Group position="apart">
-                    <IconCamera size={24} />
-                    <Text size="sm" color="dimmed" weight={500}>
-                      Images Reviewed
-                    </Text>
-                  </Group>
-                  <Text size="xl" weight={700} mt="sm">
-                    {stats.totalImagesReviewed.toLocaleString()}
-                  </Text>
-                </Card>
-              </Grid.Col>
-
-              <Grid.Col span={6} sm={3}>
-                <Card withBorder p="md">
-                  <Group position="apart">
-                    <IconPaw size={24} />
-                    <Text size="sm" color="dimmed" weight={500}>
-                      Animals Observed
-                    </Text>
-                  </Group>
-                  <Text size="xl" weight={700} mt="sm">
-                    {stats.totalAnimalsObserved.toLocaleString()}
-                  </Text>
-                </Card>
-              </Grid.Col>
-
-              <Grid.Col span={6} sm={3}>
-                <Card withBorder p="md">
-                  <Group position="apart">
-                    <IconEye size={24} />
-                    <Text size="sm" color="dimmed" weight={500}>
-                      Blank Images
-                    </Text>
-                  </Group>
-                  <Text size="xl" weight={700} mt="sm">
-                    {stats.totalBlanksLogged.toLocaleString()}
-                  </Text>
-                </Card>
-              </Grid.Col>
-
-              <Grid.Col span={6} sm={3}>
-                <Card withBorder p="md">
-                  <Group position="apart">
-                    <IconMedal size={24} />
-                    <Text size="sm" color="dimmed" weight={500}>
-                      Species Found
-                    </Text>
-                  </Group>
-                  <Text size="xl" weight={700} mt="sm">
+            {/* Quick Stats */}
+            <SimpleGrid cols={3} spacing="xs">
+              <Paper withBorder p="xs" radius="md">
+                <Group spacing={4}>
+                  <IconPaw size={16} />
+                  <Text size="xs">{stats?.stats?.animalsObserved || 0}</Text>
+                </Group>
+                <Text size="xs" color="dimmed">
+                  Animals Observed
+                </Text>
+              </Paper>
+              <Paper withBorder p="xs" radius="md">
+                <Group spacing={4}>
+                  <IconCamera size={16} />
+                  <Text size="xs">{stats?.stats?.imagesReviewed || 0}</Text>
+                </Group>
+                <Text size="xs" color="dimmed">
+                  Images Reviewed
+                </Text>
+              </Paper>
+              <Paper withBorder p="xs" radius="md">
+                <Group spacing={4}>
+                  <IconCalendarStats size={16} />
+                  <Text size="xs">{stats?.streaks?.current || 0}</Text>
+                </Group>
+                <Text size="xs" color="dimmed">
+                  Consecutive Days
+                </Text>
+              </Paper>
+              <Paper withBorder p="xs" radius="md">
+                <Group spacing={4}>
+                  <IconEye size={16} />
+                  <Text size="xs">{stats?.stats?.totalBlanksLogged || 0}</Text>
+                </Group>
+                <Text size="xs" color="dimmed">
+                  Blank Images
+                </Text>
+              </Paper>
+              <Paper withBorder p="xs" radius="md">
+                <Group spacing={4}>
+                  <IconMedal size={16} />
+                  <Text size="xs">
                     {stats.uniqueSpeciesCount.toLocaleString()}
                   </Text>
-                </Card>
-              </Grid.Col>
-            </Grid>
+                </Group>
+                <Text size="xs" color="dimmed" weight={500}>
+                  Species Found
+                </Text>
+              </Paper>
+            </SimpleGrid>
 
             <Card withBorder mt="md">
               <Title order={4} mb="md">

@@ -256,14 +256,83 @@ async function updateUserStats(userId) {
     // Update stats
     Object.assign(progress.stats, stats);
 
-    // Check for new achievements
+    // Check achievements (which now handles points calculation)
     await progress.checkAchievements();
 
     // Save progress
     await progress.save();
 
-    console.log(`Updated stats for user: ${user.email}`);
-    return progress;
+    // Return populated data
+    await progress.populate([
+      {
+        path: "achievements.achievement",
+        model: "Achievement",
+        select: "name description icon badge level type domain criteria points",
+      },
+      {
+        path: "domainRanks.$*.currentRank",
+        model: "Achievement",
+        select: "name description icon badge level type domain criteria points",
+      },
+    ]);
+
+    // Transform domain ranks to include populated data
+    const formattedDomainRanks = {};
+    progress.domainRanks.forEach((value, domain) => {
+      formattedDomainRanks[domain] = {
+        points: value.points || 0,
+        currentRank: value.currentRank
+          ? {
+              id: value.currentRank._id,
+              name: value.currentRank.name,
+              description: value.currentRank.description,
+              icon: value.currentRank.icon,
+              badge: value.currentRank.badge,
+              level: value.currentRank.level,
+              type: value.currentRank.type,
+              domain: value.currentRank.domain,
+              points: value.currentRank.points,
+            }
+          : null,
+      };
+    });
+
+    // Get highest rank achievement for avatar
+    const highestRank = Object.values(formattedDomainRanks)
+      .map((domain) => domain.currentRank)
+      .filter(Boolean)
+      .sort((a, b) => b.level - a.level)[0];
+
+    return {
+      user: {
+        ...user.toObject(),
+        avatar: highestRank?.badge || "💩",
+      },
+      stats: progress.stats,
+      streaks: progress.streaks,
+      achievements: progress.achievements.map((a) => ({
+        id: a.achievement._id,
+        name: a.achievement.name,
+        description: a.achievement.description,
+        icon: a.achievement.icon,
+        badge: a.achievement.badge,
+        level: a.achievement.level,
+        type: a.achievement.type,
+        domain: a.achievement.domain,
+        points: a.achievement.points,
+        progress: a.progress,
+        earnedAt: a.earnedAt,
+        criteria: a.achievement.criteria,
+      })),
+      totalPoints: progress.totalPoints,
+      level: progress.level,
+      domainRanks: formattedDomainRanks,
+      lastActive:
+        progress.stats.lastActive ||
+        (progress.streaks.lastLoginDate
+          ? new Date(progress.streaks.lastLoginDate)
+          : null),
+    };
   } catch (error) {
     console.error(`Error updating stats for user ${userId}:`, error);
     throw error;

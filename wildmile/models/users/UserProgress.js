@@ -84,107 +84,77 @@ const UserProgressSchema = new mongoose.Schema(
 // Method to check and award achievements
 UserProgressSchema.methods.checkAchievements = async function () {
   const Achievement = mongoose.model("Achievement");
+
+  // Get and populate all active achievements
   const achievements = await Achievement.find({ isActive: true });
+  console.log(`Found ${achievements.length} active achievements`);
+  console.log("Current stats:", this.stats);
 
-  // Get unique domains from achievements
+  // Get unique domains from achievements and initialize if needed
   const domains = [...new Set(achievements.map((a) => a.domain))];
+  console.log("Available domains:", domains);
 
-  // Initialize domain points
+  // Initialize domain points and ranks
   const domainPoints = {};
   domains.forEach((domain) => {
     domainPoints[domain] = 0;
-    // Initialize domain in domainRanks if it doesn't exist
+    // Initialize domain ranks if they don't exist
     if (!this.domainRanks.has(domain)) {
-      this.domainRanks.set(domain, { points: 0 });
+      console.log(`Initializing new domain: ${domain}`);
+      this.domainRanks.set(domain, {
+        points: 0,
+        currentRank: null,
+      });
     }
   });
 
+  // Reset total points for recalculation
+  this.totalPoints = 0;
   const newAchievements = [];
 
-  for (const achievement of achievements) {
+  // First pass: Process non-RANK achievements to calculate points
+  console.log("\nProcessing non-RANK achievements first...");
+  for (const achievement of achievements.filter((a) => a.type !== "RANK")) {
     try {
-      // Calculate progress for each criterion
-      const criteriaProgress = achievement.criteria.map((criterion) => {
-        // Get the stat value, defaulting to 0 if undefined
-        let statValue = 0;
-        if (criterion.type === "TOTAL_POINTS") {
-          statValue = domainPoints[achievement.domain] || 0;
-        } else {
-          statValue = this.stats[criterion.type.toLowerCase()] || 0;
-        }
+      console.log(
+        `\nChecking achievement: ${achievement.name} (${achievement.type})`
+      );
 
-        const threshold = criterion.threshold || 0;
+      const { validProgress, eligible } = this.calculateProgress(
+        achievement,
+        domainPoints
+      );
 
-        // Skip invalid thresholds to prevent NaN
-        if (threshold === 0) {
-          return 0;
-        }
-
-        // Calculate progress based on operator
-        switch (criterion.operator) {
-          case "lte":
-            return Math.max(
-              0,
-              Math.min(100, ((threshold - statValue) / threshold) * 100)
-            );
-          case "eq":
-            return statValue === threshold ? 100 : 0;
-          case "gte":
-          default:
-            return Math.max(0, Math.min(100, (statValue / threshold) * 100));
-        }
-      });
-
-      // Calculate overall progress, ensuring it's a valid number
-      const overallProgress =
-        criteriaProgress.length > 0
-          ? Math.floor(
-              criteriaProgress.reduce((sum, progress) => sum + progress, 0) /
-                criteriaProgress.length
-            )
-          : 0;
-
-      // Ensure progress is a valid number between 0 and 100
-      const validProgress = Math.max(0, Math.min(100, overallProgress || 0));
-
-      // Check if all criteria are met
-      const eligible = achievement.criteria.every((criterion) => {
-        const statValue =
-          criterion.type === "TOTAL_POINTS"
-            ? domainPoints[achievement.domain] || 0
-            : this.stats[criterion.type.toLowerCase()] || 0;
-
-        switch (criterion.operator) {
-          case "gte":
-            return statValue >= criterion.threshold;
-          case "lte":
-            return statValue <= criterion.threshold;
-          case "eq":
-            return statValue === criterion.threshold;
-          default:
-            return false;
-        }
-      });
-
-      // Find existing progress or create new
+      // Find or create achievement progress
       const existingIndex = this.achievements.findIndex(
         (a) => a.achievement.toString() === achievement._id.toString()
       );
 
       if (existingIndex >= 0) {
         // Update existing achievement
-        this.achievements[existingIndex].progress = validProgress;
-        if (eligible && this.achievements[existingIndex].progress !== 100) {
-          this.achievements[existingIndex].earnedAt = new Date();
-          if (achievement.type !== "RANK") {
-            this.totalPoints += achievement.points;
-            domainPoints[achievement.domain] =
-              (domainPoints[achievement.domain] || 0) + achievement.points;
-          }
+        const existing = this.achievements[existingIndex];
+        const wasCompleted = existing.progress === 100 && existing.earnedAt;
+
+        // Update progress
+        existing.progress = validProgress;
+
+        // Check if newly completed
+        if (eligible && !wasCompleted) {
+          console.log(`Achievement newly completed: ${achievement.name}`);
+          existing.earnedAt = new Date();
+          this.totalPoints += achievement.points;
+          domainPoints[achievement.domain] =
+            (domainPoints[achievement.domain] || 0) + achievement.points;
           newAchievements.push(achievement);
+        } else if (wasCompleted) {
+          // Add points for previously completed achievements
+          this.totalPoints += achievement.points;
+          domainPoints[achievement.domain] =
+            (domainPoints[achievement.domain] || 0) + achievement.points;
         }
       } else {
         // Add new achievement
+        console.log(`Adding new achievement: ${achievement.name}`);
         this.achievements.push({
           achievement: achievement._id,
           progress: validProgress,
@@ -192,35 +162,183 @@ UserProgressSchema.methods.checkAchievements = async function () {
         });
 
         if (eligible) {
-          if (achievement.type !== "RANK") {
-            this.totalPoints += achievement.points;
-            domainPoints[achievement.domain] =
-              (domainPoints[achievement.domain] || 0) + achievement.points;
-          }
+          this.totalPoints += achievement.points;
+          domainPoints[achievement.domain] =
+            (domainPoints[achievement.domain] || 0) + achievement.points;
           newAchievements.push(achievement);
         }
       }
-
-      // Update domain-specific rank if this is a rank achievement
-      if (achievement.type === "RANK" && eligible) {
-        const domainRank = this.domainRanks.get(achievement.domain) || {};
-        domainRank.currentRank = achievement._id;
-        this.domainRanks.set(achievement.domain, domainRank);
-      }
     } catch (error) {
       console.error(`Error processing achievement ${achievement.name}:`, error);
-      continue; // Skip this achievement if there's an error
     }
   }
 
-  // Update domain points
+  // Second pass: Process RANK achievements using calculated points
+  console.log("\nProcessing RANK achievements...");
+  for (const achievement of achievements.filter((a) => a.type === "RANK")) {
+    try {
+      console.log(`\nChecking rank achievement: ${achievement.name}`);
+
+      const { validProgress, eligible } = this.calculateProgress(
+        achievement,
+        domainPoints
+      );
+
+      // Find or create achievement progress
+      const existingIndex = this.achievements.findIndex(
+        (a) => a.achievement.toString() === achievement._id.toString()
+      );
+
+      if (existingIndex >= 0) {
+        // Update existing rank achievement
+        const existing = this.achievements[existingIndex];
+        const wasCompleted = existing.progress === 100 && existing.earnedAt;
+
+        existing.progress = validProgress;
+
+        // Update rank if eligible
+        if (eligible && !wasCompleted) {
+          console.log(`Rank achievement newly completed: ${achievement.name}`);
+          existing.earnedAt = new Date();
+
+          // Award points for reaching new rank
+          this.totalPoints += achievement.points;
+          domainPoints[achievement.domain] =
+            (domainPoints[achievement.domain] || 0) + achievement.points;
+
+          // Update domain rank
+          const domainRank = this.domainRanks.get(achievement.domain) || {};
+          domainRank.currentRank = achievement._id;
+          this.domainRanks.set(achievement.domain, domainRank);
+
+          newAchievements.push(achievement);
+        } else if (wasCompleted) {
+          // Add points for previously earned rank
+          this.totalPoints += achievement.points;
+          domainPoints[achievement.domain] =
+            (domainPoints[achievement.domain] || 0) + achievement.points;
+        }
+      } else {
+        // Add new rank achievement
+        console.log(`Adding new rank achievement: ${achievement.name}`);
+        this.achievements.push({
+          achievement: achievement._id,
+          progress: validProgress,
+          earnedAt: eligible ? new Date() : null,
+        });
+
+        if (eligible) {
+          // Award points for new rank
+          this.totalPoints += achievement.points;
+          domainPoints[achievement.domain] =
+            (domainPoints[achievement.domain] || 0) + achievement.points;
+
+          // Update domain rank
+          const domainRank = this.domainRanks.get(achievement.domain) || {};
+          domainRank.currentRank = achievement._id;
+          this.domainRanks.set(achievement.domain, domainRank);
+
+          newAchievements.push(achievement);
+        }
+      }
+    } catch (error) {
+      console.error(
+        `Error processing rank achievement ${achievement.name}:`,
+        error
+      );
+    }
+  }
+
+  // Update final domain points
   for (const [domain, points] of Object.entries(domainPoints)) {
     const domainRank = this.domainRanks.get(domain) || {};
     domainRank.points = points;
     this.domainRanks.set(domain, domainRank);
+    console.log(`Final points for ${domain}: ${points}`);
   }
 
+  // Calculate level based on total points
+  // Level calculation using exponential growth:
+  // - basePoints (100) is points needed for level 1
+  // - Each level requires 25% more points than previous (growthFactor = 1.25)
+  // - Formula: level = log(points/basePoints)/log(growthFactor) + 1
+  // Example progression: L1=100, L2=125, L3=156, L4=195, L5=244, etc.
+  const basePoints = 100;
+  const growthFactor = 2.15;
+  const getPointsForLevel = (level) =>
+    basePoints * Math.pow(growthFactor, level - 1);
+  this.level = Math.max(
+    1,
+    Math.floor(
+      Math.log(this.totalPoints / basePoints) / Math.log(growthFactor)
+    ) + 1
+  );
+  console.log(`Final total points: ${this.totalPoints}, Level: ${this.level}`);
+
   return newAchievements;
+};
+
+// Helper method to calculate progress for an achievement
+UserProgressSchema.methods.calculateProgress = function (
+  achievement,
+  domainPoints
+) {
+  const criteriaProgress = achievement.criteria.map((criterion) => {
+    let statValue = 0;
+    if (criterion.type === "TOTAL_POINTS") {
+      statValue = domainPoints[achievement.domain] || 0;
+    } else {
+      const statKey = criterion.type;
+      statValue = this.stats[statKey] || 0;
+    }
+
+    const threshold = criterion.threshold || 0;
+    if (threshold === 0) {
+      console.log(`Skipping criterion ${criterion.type} due to zero threshold`);
+      return 100;
+    }
+
+    let progress;
+    switch (criterion.operator) {
+      case "lte":
+        progress = Math.max(
+          0,
+          Math.min(100, ((threshold - statValue) / threshold) * 100)
+        );
+        break;
+      case "eq":
+        progress =
+          statValue >= threshold
+            ? 100
+            : Math.max(0, Math.min(100, (statValue / threshold) * 100));
+        break;
+      case "gte":
+      default:
+        progress = Math.max(0, Math.min(100, (statValue / threshold) * 100));
+    }
+
+    console.log(
+      `${criterion.type}: value=${statValue}, threshold=${threshold}, progress=${progress}%`
+    );
+    return progress;
+  });
+
+  const overallProgress =
+    criteriaProgress.length > 0
+      ? Math.floor(
+          criteriaProgress.reduce((sum, progress) => sum + progress, 0) /
+            criteriaProgress.length
+        )
+      : 0;
+
+  const validProgress = Math.max(0, Math.min(100, overallProgress || 0));
+  const eligible = validProgress === 100;
+
+  console.log(
+    `Overall progress for ${achievement.name}: ${validProgress}%, Eligible: ${eligible}`
+  );
+
+  return { validProgress, eligible };
 };
 
 // Helper method to get current rank for a specific domain

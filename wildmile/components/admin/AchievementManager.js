@@ -31,29 +31,33 @@ const DOMAINS = [
 
 const CRITERIA_TYPES = {
   CAMERATRAP: [
-    { value: "IMAGES_REVIEWED", label: "Images Reviewed" },
-    { value: "ANIMALS_OBSERVED", label: "Animals Observed" },
-    { value: "UNIQUE_SPECIES", label: "Unique Species" },
-    { value: "CONSECUTIVE_DAYS", label: "Consecutive Days" },
-    { value: "BLANKS_LOGGED", label: "Blanks Logged" },
-    { value: "DEPLOYMENTS_REVIEWED", label: "Deployments Reviewed" },
-    { value: "SPECIES_CONSENSUS", label: "Species Consensus" },
-    { value: "EXPERT_VERIFIED", label: "Expert Verified" },
+    { value: "imagesReviewed", label: "Images Reviewed" },
+    { value: "animalsObserved", label: "Animals Observed" },
+    { value: "uniqueSpecies", label: "Unique Species" },
+    { value: "consecutiveDays", label: "Consecutive Days" },
+    { value: "blanksLogged", label: "Blanks Logged" },
+    { value: "deploymentsReviewed", label: "Deployments Reviewed" },
+    { value: "speciesConsensus", label: "Species Consensus" },
+    { value: "expertVerified", label: "Expert Verified" },
+    { value: "TOTAL_POINTS", label: "Total Domain Points" },
   ],
   TRASH: [
-    { value: "ITEMS_LOGGED", label: "Items Logged" },
-    { value: "UNIQUE_MATERIALS", label: "Unique Materials" },
-    { value: "CLEANUP_EVENTS", label: "Cleanup Events" },
-    { value: "WEIGHT_COLLECTED", label: "Weight Collected" },
-    { value: "LOCATIONS_MONITORED", label: "Locations Monitored" },
-    { value: "DATA_QUALITY_SCORE", label: "Data Quality Score" },
+    { value: "itemsLogged", label: "Items Logged" },
+    { value: "uniqueMaterials", label: "Unique Materials" },
+    { value: "cleanupEvents", label: "Cleanup Events" },
+    { value: "weightCollected", label: "Weight Collected" },
+    { value: "locationsMonitored", label: "Locations Monitored" },
+    { value: "dataQualityScore", label: "Data Quality Score" },
+    { value: "sitesMonitored", label: "Sites Monitored" },
+    { value: "TOTAL_POINTS", label: "Total Domain Points" },
   ],
   WATER_QUALITY: [
-    { value: "SAMPLES_COLLECTED", label: "Samples Collected" },
-    { value: "PARAMETERS_MEASURED", label: "Parameters Measured" },
-    { value: "SITES_MONITORED", label: "Sites Monitored" },
-    { value: "QUALITY_CHECKS_PASSED", label: "Quality Checks Passed" },
-    { value: "CONSECUTIVE_SAMPLING", label: "Consecutive Sampling Days" },
+    { value: "samplesCollected", label: "Samples Collected" },
+    { value: "parametersMeasured", label: "Parameters Measured" },
+    { value: "sitesMonitored", label: "Sites Monitored" },
+    { value: "qualityChecksPassed", label: "Quality Checks Passed" },
+    { value: "consecutiveSampling", label: "Consecutive Sampling Days" },
+    { value: "TOTAL_POINTS", label: "Total Domain Points" },
   ],
 };
 
@@ -62,6 +66,29 @@ const OPERATORS = [
   { value: "lte", label: "Less than or equal to" },
   { value: "eq", label: "Equal to" },
 ];
+
+const SUGGESTED_THRESHOLDS = {
+  imagesReviewed: [10, 50, 100, 500, 1000],
+  animalsObserved: [10, 50, 100, 500, 1000],
+  uniqueSpecies: [5, 10, 25, 50, 100],
+  consecutiveDays: [3, 7, 14, 30, 90],
+  blanksLogged: [10, 50, 100, 500, 1000],
+  deploymentsReviewed: [1, 5, 10, 25, 50],
+  speciesConsensus: [5, 25, 50, 100, 500],
+  expertVerified: [1, 5, 10, 25, 50],
+  itemsLogged: [10, 50, 100, 500, 1000],
+  uniqueMaterials: [3, 5, 10, 15, 20],
+  cleanupEvents: [1, 5, 10, 25, 50],
+  weightCollected: [1, 5, 10, 25, 50],
+  locationsMonitored: [1, 3, 5, 10, 20],
+  dataQualityScore: [70, 80, 90, 95, 100],
+  sitesMonitored: [1, 3, 5, 10, 20],
+  samplesCollected: [1, 5, 10, 25, 50],
+  parametersMeasured: [1, 3, 5, 10, 15],
+  qualityChecksPassed: [5, 10, 25, 50, 100],
+  consecutiveSampling: [3, 7, 14, 30, 90],
+  TOTAL_POINTS: [100, 250, 500, 1000, 2500],
+};
 
 export function AchievementManager() {
   const [achievements, setAchievements] = useState([]);
@@ -291,6 +318,61 @@ export function AchievementManager() {
     }
   };
 
+  const handleCriterionTypeChange = (index, value) => {
+    updateCriteria(index, "type", value);
+    // Suggest a threshold based on the criterion type
+    const suggestedThresholds = SUGGESTED_THRESHOLDS[value];
+    if (suggestedThresholds) {
+      // For rank achievements, suggest higher thresholds
+      const thresholdIndex = formData.type === "RANK" ? 4 : 0;
+      updateCriteria(index, "threshold", suggestedThresholds[thresholdIndex]);
+    }
+  };
+
+  const renderCriteriaForm = () => (
+    <Stack spacing="md">
+      {formData.criteria.map((criterion, index) => (
+        <Group key={index} grow>
+          <Select
+            label="Criterion Type"
+            data={CRITERIA_TYPES[formData.domain]}
+            value={criterion.type}
+            onChange={(value) => handleCriterionTypeChange(index, value)}
+          />
+          <Select
+            label="Operator"
+            data={OPERATORS}
+            value={criterion.operator}
+            onChange={(value) => updateCriteria(index, "operator", value)}
+          />
+          <NumberInput
+            label="Threshold"
+            value={criterion.threshold}
+            onChange={(value) => updateCriteria(index, "threshold", value)}
+            min={0}
+          />
+          {formData.criteria.length > 1 && (
+            <ActionIcon
+              color="red"
+              onClick={() => removeCriteria(index)}
+              style={{ marginTop: "auto" }}
+            >
+              <IconTrash size={16} />
+            </ActionIcon>
+          )}
+        </Group>
+      ))}
+      <Button
+        variant="outline"
+        leftIcon={<IconPlus size={16} />}
+        onClick={addCriteria}
+        fullWidth
+      >
+        Add Criterion
+      </Button>
+    </Stack>
+  );
+
   return (
     <Stack>
       <Group position="apart">
@@ -393,7 +475,6 @@ export function AchievementManager() {
                 setFormData({ ...formData, name: e.target.value })
               }
             />
-
             <TextInput
               label="Description"
               value={formData.description}
@@ -401,7 +482,6 @@ export function AchievementManager() {
                 setFormData({ ...formData, description: e.target.value })
               }
             />
-
             <Group grow>
               <TextInput
                 label="Icon (emoji)"
@@ -428,80 +508,68 @@ export function AchievementManager() {
                   disabled={uploadingBadge}
                 />
               </div>
+
+              {formData.badge && (
+                <Card withBorder p="xs">
+                  <Group position="apart">
+                    <Image
+                      src={formData.badge}
+                      alt="Badge preview"
+                      style={{
+                        maxWidth: "100px",
+                        maxHeight: "100px",
+                        objectFit: "contain",
+                      }}
+                    />
+                    <ActionIcon
+                      color="red"
+                      onClick={() =>
+                        setFormData((prev) => ({ ...prev, badge: "" }))
+                      }
+                    >
+                      <IconTrash size={16} />
+                    </ActionIcon>
+                  </Group>
+                </Card>
+              )}
             </Group>
-
-            {formData.badge && (
-              <Card withBorder p="xs">
-                <Group position="apart">
-                  <Image
-                    src={formData.badge}
-                    alt="Badge preview"
-                    style={{
-                      maxWidth: "100px",
-                      maxHeight: "100px",
-                      objectFit: "contain",
-                    }}
-                  />
-                  <ActionIcon
-                    color="red"
-                    onClick={() =>
-                      setFormData((prev) => ({ ...prev, badge: "" }))
-                    }
-                  >
-                    <IconTrash size={16} />
-                  </ActionIcon>
-                </Group>
-              </Card>
-            )}
-
             <Group grow>
+              <Select
+                label="Type"
+                data={ACHIEVEMENT_TYPES}
+                value={formData.type}
+                onChange={(value) => {
+                  setFormData({ ...formData, type: value });
+                  // Update thresholds for all criteria if changing to/from RANK
+                  formData.criteria.forEach((_, index) => {
+                    const suggestedThresholds =
+                      SUGGESTED_THRESHOLDS[formData.criteria[index].type];
+                    if (suggestedThresholds) {
+                      const thresholdIndex = value === "RANK" ? 4 : 0;
+                      updateCriteria(
+                        index,
+                        "threshold",
+                        suggestedThresholds[thresholdIndex]
+                      );
+                    }
+                  });
+                }}
+              />
               <NumberInput
                 label="Level"
-                required
-                min={1}
                 value={formData.level}
                 onChange={(value) => setFormData({ ...formData, level: value })}
+                min={1}
               />
-
               <NumberInput
                 label="Points"
-                required
-                min={0}
                 value={formData.points}
                 onChange={(value) =>
                   setFormData({ ...formData, points: value })
                 }
+                min={0}
               />
             </Group>
-
-            <Select
-              label="Type"
-              required
-              data={ACHIEVEMENT_TYPES}
-              value={formData.type}
-              onChange={(value) => setFormData({ ...formData, type: value })}
-            />
-
-            <Select
-              label="Domain"
-              required
-              data={DOMAINS}
-              value={formData.domain}
-              onChange={(value) => {
-                setFormData({
-                  ...formData,
-                  domain: value,
-                  criteria: [
-                    {
-                      type: CRITERIA_TYPES[value][0].value,
-                      threshold: 0,
-                      operator: "gte",
-                    },
-                  ],
-                });
-              }}
-            />
-
             <Switch
               label="Active"
               checked={formData.isActive}
@@ -509,71 +577,10 @@ export function AchievementManager() {
                 setFormData({ ...formData, isActive: e.currentTarget.checked })
               }
             />
-
-            <Stack spacing="xs">
-              <Group position="apart">
-                <Text size="sm" weight={500}>
-                  Criteria
-                </Text>
-                <Button size="xs" onClick={addCriteria}>
-                  Add Criteria
-                </Button>
-              </Group>
-
-              {formData.criteria.map((criterion, index) => (
-                <Card key={index} withBorder p="xs">
-                  <Group grow>
-                    <Select
-                      size="xs"
-                      label="Type"
-                      data={CRITERIA_TYPES[formData.domain]}
-                      value={criterion.type}
-                      onChange={(value) => updateCriteria(index, "type", value)}
-                    />
-
-                    <NumberInput
-                      size="xs"
-                      label="Threshold"
-                      value={criterion.threshold}
-                      onChange={(value) =>
-                        updateCriteria(index, "threshold", value)
-                      }
-                    />
-
-                    <Select
-                      size="xs"
-                      label="Operator"
-                      data={OPERATORS}
-                      value={criterion.operator}
-                      onChange={(value) =>
-                        updateCriteria(index, "operator", value)
-                      }
-                    />
-
-                    <ActionIcon
-                      color="red"
-                      onClick={() => removeCriteria(index)}
-                      disabled={formData.criteria.length === 1}
-                    >
-                      <IconTrash size={16} />
-                    </ActionIcon>
-                  </Group>
-                </Card>
-              ))}
-            </Stack>
-
+            {renderCriteriaForm()}
             <Group position="right">
-              <Button
-                variant="subtle"
-                onClick={() => {
-                  setModalOpen(false);
-                  resetForm();
-                }}
-              >
-                Cancel
-              </Button>
               <Button type="submit">
-                {editingAchievement ? "Update" : "Create"} Achievement
+                {editingAchievement ? "Update" : "Create"}
               </Button>
             </Group>
           </Stack>

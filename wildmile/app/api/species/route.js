@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "/lib/db/setup";
 import Species from "/models/Species";
+import { cache } from "next/cache";
 
 export async function GET(request) {
   await dbConnect();
