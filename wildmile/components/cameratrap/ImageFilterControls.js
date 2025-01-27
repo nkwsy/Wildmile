@@ -102,8 +102,8 @@ export function ImageFilterControls({ onApplyFilters }) {
         <Button
           onClick={open}
           leftSection={<IconAdjustmentsHorizontal size={16} />}
-          variant={hasActiveFilters ? "default" : "outline"}
-          color="gray"
+          variant={hasActiveFilters ? "filled" : "outline"}
+          color={hasActiveFilters ? "yellow" : "grey"}
         >
           {hasActiveFilters ? "Filters Active" : "Filters"}
         </Button>

@@ -55,6 +55,7 @@ export default function RootLayout({ children }) {
         {/* <Hydration /> */}
 
         <MantineProvider theme={theme}>
+          <Notifications />
           {/* <HeaderNav /> */}
           {children}
           <SpeedInsights />

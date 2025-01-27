@@ -11,7 +11,9 @@ import { AlertLogin } from "components/alert";
 import { getSession } from "lib/getSession";
 import { Suspense } from "react";
 import { cookies, headers } from "next/headers";
+import { AchievementManager } from 'components/admin/AchievementManager';
 
+// In your admin page component
 export const metadata = {
   title: "Camera Trap Admin",
   description: "Manage camera trap users and roles.",
@@ -39,6 +41,7 @@ export default async function Page(props) {
   return (
     <Suspense fallback={<LoadingOverlay visible />}>
       <CameraAdminPage />
+<AchievementManager />
     </Suspense>
   );
 }

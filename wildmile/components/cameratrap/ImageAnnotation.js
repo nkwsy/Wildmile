@@ -350,6 +350,8 @@ export function ImageAnnotation({ fetchNextImage }) {
                   )}
                 </ActionIcon>
               </Indicator>
+            </Group>
+            <Group mt="xs">
               <TextInput
                 placeholder="Add a comment..."
                 value={comment}
@@ -369,9 +371,6 @@ export function ImageAnnotation({ fetchNextImage }) {
             </Stack>
           </GridCol>
           <GridCol span={{ base: 12, md: 12, lg: 6 }}>
-            <Text size="sm" weight={500} mb="xs">
-              Previous Observations
-            </Text>
             {!noAnimalsVisible && (
               <Flex direction="column" gap="xs" mt="md">
                 {selection.map((animal) => (

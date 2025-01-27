@@ -9,7 +9,7 @@ import {
   Button,
 } from "@mantine/core";
 import { IconPaw, IconUser, IconCar } from "@tabler/icons-react";
-
+import { UserAvatar } from "/components/shared/UserAvatar";
 const getObservationIcon = (type) => {
   switch (type) {
     case "animal":
@@ -67,12 +67,7 @@ export function ObservationHistory({ previousObservations }) {
       {Object.values(observationsByCreator).map((group, index) => (
         <Stack key={index} spacing="xs">
           <Group spacing="xs">
-            <Avatar size="sm" src={group.creator?.profile?.picture} radius="xl">
-              {group.creator?.profile?.name?.charAt(0) || "?"}
-            </Avatar>
-            <Text size="sm" weight={500}>
-              {group.creator?.profile?.name || "Unknown User"}
-            </Text>
+            <UserAvatar userId={group.creator._id} />
           </Group>
           <Group ml="xl" spacing="xs" wrap="wrap">
             {group.observations.map((obs, obsIndex) => (
