@@ -18,6 +18,7 @@ import {
   FileInput,
   Image,
   LoadingOverlay,
+  Title,
 } from "@mantine/core";
 import { IconPlus, IconEdit, IconTrash } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
@@ -362,12 +363,8 @@ export function AchievementManager() {
           )}
         </Group>
       ))}
-      <Button
-        variant="outline"
-        leftIcon={<IconPlus size={16} />}
-        onClick={addCriteria}
-        fullWidth
-      >
+      <Button variant="outline" onClick={addCriteria} fullWidth>
+        {<IconPlus size={16} />}
         Add Criterion
       </Button>
     </Stack>
@@ -376,9 +373,9 @@ export function AchievementManager() {
   return (
     <Stack>
       <Group position="apart">
-        <Text size="xl" weight={700}>
+        <Title size="xl" weight={700}>
           Achievement Manager
-        </Text>
+        </Title>
         <Group>
           <Select
             label="Domain"
@@ -411,34 +408,45 @@ export function AchievementManager() {
         </Group>
       </Group>
 
-      <Table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Domain</th>
-            <th>Type</th>
-            <th>Level</th>
-            <th>Points</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
+      <Table striped>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>Name</Table.Th>
+            <Table.Th>Domain</Table.Th>
+            <Table.Th>Type</Table.Th>
+            <Table.Th>Level</Table.Th>
+            <Table.Th>Points</Table.Th>
+            <Table.Th>Status</Table.Th>
+            <Table.Th>Actions</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
           {achievements
             .filter((a) => a.domain === selectedDomain)
             .map((achievement) => (
-              <tr key={achievement._id}>
-                <td>{achievement.name}</td>
-                <td>{achievement.domain}</td>
-                <td>{achievement.type}</td>
-                <td>{achievement.level}</td>
-                <td>{achievement.points}</td>
-                <td>
+              <Table.Tr key={achievement._id}>
+                <Table.Td>
+                  <Group>
+                    <Image
+                      src={achievement.badge}
+                      alt={achievement.name}
+                      width={40}
+                      height={40}
+                      style={{ marginRight: "10px" }}
+                    />
+                    {achievement.name}
+                  </Group>
+                </Table.Td>
+                <Table.Td>{achievement.domain}</Table.Td>
+                <Table.Td>{achievement.type}</Table.Td>
+                <Table.Td>{achievement.level}</Table.Td>
+                <Table.Td>{achievement.points}</Table.Td>
+                <Table.Td>
                   <Badge color={achievement.isActive ? "green" : "gray"}>
                     {achievement.isActive ? "Active" : "Inactive"}
                   </Badge>
-                </td>
-                <td>
+                </Table.Td>
+                <Table.Td>
                   <Group spacing={4}>
                     <ActionIcon onClick={() => handleEdit(achievement)}>
                       <IconEdit size={16} />
@@ -450,10 +458,10 @@ export function AchievementManager() {
                       <IconTrash size={16} />
                     </ActionIcon>
                   </Group>
-                </td>
-              </tr>
+                </Table.Td>
+              </Table.Tr>
             ))}
-        </tbody>
+        </Table.Tbody>
       </Table>
 
       <Modal
