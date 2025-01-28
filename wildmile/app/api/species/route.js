@@ -25,7 +25,7 @@ export async function GET(request) {
       // Cache the findOrFetchByName results
       const getCachedSpecies = unstable_cache(
         async (speciesName) => {
-          return Species.findOrFetchByName(speciesName);
+          return Species.findOne({ name: speciesName });
         },
         [`species-${species}`],
         {
@@ -35,6 +35,9 @@ export async function GET(request) {
       );
 
       result = await getCachedSpecies(species);
+      if (!result) {
+        return Species.findOrFetchByName(species);
+      }
     }
 
     if (!result) {
