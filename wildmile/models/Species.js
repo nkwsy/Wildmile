@@ -114,9 +114,7 @@ SpeciesSchema.virtual("subtitle").get(function () {
 });
 
 // Indexes
-SpeciesSchema.index({ name: 1 });
-SpeciesSchema.index({ preferred_common_name: 1 });
-SpeciesSchema.index({ taxon_id: 1 });
+SpeciesSchema.index({ name: 1, common_name: 1, taxonId: 1 });
 
 // Helper method to format for SpeciesCard
 SpeciesSchema.methods.toCardFormat = function () {
