@@ -237,29 +237,29 @@ export default function CameraAdminPage() {
         />
       </Group>
 
-      <Table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Current Roles</th>
-            <th style={{ width: 40 }}></th>
-          </tr>
-        </thead>
-        <tbody>
+      <Table striped>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>Name</Table.Th>
+            <Table.Th>Email</Table.Th>
+            <Table.Th>Current Roles</Table.Th>
+            <Table.Th style={{ width: 40 }}></Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
           {users.map((user) => (
-            <tr key={user._id}>
-              <td>{user.profile?.name || "N/A"}</td>
-              <td>{user.email}</td>
-              <td>
+            <Table.Tr key={user._id}>
+              <Table.Td>{user.profile?.name || "N/A"}</Table.Td>
+              <Table.Td>{user.email}</Table.Td>
+              <Table.Td>
                 <Group gap="xs" wrap="wrap">
                   {renderRoleBadges(user.roles || [])}
                 </Group>
-              </td>
-              <td>{renderRoleActions(user)}</td>
-            </tr>
+              </Table.Td>
+              <Table.Td>{renderRoleActions(user)}</Table.Td>
+            </Table.Tr>
           ))}
-        </tbody>
+        </Table.Tbody>
       </Table>
       {users.length === 0 && (
         <Text c="dimmed" ta="center" mt="md">

@@ -3,15 +3,19 @@ import {
   Button,
   Table,
   Container,
+  Grid,
+  GridCol,
+  Paper,
   Group,
   LoadingOverlay,
+  Card,
 } from "@mantine/core";
 import CameraAdminPage from "./CameraAdminPage";
 import { AlertLogin } from "components/alert";
 import { getSession } from "lib/getSession";
 import { Suspense } from "react";
 import { cookies, headers } from "next/headers";
-import { AchievementManager } from 'components/admin/AchievementManager';
+import { AchievementManager } from "components/admin/AchievementManager";
 
 // In your admin page component
 export const metadata = {
@@ -39,9 +43,15 @@ export default async function Page(props) {
   }
 
   return (
-    <Suspense fallback={<LoadingOverlay visible />}>
-      <CameraAdminPage />
-<AchievementManager />
-    </Suspense>
+    <Container>
+      <Suspense fallback={<LoadingOverlay visible />}>
+        <Card shadow="sm" p="md" withBorder>
+          <CameraAdminPage />
+        </Card>
+        <Card shadow="sm" p="md" withBorder>
+          <AchievementManager />
+        </Card>
+      </Suspense>
+    </Container>
   );
 }

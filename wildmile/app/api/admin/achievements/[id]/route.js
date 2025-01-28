@@ -7,7 +7,7 @@ import { headers } from "next/headers";
 export async function PUT(request, { params }) {
   try {
     const session = await getSession({ headers });
-    if (!session?.admin) {
+    if (!session?.admin || !session?.role?.includes("admin")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
