@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "/lib/db/setup";
 import Species from "/models/Species";
-import { cache } from "next/cache";
+import { unstable_cache } from "next/cache";
 
 export async function GET(request) {
   await dbConnect();
@@ -22,7 +22,19 @@ export async function GET(request) {
     if (id) {
       result = await Species.findById(id);
     } else {
-      result = await Species.findOrFetchByName(species);
+      // Cache the findOrFetchByName results
+      const getCachedSpecies = unstable_cache(
+        async (speciesName) => {
+          return Species.findOrFetchByName(speciesName);
+        },
+        [`species-${species}`],
+        {
+          revalidate: 36000, // Cache for 1 hour
+          tags: ["species"],
+        }
+      );
+
+      result = await getCachedSpecies(species);
     }
 
     if (!result) {
