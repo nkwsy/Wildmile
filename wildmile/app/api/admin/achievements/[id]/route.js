@@ -3,11 +3,12 @@ import dbConnect from "lib/db/setup";
 import Achievement from "models/users/Achievement";
 import { getSession } from "lib/getSession";
 import { headers } from "next/headers";
+import UserProgress from "models/users/UserProgress";
 
 export async function PUT(request, { params }) {
   try {
     const session = await getSession({ headers });
-    if (!session?.admin || !session?.role?.includes("admin")) {
+    if (!session?.admin || !session?.role?.includes("Admin")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -34,7 +35,16 @@ export async function DELETE(request, { params }) {
     }
 
     await dbConnect();
+
+    // Delete the achievement
     await Achievement.findByIdAndDelete(params.id);
+
+    // Remove the achievement from all user progress records
+    await UserProgress.updateMany(
+      { "achievements.achievementId": params.id },
+      { $pull: { achievements: { achievementId: params.id } } }
+    );
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error deleting achievement:", error);

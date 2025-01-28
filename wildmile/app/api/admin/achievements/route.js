@@ -6,11 +6,6 @@ import { headers } from "next/headers";
 
 export async function GET() {
   try {
-    const session = await getSession({ headers });
-    if (!session?.admin && !session?.role?.includes("admin")) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
     await dbConnect();
     const achievements = await Achievement.find().sort({ level: 1, name: 1 });
     return NextResponse.json(achievements);
