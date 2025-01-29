@@ -70,7 +70,7 @@ export function UserAvatar({ userId, size = "sm" }) {
       ></Avatar>
 
       <Popover.Target>
-        <div>
+        <div onMouseEnter={open} onMouseLeave={close}>
           <Text size="sm" weight={500}>
             {userStats?.user?.profile?.name || "Anonymous"}
           </Text>
