@@ -7,6 +7,8 @@ import {
   Badge,
   Popover,
   Button,
+  Card,
+  Paper,
 } from "@mantine/core";
 import { IconPaw, IconUser, IconCar } from "@tabler/icons-react";
 import { UserAvatar } from "/components/shared/UserAvatar";
@@ -67,7 +69,9 @@ export function ObservationHistory({ previousObservations }) {
       {Object.values(observationsByCreator).map((group, index) => (
         <Stack key={index} spacing="xs">
           <Group spacing="xs">
-            <UserAvatar userId={group.creator._id} />
+            <Paper>
+              <UserAvatar userId={group.creator._id} />
+            </Paper>
           </Group>
           <Group ml="xl" spacing="xs" wrap="wrap">
             {group.observations.map((obs, obsIndex) => (

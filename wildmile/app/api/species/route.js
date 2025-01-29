@@ -35,13 +35,22 @@ export async function GET(request) {
       );
 
       result = await getCachedSpecies(species);
-      if (!result) {
-        return Species.findOrFetchByName(species);
-      }
-    }
 
-    if (!result) {
-      return NextResponse.json({ error: "Species not found" }, { status: 404 });
+      //       { status: 500 }
+      //     );
+      //   }
+
+      if (!result) {
+        try {
+          result = await Species.findOrFetchByName(species);
+        } catch (fetchError) {
+          console.error("Error fetching species:", fetchError);
+          return NextResponse.json(
+            { error: "Species not found" },
+            { status: 404 }
+          );
+        }
+      }
     }
 
     return NextResponse.json(result);
