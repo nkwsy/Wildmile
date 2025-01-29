@@ -18,14 +18,14 @@ export async function GET(request) {
 
   try {
     // Update user stats
-    await updateUserStats(userId);
+    // await updateUserStats(userId);
     // console.log(progress);
 
     // Get user info
     const user = await User.findById(userId, "profile roles");
     const progress = await UserProgress.findOne({ user: userId });
-    await progress.checkAchievements();
-    await progress.save();
+    // await progress.checkAchievements();
+    // await progress.save();
     // Get achievements with populated details
     await progress.populate([
       {
