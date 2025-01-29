@@ -65,33 +65,33 @@ export function ObservationHistory({ previousObservations }) {
   }, {});
 
   return (
-    <Stack spacing="md">
-      {Object.values(observationsByCreator).map((group, index) => (
-        <Stack key={index} spacing="xs">
-          <Group spacing="xs">
-            <Paper>
+    <>
+      <Stack spacing="md">
+        {Object.values(observationsByCreator).map((group, index) => (
+          <Stack key={index} spacing="xs">
+            {/* <Group spacing="xs"> */}
+            <Group ml="xl" spacing="xs" wrap="wrap">
               <UserAvatar userId={group.creator._id} />
-            </Paper>
-          </Group>
-          <Group ml="xl" spacing="xs" wrap="wrap">
-            {group.observations.map((obs, obsIndex) => (
-              <Badge
-                key={obsIndex}
-                size="sm"
-                variant="light"
-                leftSection={getObservationIcon(obs.observationType)}
-                color={obs.observationType === "animal" ? "green" : "blue"}
-              >
-                {getObservationLabel(obs)}
-              </Badge>
-            ))}
-          </Group>
-          <Text size="xs" color="dimmed" ml="xl">
-            {new Date(group.observations[0].createdAt).toLocaleDateString()}
-          </Text>
-        </Stack>
-      ))}
-    </Stack>
+              {/* </Group> */}
+              {group.observations.map((obs, obsIndex) => (
+                <Badge
+                  key={obsIndex}
+                  size="sm"
+                  variant="light"
+                  leftSection={getObservationIcon(obs.observationType)}
+                  color={obs.observationType === "animal" ? "green" : "blue"}
+                >
+                  {getObservationLabel(obs)}
+                </Badge>
+              ))}
+            </Group>
+            <Text size="xs" color="dimmed" ml="xl">
+              {new Date(group.observations[0].createdAt).toLocaleDateString()}
+            </Text>
+          </Stack>
+        ))}
+      </Stack>
+    </>
   );
 }
 
