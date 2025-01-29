@@ -15,7 +15,7 @@ import {
   Divider,
 } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
-
+import { UserAvatar } from "/components/shared/UserAvatar";
 export function InfoComponent() {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -146,7 +146,8 @@ export function InfoComponent() {
             <Stack spacing="xs">
               {stats.topCreators.map((creator, index) => (
                 <Group key={creator.id || index} position="apart">
-                  <Text size="sm">{creator.name || "Unknown User"}</Text>
+                  <UserAvatar userId={creator.id} />
+                  {/* <Text size="sm">{creator.name || "Unknown User"}</Text> */}
                   <Text size="sm" color="dimmed">
                     {creator.count.toLocaleString()} observation
                     {creator.count !== 1 ? "s" : ""}
