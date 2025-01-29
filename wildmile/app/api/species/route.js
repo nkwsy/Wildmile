@@ -25,32 +25,16 @@ export async function GET(request) {
       // Cache the findOrFetchByName results
       const getCachedSpecies = unstable_cache(
         async (speciesName) => {
-          return Species.findOne({ name: speciesName });
+          return Species.findOrFetchByName(speciesName);
         },
         [`species-${species}`],
         {
-          revalidate: 36000, // Cache for 1 hour
+          revalidate: 360000, // Cache for 100 hours
           tags: ["species"],
         }
       );
 
       result = await getCachedSpecies(species);
-
-      //       { status: 500 }
-      //     );
-      //   }
-
-      if (!result) {
-        try {
-          result = await Species.findOrFetchByName(species);
-        } catch (fetchError) {
-          console.error("Error fetching species:", fetchError);
-          return NextResponse.json(
-            { error: "Species not found" },
-            { status: 404 }
-          );
-        }
-      }
     }
 
     return NextResponse.json(result);
