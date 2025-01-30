@@ -1,3 +1,4 @@
+"use server";
 import React, { Suspense } from "react";
 import {
   Title,
@@ -24,6 +25,7 @@ import { RandomFavorite } from "components/cameratrap/RandomFavorite";
 import InfoComponent from "components/cameratrap/InfoComponent";
 import { UserInfoComponent } from "components/cameratrap/UserInfoComponent";
 import { getSession } from "lib/getSession";
+import { headers } from "next/headers";
 // In your page component:
 
 function CameraTrapCards() {
@@ -46,7 +48,11 @@ function CameraTrapCards() {
   return <IconCardGrid cards={cards} />;
 }
 
-function CameraTrapMgmtCards({ user }) {
+async function CameraTrapMgmtCards() {
+  const session = await getSession({ headers });
+  const user = await session;
+  console.log(user);
+
   const cards = [
     {
       icon: IconCameraPlus,
@@ -73,14 +79,24 @@ function CameraTrapMgmtCards({ user }) {
       description: "Manage the deployment locations",
     },
   ];
-  return <IconCardGrid cards={cards} />;
+
+  // if (!user || !user.roles?.includes("CameraManager")) {
+  // if (!user) {
+  //   return null;
+  // }
+
+  return (
+    <>
+      {user && (
+        <Fieldset legend="Management Tools">
+          <IconCardGrid cards={cards} />
+        </Fieldset>
+      )}
+    </>
+  );
 }
 
-export default async function CameraTrapHomePage() {
-  // const { classes, theme } = cardStyles()
-  const session = await getSession();
-  const user = session?.user;
-
+export default async function Page() {
   return (
     <>
       <Container maw="85%" my="5rem">
@@ -93,15 +109,15 @@ export default async function CameraTrapHomePage() {
               Collecting and sharing data about Urban River's projects.
             </Text>
             <CameraTrapCards />
-            {user && user.roles.includes("CameraManager") && (
-              <Fieldset legend="Management Tools">
-                <CameraTrapMgmtCards user={user} />
-              </Fieldset>
-            )}
+            <Suspense fallback={<Text>loading</Text>}>
+              <CameraTrapMgmtCards />
+            </Suspense>
           </GridCol>
           <GridCol span={{ base: 12, md: 5 }}>
             <Suspense fallback={<Text>loading</Text>}>
               <RandomFavorite />
+            </Suspense>
+            <Suspense fallback={<Text>loading</Text>}>
               <InfoComponent />
             </Suspense>
             <Suspense fallback={<Text>loading</Text>}>
