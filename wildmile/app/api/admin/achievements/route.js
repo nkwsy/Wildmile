@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import Achievement from "models/users/Achievement";
 import { getSession } from "lib/getSession";
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 
 export async function GET() {
   try {
@@ -21,7 +21,10 @@ export async function GET() {
 export async function POST(request) {
   try {
     const session = await getSession({ headers });
-    if (!session?.admin) {
+    const userRoles = Array.from(session?.roles || []);
+
+    if (!session?.admin && !userRoles.includes("Admin")) {
+      console.log("sessionroles", session);
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
