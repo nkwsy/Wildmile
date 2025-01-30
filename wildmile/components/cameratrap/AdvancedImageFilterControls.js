@@ -24,7 +24,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import TaxaSearch from "./TaxaSearch";
 import styles from "styles/components/YesNoButtonGroup.module.css";
-import { DeploymentMapModal } from "./deployments/DeploymentMap";
+import { DeploymentMapPopover } from "./deployments/DeploymentMap";
 export function AdvancedImageFilterControls({
   onApplyFilters,
   onClearFilters,
@@ -204,7 +204,7 @@ export function AdvancedImageFilterControls({
                 onChange={(value) => handleFilterChange("locationId", value)}
                 clearable
               />
-              <DeploymentMapModal handleFilterChange={setSelectedLocation} />
+              <DeploymentMapPopover handleFilterChange={setSelectedLocation} />
             </div>
             {filters.locationId && (
               <Select
