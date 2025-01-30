@@ -24,7 +24,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import TaxaSearch from "./TaxaSearch";
 import styles from "styles/components/YesNoButtonGroup.module.css";
-
+import { DeploymentMapModal } from "./deployments/DeploymentMap";
 export function AdvancedImageFilterControls({
   onApplyFilters,
   onClearFilters,
@@ -60,6 +60,13 @@ export function AdvancedImageFilterControls({
 
   const [locations, setLocations] = useState([]);
   const [deployments, setDeployments] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+
+  useEffect(() => {
+    if (selectedLocation) {
+      handleFilterChange("locationId", selectedLocation._id);
+    }
+  }, [selectedLocation]);
 
   useEffect(() => {
     fetchLocations();
@@ -188,15 +195,17 @@ export function AdvancedImageFilterControls({
             />
           </Group>
           <Group grow>
-            <Select
-              label="Location"
-              placeholder="Select a location"
-              data={locations}
-              value={filters.locationId}
-              onChange={(value) => handleFilterChange("locationId", value)}
-              clearable
-            />
-
+            <div>
+              <Select
+                label="Location"
+                placeholder="Select a location"
+                data={locations}
+                value={filters.locationId}
+                onChange={(value) => handleFilterChange("locationId", value)}
+                clearable
+              />
+              <DeploymentMapModal handleFilterChange={setSelectedLocation} />
+            </div>
             {filters.locationId && (
               <Select
                 label="Deployment"

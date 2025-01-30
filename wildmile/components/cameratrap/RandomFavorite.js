@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   Image,
@@ -20,33 +20,37 @@ import {
   IconArrowsShuffle,
 } from "@tabler/icons-react";
 import classes from "styles/CameraTrap.module.css";
+import useSWR from "swr";
+
+const fetcher = async (url) => {
+  const response = await fetch(url, { cache: "no-store" });
+  if (!response.ok) throw new Error("Failed to fetch");
+  return response.json();
+};
 
 export function RandomFavorite() {
-  const [favoriteImage, setFavoriteImage] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [enlargedImage, setEnlargedImage] = useState(false);
 
-  const fetchRandomFavorite = async () => {
+  const {
+    data: favoriteImage,
+    error,
+    isLoading,
+    mutate,
+  } = useSWR("/api/cameratrap/randomFavorite", fetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    dedupingInterval: 0,
+  });
+
+  const fetchRandomFavorite = () => {
     setLoading(true);
-    try {
-      const response = await fetch("/api/cameratrap/randomFavorite", {
-        cache: "no-store",
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setFavoriteImage(data);
-      }
-    } catch (error) {
-      console.error("Error fetching random favorite:", error);
-    }
-    setLoading(false);
+    mutate().finally(() => setLoading(false));
   };
 
-  useState(() => {
-    fetchRandomFavorite();
-  }, []);
+  if (isLoading) return <div>Loading...</div>;
 
-  if (!favoriteImage && !loading) {
+  if (!favoriteImage) {
     return (
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Text align="center">No favorite images found</Text>
@@ -57,46 +61,47 @@ export function RandomFavorite() {
   return (
     <>
       <Fieldset legend="Random Favorite">
-        <LoadingOverlay visible={loading} />
-        {favoriteImage && (
-          <div style={{ position: "relative", minHeight: 300 }}>
-            <Image
-              src={favoriteImage.publicURL}
-              alt="Random favorite wildlife image"
-              className={classes.mainImage}
-              style={{ objectFit: "contain" }}
-            />
-            <ActionIcon
-              style={{ position: "absolute", top: 10, right: 10 }}
-              onClick={() => setEnlargedImage(true)}
-            >
-              <IconMaximize size={24} />
-            </ActionIcon>
-            {/* <Group gap="sm"> */}
-            <Flex direction={{ base: "column", sm: "row" }} gap="sm">
-              <Text size="sm" c="dimmed" mt="md" flex="1">
-                Captured on:{" "}
-                {new Date(favoriteImage.timestamp).toLocaleString()}
-              </Text>
-              <Text size="sm" c="dimmed" mt="md" flex="1">
-                Favorite by: {favoriteImage.favoriteUsers[0].profile.name}
-              </Text>
-              <Button
-                mt="md"
-                // flex="1"
-                wrap="wrap"
-                variant="light"
-                color="blue"
-                onClick={fetchRandomFavorite}
-                loading={loading}
-                leftSection={<IconArrowsShuffle />}
+        <div style={{ position: "relative", minHeight: 300 }}>
+          {favoriteImage && (
+            <>
+              <Image
+                src={favoriteImage.publicURL}
+                alt="Random favorite wildlife image"
+                className={classes.mainImage}
+                style={{ objectFit: "contain" }}
+              />
+              <ActionIcon
+                style={{ position: "absolute", top: 10, right: 10 }}
+                onClick={() => setEnlargedImage(true)}
               >
-                New Image
-              </Button>
-            </Flex>
-            {/* </Group> */}
-          </div>
-        )}
+                <IconMaximize size={24} />
+              </ActionIcon>
+              {/* <Group gap="sm"> */}
+              <Flex direction={{ base: "column", sm: "row" }} gap="sm">
+                <Text size="sm" c="dimmed" mt="md" flex="1">
+                  Captured on:{" "}
+                  {new Date(favoriteImage.timestamp).toLocaleString()}
+                </Text>
+                <Text size="sm" c="dimmed" mt="md" flex="1">
+                  Favorite by: {favoriteImage.favoriteUsers[0].profile.name}
+                </Text>
+                <Button
+                  mt="md"
+                  // flex="1"
+                  wrap="wrap"
+                  variant="light"
+                  color="blue"
+                  onClick={fetchRandomFavorite}
+                  loading={loading}
+                  leftSection={<IconArrowsShuffle />}
+                >
+                  New Image
+                </Button>
+              </Flex>
+              {/* </Group> */}
+            </>
+          )}
+        </div>
       </Fieldset>
 
       <Modal

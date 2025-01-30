@@ -97,7 +97,9 @@ export function ObservationHistory({ previousObservations }) {
 
 export function ObservationHistoryPopover({ mediaID }) {
   const [previousObservations, setPreviousObservations] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
+    setLoading(true);
     const fetchObservations = async () => {
       if (mediaID) {
         // Fetch previous observations
@@ -107,11 +109,12 @@ export function ObservationHistoryPopover({ mediaID }) {
         const data = await response.json();
         setPreviousObservations(data);
       }
+      setLoading(false);
     };
     fetchObservations();
   }, [mediaID]);
 
-  if (previousObservations.length === 0) {
+  if (previousObservations.length === 0 || loading) {
     return <></>;
   }
 

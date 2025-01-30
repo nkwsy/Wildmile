@@ -15,6 +15,8 @@ import {
   ActionIcon,
   Tooltip,
   LoadingOverlay,
+  Modal,
+  Button,
 } from "@mantine/core";
 import { IconX, IconCalendar, IconCamera, IconEdit } from "@tabler/icons-react";
 import Link from "next/link";
@@ -433,6 +435,27 @@ export default function DeploymentMap({ locations = [] }) {
           </div>
         </div>
       </Card>
+    </>
+  );
+}
+
+// Map Modal, Make sure you input the context provider in the parent component
+
+export function DeploymentMapModal({ handleFilterChange }) {
+  const { selectedLocation, setSelectedLocation } = useDeploymentMap();
+  const [opened, setOpened] = useState(false);
+  if (selectedLocation) {
+    handleFilterChange(selectedLocation);
+  }
+
+  return (
+    <>
+      <Button variant="outline" size="xs" onClick={() => setOpened(true)}>
+        Open Map
+      </Button>
+      <Modal opened={opened} onClose={() => setOpened(false)} title="Map">
+        <DeploymentMapObject />
+      </Modal>
     </>
   );
 }

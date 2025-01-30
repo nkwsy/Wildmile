@@ -1,13 +1,18 @@
-"use client";
-import { Title, Text, Container, Button, Grid, Fieldset } from "@mantine/core";
-import { LoadingOverlay } from "@mantine/core";
-import { useEffect } from "react";
+import React, { Suspense } from "react";
+import {
+  Title,
+  Text,
+  Container,
+  Button,
+  Grid,
+  GridCol,
+  Fieldset,
+  Loader,
+} from "@mantine/core";
 import { IconCardGrid } from "/components/icon_card_grid";
 import classes from "/styles/card.module.css";
-import Link from "next/link";
 import {
   IconUsers,
-  IconBackhoe,
   IconPokeball,
   IconCameraSearch,
   IconCameraPlus,
@@ -15,15 +20,13 @@ import {
   IconMapPin,
 } from "@tabler/icons-react";
 // import TaxaSearch, { WildlifeSidebar } from "components/cameratrap/TaxaSearch";
-import { useUser } from "lib/hooks";
-import { useRouter } from "next/navigation";
 import { RandomFavorite } from "components/cameratrap/RandomFavorite";
-import { InfoComponent } from "components/cameratrap/InfoComponent";
+import InfoComponent from "components/cameratrap/InfoComponent";
 import { UserInfoComponent } from "components/cameratrap/UserInfoComponent";
-
+import { getSession } from "lib/getSession";
 // In your page component:
 
-function CameraTrapCards({ user }) {
+function CameraTrapCards() {
   const cards = [
     {
       icon: IconPokeball,
@@ -39,14 +42,6 @@ function CameraTrapCards({ user }) {
       description: "Explore wildlife images which have been catagorized",
     },
   ];
-  if (user?.admin) {
-    cards.push({
-      icon: IconBackhoe,
-      title: "New Project",
-      href: "/projects/project/new",
-      description: "Create a new project",
-    });
-  }
 
   return <IconCardGrid cards={cards} />;
 }
@@ -81,47 +76,39 @@ function CameraTrapMgmtCards({ user }) {
   return <IconCardGrid cards={cards} />;
 }
 
-export default function CameraTrapHomePage() {
+export default async function CameraTrapHomePage() {
   // const { classes, theme } = cardStyles()
-  const { user, loading } = useUser();
-  const router = useRouter();
-
-  // useEffect(() => {
-  //   // redirect user to login if not authenticated
-  //   if (!loading && !user) router.replace("/login");
-  //   console.log(user);
-  // }, [user, loading, router]);
-
-  if (loading) {
-    return <LoadingOverlay visible />;
-  }
-
-  console.log(user);
+  const session = await getSession();
+  const user = session?.user;
 
   return (
     <>
       <Container maw="85%" my="5rem">
         <Grid mt="xl">
-          <Grid.Col span={{ base: 12, md: 7 }}>
+          <GridCol span={{ base: 12, md: 7 }}>
             <Title order={2} className={classes.title} ta="center" mt="sm">
               Camera Trap Resources
             </Title>
             <Text c="dimmed" ta="center" mt="md">
               Collecting and sharing data about Urban River's projects.
             </Text>
-            <CameraTrapCards user={user} />
+            <CameraTrapCards />
             {user && user.roles.includes("CameraManager") && (
               <Fieldset legend="Management Tools">
                 <CameraTrapMgmtCards user={user} />
               </Fieldset>
             )}
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 5 }}>
-            <RandomFavorite />
-            <InfoComponent />
-            <UserInfoComponent />
-          </Grid.Col>
-          <Grid.Col span={5}></Grid.Col>
+          </GridCol>
+          <GridCol span={{ base: 12, md: 5 }}>
+            <Suspense fallback={<Text>loading</Text>}>
+              <RandomFavorite />
+              <InfoComponent />
+            </Suspense>
+            <Suspense fallback={<Text>loading</Text>}>
+              <UserInfoComponent />
+            </Suspense>
+          </GridCol>
+          <GridCol span={5}></GridCol>
         </Grid>
       </Container>
     </>

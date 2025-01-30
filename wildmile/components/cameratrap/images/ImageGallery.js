@@ -12,13 +12,17 @@ import {
   Tooltip,
   ActionIcon,
   Box,
+  NumberInput,
 } from "@mantine/core";
 import { IconEye, IconHeart, IconLink } from "@tabler/icons-react";
 import Link from "next/link";
 
 import { SpeciesConsensusBadges } from "../SpeciesConsensusBadges";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+
 import { LoadingOverlay } from "@mantine/core";
 import { useState } from "react";
+import { ObservationHistoryPopover } from "../ObservationHistory";
 
 export function ImageGallery({
   images = [],
@@ -45,13 +49,23 @@ export function ImageGallery({
   return (
     <>
       {totalPages > 1 && (
-        <Pagination
-          total={totalPages}
-          value={page}
-          onChange={onPageChange}
-          position="center"
-          mt="md"
-        />
+        <Group justify="flex-start">
+          <Pagination
+            total={totalPages}
+            value={page}
+            onChange={onPageChange}
+            position="top"
+            // mt="md"
+          />
+          <NumberInput
+            clampBehavior="strict"
+            value={page}
+            onChange={onPageChange}
+            min={1}
+            max={totalPages - 1}
+            w={80}
+          />
+        </Group>
       )}
       <Grid>
         {images.map((image) => (
@@ -98,13 +112,31 @@ function ImageCard({ image, imageHeight }) {
           size="xl"
           padding="xs"
         >
-          <Image
-            src={image.publicURL}
-            alt={image.relativePath?.[image.relativePath.length - 1] || "Image"}
-            fit="cover"
-            height="90%"
-          />
-          <ImageInfo image={image} />
+          <TransformWrapper
+            defaultScale={1}
+            wheel={{ step: 0.1 }} // how fast you zoom with the mouse wheel
+            pinch={{ step: 0.2 }} // how fast you zoom with pinch gesture
+            doubleClick={{ disabled: true }} // optional: disable double-click zoom
+          >
+            <TransformComponent>
+              <Image
+                src={image.publicURL}
+                alt={
+                  image.relativePath?.[image.relativePath.length - 1] || "Image"
+                }
+                fit="cover"
+                height="90%"
+              />
+            </TransformComponent>
+          </TransformWrapper>
+          <Group justify="space-between" mt="md">
+            <ObservationHistoryPopover mediaID={image.mediaID} />
+            <Text size="sm" color="dimmed">
+              Location:{" "}
+              {image.deploymentId?.locationId?.locationName || "Unknown"}
+            </Text>
+            <ImageInfo image={image} />
+          </Group>
         </Modal>
       </Stack>
     </Paper>
@@ -129,7 +161,6 @@ function ImageInfo({ image }) {
           </Badge>
         )}
       </Group>
-
       <Group wrap="nowrap" justify="space-between">
         <Text size="xs" mb={0} color="dimmed">
           {new Date(image.timestamp).toLocaleDateString("en-US", {

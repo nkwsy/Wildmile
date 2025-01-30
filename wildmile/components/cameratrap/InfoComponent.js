@@ -1,109 +1,67 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
+"use server";
+import React from "react";
 import {
   Paper,
   Title,
   Text,
   Group,
   Stack,
-  Loader,
-  Button,
-  Tooltip,
-  Grid,
   Card,
+  Grid,
+  GridCol,
   Divider,
 } from "@mantine/core";
-import { IconRefresh } from "@tabler/icons-react";
 import { UserAvatar } from "/components/shared/UserAvatar";
-export function InfoComponent() {
-  const [stats, setStats] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+// import { getStats } from "/actions/CameratrapActions";
+import { getStats } from "app/actions/CameratrapActions";
+/**
+ * Server-side data fetch
+ */
+async function fetchStats(force = false) {
+  const url = "/api/cameratrap/getStats";
 
-  useEffect(() => {
-    fetchStats();
-  }, []);
+  // const response = await fetch(url, {
+  //   cache: force ? "no-store" : "force-cache", // or use { next: { revalidate: 60 } }
+  // });
+  const response = await fetch(url);
+  console.log(response);
+  const stats = await response.json();
+  return stats;
+}
 
-  const fetchStats = async (force = false) => {
-    try {
-      setLoading(true);
-      setError(null);
+/**
+ * Server Component
+ * Suspense boundaries and error boundaries will come from the parent route usage
+ */
+export default async function InfoComponent({ force = false }) {
+  // Server fetch
+  const stats = await getStats();
 
-      const url = `/api/cameratrap/getStats${force ? "?force=true" : ""}`;
-
-      const response = await fetch(url, {
-        cache: force ? "no-store" : "force-cache",
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setStats(data);
-    } catch (error) {
-      console.error("Error fetching stats:", error);
-      setError("Failed to load statistics");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleRefresh = () => {
-    fetchStats(true);
-  };
-
-  if (loading) {
+  // If stats is null or something else, you can handle it here or let it throw
+  if (!stats) {
     return (
       <Paper p="md" shadow="xs">
-        <Group position="center">
-          <Loader />
-          <Text size="sm" color="dimmed">
-            Loading statistics...
-          </Text>
-        </Group>
-      </Paper>
-    );
-  }
-
-  if (error || !stats) {
-    return (
-      <Paper p="md" shadow="xs">
-        <Stack align="center" spacing="md">
-          <Text color="red">{error || "Unable to load statistics"}</Text>
-          <Button
-            variant="light"
-            onClick={handleRefresh}
-            leftSection={<IconRefresh size={16} />}
-          >
-            Retry
-          </Button>
-        </Stack>
+        <Text color="red">Unable to load statistics</Text>
       </Paper>
     );
   }
 
   return (
     <>
-      {/* <Paper p="md" shadow="xs"> */}
       <Stack spacing="lg">
         <Group position="apart">
           <Title order={3}>Camera Trap Statistics</Title>
-          <Tooltip label="Refresh statistics">
-            <Button
-              variant="subtle"
-              size="sm"
-              onClick={handleRefresh}
-              loading={loading}
-              leftSection={<IconRefresh size={16} />}
-            >
-              Refresh
-            </Button>
-          </Tooltip>
+          {/* 
+          In a Server Component, you can't directly do onClick to re-fetch.
+          Instead, consider a server action or a Next.js Link that sets "?force=true"
+          in the URL, causing a new fetch on page load. Example:
+          
+          <Link href="/cameratrap?force=true">Refresh</Link>
+        */}
         </Group>
 
         <Grid>
-          <Grid.Col span={4}>
+          <GridCol span={4}>
             <Card withBorder p="md">
               <Text size="sm" color="dimmed" weight={500}>
                 Total Images
@@ -112,8 +70,8 @@ export function InfoComponent() {
                 {stats.totalImages.toLocaleString()}
               </Text>
             </Card>
-          </Grid.Col>
-          <Grid.Col span={4}>
+          </GridCol>
+          <GridCol span={4}>
             <Card withBorder p="md">
               <Text size="sm" color="dimmed" weight={500}>
                 Images with Observations
@@ -122,8 +80,8 @@ export function InfoComponent() {
                 {stats.uniqueMediaIds.toLocaleString()}
               </Text>
             </Card>
-          </Grid.Col>
-          <Grid.Col span={4}>
+          </GridCol>
+          <GridCol span={4}>
             <Card withBorder p="md">
               <Text size="sm" color="dimmed" weight={500}>
                 New Images (30 days)
@@ -132,7 +90,7 @@ export function InfoComponent() {
                 {stats.newImages30Days.toLocaleString()}
               </Text>
             </Card>
-          </Grid.Col>
+          </GridCol>
         </Grid>
 
         <Card withBorder>
@@ -147,7 +105,6 @@ export function InfoComponent() {
               {stats.topCreators.map((creator, index) => (
                 <Group key={creator.id || index} position="apart">
                   <UserAvatar userId={creator.id} />
-                  {/* <Text size="sm">{creator.name || "Unknown User"}</Text> */}
                   <Text size="sm" color="dimmed">
                     {creator.count.toLocaleString()} observation
                     {creator.count !== 1 ? "s" : ""}
@@ -193,5 +150,3 @@ export function InfoComponent() {
     </>
   );
 }
-
-export default InfoComponent;

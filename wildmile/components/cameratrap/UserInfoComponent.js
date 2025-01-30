@@ -34,7 +34,9 @@ export function UserInfoComponent() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchUserStats();
+    if (!loading) {
+      fetchUserStats();
+    }
   }, [user]);
 
   const fetchUserStats = async () => {
