@@ -17,6 +17,7 @@ import {
   LoadingOverlay,
   Modal,
   Button,
+  Popover,
 } from "@mantine/core";
 import { IconX, IconCalendar, IconCamera, IconEdit } from "@tabler/icons-react";
 import Link from "next/link";
@@ -457,5 +458,23 @@ export function DeploymentMapModal({ handleFilterChange }) {
         <DeploymentMapObject />
       </Modal>
     </>
+  );
+}
+
+export function DeploymentMapPopover({ handleFilterChange }) {
+  const { selectedLocation, setSelectedLocation } = useDeploymentMap();
+
+  if (selectedLocation) {
+    handleFilterChange(selectedLocation);
+  }
+  return (
+    <Popover width={600} position="bottom" clickOutsideEvents={['mouseup', 'touchend']}>
+      <Popover.Target>
+        <Button>Open Map</Button>
+      </Popover.Target>
+      <Popover.Dropdown>
+        <DeploymentMapObject />
+      </Popover.Dropdown>
+    </Popover>
   );
 }
