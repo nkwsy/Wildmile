@@ -103,7 +103,8 @@ export default async function CameraTrapHomePage() {
             <Suspense fallback={<Text>loading</Text>}>
               <RandomFavorite />
               <InfoComponent />
-
+            </Suspense>
+            <Suspense fallback={<Text>loading</Text>}>
               <UserInfoComponent />
             </Suspense>
           </GridCol>

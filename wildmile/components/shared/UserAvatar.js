@@ -26,7 +26,10 @@ export function UserAvatar({ userId, size = "sm" }) {
   const [opened, { close, open }] = useDisclosure(false);
 
   useEffect(() => {
-    fetchUserStats();
+    console.log("userId", userId);
+    if (userId) {
+      fetchUserStats();
+    }
   }, [userId]);
 
   const fetchUserStats = async () => {
