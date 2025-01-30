@@ -468,7 +468,7 @@ export function DeploymentMapPopover({ handleFilterChange }) {
     handleFilterChange(selectedLocation);
   }
   return (
-    <Popover position="bottom" clickOutsideEvents={['mouseup', 'touchend']}>
+    <Popover width={600} position="bottom" clickOutsideEvents={['mouseup', 'touchend']}>
       <Popover.Target>
         <Button>Open Map</Button>
       </Popover.Target>
