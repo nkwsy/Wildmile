@@ -12,6 +12,7 @@ import {
   Tooltip,
   ActionIcon,
   Box,
+  NumberInput,
 } from "@mantine/core";
 import { IconEye, IconHeart, IconLink } from "@tabler/icons-react";
 import Link from "next/link";
@@ -48,13 +49,23 @@ export function ImageGallery({
   return (
     <>
       {totalPages > 1 && (
-        <Pagination
-          total={totalPages}
-          value={page}
-          onChange={onPageChange}
-          position="center"
-          mt="md"
-        />
+        <Group justify="flex-start">
+          <Pagination
+            total={totalPages}
+            value={page}
+            onChange={onPageChange}
+            position="top"
+            // mt="md"
+          />
+          <NumberInput
+            clampBehavior="strict"
+            value={page}
+            onChange={onPageChange}
+            min={1}
+            max={totalPages - 1}
+            w={80}
+          />
+        </Group>
       )}
       <Grid>
         {images.map((image) => (
