@@ -33,6 +33,7 @@ import {
   IconZoomQuestion,
   IconMoodWrrr,
 } from "@tabler/icons-react";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { useImage, useSelection } from "./ContextCamera";
 import checkboxClasses from "styles/checkbox.module.css";
 import styles from "styles/animalSelection.module.css";
@@ -275,13 +276,22 @@ export function ImageAnnotation({ fetchNextImage }) {
     <>
       <Card shadow="sm" radius="md" withBorder style={{ height: "100%" }}>
         <div style={{ position: "relative" }}>
-          <Image
-            src={currentImage.publicURL}
-            fit="contain"
-            // maxHeight={700}
-            width="100%"
-            alt="Wildlife image"
-          />
+          <TransformWrapper
+            defaultScale={1}
+            wheel={{ step: 0.4 }} // how fast you zoom with the mouse wheel
+            pinch={{ step: 0.2 }} // how fast you zoom with pinch gesture
+            // doubleClick={{ disabled: true }} // optional: disable double-click zoom
+          >
+            <TransformComponent>
+              <Image
+                src={currentImage.publicURL}
+                fit="contain"
+                // maxHeight={700}
+                width="100%"
+                alt="Wildlife image"
+              />
+            </TransformComponent>
+          </TransformWrapper>
           <ActionIcon
             style={{ position: "absolute", top: 10, right: 10 }}
             onClick={toggleEnlargedImage}
@@ -492,13 +502,22 @@ export function ImageAnnotation({ fetchNextImage }) {
             backgroundColor: "black",
           }}
         >
-          <Image
-            src={currentImage.publicURL}
-            fit="contain"
-            // height="100vh"
-            // width="90vw"
-            alt="Enlarged wildlife image"
-          />
+          <TransformWrapper
+            defaultScale={1}
+            wheel={{ step: 0.4 }} // how fast you zoom with the mouse wheel
+            pinch={{ step: 0.2 }} // how fast you zoom with pinch gesture
+            // doubleClick={{ disabled: true }} // optional: disable double-click zoom
+          >
+            <TransformComponent>
+              <Image
+                src={currentImage.publicURL}
+                fit="contain"
+                // height="100vh"
+                // width="90vw"
+                alt="Enlarged wildlife image"
+              />
+            </TransformComponent>
+          </TransformWrapper>
         </div>
       </Modal>
     </>

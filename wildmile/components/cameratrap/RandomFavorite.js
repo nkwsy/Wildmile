@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   Image,
@@ -42,7 +42,7 @@ export function RandomFavorite() {
     setLoading(false);
   };
 
-  useState(() => {
+  useEffect(() => {
     fetchRandomFavorite();
   }, []);
 
