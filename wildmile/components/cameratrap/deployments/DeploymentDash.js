@@ -121,7 +121,8 @@ export default function DeploymentDash({ deploymentId }) {
     async function fetchDeployment() {
       try {
         const response = await fetch(
-          `/api/cameratrap/deployments/${deploymentId}`
+          `/api/cameratrap/deployments/${deploymentId}`,
+          { next: { tags: ["deployments"] } }
         );
         if (!response.ok) throw new Error("Failed to fetch deployment");
         const data = await response.json();

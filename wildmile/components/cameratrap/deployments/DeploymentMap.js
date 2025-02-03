@@ -35,8 +35,12 @@ export function DeploymentMapObject() {
       try {
         setLoading(true);
         const [deploymentsRes, locationsRes] = await Promise.all([
-          fetch("/api/cameratrap/deployments"),
-          fetch("/api/cameratrap/deploymentLocations"),
+          fetch("/api/cameratrap/deployments", {
+            next: { tags: ["deployments"] },
+          }),
+          fetch("/api/cameratrap/deploymentLocations", {
+            next: { tags: ["locations"] },
+          }),
         ]);
 
         const [deploymentsData, locationsData] = await Promise.all([
@@ -468,7 +472,11 @@ export function DeploymentMapPopover({ handleFilterChange }) {
     handleFilterChange(selectedLocation);
   }
   return (
-    <Popover width={600} position="bottom" clickOutsideEvents={['mouseup', 'touchend']}>
+    <Popover
+      width={600}
+      position="bottom"
+      clickOutsideEvents={["mouseup", "touchend"]}
+    >
       <Popover.Target>
         <Button>Open Map</Button>
       </Popover.Target>

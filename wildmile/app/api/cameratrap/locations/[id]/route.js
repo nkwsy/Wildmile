@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import DeploymentLocation from "models/cameratrap/DeploymentLocations";
-
+import { revalidateTag } from "next/cache";
 export async function GET(request, props) {
   const params = await props.params;
   try {
@@ -53,7 +53,7 @@ export async function PUT(request, props) {
         { status: 404 }
       );
     }
-
+    revalidateTag("locations");
     return NextResponse.json(location);
   } catch (error) {
     return NextResponse.json(
@@ -85,6 +85,7 @@ export async function DELETE(request, props) {
         { status: 404 }
       );
     }
+    revalidateTag("locations");
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json(

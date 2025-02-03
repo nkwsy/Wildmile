@@ -17,7 +17,9 @@ export function LocationDropdown({
   useEffect(() => {
     async function fetchLocations() {
       try {
-        const response = await fetch("/api/cameratrap/locations");
+        const response = await fetch("/api/cameratrap/locations", {
+          next: { tags: ["locations"] },
+        });
         if (!response.ok) throw new Error("Failed to fetch locations");
 
         const data = await response.json();

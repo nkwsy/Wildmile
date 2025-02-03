@@ -60,7 +60,8 @@ export function DeploymentImages({ deploymentId }) {
       });
 
       const response = await fetch(
-        `/api/cameratrap/getCameratrapImages?${params}`
+        `/api/cameratrap/getCameratrapImages?${params}`,
+        { next: { tags: ["deployments"] } }
       );
       if (!response.ok) throw new Error("Failed to fetch images");
       const data = await response.json();
