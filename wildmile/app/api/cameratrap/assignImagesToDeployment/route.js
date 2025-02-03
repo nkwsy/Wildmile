@@ -37,6 +37,7 @@ export async function POST(request) {
 
       // Revalidate the media cache
       revalidateTag("media");
+      revalidateTag("deployments");
       revalidatePath("/cameratrap/deployment");
       redirect(`/cameratrap/deployment/${deploymentId}`);
       return NextResponse.json({

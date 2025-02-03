@@ -37,7 +37,8 @@ export function UserAvatar({ userId, size = "sm" }) {
     setLoading(true);
     try {
       const response = await fetch(
-        `/api/cameratrap/getUserStats?userId=${userId}`
+        `/api/cameratrap/getUserStats?userId=${userId}`,
+        { next: { revalidate: 3600 } }
       );
       const data = await response.json();
       setUserStats(data);

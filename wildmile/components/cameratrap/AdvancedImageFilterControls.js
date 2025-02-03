@@ -85,7 +85,8 @@ export function AdvancedImageFilterControls({
   const fetchLocations = async () => {
     try {
       const response = await fetch(
-        "/api/cameratrap/getDeploymentLocations?onlyUsed=true"
+        "/api/cameratrap/getDeploymentLocations?onlyUsed=true",
+        { next: { tags: ["locations"] } }
       );
       if (response.ok) {
         const data = await response.json();
@@ -101,7 +102,8 @@ export function AdvancedImageFilterControls({
   const fetchDeployments = async (locationId) => {
     try {
       const response = await fetch(
-        `/api/cameratrap/deployments?locationId=${locationId}`
+        `/api/cameratrap/deployments?locationId=${locationId}`,
+        { next: { tags: ["deployments"] } }
       );
       if (response.ok) {
         const data = await response.json();
