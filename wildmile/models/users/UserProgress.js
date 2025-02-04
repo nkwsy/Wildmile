@@ -87,8 +87,19 @@ UserProgressSchema.methods.checkAchievements = async function () {
 
   // Get and populate all active achievements
   const achievements = await Achievement.find({ isActive: true });
+
+  // Remove any unearned achievements to prevent duplicates
+  this.achievements = this.achievements.filter((a) => a.earnedAt);
+
   console.log(`Found ${achievements.length} active achievements`);
   console.log("Current stats:", this.stats);
+
+  // Store previously earned achievements for comparison
+  const previouslyEarned = new Set(
+    this.achievements
+      .filter((a) => a.progress === 100 && a.earnedAt)
+      .map((a) => a.achievement.toString())
+  );
 
   // Get unique domains from achievements and initialize if needed
   const domains = [...new Set(achievements.map((a) => a.domain))];
@@ -112,7 +123,7 @@ UserProgressSchema.methods.checkAchievements = async function () {
   this.totalPoints = 0;
   const newAchievements = [];
 
-  // First pass: Process non-RANK achievements to calculate points
+  // First pass: Process non-RANK achievements
   console.log("\nProcessing non-RANK achievements first...");
   for (const achievement of achievements.filter((a) => a.type !== "RANK")) {
     try {
@@ -138,8 +149,12 @@ UserProgressSchema.methods.checkAchievements = async function () {
         // Update progress
         existing.progress = validProgress;
 
-        // Check if newly completed
-        if (eligible && !wasCompleted) {
+        // Check if newly completed (not previously earned)
+        if (
+          eligible &&
+          !wasCompleted &&
+          !previouslyEarned.has(achievement._id.toString())
+        ) {
           console.log(`Achievement newly completed: ${achievement.name}`);
           existing.earnedAt = new Date();
           this.totalPoints += achievement.points;
@@ -173,7 +188,7 @@ UserProgressSchema.methods.checkAchievements = async function () {
     }
   }
 
-  // Second pass: Process RANK achievements using calculated points
+  // Second pass: Process RANK achievements
   console.log("\nProcessing RANK achievements...");
   for (const achievement of achievements.filter((a) => a.type === "RANK")) {
     try {
@@ -196,8 +211,12 @@ UserProgressSchema.methods.checkAchievements = async function () {
 
         existing.progress = validProgress;
 
-        // Update rank if eligible
-        if (eligible && !wasCompleted) {
+        // Check if newly completed (not previously earned)
+        if (
+          eligible &&
+          !wasCompleted &&
+          !previouslyEarned.has(achievement._id.toString())
+        ) {
           console.log(`Rank achievement newly completed: ${achievement.name}`);
           existing.earnedAt = new Date();
 
@@ -205,12 +224,6 @@ UserProgressSchema.methods.checkAchievements = async function () {
           this.totalPoints += achievement.points;
           domainPoints[achievement.domain] =
             (domainPoints[achievement.domain] || 0) + achievement.points;
-
-          // Update domain rank
-          const domainRank = this.domainRanks.get(achievement.domain) || {};
-          domainRank.currentRank = achievement._id;
-          this.domainRanks.set(achievement.domain, domainRank);
-
           newAchievements.push(achievement);
         } else if (wasCompleted) {
           // Add points for previously earned rank
@@ -275,7 +288,7 @@ UserProgressSchema.methods.checkAchievements = async function () {
   );
   console.log(`Final total points: ${this.totalPoints}, Level: ${this.level}`);
 
-  return newAchievements;
+  return newAchievements; // Now only contains truly new achievements
 };
 
 // Helper method to calculate progress for an achievement

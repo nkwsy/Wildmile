@@ -18,7 +18,7 @@ export async function getUserStats(userId) {
   try {
     const user = await User.findById(userId, "profile roles");
     const progress = await UserProgress.findOne({ user: userId });
-    // await progress.checkAchievements();
+    await progress.checkAchievements();
     // await progress.save();
     // Get achievements with populated details
     await progress.populate([
@@ -327,8 +327,8 @@ async function updateUserStats(userId) {
     Object.assign(progress.stats, stats);
 
     // Check achievements (which now handles points calculation)
-    await progress.checkAchievements();
 
+    await progress.checkAchievements();
     // Save progress
     await progress.save();
 
@@ -437,24 +437,24 @@ async function updateAllUserStats() {
 }
 
 // Allow running directly from command line
-if (require.main === module) {
-  const userId = process.argv[2];
-  if (userId) {
-    updateUserStats(userId)
-      .then(() => process.exit(0))
-      .catch((error) => {
-        console.error(error);
-        process.exit(1);
-      });
-  } else {
-    updateAllUserStats()
-      .then(() => process.exit(0))
-      .catch((error) => {
-        console.error(error);
-        process.exit(1);
-      });
-  }
-}
+// if (require.main === module) {
+//   const userId = process.argv[2];
+//   if (userId) {
+//     updateUserStats(userId)
+//       .then(() => process.exit(0))
+//       .catch((error) => {
+//         console.error(error);
+//         process.exit(1);
+//       });
+//   } else {
+//     updateAllUserStats()
+//       .then(() => process.exit(0))
+//       .catch((error) => {
+//         console.error(error);
+//         process.exit(1);
+//       });
+//   }
+// }
 
 export { updateUserStats, updateAllUserStats };
 
