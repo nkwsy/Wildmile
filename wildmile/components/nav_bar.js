@@ -126,6 +126,15 @@ export function HeaderNav({ children }) {
     );
   });
 
+  const getLoginUrl = () => {
+    if (typeof window !== "undefined") {
+      return `/login?callbackUrl=${encodeURIComponent(
+        window.location.pathname
+      )}`;
+    }
+    return "/login";
+  };
+
   async function handleLogout() {
     await fetch("/api/logout");
     mutate({ user: null });
@@ -234,7 +243,7 @@ export function HeaderNav({ children }) {
                 </Menu>
               ) : (
                 <>
-                  <Link href="/login">
+                  <Link href={getLoginUrl()}>
                     <Button variant="default">Log in</Button>
                   </Link>
                   <Link href="/signup">
@@ -268,8 +277,14 @@ export function HeaderNav({ children }) {
 
             <Divider my="sm" color={"dark"} />
             <Group position="center" grow pb="xl" px="md">
-              <Button variant="default">Log in</Button>
-              <Button>Sign up</Button>
+              <Link href={getLoginUrl()}>
+                <Button variant="default" fullWidth>
+                  Log in
+                </Button>
+              </Link>
+              <Link href="/signup">
+                <Button fullWidth>Sign up</Button>
+              </Link>
             </Group>
           </ScrollArea>
         </Drawer>
