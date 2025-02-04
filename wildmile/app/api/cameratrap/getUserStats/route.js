@@ -3,7 +3,7 @@ import dbConnect from "lib/db/setup";
 import Observation from "models/cameratrap/Observation";
 import User from "models/User";
 import UserProgress from "models/users/UserProgress";
-import { updateUserStats } from "lib/db/updateUserStats";
+// import { updateUserStats } from "lib/db/updateUserStats";
 
 // Update single user
 export async function GET(request) {

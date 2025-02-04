@@ -8,7 +8,9 @@ import UserProgress from "models/users/UserProgress";
 export async function PUT(request, { params }) {
   try {
     const session = await getSession({ headers });
-    if (!session?.admin || !session?.role?.includes("Admin")) {
+    const userRoles = Array.from(session?.roles || []);
+
+    if (!session?.admin && !userRoles.includes("Admin")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -30,7 +32,9 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     const session = await getSession({ headers });
-    if (!session?.admin) {
+    const userRoles = Array.from(session?.roles || []);
+
+    if (!session?.admin && !userRoles.includes("Admin")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 

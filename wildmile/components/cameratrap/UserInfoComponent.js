@@ -41,8 +41,12 @@ export function UserInfoComponent() {
 
   const fetchUserStats = async () => {
     try {
+      const updatedUserStats = await fetch(`/api/user/progress/update`, {
+        next: { revalidate: 3600 }, // revalidate every hour
+      });
       const response = await fetch(
-        `/api/cameratrap/getUserStats?userId=${user._id}`
+        `/api/cameratrap/getUserStats?userId=${user._id}`,
+        { next: { revalidate: 3600 } }
       );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
