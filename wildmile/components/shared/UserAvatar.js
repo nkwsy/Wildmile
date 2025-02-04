@@ -42,6 +42,7 @@ export function UserAvatar({ userId, size = "sm" }) {
       );
       const data = await response.json();
       setUserStats(data);
+      console.log("userStats", data);
     } catch (error) {
       console.error("Error fetching user stats:", error);
     } finally {
@@ -68,7 +69,11 @@ export function UserAvatar({ userId, size = "sm" }) {
     >
       <Avatar
         size={size}
-        src={userStats?.user?.avatar}
+        src={
+          userStats?.domainRanks?.CAMERATRAP?.currentRank?.badge ||
+          userStats?.user?.avatar ||
+          "💩"
+        }
         radius="xl"
         sx={{ cursor: "pointer" }}
         onMouseEnter={open}
@@ -158,19 +163,25 @@ export function UserAvatar({ userId, size = "sm" }) {
                 {userStats.achievements
                   .filter((a) => a.progress === 100)
                   .slice(0, 5)
-                  .map((achievement) => (
-                    <Tooltip
-                      key={achievement.id}
-                      label={`${achievement.name}: ${achievement.description}`}
-                    >
-                      <Avatar
-                        size="sm"
-                        src={achievement.icon || achievement.badge || "💩"}
+                  .map((achievement) => {
+                    return (
+                      <Tooltip
+                        key={achievement._id}
+                        label={`${achievement.achievement.name}: ${achievement.achievement.description}`}
                       >
-                        {achievement.points}
-                      </Avatar>
-                    </Tooltip>
-                  ))}
+                        <Avatar
+                          size="sm"
+                          src={
+                            achievement.achievement.icon ||
+                            achievement.achievement.badge ||
+                            "💩"
+                          }
+                        >
+                          {achievement.achievement.points}
+                        </Avatar>
+                      </Tooltip>
+                    );
+                  })}
               </Group>
             </Stack>
           )}

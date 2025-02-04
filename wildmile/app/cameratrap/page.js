@@ -100,7 +100,9 @@ async function CameraTrapMgmtCards() {
 export default async function Page() {
   const session = await getSession({ headers });
   const user = await session;
-  const userStats = await updateUserStats(user._id);
+
+  // Only fetch stats if we have a logged in user
+  const userStats = user?._id ? await updateUserStats(user._id) : null;
 
   return (
     <>

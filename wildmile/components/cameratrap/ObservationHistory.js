@@ -64,6 +64,7 @@ export function ObservationHistory({ previousObservations }) {
     return acc;
   }, {});
 
+  // TODO: get UserAvatar to be a server component
   return (
     <>
       <Stack spacing="md">
