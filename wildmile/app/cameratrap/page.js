@@ -23,9 +23,10 @@ import {
 // import TaxaSearch, { WildlifeSidebar } from "components/cameratrap/TaxaSearch";
 import { RandomFavorite } from "components/cameratrap/RandomFavorite";
 import InfoComponent from "components/cameratrap/InfoComponent";
-import { UserInfoComponent } from "components/cameratrap/UserInfoComponent";
+import { UserInfoServer } from "components/cameratrap/UserInfoServer";
 import { getSession } from "lib/getSession";
 import { headers } from "next/headers";
+import { updateUserStats } from "app/actions/UserActions";
 // In your page component:
 
 function CameraTrapCards() {
@@ -97,6 +98,12 @@ async function CameraTrapMgmtCards() {
 }
 
 export default async function Page() {
+  const session = await getSession({ headers });
+  const user = await session;
+
+  // Only fetch stats if we have a logged in user
+  const userStats = user?._id ? await updateUserStats(user._id) : null;
+
   return (
     <>
       <Container maw="85%" my="5rem">
@@ -121,7 +128,7 @@ export default async function Page() {
               <InfoComponent />
             </Suspense>
             <Suspense fallback={<Text>loading</Text>}>
-              <UserInfoComponent />
+              <UserInfoServer user={user} stats={userStats} />
             </Suspense>
           </GridCol>
           <GridCol span={5}></GridCol>

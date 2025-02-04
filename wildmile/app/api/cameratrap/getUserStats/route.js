@@ -22,9 +22,9 @@ export async function GET(request) {
     // console.log(progress);
 
     // Get user info
-    const user = await User.findById(userId, "profile roles");
+    // const user = await User.findById(userId, "profile roles");
     const progress = await UserProgress.findOne({ user: userId });
-    // await progress.checkAchievements();
+    await progress.checkAchievements();
     // await progress.save();
     // Get achievements with populated details
     await progress.populate([
@@ -38,6 +38,7 @@ export async function GET(request) {
         model: "Achievement",
         select: "name description icon badge level type domain criteria points",
       },
+      { path: "user", select: "profile avatar" },
     ]);
 
     // Find the highest level RANK achievement that has been earned
@@ -115,29 +116,37 @@ export async function GET(request) {
       .slice(0, 5);
 
     // Format response
+    // const stats = {
+    //   user: {
+    //     ...user.toObject(),
+    //     avatar, // Add avatar to user object
+    //   },
+    //   ...progress,
+    // stats: progress.stats,
+    // streaks: progress.streaks,
+    // achievements,
+    // totalPoints: progress.totalPoints,
+    // level: progress.level,
+    // domainRanks: Object.fromEntries(progress.domainRanks),
+    // lastActive:
+    //   progress.stats.lastActive ||
+    //   (progress.streaks.lastLoginDate
+    //     ? new Date(progress.streaks.lastLoginDate)
+    //     : null),
+    // totalImagesReviewed,
+    // totalAnimalsObserved,
+    // totalBlanksLogged,
+    // uniqueSpeciesCount: uniqueSpecies.size,
+    // topSpecies,
+    // };
     const stats = {
+      ...progress.toObject(),
       user: {
-        ...user.toObject(),
-        avatar, // Add avatar to user object
+        ...progress.user.toObject(),
+        avatar,
       },
-      stats: progress.stats,
-      streaks: progress.streaks,
-      achievements,
-      totalPoints: progress.totalPoints,
-      level: progress.level,
-      domainRanks: Object.fromEntries(progress.domainRanks),
-      lastActive:
-        progress.stats.lastActive ||
-        (progress.streaks.lastLoginDate
-          ? new Date(progress.streaks.lastLoginDate)
-          : null),
-      totalImagesReviewed,
-      totalAnimalsObserved,
-      totalBlanksLogged,
-      uniqueSpeciesCount: uniqueSpecies.size,
-      topSpecies,
     };
-
+    console.log(stats);
     return NextResponse.json(stats);
   } catch (error) {
     console.error("Error fetching user stats:", error);
