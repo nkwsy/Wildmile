@@ -3,7 +3,7 @@ import dbConnect from "lib/db/setup";
 import DeploymentLocation from "models/cameratrap/DeploymentLocations";
 import { getSession } from "lib/getSession";
 import { headers } from "next/headers";
-
+import { revalidateTag } from "next/cache";
 export async function GET() {
   try {
     await dbConnect();
@@ -43,6 +43,7 @@ export async function POST(request) {
       creator: session._id,
     });
 
+    revalidateTag("locations");
     return NextResponse.json(location);
   } catch (error) {
     return NextResponse.json(
