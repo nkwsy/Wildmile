@@ -26,13 +26,14 @@ async function dbConnect() {
   }
 
   const opts = {
+    bufferCommands: false,
     useNewUrlParser: true,
     useUnifiedTopology: true,
     autoIndex: true,
     maxPoolSize: poolSize,
     socketTimeoutMS: 30000,
-    serverSelectionTimeoutMS: 30000,
-    maxIdleTimeMS: 30000,
+    serverSelectionTimeoutMS: 5000,
+    maxIdleTimeMS: 10000,
   };
 
   let client;
@@ -57,6 +58,16 @@ async function dbConnect() {
     clientPromise = global._mongoClientPromise;
     console.log("db connected successfully");
   } else {
+    // Use existing connection if it's already established
+    if (cached.conn && cached.conn.readyState === 1) {
+      return cached.conn;
+    }
+
+    // Wait for an in-progress connection if one exists
+    if (cached.promise) {
+      cached.conn = await cached.promise;
+      return cached.conn;
+    }
     // In production mode, it's best to not use a global variable.
     clientPromise = mongoose.connect(MONGODB_URI, opts).then((client) => {
       return {
