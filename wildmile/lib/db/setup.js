@@ -69,7 +69,7 @@ async function dbConnect() {
       return cached.conn;
     }
     // In production mode, it's best to not use a global variable.
-    clientPromise = mongoose.connect(MONGODB_URI, opts).then((client) => {
+    clientPromise = await mongoose.connect(MONGODB_URI, opts).then((client) => {
       return {
         client,
       };
