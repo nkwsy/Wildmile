@@ -427,7 +427,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
                             radius="sm"
                             fit="contain"
                             height={150}
-                            withPlaceholder
+                            // withPlaceholder
                           />
                           <Group position="apart">
                             <Text size="xs">

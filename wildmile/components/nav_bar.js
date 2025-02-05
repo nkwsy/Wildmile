@@ -24,7 +24,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useUser } from "../lib/hooks";
-// import Router from "next/navigation";
+import { usePathname } from "next/navigation";
 import cx from "clsx";
 import classes from "styles/nav.module.css";
 import { useState } from "react";
@@ -76,8 +76,8 @@ export function HeaderNav({ children }) {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
-  // const { classes, theme, cx } = useStyles()
   const { user, loading, mutate } = useUser();
+  const pathname = usePathname();
 
   let photoSrc = "https://api.multiavatar.com/noname.png";
 
@@ -127,12 +127,7 @@ export function HeaderNav({ children }) {
   });
 
   const getLoginUrl = () => {
-    if (typeof window !== "undefined") {
-      return `/login?callbackUrl=${encodeURIComponent(
-        window.location.pathname
-      )}`;
-    }
-    return "/login";
+    return `/login?callbackUrl=${encodeURIComponent(pathname)}`;
   };
 
   async function handleLogout() {

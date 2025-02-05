@@ -85,13 +85,16 @@ const UserProgressSchema = new mongoose.Schema(
 UserProgressSchema.methods.checkAchievements = async function () {
   const Achievement = mongoose.model("Achievement");
 
-  // Get and populate all active achievements
+  // First validate existing achievements
+  await this.validateAchievements();
+
+  // Get all active achievements
   const achievements = await Achievement.find({ isActive: true });
+  console.log(`Found ${achievements.length} active achievements`);
 
   // Remove any unearned achievements to prevent duplicates
   this.achievements = this.achievements.filter((a) => a.earnedAt);
 
-  console.log(`Found ${achievements.length} active achievements`);
   console.log("Current stats:", this.stats);
 
   // Store previously earned achievements for comparison
@@ -405,6 +408,74 @@ UserProgressSchema.methods.updateStreak = function () {
 
   this.streaks.lastLoginDate = today;
 };
+
+// Add this before creating the model
+UserProgressSchema.methods.validateAchievements = async function () {
+  const Achievement = mongoose.model("Achievement");
+
+  // Get all valid achievement IDs
+  const validAchievements = await Achievement.find({ isActive: true }, "_id");
+  const validIds = new Set(validAchievements.map((a) => a._id.toString()));
+
+  // Create a map to track unique achievements
+  const uniqueAchievements = new Map();
+
+  // Filter achievements to keep only valid ones and remove duplicates
+  this.achievements = this.achievements.filter((achievement) => {
+    const achievementId = achievement.achievement?.toString();
+
+    // Skip if achievement ID is invalid or not found in valid achievements
+    if (!achievementId || !validIds.has(achievementId)) {
+      console.log(`Removing invalid achievement: ${achievementId}`);
+      return false;
+    }
+
+    // If we've seen this achievement before
+    if (uniqueAchievements.has(achievementId)) {
+      const existing = uniqueAchievements.get(achievementId);
+
+      // If current achievement is completed and existing isn't, or current was completed earlier
+      if (
+        (achievement.earnedAt && !existing.earnedAt) ||
+        (achievement.earnedAt &&
+          existing.earnedAt &&
+          achievement.earnedAt < existing.earnedAt)
+      ) {
+        uniqueAchievements.set(achievementId, achievement);
+        console.log(
+          `Replacing duplicate achievement with earlier completion: ${achievementId}`
+        );
+      } else {
+        console.log(`Skipping duplicate achievement: ${achievementId}`);
+      }
+      return false;
+    }
+
+    // First time seeing this achievement
+    uniqueAchievements.set(achievementId, achievement);
+    return true;
+  });
+
+  // Sort achievements by earnedAt date
+  this.achievements.sort((a, b) => {
+    if (!a.earnedAt && !b.earnedAt) return 0;
+    if (!a.earnedAt) return 1;
+    if (!b.earnedAt) return -1;
+    return a.earnedAt - b.earnedAt;
+  });
+
+  return this;
+};
+
+// Add this to the pre-save middleware
+UserProgressSchema.pre("save", async function (next) {
+  try {
+    await this.validateAchievements();
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default mongoose.models.UserProgress ||
   mongoose.model("UserProgress", UserProgressSchema);

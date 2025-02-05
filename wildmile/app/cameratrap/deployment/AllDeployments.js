@@ -43,7 +43,7 @@ const DeploymentCard = ({ deployment }) => (
   >
     <Stack spacing={8}>
       {/* Header: Location name + status */}
-      <Group position="apart" align="start" noWrap>
+      <Group position="apart" align="start" wrap="nowrap">
         <Tooltip label={deployment.locationName} multiline width={220}>
           <Title order={4} lineClamp={1} className={classes.title}>
             {deployment.locationName}
@@ -60,7 +60,7 @@ const DeploymentCard = ({ deployment }) => (
 
       {/* Location details */}
       {(deployment.projectArea || deployment.zone) && (
-        <Group spacing={4} noWrap>
+        <Group spacing={4} wrap="nowrap">
           <IconMapPin size={14} stroke={1.5} />
           <Text size="xs" c="dimmed" lineClamp={1}>
             {[deployment.projectArea, deployment.zone]
@@ -71,7 +71,7 @@ const DeploymentCard = ({ deployment }) => (
       )}
 
       {/* Camera details */}
-      <Group spacing={4} noWrap>
+      <Group spacing={4} wrap="nowrap">
         <IconCamera size={14} stroke={1.5} />
         <Stack spacing={0}>
           <Text size="sm" lineClamp={1}>
@@ -87,7 +87,7 @@ const DeploymentCard = ({ deployment }) => (
       </Group>
 
       {/* Dates */}
-      <Group spacing={4} noWrap>
+      <Group spacing={4} wrap="nowrap">
         <IconCalendar size={14} stroke={1.5} />
         <Text size="xs">
           {new Date(deployment.start).toLocaleDateString()}
@@ -100,9 +100,9 @@ const DeploymentCard = ({ deployment }) => (
       {/* Footer: Tags + Setup info */}
       <Group position="apart" align="end">
         {deployment.tags.length > 0 && (
-          <Group spacing={4} noWrap>
+          <Group spacing={4} wrap="nowrap">
             <IconTag size={14} stroke={1.5} />
-            <Group spacing={4} noWrap>
+            <Group spacing={4} wrap="nowrap">
               {deployment.tags.slice(0, 2).map((tag, i) => (
                 <Badge key={i} size="xs" variant="light" radius="sm">
                   {tag}

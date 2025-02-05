@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
+import { ConnectionStates } from "mongoose";
 
+let connection = null;
+const poolSize = 10;
 /**
  * Global is used here to maintain a cached connection across hot reloads
  * in development. This prevents connections growing exponentially
@@ -13,44 +16,86 @@ if (!cached) {
 
 async function dbConnect() {
   const MONGODB_URI = process.env.MONGODB_URI;
-  if (cached.conn) {
-    return cached.conn;
+
+  if (!MONGODB_URI) {
+    throw new Error("Please add your Mongo URI to .env.local");
   }
 
-  if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-      autoIndex: false,
-      maxPoolSize: 300,
-      serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
-
-      // useNewUrlParser: true,
-      // useUnifiedTopology: true,
-      // connectTimeoutMS: 30000, // Extend the timeout to handle slow connections
-      // socketTimeoutMS: 45000, // Extend the socket timeout
-    };
-
-    cached.promise = mongoose
-      .connect(MONGODB_URI, opts)
-      .then((mongoose) => {
-        console.log("MongoDB is connected");
-        return mongoose;
-      })
-      .catch((err) => {
-        console.error("MongoDB connection error:", err);
-        cached.promise = null; // Reset promise to allow for reconnection attempts
-        throw err;
-      });
+  if (connection) {
+    return connection;
   }
 
-  try {
-    cached.conn = await cached.promise;
-  } catch (e) {
-    cached.promise = null;
-    throw e;
+  const opts = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    autoIndex: true,
+    maxPoolSize: poolSize,
+    socketTimeoutMS: 30000,
+    serverSelectionTimeoutMS: 30000,
+    maxIdleTimeMS: 30000,
+  };
+
+  let client;
+  let clientPromise;
+
+  if (!process.env.MONGODB_URI) {
+    throw new Error("Please add your Mongo URI to .env.local");
   }
 
-  return cached.conn;
+  if (process.env.NODE_ENV === "development") {
+    // In development mode, use a global variable so that the value
+    // is preserved across module reloads caused by HMR (Hot Module Replacement).
+    if (!global._mongoClientPromise) {
+      global._mongoClientPromise = mongoose
+        .connect(MONGODB_URI, opts)
+        .then((client) => {
+          return {
+            client,
+          };
+        });
+    }
+    clientPromise = global._mongoClientPromise;
+    console.log("db connected successfully");
+  } else {
+    // In production mode, it's best to not use a global variable.
+    clientPromise = mongoose.connect(MONGODB_URI, opts).then((client) => {
+      return {
+        client,
+      };
+    });
+    console.log("db connected successfully");
+  }
+
+  // Export a module-scoped MongoClient promise. By doing this in a
+  // separate module, the client can be shared across functions.
+  return clientPromise;
 }
 
 export default dbConnect;
+
+// export default async function connectToDatabase() {
+//   if (
+//     !connection ||
+//     (connection.connection.readyState !== ConnectionStates.connected &&
+//       connection.connection.readyState !== ConnectionStates.connecting)
+//   ) {
+//     console.log("[MONGOOSE] Creating New Connection");
+
+//     mongoose.connection.once("open", () => {
+//       console.log(`[MONGOOSE] Connected with poolSize ${poolSize}`);
+//     });
+
+//     mongoose.connection.on("error", (err) => {
+//       console.error("[MONGOOSE] Connection error:", err);
+//     });
+
+//     try {
+//       connection = await mongoose.connect(env.MONGODB_URI, {
+//         maxPoolSize: poolSize,
+//         bufferTimeoutMS: 2500,
+//       });
+//     } catch (err) {
+//       console.error("[MONGOOSE] Initial connection error:", err);
+//     }
+//   }
+// }
