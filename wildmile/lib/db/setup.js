@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { ConnectionStates } from "mongoose";
 
 let connection = null;
-const poolSize = 10;
+const poolSize = 1;
 /**
  * Global is used here to maintain a cached connection across hot reloads
  * in development. This prevents connections growing exponentially
