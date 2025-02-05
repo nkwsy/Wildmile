@@ -407,7 +407,7 @@ export async function getStats() {
     },
     {
       $project: {
-        id: "$_id",
+        id: { $toString: "$_id" },
         name: {
           $ifNull: [
             { $arrayElemAt: ["$userInfo.profile.name", 0] },
@@ -451,6 +451,7 @@ export async function getStats() {
     },
     {
       $project: {
+        id: { $toString: "$_id" },
         name: {
           $ifNull: [
             { $arrayElemAt: ["$userInfo.profile.name", 0] },
@@ -492,6 +493,7 @@ export async function getStats() {
     },
     {
       $project: {
+        id: { $toString: "$_id" },
         name: {
           $ifNull: [
             { $arrayElemAt: ["$userInfo.profile.name", 0] },

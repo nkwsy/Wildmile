@@ -27,11 +27,11 @@ async function dbConnect() {
 
   const opts = {
     bufferCommands: false,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+    maxPoolSize: 1,
+    minPoolSize: 1,
     autoIndex: true,
-    maxPoolSize: poolSize,
     socketTimeoutMS: 30000,
+    heartbeatFrequencyMS: 10000, // Ping server every 10 seconds
     serverSelectionTimeoutMS: 5000,
     maxIdleTimeMS: 10000,
   };
