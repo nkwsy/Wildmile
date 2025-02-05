@@ -152,7 +152,7 @@ export default function PredefinedSpeciesSidebar({ onSpeciesSelect }) {
           iconicTaxonNameToCategory(spec.iconic_taxon_name) === selectedCategory
       );
   } else if (selectedCategory === "recent") {
-    filteredResults = recentData?.filter((r) => r);
+    filteredResults = recentData;
   }
 
   return (

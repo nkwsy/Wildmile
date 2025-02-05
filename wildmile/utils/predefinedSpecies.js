@@ -59,6 +59,7 @@ export const predefinedSpecies = {
     "Corvus brachyrhynchos",
     "Nannopterum auritum",
     "Ardea herodias",
+    "Nycticorax",
     "Nycticorax nycticorax",
     "Accipiter cooperii",
     "Actitis macularius",
