@@ -148,7 +148,7 @@ SpeciesSchema.statics.findOrFetchByName = async function (speciesName) {
 
     // If not found, fetch from iNaturalist API
     const response = await fetch(
-      `https://api.inaturalist.org/v1/taxa?q=${encodeURIComponent(
+      `https://api.inaturalist.org/v1/taxa/autocomplete?q=${encodeURIComponent(
         speciesName
       )}&limit=1`,
       { next: { revalidate: 360000 } } // Cache for 10 hours
@@ -202,10 +202,42 @@ SpeciesSchema.statics.findOrFetchByName = async function (speciesName) {
 // Add method to update multiple species at once
 SpeciesSchema.statics.findOrFetchMany = async function (speciesNames) {
   try {
-    const speciesPromises = speciesNames.map((name) =>
-      this.findOrFetchByName(name)
-    );
-    return await Promise.all(speciesPromises);
+    const results = [];
+    const errors = [];
+
+    // Process each species sequentially to handle errors individually
+    for (const name of speciesNames) {
+      try {
+        const species = await this.findOrFetchByName(name);
+        if (species) {
+          results.push(species);
+        }
+      } catch (error) {
+        if (error.code === 11000) {
+          // Duplicate key error
+          console.warn(
+            `Skipping duplicate species "${name}" with taxonId: ${error.keyValue.taxonId}`
+          );
+
+          // Try to fetch the existing species instead
+          const existingSpecies = await this.findOne({
+            taxonId: error.keyValue.taxonId,
+          });
+          if (existingSpecies) {
+            results.push(existingSpecies);
+          }
+        } else {
+          console.error(`Error processing species "${name}":`, error);
+          errors.push({ name, error });
+        }
+      }
+    }
+
+    if (errors.length > 0) {
+      console.warn(`Completed with ${errors.length} errors:`, errors);
+    }
+
+    return results;
   } catch (error) {
     console.error("Error in findOrFetchMany:", error);
     throw error;

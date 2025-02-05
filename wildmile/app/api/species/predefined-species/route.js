@@ -7,7 +7,7 @@ import { predefinedSpecies } from "/utils/predefinedSpecies";
 export const revalidate = 3600;
 
 // Force dynamic rendering (in case you need that):
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
