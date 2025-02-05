@@ -100,7 +100,7 @@ function ImageCard({ image, imageHeight }) {
           radius="sm"
           height={imageHeight}
           fit="cover"
-          withPlaceholder
+          // withPlaceholder
           style={{ cursor: "pointer" }}
           onClick={() => setOpened(true)}
         />
@@ -146,7 +146,7 @@ function ImageCard({ image, imageHeight }) {
 function ImageInfo({ image }) {
   return (
     <Stack justify="flex-start" gap={1}>
-      <Group position="apart" noWrap>
+      <Group position="apart" wrap="nowrap">
         {image.reviewCount > 0 && (
           <Badge size="sm" variant="light" leftSection={<IconEye size={10} />}>
             {image.reviewCount}
