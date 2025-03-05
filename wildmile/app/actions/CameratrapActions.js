@@ -317,6 +317,13 @@ export async function getExistingLocations() {
   return JSON.stringify(locations);
 }
 
+// fetch location by id
+export async function getLocationById(locationId) {
+  await dbConnect();
+  const location = await DeploymentLocations.findOne({ _id: locationId });
+  return JSON.stringify(location);
+}
+
 // to edit deployments
 export async function newEditDeployment(req) {
   console.log(req);
