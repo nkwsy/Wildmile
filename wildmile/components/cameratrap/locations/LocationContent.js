@@ -5,7 +5,7 @@ import { Box, Text, Center, Paper, Button } from "@mantine/core";
 import { IconMapPin } from "@tabler/icons-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import LocationDetails from "./LocationDetails";
-
+import { DeploymentMapObject } from "../deployments/DeploymentMap";
 export default function LocationsContent() {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -59,7 +59,12 @@ export default function LocationsContent() {
           justifyContent: "center",
         }}
       >
-        <Paper p="xl" withBorder style={{ maxWidth: 500, textAlign: "center" }}>
+        <Paper
+          p="xl"
+          withBorder
+          style={{ maxWidth: 1080, textAlign: "center" }}
+        >
+          <DeploymentMapObject />
           <IconMapPin size={48} style={{ marginBottom: 20, opacity: 0.5 }} />
           <Text size="xl" weight={500} mb="md">
             No location selected

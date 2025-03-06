@@ -14,7 +14,7 @@ import LocationMap from "./LocationMap";
 import RecentCaptures from "./RecentCaptures";
 import DeploymentsList, { DeploymentsPreview } from "./DeploymentList";
 import SpeciesDetected from "./SpeciesDetected";
-
+import LocationForm from "./LocationForm";
 export default function LocationDetails({ location }) {
   const [activeTab, setActiveTab] = useState("overview");
 
@@ -46,9 +46,7 @@ export default function LocationDetails({ location }) {
           <Button variant="outline" leftSection={<IconDownload size={16} />}>
             Export
           </Button>
-          <Button variant="outline" leftSection={<IconEdit size={16} />}>
-            Edit Location
-          </Button>
+          <LocationForm initialData={location} />
         </Group>
       </Group>
 
