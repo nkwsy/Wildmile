@@ -22,7 +22,8 @@ async function getLocationData(locationId) {
 }
 
 export async function generateMetadata({ params }) {
-  const locationData = await getLocationData(params.locationId);
+  const { locationId } = await params;
+  const locationData = await getLocationData(locationId);
 
   if (!locationData) {
     return {

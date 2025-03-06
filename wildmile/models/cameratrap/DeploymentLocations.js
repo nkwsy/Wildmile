@@ -21,8 +21,16 @@ const DeploymentLocationSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
+
+DeploymentLocationSchema.virtual("deployments", {
+  ref: "CameratrapDeployment",
+  localField: "_id",
+  foreignField: "locationId",
+});
 
 module.exports =
   mongoose.models.DeploymentLocation ||

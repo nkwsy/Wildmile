@@ -20,19 +20,19 @@ import { getAllCameras } from "app/actions/CameratrapActions";
 import { LocationDropdown } from "./LocationDropdown";
 import { useDeploymentMap } from "./DeploymentMapContext";
 
-const EditDeploymentForm = ({ deploymentId, onSuccess }) => {
+const EditDeploymentForm = ({ deploymentId, onSuccess, locationId }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(true);
   const [cameraOptions, setCameraOptions] = useState([]);
   const router = useRouter();
-  const [initialLocation, setInitialLocation] = useState(null);
+  const [initialLocation, setInitialLocation] = useState(locationId || null);
   const { selectedLocation, setSelectedLocation } = useDeploymentMap();
 
   const form = useForm({
     initialValues: {
       locationName: "",
-      locationId: "",
+      locationId: locationId || "",
       cameraHeight: 0,
       cameraTilt: 0,
       deploymentStart: new Date(),
@@ -54,17 +54,44 @@ const EditDeploymentForm = ({ deploymentId, onSuccess }) => {
     async function fetchCameras() {
       try {
         const camerasJson = await getAllCameras();
+        if (!camerasJson) {
+          throw new Error("No camera data received");
+        }
+
         const cameras = JSON.parse(camerasJson);
-        setCameraOptions(
-          cameras.map((camera) => ({
+        if (!Array.isArray(cameras)) {
+          console.error("Cameras data is not an array:", cameras);
+          setCameraOptions([{ value: "dummy", label: "No cameras available" }]);
+          return;
+        }
+
+        // Ensure each camera has an _id
+        const validOptions = cameras
+          .filter((camera) => camera && camera._id) // Filter out any null/undefined cameras or those without _id
+          .map((camera) => ({
             value: camera._id,
-            label:
-              camera.name + " - " + camera.model + " - " + camera.manufacturer,
-          }))
-        );
+            label: camera.name
+              ? `${camera.name} - ${camera.model || ""} - ${
+                  camera.manufacturer || ""
+                }`
+              : `${camera._id} - ${camera.model || ""} - ${
+                  camera.manufacturer || ""
+                }`,
+          }));
+
+        if (validOptions.length === 0) {
+          // Provide a fallback option if no valid cameras
+          setCameraOptions([{ value: "dummy", label: "No cameras available" }]);
+        } else {
+          setCameraOptions(validOptions);
+        }
       } catch (err) {
         console.error("Error fetching cameras:", err);
         setError("Failed to load cameras");
+        // Set a dummy option to prevent the error
+        setCameraOptions([{ value: "dummy", label: "Error loading cameras" }]);
+      } finally {
+        setFetchLoading(false);
       }
     }
     fetchCameras();
@@ -189,8 +216,10 @@ const EditDeploymentForm = ({ deploymentId, onSuccess }) => {
 
       // Get the ID from either the existing deploymentId or the new deployment's _id
       const redirectId = deploymentId || updatedDeployment._id;
-      router.push(`/cameratrap/deployment/edit/${redirectId}`);
-      router.refresh();
+      if (!onSuccess) {
+        router.push(`/cameratrap/deployment/edit/${redirectId}`);
+        router.refresh();
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -214,7 +243,7 @@ const EditDeploymentForm = ({ deploymentId, onSuccess }) => {
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Title order={3} mb="md">
-        Edit Deployment
+        {deploymentId ? "Edit Deployment" : "New Deployment"}
       </Title>
       {error && (
         <Alert color="red" mb="md">
@@ -229,6 +258,8 @@ const EditDeploymentForm = ({ deploymentId, onSuccess }) => {
             data={cameraOptions}
             {...form.getInputProps("cameraId")}
             required
+            searchable
+            nothingFound="No cameras found"
           />
           <LocationDropdown
             label="Location"

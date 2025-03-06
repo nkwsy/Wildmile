@@ -320,7 +320,12 @@ export async function getExistingLocations() {
 // fetch location by id
 export async function getLocationById(locationId) {
   await dbConnect();
-  const location = await DeploymentLocations.findOne({ _id: locationId });
+  const location = await DeploymentLocations.findOne({ _id: locationId })
+    .populate({
+      path: "deployments",
+      populate: { path: "cameraId" },
+    })
+    .populate("creator", "name");
   return JSON.stringify(location);
 }
 

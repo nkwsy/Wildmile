@@ -91,7 +91,10 @@ export default function LocationDetails({ location }) {
         </Tabs.Panel>
 
         <Tabs.Panel value="deployments" pt="md">
-          <DeploymentsList locationId={location._id} />
+          <DeploymentsList
+            locationId={location._id}
+            locationDeployments={location.deployments}
+          />
         </Tabs.Panel>
 
         <Tabs.Panel value="analytics" pt="md">

@@ -1,86 +1,66 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Select, Loader } from "@mantine/core";
+import { getAllLocations } from "app/actions/CameratrapActions";
 
 export function LocationDropdown({
+  label,
+  placeholder,
   value,
   onChange,
-  label,
-  required = false,
-  placeholder = "Select a location",
-  initialLocation = null,
+  required,
+  initialLocation,
 }) {
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchLocations() {
       try {
-        const response = await fetch("/api/cameratrap/locations", {
-          next: { tags: ["locations"] },
-        });
-        if (!response.ok) throw new Error("Failed to fetch locations");
-
-        const data = await response.json();
-        let locationOptions = data.map((location) => ({
-          value: location._id,
-          label: `${location.locationName}${
-            location.zone ? ` - ${location.zone}` : ""
-          }`,
-          coordinates: location.location?.coordinates,
-          projectArea: location.projectArea,
-        }));
-
-        if (
-          initialLocation &&
-          !locationOptions.find((loc) => loc.value === initialLocation._id)
-        ) {
-          locationOptions.push({
-            value: initialLocation._id,
-            label: `${initialLocation.locationName}${
-              initialLocation.zone ? ` - ${initialLocation.zone}` : ""
-            }`,
-            coordinates: initialLocation.location?.coordinates,
-            projectArea: initialLocation.projectArea,
-          });
+        const locationsJson = await getAllLocations();
+        if (!locationsJson) {
+          throw new Error("No location data received");
         }
 
-        locationOptions.sort((a, b) => a.label.localeCompare(b.label));
+        const locationsData = JSON.parse(locationsJson);
+        if (!Array.isArray(locationsData)) {
+          console.error("Locations data is not an array:", locationsData);
+          setLocations([{ value: "dummy", label: "No locations available" }]);
+          return;
+        }
 
-        setLocations(locationOptions);
+        // Ensure each location has an _id
+        const validOptions = locationsData
+          .filter((location) => location && location._id) // Filter out any null/undefined locations or those without _id
+          .map((location) => ({
+            value: location._id,
+            label: location.locationName || location._id,
+          }));
+
+        if (validOptions.length === 0) {
+          // Provide a fallback option if no valid locations
+          setLocations([{ value: "dummy", label: "No locations available" }]);
+        } else {
+          setLocations(validOptions);
+        }
       } catch (err) {
         console.error("Error fetching locations:", err);
-        setError(err.message);
+        // Set a dummy option to prevent the error
+        setLocations([{ value: "dummy", label: "Error loading locations" }]);
       } finally {
         setLoading(false);
       }
     }
 
     fetchLocations();
-  }, [initialLocation]);
+  }, []);
 
-  if (loading) {
-    return (
-      <Select
-        label={label}
-        placeholder="Loading locations..."
-        rightSection={<Loader size="xs" />}
-        disabled
-      />
-    );
-  }
-
-  if (error) {
-    return (
-      <Select
-        label={label}
-        placeholder="Error loading locations"
-        error="Failed to load locations"
-        disabled
-      />
-    );
-  }
+  // If we have an initialLocation object, find it in the locations array
+  useEffect(() => {
+    if (initialLocation && initialLocation._id && !value) {
+      onChange(initialLocation._id);
+    }
+  }, [initialLocation, locations, value, onChange]);
 
   return (
     <Select
@@ -91,8 +71,9 @@ export function LocationDropdown({
       onChange={onChange}
       searchable
       required={required}
+      rightSection={loading ? <Loader size="xs" /> : null}
+      disabled={loading}
       nothingFound="No locations found"
-      maxDropdownHeight={280}
     />
   );
 }

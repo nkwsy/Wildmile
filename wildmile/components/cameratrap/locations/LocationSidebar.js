@@ -18,7 +18,7 @@ import {
 import { IconSearch, IconPlus, IconCamera } from "@tabler/icons-react";
 import Link from "next/link";
 import classes from "./LocationSidebar.module.css";
-
+import LocationForm from "./LocationForm";
 export default function LocationSidebar({ activeLocationId }) {
   const [locations, setLocations] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -96,20 +96,7 @@ export default function LocationSidebar({ activeLocationId }) {
           mb="sm"
         />
 
-        <ActionIcon
-          component={Link}
-          href="/cameratrap/locations/new"
-          variant="filled"
-          color="blue"
-          size="lg"
-          radius="md"
-          fullWidth
-        >
-          <Group>
-            <IconPlus size={16} />
-            <Text>Add Location</Text>
-          </Group>
-        </ActionIcon>
+        <LocationForm />
       </Box>
 
       {loading ? (

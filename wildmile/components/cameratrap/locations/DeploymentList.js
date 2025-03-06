@@ -13,62 +13,63 @@ import {
   Skeleton,
   Paper,
   Divider,
+  Table,
+  TextInput,
+  Modal,
 } from "@mantine/core";
-import { IconCalendar, IconCamera, IconPlus } from "@tabler/icons-react";
+import {
+  IconCalendar,
+  IconCamera,
+  IconPlus,
+  IconSearch,
+  IconFilter,
+} from "@tabler/icons-react";
 import Link from "next/link";
+import { useDisclosure } from "@mantine/hooks";
+import EditDeploymentForm from "../deployments/DeploymentForm";
+import { useRouter } from "next/navigation";
 
-export default function DeploymentsList({ locationId }) {
-  const [deployments, setDeployments] = useState({ active: [], completed: [] });
-  const [loading, setLoading] = useState(true);
+export default function DeploymentsList({ locationId, locationDeployments }) {
+  const [deployments, setDeployments] = useState(locationDeployments || null);
+  const [loading, setLoading] = useState(!locationDeployments);
   const [error, setError] = useState(null);
+  const [opened, { open, close }] = useDisclosure(false);
+  const router = useRouter();
 
   useEffect(() => {
-    async function fetchDeployments() {
-      try {
-        setLoading(true);
-        // In a real app, fetch from your API
-        // const response = await fetch(`/api/cameratrap/locations/${locationId}/deployments`);
-
-        // if (!response.ok) {
-        //   throw new Error('Failed to fetch deployments');
-        // }
-
-        // const data = await response.json();
-        // setDeployments(data);
-
-        // Mock data for demonstration
-        setTimeout(() => {
-          setDeployments({
-            active: [
-              {
-                _id: "LR011",
-                model: "Reconyx",
-                deploymentStart: "2024-03-14T00:00:00Z",
-                deploymentEnd: null,
-                imagesCount: 3719,
-              },
-            ],
-            completed: [
-              {
-                _id: "LR008",
-                model: "TrailCam Pro",
-                deploymentStart: "2024-07/01T00:00:00Z",
-                deploymentEnd: "2024-09/05T00:00:00Z",
-                imagesCount: 4211,
-              },
-            ],
-          });
-          setLoading(false);
-        }, 1000);
-      } catch (err) {
-        console.error("Error fetching deployments:", err);
-        setError(err.message);
-        setLoading(false);
-      }
+    if (locationDeployments) {
+      setDeployments(locationDeployments);
+      setLoading(false);
+    } else if (!deployments) {
+      fetchDeployments();
     }
+  }, [locationId, locationDeployments]);
 
+  async function fetchDeployments() {
+    try {
+      setLoading(true);
+      // In a real app, fetch from your API
+      const response = await fetch(`/api/cameratrap/locations/${locationId}`);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch deployments");
+      }
+
+      const data = await response.json();
+      setDeployments(data.deployments);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error fetching deployments:", err);
+      setError(err.message);
+      setLoading(false);
+    }
+  }
+
+  const handleDeploymentSuccess = () => {
+    close();
     fetchDeployments();
-  }, [locationId]);
+    router.refresh();
+  };
 
   const DeploymentItem = ({ deployment, isActive }) => (
     <Card withBorder mb="md">
@@ -86,9 +87,9 @@ export default function DeploymentsList({ locationId }) {
             </Text>
           </Box>
         </Group>
-        <Text size="sm" align="right">
+        {/* <Text size="sm" align="right">
           {deployment.imagesCount.toLocaleString()} images captured
-        </Text>
+        </Text> */}
       </Group>
 
       <Group spacing="xs" mt="sm">
@@ -109,7 +110,7 @@ export default function DeploymentsList({ locationId }) {
       <Stack>
         <Group position="apart" mb="md">
           <Title order={4}>Deployments</Title>
-          <Button leftIcon={<IconPlus size={16} />}>New Deployment</Button>
+          <Button leftSection={<IconPlus size={16} />}>New Deployment</Button>
         </Group>
 
         {[1, 2].map((i) => (
@@ -127,107 +128,165 @@ export default function DeploymentsList({ locationId }) {
     return <Text color="red">{error}</Text>;
   }
 
-  const noDeployments =
-    deployments.active.length === 0 && deployments.completed.length === 0;
+  const noDeployments = deployments.length === 0;
 
   return (
     <Stack>
-      <Group position="apart" mb="md">
-        <Title order={4}>Deployments</Title>
-        <Button
-          component={Link}
-          href={`/cameratrap/deployment/new?locationId=${locationId}`}
-          leftIcon={<IconPlus size={16} />}
+      <Paper shadow="xs" radius="md" withBorder>
+        <Group
+          position="apart"
+          p="md"
+          style={{ borderBottom: "1px solid #e9ecef" }}
         >
-          New Deployment
-        </Button>
-      </Group>
+          <Title order={4}>All Deployments</Title>
+          <Button leftSection={<IconPlus size={16} />} onClick={open}>
+            New Deployment
+          </Button>
+        </Group>
 
-      {noDeployments && (
-        <Text color="dimmed">No deployments found for this location.</Text>
-      )}
+        <Box p="md">
+          <Group mb="md">
+            <Box sx={{ position: "relative", marginRight: 8 }}>
+              <TextInput
+                placeholder="Search deployments..."
+                icon={<IconSearch size={16} />}
+                sx={{ width: 250 }}
+              />
+            </Box>
+            <Button variant="default" leftSection={<IconFilter size={16} />}>
+              Filter
+            </Button>
+          </Group>
 
-      {deployments.active.length > 0 && (
-        <>
-          <Title order={5}>Active Deployments</Title>
-          {deployments.active.map((deployment) => (
-            <DeploymentItem
-              key={deployment._id}
-              deployment={deployment}
-              isActive={true}
-            />
-          ))}
-        </>
-      )}
+          {!deployments || deployments.length === 0 ? (
+            <Text color="dimmed" align="center" py="xl">
+              No deployments found for this location.
+            </Text>
+          ) : (
+            <Table striped highlightOnHover>
+              <thead>
+                <tr>
+                  <th>Camera</th>
+                  <th>Model</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Status</th>
+                  <th>Images</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {deployments.map((deployment) => (
+                  <tr key={deployment._id}>
+                    <td>
+                      <Text weight={500}>{deployment.cameraId.name}</Text>
+                    </td>
+                    <td>
+                      {deployment.model ||
+                        deployment.cameraId?.model ||
+                        "Unknown"}
+                    </td>
+                    <td>
+                      {new Date(
+                        deployment.deploymentStart
+                      ).toLocaleDateString()}
+                    </td>
+                    <td>
+                      {deployment.deploymentEnd
+                        ? new Date(
+                            deployment.deploymentEnd
+                          ).toLocaleDateString()
+                        : "Present"}
+                    </td>
+                    <td>
+                      <Badge
+                        color={!deployment.deploymentEnd ? "green" : "gray"}
+                        variant="light"
+                      >
+                        {!deployment.deploymentEnd ? "ACTIVE" : "COMPLETED"}
+                      </Badge>
+                    </td>
+                    <td>{deployment.mediaCount?.toLocaleString() || 0}</td>
+                    <td>
+                      <Group spacing="xs">
+                        <Button
+                          component={Link}
+                          href={`/cameratrap/deployments/${deployment._id}`}
+                          variant="subtle"
+                          color="blue"
+                        >
+                          View
+                        </Button>
+                        <Button
+                          component={Link}
+                          href={`/cameratrap/deployments/${deployment._id}/edit`}
+                          variant="subtle"
+                          color="gray"
+                        >
+                          Edit
+                        </Button>
+                      </Group>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
+        </Box>
+      </Paper>
 
-      {deployments.completed.length > 0 && (
-        <>
-          <Title order={5}>Completed Deployments</Title>
-          {deployments.completed.map((deployment) => (
-            <DeploymentItem
-              key={deployment._id}
-              deployment={deployment}
-              isActive={false}
-            />
-          ))}
-        </>
-      )}
+      {/* Modal for New Deployment */}
+      <Modal opened={opened} onClose={close} title="New Deployment" size="lg">
+        <EditDeploymentForm
+          locationId={locationId}
+          onSuccess={handleDeploymentSuccess}
+        />
+      </Modal>
     </Stack>
   );
 }
 
-export function DeploymentsPreview({ locationId }) {
-  const [deployments, setDeployments] = useState({ active: [], completed: [] });
-  const [loading, setLoading] = useState(true);
+export function DeploymentsPreview({ locationId, locationDeployments }) {
+  const [deployments, setDeployments] = useState(locationDeployments || []);
+  const [loading, setLoading] = useState(!locationDeployments);
   const [error, setError] = useState(null);
+  const [opened, { open, close }] = useDisclosure(false);
+  const router = useRouter();
 
   useEffect(() => {
-    async function fetchDeployments() {
-      try {
-        setLoading(true);
-        // In a real app, fetch from your API
-        // const response = await fetch(`/api/cameratrap/locations/${locationId}/deployments`);
-
-        // if (!response.ok) {
-        //   throw new Error('Failed to fetch deployments');
-        // }
-
-        // const data = await response.json();
-        // setDeployments(data);
-
-        // Mock data for demonstration
-        setTimeout(() => {
-          setDeployments({
-            active: [
-              {
-                _id: "DEP-2023-001",
-                model: "Bushnell Core DS",
-                deploymentStart: "2023-01-15T00:00:00Z",
-                deploymentEnd: null,
-                imagesCount: 1243,
-              },
-            ],
-            completed: [
-              {
-                _id: "DEP-2022-005",
-                model: "Reconyx HyperFire 2",
-                deploymentStart: "2022-10-10T00:00:00Z",
-                deploymentEnd: "2022-12-20T00:00:00Z",
-                imagesCount: 876,
-              },
-            ],
-          });
-          setLoading(false);
-        }, 1000);
-      } catch (err) {
-        console.error("Error fetching deployments:", err);
-        setError(err.message);
-        setLoading(false);
-      }
+    if (locationDeployments) {
+      setDeployments(locationDeployments);
+      setLoading(false);
+    } else {
+      fetchDeployments();
     }
+  }, [locationId, locationDeployments]);
 
+  async function fetchDeployments() {
+    try {
+      setLoading(true);
+      // In a real app, fetch from your API
+      const response = await fetch(`/api/cameratrap/locations/${locationId}`);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch deployments");
+      }
+
+      const data = await response.json();
+      setDeployments(data.deployments || []);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error fetching deployments:", err);
+      setError(err.message);
+      setLoading(false);
+    }
+  }
+
+  const handleDeploymentSuccess = () => {
+    close();
     fetchDeployments();
-  }, [locationId]);
+    router.refresh();
+  };
 
   if (loading) {
     return (
@@ -260,11 +319,10 @@ export function DeploymentsPreview({ locationId }) {
     return <Text color="red">{error}</Text>;
   }
 
-  // Combine active and completed deployments for preview
-  const recentDeployments = [
-    ...deployments.active,
-    ...deployments.completed,
-  ].slice(0, 2);
+  // Sort deployments by start date (most recent first) and take the first 2
+  const recentDeployments = [...deployments]
+    .sort((a, b) => new Date(b.deploymentStart) - new Date(a.deploymentStart))
+    .slice(0, 2);
 
   return (
     <Box mt="xl">
@@ -285,52 +343,71 @@ export function DeploymentsPreview({ locationId }) {
           </Button>
         </Group>
 
-        {recentDeployments.map((deployment, index) => (
-          <Box key={deployment._id}>
-            {index > 0 && <Divider />}
-            <Box p="md">
-              <Group position="apart" align="flex-start">
-                <Box>
-                  <Text weight={500}>{deployment._id}</Text>
-                  <Text size="sm" color="dimmed">
-                    Model: {deployment.model}
-                  </Text>
-                </Box>
-                <Badge
-                  color={!deployment.deploymentEnd ? "green" : "gray"}
-                  size="sm"
-                >
-                  {!deployment.deploymentEnd ? "ACTIVE" : "COMPLETED"}
-                </Badge>
-              </Group>
-              <Group spacing="xs" mt="xs">
-                <IconCalendar size={14} color="gray" />
-                <Text size="sm" color="dimmed">
-                  {new Date(deployment.deploymentStart).toLocaleDateString()} -{" "}
-                  {deployment.deploymentEnd
-                    ? new Date(deployment.deploymentEnd).toLocaleDateString()
-                    : "Present"}
-                </Text>
-              </Group>
-              <Text size="sm" color="dimmed" mt="xs">
-                {deployment.imagesCount.toLocaleString()} images captured
-              </Text>
-            </Box>
+        {recentDeployments.length === 0 ? (
+          <Box p="md">
+            <Text color="dimmed" size="sm" align="center">
+              No deployments found
+            </Text>
           </Box>
-        ))}
+        ) : (
+          recentDeployments.map((deployment, index) => (
+            <Box key={deployment._id}>
+              {index > 0 && <Divider />}
+              <Box p="md">
+                <Group position="apart" align="flex-start">
+                  <Box>
+                    <Text weight={500}>{deployment._id}</Text>
+                    <Text size="sm" color="dimmed">
+                      Model:{" "}
+                      {deployment.model ||
+                        deployment.cameraId?.model ||
+                        "Unknown"}
+                    </Text>
+                  </Box>
+                  <Badge
+                    color={!deployment.deploymentEnd ? "green" : "gray"}
+                    size="sm"
+                  >
+                    {!deployment.deploymentEnd ? "ACTIVE" : "COMPLETED"}
+                  </Badge>
+                </Group>
+                <Group spacing="xs" mt="xs">
+                  <IconCalendar size={14} color="gray" />
+                  <Text size="sm" color="dimmed">
+                    {new Date(deployment.deploymentStart).toLocaleDateString()}{" "}
+                    -{" "}
+                    {deployment.deploymentEnd
+                      ? new Date(deployment.deploymentEnd).toLocaleDateString()
+                      : "Present"}
+                  </Text>
+                </Group>
+                <Text size="sm" color="dimmed" mt="xs">
+                  {deployment.mediaCount?.toLocaleString() || 0} images captured
+                </Text>
+              </Box>
+            </Box>
+          ))
+        )}
 
         <Box p="md" style={{ borderTop: "1px solid #e9ecef" }}>
           <Button
             fullWidth
             leftSection={<IconPlus size={16} />}
             color="blue"
-            component={Link}
-            href={`/cameratrap/deployment/new?locationId=${locationId}`}
+            onClick={open}
           >
             New Deployment
           </Button>
         </Box>
       </Paper>
+
+      {/* Modal for New Deployment */}
+      <Modal opened={opened} onClose={close} title="New Deployment" size="lg">
+        <EditDeploymentForm
+          locationId={locationId}
+          onSuccess={handleDeploymentSuccess}
+        />
+      </Modal>
     </Box>
   );
 }
