@@ -56,7 +56,9 @@ export default function SpeciesDetected({ locationId }) {
       <Stack>
         <Group position="apart" mb="md">
           <Title order={4}>Species Detected</Title>
-          <Button leftIcon={<IconAnalyze size={16} />}>Full Analytics</Button>
+          <Button leftSection={<IconAnalyze size={16} />}>
+            Full Analytics
+          </Button>
         </Group>
 
         {[1, 2, 3, 4].map((i) => (
@@ -86,7 +88,7 @@ export default function SpeciesDetected({ locationId }) {
     <Stack>
       <Group position="apart" mb="md">
         <Title order={4}>Species Detected</Title>
-        <Button variant="outline" leftIcon={<IconAnalyze size={16} />}>
+        <Button variant="outline" leftSection={<IconAnalyze size={16} />}>
           Full Analytics
         </Button>
       </Group>

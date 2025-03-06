@@ -67,7 +67,7 @@ export default function RecentCaptures({ locationId }) {
       <Stack>
         {[1, 2, 3].map((i) => (
           <Card key={i} withBorder>
-            <Group noWrap align="flex-start">
+            <Group wrap="nowrap" align="flex-start">
               <Skeleton height={60} width={80} />
               <Box style={{ flex: 1 }}>
                 <Skeleton height={20} width="60%" mb={8} />
@@ -92,7 +92,7 @@ export default function RecentCaptures({ locationId }) {
     <Stack>
       {captures.map((capture) => (
         <Card key={capture.id} withBorder>
-          <Group noWrap align="flex-start">
+          <Group wrap="nowrap" align="flex-start">
             <Image
               src={capture.imageUrl}
               alt={capture.species}
