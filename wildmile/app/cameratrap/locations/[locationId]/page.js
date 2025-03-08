@@ -3,14 +3,18 @@ import { Suspense } from "react";
 import { Container, Loader } from "@mantine/core";
 import ServerLocationSidebar from "components/cameratrap/locations/ServerLocationSidebar";
 import LocationDetails from "components/cameratrap/locations/LocationDetails";
+import { getLocationById } from "app/actions/CameratrapActions";
 
 // This is a server component that will fetch the location data
 async function getLocationData(locationId) {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/cameratrap/locations/${locationId}`,
-      { cache: "no-store" }
-    );
+    const locationData = await getLocationById(locationId);
+    return locationData;
+  } catch (error) {
+    console.error("Error fetching location data:", error);
+    return null;
+  }
+}
 
     if (!response.ok) {
       return null;
@@ -24,7 +28,7 @@ async function getLocationData(locationId) {
 }
 
 export async function generateMetadata({ params }) {
-  const { locationId } = params;
+  const { locationId } = await params;
   const locationData = await getLocationData(locationId);
 
   if (!locationData) {
@@ -39,7 +43,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function LocationPage({ params }) {
-  const { locationId } = params;
+  const { locationId } = await params;
   
   // Use absolute URL with origin for server components
   const locationData = await getLocationData(locationId);
