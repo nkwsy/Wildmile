@@ -175,6 +175,16 @@ const EditDeploymentForm = ({ deploymentId, onSuccess, locationId }) => {
       setError("Invalid start date");
       return;
     }
+    if (!deploymentId && locationId) {
+      changedValues.locationId = locationId;
+    }
+
+    if (!deploymentId) {
+      if (!changedValues.locationId) {
+        setError("Location is required");
+        return;
+      }
+    }
 
     if (
       changedValues.deploymentEnd &&
@@ -217,7 +227,7 @@ const EditDeploymentForm = ({ deploymentId, onSuccess, locationId }) => {
       // Get the ID from either the existing deploymentId or the new deployment's _id
       const redirectId = deploymentId || updatedDeployment._id;
       if (!onSuccess) {
-        router.push(`/cameratrap/deployment/edit/${redirectId}`);
+        // router.push(`/cameratrap/deployment/edit/${redirectId}`);
         router.refresh();
       }
     } catch (err) {
@@ -259,7 +269,7 @@ const EditDeploymentForm = ({ deploymentId, onSuccess, locationId }) => {
             {...form.getInputProps("cameraId")}
             required
             searchable
-            nothingFound="No cameras found"
+            nothingFoundMessage="No cameras found"
           />
           <LocationDropdown
             label="Location"

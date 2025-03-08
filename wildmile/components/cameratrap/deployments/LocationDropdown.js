@@ -108,7 +108,7 @@ export function LocationDropdown({
       onChange={onChange}
       searchable
       required={required}
-      nothingFound="No locations found"
+      nothingFoundMessage="No locations found"
       maxDropdownHeight={280}
     />
   );

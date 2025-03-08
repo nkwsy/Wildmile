@@ -32,6 +32,21 @@ DeploymentLocationSchema.virtual("deployments", {
   foreignField: "locationId",
 });
 
+// Add a virtual property to check if the location is active
+DeploymentLocationSchema.virtual("isActive").get(function () {
+  // Check if deployments is populated and has items
+  if (
+    !this.deployments ||
+    !Array.isArray(this.deployments) ||
+    this.deployments.length === 0
+  ) {
+    return false;
+  }
+
+  // Location is active if any deployment doesn't have an end date
+  return this.deployments.some((deployment) => !deployment.deploymentEnd);
+});
+
 module.exports =
   mongoose.models.DeploymentLocation ||
   mongoose.model("DeploymentLocation", DeploymentLocationSchema);

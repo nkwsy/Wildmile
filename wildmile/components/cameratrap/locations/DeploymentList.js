@@ -28,8 +28,13 @@ import Link from "next/link";
 import { useDisclosure } from "@mantine/hooks";
 import EditDeploymentForm from "../deployments/DeploymentForm";
 import { useRouter } from "next/navigation";
+import { useDeploymentContext } from "./LocationDetails";
 
-export default function DeploymentsList({ locationId, locationDeployments }) {
+export default function DeploymentsList({
+  locationId,
+  locationDeployments,
+  onEditDeployment,
+}) {
   const [deployments, setDeployments] = useState(locationDeployments || null);
   const [loading, setLoading] = useState(!locationDeployments);
   const [error, setError] = useState(null);
@@ -217,11 +222,11 @@ export default function DeploymentsList({ locationId, locationDeployments }) {
                         >
                           View
                         </Button>
+
                         <Button
-                          component={Link}
-                          href={`/cameratrap/deployments/${deployment._id}/edit`}
                           variant="subtle"
                           color="gray"
+                          onClick={() => onEditDeployment(deployment._id)}
                         >
                           Edit
                         </Button>
@@ -258,29 +263,10 @@ export function DeploymentsPreview({ locationId, locationDeployments }) {
       setDeployments(locationDeployments);
       setLoading(false);
     } else {
-      fetchDeployments();
+      console.log("fetching deployments");
+      // fetchDeployments();
     }
   }, [locationId, locationDeployments]);
-
-  async function fetchDeployments() {
-    try {
-      setLoading(true);
-      // In a real app, fetch from your API
-      const response = await fetch(`/api/cameratrap/locations/${locationId}`);
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch deployments");
-      }
-
-      const data = await response.json();
-      setDeployments(data.deployments || []);
-      setLoading(false);
-    } catch (err) {
-      console.error("Error fetching deployments:", err);
-      setError(err.message);
-      setLoading(false);
-    }
-  }
 
   const handleDeploymentSuccess = () => {
     close();
@@ -333,14 +319,14 @@ export function DeploymentsPreview({ locationId, locationDeployments }) {
           style={{ borderBottom: "1px solid #e9ecef" }}
         >
           <Title order={5}>Deployments</Title>
-          <Button
+          {/* <Button
             variant="subtle"
             size="xs"
             component={Link}
             href={`/cameratrap/locations/${locationId}/deployments`}
           >
             View All
-          </Button>
+          </Button> */}
         </Group>
 
         {recentDeployments.length === 0 ? (

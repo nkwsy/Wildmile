@@ -19,7 +19,6 @@ import {
 import ExifReader from "exifreader";
 import { parseISO } from "date-fns";
 import mongoose from "mongoose";
-const { exiftool } = require("exiftool-vendored");
 
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
@@ -28,6 +27,14 @@ const s3Client = new S3Client({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   },
 });
+
+let exiftool;
+if (typeof window === "undefined") {
+  // Only import on the server side
+  const { ExifTool } = require("exiftool-vendored");
+  exiftool = new ExifTool({ taskTimeoutMillis: 5000 });
+}
+
 export async function syncNewImagesFromS3() {
   await dbConnect();
 
@@ -164,6 +171,11 @@ function parseExifDate(dateString) {
 
 async function getMetadata(buffer, fileName) {
   try {
+    if (!exiftool) {
+      console.warn("ExifTool not available in this environment");
+      return {};
+    }
+
     // Use the -b option to exclude binary data
     const tags = await exiftool.read(buffer, ["-File:all", "-b"]);
     return tags;
@@ -242,9 +254,6 @@ async function getImageMetadata(buffer) {
   }
 }
 
-// Don't forget to close ExifTool when you're done
-// process.on("exit", () => exiftool.end());
-
 // CAMERA ACTIONS
 export async function getCamera(id) {
   const camera = await Camera.findOne({ _id: id }, ["-__v"]).lean().exec();
@@ -310,9 +319,25 @@ export async function newEditLocation(req) {
   return { success: true, data: JSON.parse(JSON.stringify(location)) };
 }
 
-export async function getExistingLocations() {
+export async function getExistingLocations({ detailed = false }) {
   await dbConnect();
-  const locations = await DeploymentLocations.find().lean();
+  let locations;
+  if (detailed) {
+    locations = await DeploymentLocations.find()
+      .populate({
+        path: "deployments",
+        populate: [
+          { path: "cameraId" },
+          { path: "mediaCount" },
+          { path: "observationCount" },
+        ],
+      })
+      .populate("creator", "name")
+      .lean({ virtuals: true });
+  } else {
+    locations = await DeploymentLocations.find().lean();
+  }
+
   console.log("Locations:", locations);
   return JSON.stringify(locations);
 }
@@ -320,13 +345,23 @@ export async function getExistingLocations() {
 // fetch location by id
 export async function getLocationById(locationId) {
   await dbConnect();
+
+  // Make sure to populate deployments first
   const location = await DeploymentLocations.findOne({ _id: locationId })
     .populate({
       path: "deployments",
-      populate: { path: "cameraId" },
+      populate: [
+        { path: "cameraId" },
+        { path: "mediaCount" },
+        { path: "observationCount" },
+      ],
     })
     .populate("creator", "name");
-  return JSON.stringify(location);
+
+  // Convert to a plain object with virtuals included
+  const locationObj = location.toObject({ virtuals: true });
+
+  return JSON.stringify(locationObj);
 }
 
 // to edit deployments
@@ -529,4 +564,15 @@ export async function getStats() {
     mostActive7Days: mostActive7Days || { name: "No activity", count: 0 },
     mostBlanks: mostBlanks || { name: "No blanks", count: 0 },
   };
+}
+
+// Add this to properly close exiftool when the server shuts down
+if (typeof process !== "undefined" && exiftool) {
+  process.on("exit", () => {
+    try {
+      exiftool.end();
+    } catch (e) {
+      console.error("Error closing exiftool:", e);
+    }
+  });
 }

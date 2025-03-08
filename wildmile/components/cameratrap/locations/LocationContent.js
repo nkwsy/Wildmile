@@ -6,6 +6,7 @@ import { IconMapPin } from "@tabler/icons-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import LocationDetails from "./LocationDetails";
 import { DeploymentMapObject } from "../deployments/DeploymentMap";
+
 export default function LocationsContent() {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [loading, setLoading] = useState(false);

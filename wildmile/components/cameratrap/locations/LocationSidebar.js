@@ -122,11 +122,11 @@ export default function LocationSidebar({ activeLocationId }) {
                   <Text fw={500}>{location.locationName}</Text>
                   <Box
                     className={
-                      location.active
+                      location.isActive
                         ? classes.activeIndicator
                         : classes.inactiveIndicator
                     }
-                    title={location.active ? "Active" : "Inactive"}
+                    title={location.isActive ? "Active" : "Inactive"}
                   />
                 </Group>
                 <Text size="xs" color="dimmed">

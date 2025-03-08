@@ -41,7 +41,8 @@ export default function LocationForm({
       locationName: initialData?.locationName || "",
       zone: initialData?.zone || "",
       projectArea: initialData?.projectArea || "",
-      coordinates: initialData?.location?.coordinates || [],
+      coordinates:
+        initialData?.location?.coordinates || initialData?.coordinates || [],
       tags: initialData?.tags || [],
       mount: initialData?.mount || "",
       notes: initialData?.notes || "",
