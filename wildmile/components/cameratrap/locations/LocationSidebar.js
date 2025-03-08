@@ -14,35 +14,40 @@ import {
   Loader,
   Group,
   ActionIcon,
+  Chip,
+  Badge,
 } from "@mantine/core";
 import { IconSearch, IconPlus, IconCamera } from "@tabler/icons-react";
 import Link from "next/link";
 import classes from "./LocationSidebar.module.css";
 import LocationForm from "./LocationForm";
-import { fetchLocations } from "../../../app/actions/locationActions";
+import { fetchLocations } from "/app/actions/locationActions";
 
 export default function LocationSidebar({ activeLocationId, initialLocations = [] }) {
-  const [locations, setLocations] = useState(initialLocations);
+  // Ensure initialLocations is always an array
+  const safeInitialLocations = Array.isArray(initialLocations) ? initialLocations : [];
+  
+  const [locations, setLocations] = useState(safeInitialLocations);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredLocations, setFilteredLocations] = useState(initialLocations);
-  const [loading, setLoading] = useState(initialLocations.length === 0);
+  const [filteredLocations, setFilteredLocations] = useState(safeInitialLocations);
+  const [loading, setLoading] = useState(safeInitialLocations.length === 0);
   const [error, setError] = useState(null);
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
     async function loadLocations() {
-      if (initialLocations.length > 0) {
-        setLocations(initialLocations);
-        setFilteredLocations(initialLocations);
+      if (safeInitialLocations.length > 0) {
+        setLocations(safeInitialLocations);
+        setFilteredLocations(safeInitialLocations);
         return;
       }
       
       try {
         setLoading(true);
         const data = await fetchLocations();
-        setLocations(data);
-        setFilteredLocations(data);
+        setLocations(Array.isArray(data) ? data : []);
+        setFilteredLocations(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Error fetching locations:", err);
         setError(err.message);
@@ -52,7 +57,7 @@ export default function LocationSidebar({ activeLocationId, initialLocations = [
     }
 
     loadLocations();
-  }, [initialLocations]);
+  }, [safeInitialLocations]);
 
   // Client-side filtering for immediate response
   useEffect(() => {
@@ -61,7 +66,8 @@ export default function LocationSidebar({ activeLocationId, initialLocations = [
       setFilteredLocations(locations);
     } else {
       const filtered = locations.filter((location) =>
-        location.locationName.toLowerCase().includes(searchQuery.toLowerCase())
+        location.locationName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        location.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
       );
       setFilteredLocations(filtered);
     }
@@ -100,7 +106,7 @@ export default function LocationSidebar({ activeLocationId, initialLocations = [
       ) : (
         <ScrollArea className={classes.locationList}>
           <Stack spacing={0}>
-            {filteredLocations.map((location) => (
+            {Array.isArray(filteredLocations) && filteredLocations.map((location) => (
               <Box
                 key={location._id}
                 onClick={() => handleLocationClick(location._id)}
@@ -119,10 +125,21 @@ export default function LocationSidebar({ activeLocationId, initialLocations = [
                     title={location.isActive ? "Active" : "Inactive"}
                   />
                 </Group>
+                <Group>
+
                 <Text size="xs" color="dimmed">
                   <IconCamera size={12} style={{ marginRight: 4 }} />
-                  {location.deployments} deployments
+                  {Array.isArray(location.deployments) ? location.deployments.length : 0} deployments
                 </Text>
+                
+                  {location.tags.map((tag) => (
+                    <Badge key={tag} color="blue">
+                      {tag}
+                    </Badge>
+                  ))}
+                
+                </Group>
+
               </Box>
             ))}
           </Stack>

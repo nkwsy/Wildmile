@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Container, Loader } from "@mantine/core";
 import ServerLocationSidebar from "/components/cameratrap/locations/ServerLocationSidebar";
-import LocationsContent from "/components/cameratrap/locations/LocationContent";
+import LocationContent from "/components/cameratrap/locations/LocationContent";
 
 export const metadata = {
   title: "Wildlife Camera Research Platform - Location Management",
@@ -18,7 +18,7 @@ export default function LocationsPage() {
         <ServerLocationSidebar />
       </Suspense>
       <Suspense fallback={<Loader />}>
-        <LocationsContent />
+        <LocationContent />
       </Suspense>
     </Container>
   );

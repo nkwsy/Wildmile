@@ -333,7 +333,8 @@ export async function getExistingLocations({ detailed = false }) {
         ],
       })
       .populate("creator", "name")
-      .lean({ virtuals: true });
+      // .lean({ virtuals: true });
+    locations = locations.map((location) => location.toObject({ virtuals: true }));
   } else {
     locations = await DeploymentLocations.find().lean();
   }

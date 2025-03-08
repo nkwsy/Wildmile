@@ -1,26 +1,20 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Container, Loader } from "@mantine/core";
-import ServerLocationSidebar from "components/cameratrap/locations/ServerLocationSidebar";
-import LocationDetails from "components/cameratrap/locations/LocationDetails";
-import { getLocationById } from "app/actions/CameratrapActions";
+import ServerLocationSidebar from "/components/cameratrap/locations/ServerLocationSidebar";
+import LocationDetails from "/components/cameratrap/locations/LocationDetails";
+import { getLocationById } from "/app/actions/CameratrapActions";
 
 // This is a server component that will fetch the location data
 async function getLocationData(locationId) {
   try {
-    const locationData = await getLocationById(locationId);
-    return locationData;
-  } catch (error) {
-    console.error("Error fetching location data:", error);
-    return null;
-  }
-}
-
-    if (!response.ok) {
-      return null;
+    const locationDataJson = await getLocationById(locationId);
+    
+    // Parse the JSON string if it's not null
+    if (locationDataJson) {
+      return JSON.parse(locationDataJson);
     }
-
-    return await response.json();
+    return null;
   } catch (error) {
     console.error("Error fetching location data:", error);
     return null;
@@ -43,7 +37,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function LocationPage({ params }) {
-  const { locationId } = await params;
+  const { locationId } = params;
   
   // Use absolute URL with origin for server components
   const locationData = await getLocationData(locationId);
