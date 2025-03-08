@@ -19,63 +19,53 @@ import { IconSearch, IconPlus, IconCamera } from "@tabler/icons-react";
 import Link from "next/link";
 import classes from "./LocationSidebar.module.css";
 import LocationForm from "./LocationForm";
-export default function LocationSidebar({ activeLocationId }) {
-  const [locations, setLocations] = useState([]);
+import { fetchLocations } from "../../../app/actions/locationActions";
+
+export default function LocationSidebar({ activeLocationId, initialLocations = [] }) {
+  const [locations, setLocations] = useState(initialLocations);
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [filteredLocations, setFilteredLocations] = useState(initialLocations);
+  const [loading, setLoading] = useState(initialLocations.length === 0);
   const [error, setError] = useState(null);
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    async function fetchLocations() {
+    async function loadLocations() {
+      if (initialLocations.length > 0) {
+        setLocations(initialLocations);
+        setFilteredLocations(initialLocations);
+        return;
+      }
+      
       try {
         setLoading(true);
-        // In a real app, this would be your API endpoint
-        const response = await fetch("/api/cameratrap/locations");
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch locations");
-        }
-
-        const data = await response.json();
+        const data = await fetchLocations();
         setLocations(data);
+        setFilteredLocations(data);
       } catch (err) {
         console.error("Error fetching locations:", err);
         setError(err.message);
-
-        // Fallback to mock data for demonstration
-        setLocations([
-          {
-            _id: "SB_SLIP_DOCK",
-            locationName: "Sunken Dock",
-            active: true,
-            deployments: 3,
-          },
-          {
-            _id: "NORTH_BRANCH_EDGE",
-            locationName: "North Branch Edge",
-            active: true,
-            deployments: 2,
-          },
-          {
-            _id: "LINCOLN_PARK_POND",
-            locationName: "Lincoln Park Pond",
-            active: false,
-            deployments: 1,
-          },
-        ]);
       } finally {
         setLoading(false);
       }
     }
 
-    fetchLocations();
-  }, []);
+    loadLocations();
+  }, [initialLocations]);
 
-  const filteredLocations = locations.filter((location) =>
-    location.locationName.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Client-side filtering for immediate response
+  useEffect(() => {
+    // Simple client-side filtering without calling the server action
+    if (!searchQuery) {
+      setFilteredLocations(locations);
+    } else {
+      const filtered = locations.filter((location) =>
+        location.locationName.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredLocations(filtered);
+    }
+  }, [searchQuery, locations]);
 
   const handleLocationClick = (locationId) => {
     router.push(`/cameratrap/locations/${locationId}`);

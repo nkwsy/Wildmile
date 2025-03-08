@@ -1,28 +1,30 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Container, Loader } from "@mantine/core";
-import LocationDetails from "/components/cameratrap/locations/LocationDetails";
-import LocationSidebar from "/components/cameratrap/locations/LocationSidebar";
-import { getLocationById } from "app/actions/CameratrapActions";
+import ServerLocationSidebar from "components/cameratrap/locations/ServerLocationSidebar";
+import LocationDetails from "components/cameratrap/locations/LocationDetails";
+
 // This is a server component that will fetch the location data
 async function getLocationData(locationId) {
   try {
-    // getLocationById returns a JSON string, not a Response object
-    const locationData = await getLocationById(locationId);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/cameratrap/locations/${locationId}`,
+      { cache: "no-store" }
+    );
 
-    // Parse the JSON string if it's not null
-    if (locationData) {
-      return JSON.parse(locationData);
+    if (!response.ok) {
+      return null;
     }
-    return null;
+
+    return await response.json();
   } catch (error) {
-    console.error("Error fetching location:", error);
+    console.error("Error fetching location data:", error);
     return null;
   }
 }
 
 export async function generateMetadata({ params }) {
-  const { locationId } = await params;
+  const { locationId } = params;
   const locationData = await getLocationData(locationId);
 
   if (!locationData) {
@@ -37,8 +39,8 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function LocationPage({ params }) {
-  const { locationId } = await params;
-
+  const { locationId } = params;
+  
   // Use absolute URL with origin for server components
   const locationData = await getLocationData(locationId);
 
@@ -53,7 +55,7 @@ export default async function LocationPage({ params }) {
       style={{ display: "flex", height: "calc(100vh - 60px)" }}
     >
       <Suspense fallback={<Loader />}>
-        <LocationSidebar activeLocationId={locationId} />
+        <ServerLocationSidebar activeLocationId={locationId} />
       </Suspense>
       <Suspense fallback={<Loader />}>
         <LocationDetails location={locationData} />
