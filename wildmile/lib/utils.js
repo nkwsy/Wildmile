@@ -1,3 +1,6 @@
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
 export function cleanObject(obj) {
   return Object.entries(obj).reduce((acc, [key, value]) => {
     if (value === undefined || value === null) {
@@ -54,3 +57,7 @@ export function onChangeDate(date) {
 //   }
 //   return acc;
 // }, {});
+
+export function cn(...inputs) {
+  return twMerge(clsx(inputs));
+}

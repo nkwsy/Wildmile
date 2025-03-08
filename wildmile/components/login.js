@@ -1,46 +1,59 @@
 "use client";
-import {
-  TextInput,
-  PasswordInput,
-  Checkbox,
-  Anchor,
-  Paper,
-  Title,
-  Text,
-  Container,
-  Group,
-  Button,
-  Tooltip,
-} from "@mantine/core";
-import { useForm, isEmail } from "@mantine/form";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useUser } from "lib/hooks";
-import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { 
+  Card, 
+  CardHeader, 
+  CardTitle, 
+  CardDescription, 
+  CardContent, 
+  CardFooter 
+} from "@/components/ui/card";
+
 export default function Login() {
   const { user, loading, mutate } = useUser();
   const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
-
-  const form = useForm({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-
-    validate: {
-      email: isEmail("Invalid email"),
-    },
+  
+  const [formValues, setFormValues] = useState({
+    email: "",
+    password: "",
   });
 
-  async function doLogin(values) {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
+
+  async function doLogin(e) {
+    e.preventDefault();
+    
+    // Basic validation
+    if (!formValues.email || !formValues.email.includes('@')) {
+      setErrorMsg("Please enter a valid email address");
+      return;
+    }
+    
+    if (!formValues.password) {
+      setErrorMsg("Please enter your password");
+      return;
+    }
+    
     const res = await fetch("/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
+      body: JSON.stringify(formValues),
     });
 
     if (res.status === 200) {
@@ -60,55 +73,57 @@ export default function Login() {
   }, [user]);
 
   return (
-    <Container size={420} my="5rem">
-      <Title
-        align="center"
-        // sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900 })}
-      >
-        Welcome back!
-      </Title>
-      <Text color="dimmed" size="sm" align="center" mt={5}>
-        Do not have an account yet?{" "}
-        <Link href="/signup">
-          <Anchor size="sm" component="button">
-            Create account
-          </Anchor>
-        </Link>
-      </Text>
-
-      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <form
-          onSubmit={form.onSubmit((values) => {
-            doLogin(values);
-          })}
-        >
-          <TextInput
-            label="Email"
-            placeholder="you@urbanriv.com"
-            required
-            {...form.getInputProps("email")}
-          />
-
-          <PasswordInput
-            label="Password"
-            placeholder="Your password"
-            required
-            mt="md"
-            {...form.getInputProps("password")}
-          />
-          <Group position="apart" mt="lg">
-            <Text size="sm" color="red">
-              {errorMsg}
-            </Text>
-            <Anchor component={Link} href="/forgot-password" size="sm">
-              Forgot password?
-            </Anchor>
-          </Group>
-          <Button fullWidth mt="xl" type="submit">
-            Sign in
-          </Button>
-        </form>
-      </Paper>
-    </Container>
+    <div className="container mx-auto flex items-center justify-center min-h-[80vh]">
+      <Card className="w-full max-w-md">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold text-center">Welcome back!</CardTitle>
+          <CardDescription className="text-center">
+            Do not have an account yet?{" "}
+            <Link href="/signup" className="text-primary hover:underline">
+              Create account
+            </Link>
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={doLogin} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="you@urbanriv.com"
+                required
+                value={formValues.email}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">Password</Label>
+                <Link href="/forgot-password" className="text-sm text-primary hover:underline">
+                  Forgot password?
+                </Link>
+              </div>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Your password"
+                required
+                value={formValues.password}
+                onChange={handleInputChange}
+              />
+            </div>
+            {errorMsg && (
+              <p className="text-sm font-medium text-destructive">{errorMsg}</p>
+            )}
+            <Button type="submit" className="w-full">
+              Sign in
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

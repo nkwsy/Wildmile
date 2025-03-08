@@ -21,7 +21,7 @@
     },
     {
       "name": "Next.js: debug client-side",
-      "type": "chrome",
+      "type": "firefox",
       "request": "launch",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}/wildmile"

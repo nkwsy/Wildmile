@@ -15,7 +15,7 @@ import LocationForm from "components/cameratrap/locations/LocationForm";
 import { useDeploymentMap } from "components/cameratrap/deployments/DeploymentMapContext";
 import { DeploymentMapObject } from "components/cameratrap/deployments/DeploymentMap";
 import classes from "./LocationsPage.module.css";
-
+import { LocationNav } from "./LocationNav";
 export default function LocationsPage() {
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
