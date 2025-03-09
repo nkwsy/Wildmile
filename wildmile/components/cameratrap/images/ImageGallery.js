@@ -88,7 +88,7 @@ export function ImageGallery({
   );
 }
 
-function ImageCard({ image, imageHeight }) {
+export function ImageCard({ image, imageHeight }) {
   const [opened, setOpened] = useState(false);
 
   return (

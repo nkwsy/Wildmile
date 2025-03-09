@@ -5,18 +5,12 @@ import { revalidateTag } from "next/cache";
 import Deployment from "models/cameratrap/Deployment";
 import Camera from "models/cameratrap/Camera";
 import User from "models/User";
+import { getExistingLocations } from "app/actions/CameratrapActions";
 
 export async function GET(request, props) {
   const params = await props.params;
   try {
-    await dbConnect();
-    const location = await DeploymentLocation.findById(params.id)
-      .populate({
-        path: "deployments",
-        model: Deployment,
-        populate: { path: "cameraId", model: Camera },
-      })
-      .populate("creator", "name");
+    const location = await getExistingLocations({ detailed: true });
     if (!location) {
       return NextResponse.json(
         { error: "Location not found" },

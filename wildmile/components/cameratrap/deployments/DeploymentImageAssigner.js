@@ -10,7 +10,7 @@ import {
   Breadcrumbs,
   Anchor,
   Checkbox,
-  LoadingOverlay,
+  Loader,
   Pagination,
   Image,
   Modal,
@@ -275,7 +275,7 @@ export function DeploymentImageAssigner({ deploymentId }) {
   return (
     <>
       <Paper p="md" radius="md" withBorder>
-        <LoadingOverlay visible={loading} />
+        {loading && <Loader />}
         <Group position="apart">
           <Title order={4}>Add New Images to Deployment</Title>
           <Text size="sm" color="dimmed">

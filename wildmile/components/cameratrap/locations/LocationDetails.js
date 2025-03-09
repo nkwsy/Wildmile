@@ -1,7 +1,19 @@
 "use client";
 
 import { useState, useContext, createContext } from "react";
-import { Box, Tabs, Title, Group, Text, Button, Badge } from "@mantine/core";
+import {
+  Box,
+  Tabs,
+  Title,
+  Group,
+  Text,
+  Button,
+  Badge,
+  Paper,
+  Stack,
+  Divider,
+  ThemeIcon,
+} from "@mantine/core";
 import {
   IconEye,
   IconCalendarEvent,
@@ -9,6 +21,8 @@ import {
   IconChartBar,
   IconDownload,
   IconEdit,
+  IconMapPin,
+  IconPhoto,
 } from "@tabler/icons-react";
 import LocationMap from "./LocationMap";
 import RecentCaptures from "./RecentCaptures";
@@ -16,9 +30,26 @@ import DeploymentsList, { DeploymentsPreview } from "./DeploymentList";
 import SpeciesDetected from "./SpeciesDetected";
 import LocationForm from "./LocationForm";
 import DeploymentDash from "../deployments/DeploymentDash";
+import DeploymentLocationMap from "components/maps/DeploymentLocationMap";
+import { LocationImages } from "./LocationImages";
 
 // Create a context to manage the deployment editing state
 const DeploymentContext = createContext();
+
+export function LocationMapObject({ location }) {
+  return (
+    <Paper shadow="xs" p="md" radius="md" h="100%">
+      <Stack spacing="xs" h="100%">
+        <Box sx={{ flex: 1 }}>
+          <DeploymentLocationMap
+            location={location?.location}
+            style={{ height: "100%", minHeight: "300px" }}
+          />
+        </Box>
+      </Stack>
+    </Paper>
+  );
+}
 
 export default function LocationDetails({ location }) {
   const [activeTab, setActiveTab] = useState("overview");
@@ -65,23 +96,32 @@ export default function LocationDetails({ location }) {
 
         <Tabs value={activeTab} onChange={setActiveTab}>
           <Tabs.List>
-            <Tabs.Tab value="overview" icon={<IconEye size={16} />}>
+            <Tabs.Tab value="overview" leftSection={<IconEye size={16} />}>
               Overview
             </Tabs.Tab>
             <Tabs.Tab
               value="deployments"
-              icon={<IconCalendarEvent size={16} />}
+              leftSection={<IconCalendarEvent size={16} />}
             >
               Deployments
             </Tabs.Tab>
-            <Tabs.Tab value="analytics" icon={<IconChartBar size={16} />}>
+            <Tabs.Tab
+              value="analytics"
+              leftSection={<IconChartBar size={16} />}
+            >
               Analytics
             </Tabs.Tab>
-            <Tabs.Tab value="settings" icon={<IconSettings size={16} />}>
+            <Tabs.Tab value="settings" leftSection={<IconSettings size={16} />}>
               Team & Settings
             </Tabs.Tab>
+            <Tabs.Tab value="images" leftSection={<IconPhoto size={16} />}>
+              Images
+            </Tabs.Tab>
             {editingDeploymentId && (
-              <Tabs.Tab value="editDeployment" icon={<IconEdit size={16} />}>
+              <Tabs.Tab
+                value="editDeployment"
+                leftSection={<IconEdit size={16} />}
+              >
                 Edit Deployment
               </Tabs.Tab>
             )}
@@ -90,19 +130,22 @@ export default function LocationDetails({ location }) {
           <Tabs.Panel value="overview" pt="md">
             <Group align="flex-start" grow>
               <Box>
-                <Title order={5} mb="md">
-                  Location Map
-                </Title>
-                <LocationMap location={location} />
+                <LocationMapObject location={location} />
               </Box>
               <Box>
                 <Group position="apart" mb="md">
                   <Title order={5}>Recent Captures</Title>
+
                   <Button variant="subtle" size="xs">
                     View All
                   </Button>
                 </Group>
-                <RecentCaptures locationId={location._id} />
+                <LocationImages
+                  locationId={location._id}
+                  imagesPerPage={4}
+                  homepage={true}
+                />
+                {/* <RecentCaptures locationId={location._id} />  */}
               </Box>
             </Group>
 
@@ -127,6 +170,10 @@ export default function LocationDetails({ location }) {
 
           <Tabs.Panel value="settings" pt="md">
             <Text>Team and settings content will go here.</Text>
+          </Tabs.Panel>
+
+          <Tabs.Panel value="images" pt="md">
+            <LocationImages locationId={location._id} />
           </Tabs.Panel>
 
           {editingDeploymentId && (

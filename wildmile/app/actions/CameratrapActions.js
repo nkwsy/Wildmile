@@ -332,9 +332,11 @@ export async function getExistingLocations({ detailed = false }) {
           { path: "observationCount" },
         ],
       })
-      .populate("creator", "name")
-      // .lean({ virtuals: true });
-    locations = locations.map((location) => location.toObject({ virtuals: true }));
+      .populate("creator", "name");
+    // .lean({ virtuals: true });
+    locations = locations.map((location) =>
+      location.toObject({ virtuals: true })
+    );
   } else {
     locations = await DeploymentLocations.find().lean();
   }

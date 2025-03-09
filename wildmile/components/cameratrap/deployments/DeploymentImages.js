@@ -8,7 +8,7 @@ import {
   Button,
   Stack,
   Pagination,
-  LoadingOverlay,
+  Loader,
   Badge,
   Menu,
   ActionIcon,
@@ -100,11 +100,10 @@ export function DeploymentImages({ deploymentId }) {
       </Paper>
     );
   }
+  if (loading) return <Loader />;
 
   return (
     <Paper p="md" radius="md" withBorder>
-      <LoadingOverlay visible={loading} />
-
       <Stack spacing="md">
         <Group position="apart">
           <Group>

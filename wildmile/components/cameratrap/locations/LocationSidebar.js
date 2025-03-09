@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import {
   Box,
@@ -14,64 +14,78 @@ import {
   Loader,
   Group,
   ActionIcon,
-  Chip,
   Badge,
 } from "@mantine/core";
-import { IconSearch, IconPlus, IconCamera } from "@tabler/icons-react";
+import { IconSearch, IconPlus, IconCamera, IconMap } from "@tabler/icons-react";
 import Link from "next/link";
 import classes from "./LocationSidebar.module.css";
 import LocationForm from "./LocationForm";
-import { fetchLocations } from "/app/actions/locationActions";
-
-export default function LocationSidebar({ activeLocationId, initialLocations = [] }) {
-  // Ensure initialLocations is always an array
-  const safeInitialLocations = Array.isArray(initialLocations) ? initialLocations : [];
-  
-  const [locations, setLocations] = useState(safeInitialLocations);
+export default function LocationSidebar({ activeLocationId }) {
+  const [locations, setLocations] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredLocations, setFilteredLocations] = useState(safeInitialLocations);
-  const [loading, setLoading] = useState(safeInitialLocations.length === 0);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    async function loadLocations() {
-      if (safeInitialLocations.length > 0) {
-        setLocations(safeInitialLocations);
-        setFilteredLocations(safeInitialLocations);
-        return;
-      }
-      
+    async function fetchLocations() {
       try {
         setLoading(true);
-        const data = await fetchLocations();
-        setLocations(Array.isArray(data) ? data : []);
-        setFilteredLocations(Array.isArray(data) ? data : []);
+        // In a real app, this would be your API endpoint
+        const response = await fetch("/api/cameratrap/locations");
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch locations");
+        }
+
+        const data = await response.json();
+        setLocations(data);
       } catch (err) {
         console.error("Error fetching locations:", err);
         setError(err.message);
+
+        // Fallback to mock data for demonstration
+        setLocations([
+          {
+            _id: "SB_SLIP_DOCK",
+            locationName: "Sunken Dock",
+            active: true,
+            deployments: 3,
+          },
+          {
+            _id: "NORTH_BRANCH_EDGE",
+            locationName: "North Branch Edge",
+            active: true,
+            deployments: 2,
+          },
+          {
+            _id: "LINCOLN_PARK_POND",
+            locationName: "Lincoln Park Pond",
+            active: false,
+            deployments: 1,
+          },
+        ]);
       } finally {
         setLoading(false);
       }
     }
 
-    loadLocations();
-  }, [safeInitialLocations]);
+    fetchLocations();
+  }, []);
 
-  // Client-side filtering for immediate response
-  useEffect(() => {
-    // Simple client-side filtering without calling the server action
-    if (!searchQuery) {
-      setFilteredLocations(locations);
-    } else {
-      const filtered = locations.filter((location) =>
-        location.locationName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        location.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
-      );
-      setFilteredLocations(filtered);
-    }
-  }, [searchQuery, locations]);
+  const filteredLocations = locations.filter(
+    (location) =>
+      location.locationName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      location.tags.some((tag) =>
+        tag.toLowerCase().includes(searchQuery.toLowerCase())
+      ) ||
+      location.deployments.some((deployment) =>
+        deployment.cameraId.toLowerCase().includes(searchQuery.toLowerCase())
+      ) ||
+      location.projectArea.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      location.zone.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleLocationClick = (locationId) => {
     router.push(`/cameratrap/locations/${locationId}`);
@@ -79,9 +93,20 @@ export default function LocationSidebar({ activeLocationId, initialLocations = [
 
   return (
     <Box className={classes.sidebar}>
-      <Title order={5} px="md" py="sm">
-        Locations
-      </Title>
+      <Group justify="space-between">
+        <Title order={5} px="md" py="sm">
+          Locations
+        </Title>
+        <Button
+          component={Link}
+          href="/cameratrap/locations"
+          variant="subtle"
+          size="xs"
+          leftSection={<IconMap size={16} />}
+        >
+          View Map
+        </Button>
+      </Group>
 
       <Box px="md" pb="md">
         <TextInput
@@ -105,44 +130,39 @@ export default function LocationSidebar({ activeLocationId, initialLocations = [
         </Text>
       ) : (
         <ScrollArea className={classes.locationList}>
-          <Stack spacing={0}>
-            {Array.isArray(filteredLocations) && filteredLocations.map((location) => (
-              <Box
-                key={location._id}
-                onClick={() => handleLocationClick(location._id)}
-                className={`${classes.locationCard} ${
-                  activeLocationId === location._id ? classes.selected : ""
-                }`}
-              >
-                <Group position="apart" mb={4}>
-                  <Text fw={500}>{location.locationName}</Text>
-                  <Box
-                    className={
-                      location.isActive
-                        ? classes.activeIndicator
-                        : classes.inactiveIndicator
-                    }
-                    title={location.isActive ? "Active" : "Inactive"}
-                  />
-                </Group>
-                <Group>
+          {/* <Stack> */}
+          {filteredLocations.map((location) => (
+            <Box
+              key={location._id}
+              onClick={() => handleLocationClick(location._id)}
+              className={`${classes.locationCard} ${
+                activeLocationId === location._id ? classes.selected : ""
+              }`}
+            >
+              <Group position="apart" mb={4}>
+                <Text fw={500}>{location.locationName}</Text>
+                <Box
+                  className={
+                    location.isActive
+                      ? classes.activeIndicator
+                      : classes.inactiveIndicator
+                  }
+                  title={location.isActive ? "Active" : "Inactive"}
+                />
+              </Group>
+              <Text size="xs" color="dimmed">
+                <IconCamera size={12} style={{ marginRight: 4 }} />
+                {location.deployments} deployments
+              </Text>
 
-                <Text size="xs" color="dimmed">
-                  <IconCamera size={12} style={{ marginRight: 4 }} />
-                  {Array.isArray(location.deployments) ? location.deployments.length : 0} deployments
-                </Text>
-                
-                  {location.tags.map((tag) => (
-                    <Badge key={tag} color="blue">
-                      {tag}
-                    </Badge>
-                  ))}
-                
-                </Group>
-
-              </Box>
-            ))}
-          </Stack>
+              {location.tags.map((tag) => (
+                <Badge key={tag} size="xs" variant="white">
+                  {tag}
+                </Badge>
+              ))}
+            </Box>
+          ))}
+          {/* </Stack> */}
         </ScrollArea>
       )}
     </Box>

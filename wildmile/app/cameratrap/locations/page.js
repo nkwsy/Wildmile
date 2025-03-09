@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Container, Loader } from "@mantine/core";
-import ServerLocationSidebar from "/components/cameratrap/locations/ServerLocationSidebar";
+import LocationSidebar from "/components/cameratrap/locations/LocationSidebar";
 import LocationContent from "/components/cameratrap/locations/LocationContent";
 
 export const metadata = {
@@ -15,7 +15,7 @@ export default function LocationsPage() {
       style={{ display: "flex", height: "calc(100vh - 60px)" }}
     >
       <Suspense fallback={<Loader />}>
-        <ServerLocationSidebar />
+        <LocationSidebar />
       </Suspense>
       <Suspense fallback={<Loader />}>
         <LocationContent />
