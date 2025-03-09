@@ -52,8 +52,10 @@ export function LocationImages({
   if (homepage) {
     if (loading) {
       return <Loader />;
-    } else {
+    } else if (images.length > 0) {
       return <ImageCard image={images[0]} />;
+    } else {
+      return <Text>No images found for this location</Text>;
     }
   }
   return (
