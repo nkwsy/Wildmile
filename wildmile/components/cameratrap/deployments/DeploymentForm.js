@@ -19,6 +19,8 @@ import { useRouter } from "next/navigation";
 import { getAllCameras } from "app/actions/CameratrapActions";
 import { LocationDropdown } from "./LocationDropdown";
 import { useDeploymentMap } from "./DeploymentMapContext";
+import { notifications } from "@mantine/notifications";
+import { IconCheck } from "@tabler/icons-react";
 
 const EditDeploymentForm = ({ deploymentId, onSuccess, locationId }) => {
   const [error, setError] = useState(null);
@@ -222,6 +224,18 @@ const EditDeploymentForm = ({ deploymentId, onSuccess, locationId }) => {
       }
 
       const updatedDeployment = await response.json();
+
+      // Show success notification
+      notifications.show({
+        title: deploymentId ? "Deployment Updated" : "Deployment Created",
+        message: deploymentId
+          ? "Deployment has been successfully updated"
+          : "New deployment has been successfully created",
+        color: "green",
+        icon: <IconCheck size="1.1rem" />,
+        autoClose: 4000,
+      });
+
       onSuccess?.(updatedDeployment);
 
       // Get the ID from either the existing deploymentId or the new deployment's _id

@@ -397,7 +397,7 @@ export function AchievementManager() {
             }}
           />
           <Button
-            leftIcon={<IconPlus size={16} />}
+            leftSection={<IconPlus size={16} />}
             onClick={() => {
               resetForm();
               setModalOpen(true);
