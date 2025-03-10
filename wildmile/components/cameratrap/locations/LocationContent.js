@@ -74,9 +74,6 @@ export default function LocationsContent() {
             Select a location from the sidebar to view its details, or create a
             new location to add to your research.
           </Text>
-          <Button onClick={() => router.push("/locations/new")}>
-            Add New Location
-          </Button>
         </Paper>
       </Box>
     );
