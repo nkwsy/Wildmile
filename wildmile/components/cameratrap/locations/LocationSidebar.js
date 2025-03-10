@@ -74,18 +74,18 @@ export default function LocationSidebar({ activeLocationId }) {
     fetchLocations();
   }, []);
 
-  const filteredLocations = locations.filter(
-    (location) =>
-      location.locationName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      location.tags.some((tag) =>
-        tag.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredLocations = locations.filter((location) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      (location.locationName || "").toLowerCase().includes(query) ||
+      (location.tags || []).some((tag) => tag.toLowerCase().includes(query)) ||
+      (location.deployments || []).some((deployment) =>
+        (deployment.cameraId || "").toLowerCase().includes(query)
       ) ||
-      location.deployments.some((deployment) =>
-        deployment.cameraId.toLowerCase().includes(searchQuery.toLowerCase())
-      ) ||
-      location.projectArea.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      location.zone.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+      (location.projectArea || "").toLowerCase().includes(query) ||
+      (location.zone || "").toLowerCase().includes(query)
+    );
+  });
 
   const handleLocationClick = (locationId) => {
     router.push(`/cameratrap/locations/${locationId}`);
