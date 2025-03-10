@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import Deployment from "models/cameratrap/Deployment";
+import DeploymentLocation from "models/cameratrap/DeploymentLocation";
+import Camera from "models/cameratrap/Camera";
 import { revalidatePath } from "next/cache";
 import { revalidateTag } from "next/cache";
 import { getSession } from "lib/getSession";
