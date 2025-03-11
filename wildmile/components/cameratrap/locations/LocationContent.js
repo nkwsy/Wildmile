@@ -6,7 +6,7 @@ import { IconMapPin } from "@tabler/icons-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import LocationDetails from "./LocationDetails";
 import { DeploymentMapObject } from "../deployments/DeploymentMap";
-
+import AllDeployments from "app/cameratrap/deployment/AllDeployments";
 export default function LocationsContent() {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -52,30 +52,9 @@ export default function LocationsContent() {
 
   if (!selectedLocation && !loading) {
     return (
-      <Box
-        style={{
-          flex: 1,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Paper
-          p="xl"
-          withBorder
-          style={{ maxWidth: 1080, textAlign: "center" }}
-        >
-          <DeploymentMapObject />
-          <IconMapPin size={48} style={{ marginBottom: 20, opacity: 0.5 }} />
-          <Text size="xl" weight={500} mb="md">
-            No location selected
-          </Text>
-          <Text color="dimmed" mb="lg">
-            Select a location from the sidebar to view its details, or create a
-            new location to add to your research.
-          </Text>
-        </Paper>
-      </Box>
+      <>
+        <AllDeployments />
+      </>
     );
   }
 

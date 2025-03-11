@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useContext, createContext } from "react";
+import { useState, useEffect, useContext, createContext } from "react";
 import {
   Box,
   Tabs,
@@ -32,6 +32,7 @@ import LocationForm from "./LocationForm";
 import DeploymentDash from "../deployments/DeploymentDash";
 import DeploymentLocationMap from "components/maps/DeploymentLocationMap";
 import { LocationImages } from "./LocationImages";
+import { useSearchParams, usePathname } from "next/navigation";
 
 // Create a context to manage the deployment editing state
 const DeploymentContext = createContext();
@@ -54,11 +55,45 @@ export function LocationMapObject({ location }) {
 export default function LocationDetails({ location }) {
   const [activeTab, setActiveTab] = useState("overview");
   const [editingDeploymentId, setEditingDeploymentId] = useState(null);
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  // Parse URL to set active tab and deployment ID
+  useEffect(() => {
+    // Check for tab in search params
+    const tabParam = searchParams.get("tab");
+    if (
+      tabParam &&
+      ["overview", "deployments", "analytics", "settings", "images"].includes(
+        tabParam
+      )
+    ) {
+      setActiveTab(tabParam);
+    }
+
+    // Check for deployment ID in URL path or search params
+    const deploymentParam = searchParams.get("deploymentId");
+    const pathParts = pathname.split("/");
+    const deploymentIdFromPath =
+      pathParts.length >= 5 && pathParts[3] === "deployments"
+        ? pathParts[4]
+        : null;
+
+    if (deploymentParam || deploymentIdFromPath) {
+      const deploymentId = deploymentParam || deploymentIdFromPath;
+      setEditingDeploymentId(deploymentId);
+      setActiveTab("editDeployment");
+    }
+  }, [searchParams, pathname]);
 
   // Function to handle deployment edit request
   const handleEditDeployment = (deploymentId) => {
     setEditingDeploymentId(deploymentId);
     setActiveTab("editDeployment");
+
+    // Optional: Update URL when editing a deployment
+    // This requires a router import and is commented out as it depends on your routing setup
+    // router.push(`/locations/${location._id}/deployments/${deploymentId}`);
   };
 
   // If we don't receive location data, show a message

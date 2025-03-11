@@ -38,7 +38,7 @@ const DeploymentCard = ({ deployment }) => (
     padding="xs"
     radius="md"
     component={Link}
-    href={`/cameratrap/deployment/edit/${deployment.id}`}
+    href={`/cameratrap/locations/${deployment.locationId}?deploymentId=${deployment._id}`}
     className={classes.card}
   >
     <Stack spacing={8}>
@@ -184,6 +184,7 @@ export default function AllDeployments() {
     id: deployment._id,
     // Location info
     locationName: deployment.locationId?.locationName || "Unknown Location",
+    locationId: deployment.locationId?._id || "Unknown Location",
     projectArea: deployment.locationId?.projectArea,
     zone: deployment.locationId?.zone,
     coordinates: deployment.locationId?.location?.coordinates,
@@ -368,7 +369,7 @@ export default function AllDeployments() {
           <Menu.Dropdown>
             <Menu.Item
               component={Link}
-              href={`/cameratrap/deployment/edit/${record.id}`}
+              href={`/cameratrap/locations/${record.locationId}?deploymentId=${record.id}`}
               leftSection={<IconEdit size={14} />}
             >
               Edit
