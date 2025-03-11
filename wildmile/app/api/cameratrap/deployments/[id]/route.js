@@ -187,7 +187,9 @@ export async function PUT(request, props) {
     }
 
     revalidatePath("/cameratrap/deployments");
+    revalidatePath(`/cameratrap/locations/${updatedDeployment.locationId}`);
     revalidateTag("deployments");
+    revalidateTag(`location-${updatedDeployment.locationId}`);
     return NextResponse.json(updatedDeployment);
   } catch (error) {
     console.error("Error updating deployment:", error);

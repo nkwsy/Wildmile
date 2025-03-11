@@ -132,6 +132,7 @@ export default function LocationForm({
       const data = await response.json();
       onSuccess?.(data);
       close();
+      router.refresh();
     } catch (err) {
       setError(err.message);
     } finally {
