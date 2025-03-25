@@ -40,7 +40,7 @@
     "canvas": "^2.11.2",
     "clsx": "^2.1.1",
     "connect-mongo": "^5.1.0",
-    "cookie": "0.4.0",
+    "cookie": "0.7.0",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "exifreader": "^4.26.0",
