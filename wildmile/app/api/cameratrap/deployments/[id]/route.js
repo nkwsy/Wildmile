@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import Deployment from "models/cameratrap/Deployment";
+import Camera from "models/cameratrap/Camera";
 import { revalidatePath } from "next/cache";
 import { revalidateTag } from "next/cache";
 import { getSession } from "lib/getSession";
@@ -186,7 +187,9 @@ export async function PUT(request, props) {
     }
 
     revalidatePath("/cameratrap/deployments");
+    revalidatePath(`/cameratrap/locations/${updatedDeployment.locationId}`);
     revalidateTag("deployments");
+    revalidateTag(`location-${updatedDeployment.locationId}`);
     return NextResponse.json(updatedDeployment);
   } catch (error) {
     console.error("Error updating deployment:", error);

@@ -114,7 +114,7 @@ export default function DeploymentDash({ deploymentId }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [deployment, setDeployment] = useState(null);
-  const [editFormVisible, setEditFormVisible] = useState(false);
+  const [editFormVisible, setEditFormVisible] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -190,31 +190,6 @@ export default function DeploymentDash({ deploymentId }) {
               />
             </Paper>
           </Collapse>
-          <Paper shadow="xs" p="md" radius="md" h="100%">
-            <Stack spacing="xs" h="100%">
-              <Group position="apart">
-                <Group>
-                  <ThemeIcon size="lg" variant="light">
-                    <IconMapPin size={20} />
-                  </ThemeIcon>
-                  <Title order={4}>Location</Title>
-                </Group>
-                <Badge variant="light">
-                  {deployment.locationId?.locationName || "No Location Set"}
-                </Badge>
-              </Group>
-              <Text size="sm" color="dimmed">
-                {deployment.locationId?.zone || "No Zone Set"}
-              </Text>
-              <Divider />
-              <Box sx={{ flex: 1 }}>
-                <DeploymentLocationMap
-                  location={deployment.locationId?.location}
-                  style={{ height: "100%", minHeight: "300px" }}
-                />
-              </Box>
-            </Stack>
-          </Paper>
         </Grid.Col>
 
         {/* Right column - Additional Info */}

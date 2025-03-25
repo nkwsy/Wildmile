@@ -90,7 +90,7 @@ export function LocationDrawer() {
       withBorder
       mb="xs"
       component={Link}
-      href={`/cameratrap/deployment/edit/${deployment._id}`}
+      href={`/cameratrap/locations/${deployment.locationId}?deploymentId=${deployment._id}`}
       sx={{ cursor: "pointer" }}
     >
       <Stack spacing="xs">
@@ -164,6 +164,14 @@ export function LocationDrawer() {
               {selectedLocation.notes && (
                 <Text>Notes: {selectedLocation.notes}</Text>
               )}
+              <Button
+                variant="outline"
+                size="xs"
+                component={Link}
+                href={`/cameratrap/locations/${selectedLocation._id}`}
+              >
+                View Location
+              </Button>
             </Stack>
           </Card>
 

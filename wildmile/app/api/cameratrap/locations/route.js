@@ -7,7 +7,10 @@ import { revalidateTag } from "next/cache";
 export async function GET() {
   try {
     await dbConnect();
-    const locations = await DeploymentLocation.find().sort({ locationName: 1 });
+    const locations = await DeploymentLocation.find()
+      .populate("creator", "name")
+      .lean({ virtuals: true })
+      .sort({ locationName: 1 });
     return NextResponse.json(locations);
   } catch (error) {
     return NextResponse.json(
