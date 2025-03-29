@@ -35,6 +35,7 @@ const UserProgressSchema = new mongoose.Schema(
       imagesReviewed: { type: Number, default: 0 },
       animalsObserved: { type: Number, default: 0 },
       uniqueSpecies: { type: Number, default: 0 },
+      speciesCounts: { type: Map, of: Number, default: new Map() },
       consecutiveDays: { type: Number, default: 0 },
       blanksLogged: { type: Number, default: 0 },
       deploymentsReviewed: { type: Number, default: 0 },
