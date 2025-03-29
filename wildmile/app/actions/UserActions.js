@@ -148,6 +148,7 @@ async function updateUserStats(userId) {
       imagesReviewed: 0,
       animalsObserved: 0,
       uniqueSpecies: new Set(),
+      speciesCounts: {},
       blanksLogged: 0,
       deploymentsReviewed: new Set(),
       speciesConsensus: 0,
@@ -191,6 +192,20 @@ async function updateUserStats(userId) {
         .map((obs) => obs.scientificName)
         .filter((name) => name && name.trim() !== "")
     );
+
+    // Calculate species counts
+    stats.speciesCounts = animalObservations.reduce((acc, obs) => {
+      const key = obs.scientificName || obs.commonName;
+      if (!acc[key]) {
+        acc[key] = {
+          scientificName: obs.scientificName,
+          commonName: obs.commonName,
+          count: 0,
+        };
+      }
+      acc[key].count += obs.count || 1;
+      return acc;
+    }, {});
 
     // Calculate deployments reviewed
     stats.deploymentsReviewed = new Set(

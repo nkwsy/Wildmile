@@ -30,6 +30,7 @@ const DOMAINS = [
   { value: "WATER_QUALITY", label: "Water Quality" },
 ];
 
+//TODO: Add speciesCounts to the criteria types 
 const CRITERIA_TYPES = {
   CAMERATRAP: [
     { value: "imagesReviewed", label: "Images Reviewed" },
