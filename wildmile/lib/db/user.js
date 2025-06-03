@@ -66,8 +66,6 @@ export async function convertEmailsToUserIds(emails) {
 
 export async function findUserByEmail(email) {
   await dbConnect()
-  console.log("findUserByEmail", email);
-
   // Here you find the user based on id/email in the database
   return await User.findOne({ email: email.toLowerCase() }, [
     // "-_id",
