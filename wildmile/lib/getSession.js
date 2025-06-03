@@ -15,16 +15,12 @@ export async function getSession() {
       sameSite: "lax",
     }
   };
-  const session = await getIronSession(cookies(), sessionOptions);
-  if (!session || !session.passport || !session.passport.user) {
-    console.log("Session is invalid or incomplete");
+  const session = await getIronSession(cookies(), sessionOptions);  if (!session || !session.passport || !session.passport.user) {
     return null;
   }
   if (session.passport.user) {
     const user = await findUserByEmail(session.passport.user);
-    console.log("User:", user);
     return user;
   }
-  console.log("Session:", session);
   return session;
 }
