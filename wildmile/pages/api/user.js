@@ -25,26 +25,56 @@ router
     return res.json({});
   })
   .post(async (req, res) => {
+    const requestId = `req_${Date.now()}`; // Simple request ID
     try {
-      await userValidationSchema.validate(req.body, { abortEarly: false });
-    } catch (error) {
-      return res.status(400).send(error.message);
-    }
+      console.log(`[${requestId}] User creation request received`);
+      console.log(`[${requestId}] Request body (sanitized): email=${req.body.email}, name=${req.body.name}`);
 
-    // Here you check if the email has already been used
-    if (!!(await findUserByEmail(req.body.email))) {
-      return res.status(409).send("The email has already been used");
-    }
-    console.log("creating user");
-    const user = await createUser(req.body);
-    console.log("created user");
-    req.logIn(user, (err) => {
-      if (err) throw err;
-      // Log the signed up user in
-      res.status(201).json({
-        user,
+      try {
+        await userValidationSchema.validate(req.body, { abortEarly: false });
+      } catch (error) {
+        console.error(`[${requestId}] Validation error: ${error.message}`);
+        return res.status(400).send(error.message);
+      }
+
+      // Here you check if the email has already been used
+      console.log(`[${requestId}] Checking if email exists: ${req.body.email}`);
+      const existingUser = await findUserByEmail(req.body.email);
+      if (!!existingUser) {
+        console.log(`[${requestId}] User conflict: email ${req.body.email} already exists.`);
+        return res.status(409).send("The email has already been used");
+      }
+      console.log(`[${requestId}] Email ${req.body.email} not found. Proceeding with user creation.`);
+
+      console.log(`[${requestId}] Starting user creation for email: ${req.body.email}`);
+      const user = await createUser(req.body); // This should remain req.body as per original before phone/zipcode
+      console.log(`[${requestId}] User created successfully with ID: ${user._id}`);
+
+      console.log(`[${requestId}] Attempting to log in user: ${user._id}`);
+      req.logIn(user, (err) => {
+        if (err) {
+          console.error(`[${requestId}] Error during req.logIn for user ${user._id}:`, err);
+          // It's important to handle the error here, perhaps by sending a response
+          // For now, re-throwing will be caught by the outer catch.
+          throw err;
+        }
+        console.log(`[${requestId}] User ${user._id} logged in successfully.`);
+        // Log the signed up user in
+        res.status(201).json({
+          user,
+        });
       });
-    });
+    } catch (error) {
+      // Main error handler for the POST route
+      console.error(`[${requestId}] Main error handler: ${error.message}`);
+      if (error.stack) {
+        console.error(`[${requestId}] Main error handler stack: ${error.stack}`);
+      }
+      // Ensure response is sent for unhandled errors if not already sent
+      if (!res.headersSent) {
+        res.status(500).send("Internal Server Error");
+      }
+    }
   })
   .use(async (req, res, next) => {
     // handlers after this (PUT, DELETE) all require an authenticated user
@@ -71,7 +101,11 @@ router
 
 export default router.handler({
   onError: (err, req, res) => {
-    console.error(err.stack);
+    const requestId = req.id || `req_${Date.now()}`; // Use req.id if available, otherwise generate
+    console.error(`[${requestId}] onError: ${err.message}`);
+    if (err.stack) {
+      console.error(`[${requestId}] onError stack: ${err.stack}`);
+    }
     res.status(err.statusCode || 500).end(err.message);
   },
 });
