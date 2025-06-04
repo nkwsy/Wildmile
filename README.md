@@ -3,6 +3,13 @@
 ## Requirements
 
 - Node.js 20 or later (Prefer to use the latest LTS version)
+    - Node v22.10.0 is incompatible
+    - Node v20.19.0 is compatible
+    - if cleaning up and restarting
+        - Remove-Item -Recurse -Force node_modules
+        - Remove-Item -Force package-lock.json
+    - npm install
+    - npm audit fix --force
 - A MongoDB server (You can use a free tier at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 
 ## Getting Started
@@ -31,17 +38,28 @@ cp .env.local.example .env.local
 Then set each variable on `.env.local`:
 
 - `MONGODB_URI` should be the MongoDB connection string you got from step 1.
+- `TOKEN_SECRET` should be a secure random string. You can generate one by running this command in your terminal:
+  ```bash
+  node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+  ```
+  This will create a cryptographically secure random string that's suitable for use as your TOKEN_SECRET.
 
 ### Step 3. Run Next.js in development mode
 
+First, install the required dependencies:
 ```bash
 npm install
+npm install --save-dev cross-env
+```
+
+If you're having trouble with the env - try a full refresh in the ..Wildmile/wildmile directory:
+```bash
+npm cache clean --force; del /s /q node_modules; del package-lock.json; npm install
+```
+
+Then start the development server:
+```bash
 npm run dev
-
-# or
-
-yarn install
-yarn dev
 ```
 
 Your app should be up and running on [http://localhost:3000](http://localhost:3000)! If it doesn't work, post on [GitHub discussions](https://github.com/vercel/next.js/discussions).

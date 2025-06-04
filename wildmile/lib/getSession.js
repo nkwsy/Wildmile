@@ -22,9 +22,7 @@ export async function getSession() {
   }
   if (session.passport.user) {
     const user = await findUserByEmail(session.passport.user);
-    console.log("User:", user);
     return user;
   }
-  console.log("Session:", session);
   return session;
 }
