@@ -2,6 +2,12 @@
 // import "@mantine/core/styles/global.css";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
+import "@mantine/notifications/styles.css";
+import "@mantine/charts/styles.css";
+
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
+
 // import dayjs from "dayjs";
 // import customParseFormat from "dayjs/plugin/customParseFormat";
 
@@ -15,6 +21,7 @@ import {
   createTheme,
   DirectionProvider,
 } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 
 import { HeaderNav } from "/components/nav_bar";
 // import Footer from "../components/footer";
@@ -39,7 +46,7 @@ const theme = createTheme({
 export default function RootLayout({ children }) {
   // dayjs.extend(customParseFormat);
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <ColorSchemeScript />
       </head>
@@ -49,8 +56,11 @@ export default function RootLayout({ children }) {
         {/* <Hydration /> */}
 
         <MantineProvider theme={theme}>
+          <Notifications />
           {/* <HeaderNav /> */}
           {children}
+          <SpeedInsights />
+          <Analytics />
         </MantineProvider>
       </body>
     </html>

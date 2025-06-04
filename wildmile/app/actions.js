@@ -48,14 +48,14 @@ export async function removeModules(formData) {
 }
 
 // To Load Modules
-export const LoadMods = () => {
+export async function LoadMods() {
   const pathname = usePathname();
   const searchParams = useSearchParams("");
   const mods = searchParams.get("");
   return fetch(`${pathname}/edit`)
     .then((response) => response.json())
     .catch((error) => console.error("Error:", error));
-};
+}
 
 // To Load Projects
 export async function getProject(projectName) {

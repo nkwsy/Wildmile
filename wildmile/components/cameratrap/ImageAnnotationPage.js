@@ -10,6 +10,9 @@ import {
   ActionIconGroup,
   Tooltip,
   ButtonGroup,
+  Grid,
+  GridCol,
+  ScrollArea,
 } from "@mantine/core";
 import { useImage } from "./ContextCamera";
 import { ImageAnnotation } from "./ImageAnnotation";
@@ -17,13 +20,21 @@ import { ImageFilterControls } from "./ImageFilterControls";
 import WildlifeSearch from "./WildlifeSearch";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 
-export const ImageAnnotationPage = () => {
+export const ImageAnnotationPage = ({ initialImageId }) => {
   const [currentImage, setCurrentImage] = useImage();
   const [deployments, setDeployments] = useState([]);
 
+  // In your component, use initialImageId to fetch and set the initial image
   useEffect(() => {
     fetchDeployments();
-  }, []);
+    if (initialImageId) {
+      // Fetch and set the specific image
+      fetchCamtrapImage({ selectedImageId: initialImageId });
+    } else {
+      // Your existing logic for getting the next image
+      fetchCamtrapImage();
+    }
+  }, [initialImageId]);
 
   const fetchDeployments = async () => {
     try {
@@ -91,23 +102,31 @@ export const ImageAnnotationPage = () => {
   };
 
   return (
-    <Group align="flex-start" spacing="xl">
-      <Paper shadow="xs" p="xl" style={{ flex: 1 }}>
-        <Stack spacing="md">
-          <ImageFilterControls
-            onApplyFilters={handleApplyFilters}
-            deployments={deployments}
-          />
-          <Group spacing="xs" position="center" mt="md">
+    // <Grid style={{ height: "calc(100vh - 60px)" }}>
+    <>
+      <Grid>
+        <GridCol
+          span={{ base: 12, md: 6, lg: 7, xl: 6 }}
+          style={{ height: "100%" }}
+        >
+          {/* <Paper
+            shadow="xs"
+            p="md"
+            style={{
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              // overflow: "hidden",
+            }}
+          > */}
+          <Group spacing="xs" position="center" mb="md">
             <ButtonGroup>
               <Tooltip label="Previous Image">
                 <Button
                   onClick={() => handleNavigateImage("previous")}
                   variant="default"
-                  // size="xl"
                   radius="md"
                   color="blue"
-                  // disabled={isSaving}
                 >
                   <IconArrowLeft />
                 </Button>
@@ -117,24 +136,37 @@ export const ImageAnnotationPage = () => {
                 <Button
                   onClick={() => handleNavigateImage("next")}
                   variant="default"
-                  // size="xl"
                   radius="md"
                   color="blue"
-                  // disabled={isSaving}
                 >
                   <IconArrowRight />
                 </Button>
               </Tooltip>
             </ButtonGroup>
+            <ImageFilterControls
+              onApplyFilters={handleApplyFilters}
+              deployments={deployments}
+            />
           </Group>
-          <ImageAnnotation fetchNextImage={fetchNextImage} />
-        </Stack>
-      </Paper>
 
-      <Stack spacing="xl" style={{ flex: 1 }}>
-        <WildlifeSearch />
-      </Stack>
-    </Group>
+          {/* <ScrollArea style={{ flex: 1 }} offsetScrollbars> */}
+          <ImageAnnotation fetchNextImage={fetchNextImage} />
+          {/* </ScrollArea> */}
+          {/* </Paper> */}
+        </GridCol>
+
+        <GridCol
+          span={{ base: 12, md: 6, lg: 5, xl: 6 }}
+          style={{ height: "100%" }}
+        >
+          <ScrollArea style={{ height: "100%" }} offsetScrollbars>
+            {/* <Stack spacing="md"> */}
+            <WildlifeSearch />
+            {/* </Stack> */}
+          </ScrollArea>
+        </GridCol>
+      </Grid>
+    </>
   );
 };
 

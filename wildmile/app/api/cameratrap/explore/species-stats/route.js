@@ -41,8 +41,12 @@ export async function GET() {
       // Sort by count descending
       { $sort: { count: -1 } },
     ]);
-
-    return NextResponse.json(stats);
+    const response = NextResponse.json(stats);
+    response.headers.set(
+      "Cache-Control",
+      "public, s-maxage=3600, stale-while-revalidate=3600"
+    );
+    return response;
   } catch (error) {
     console.error("Error fetching species stats:", error);
     return NextResponse.json(

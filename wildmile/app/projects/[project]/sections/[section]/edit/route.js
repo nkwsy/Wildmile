@@ -5,7 +5,8 @@ import Plant from "models/Plant";
 import mongoose from "mongoose";
 import dbConnect from "lib/db/setup";
 
-export async function GET(request, { params }) {
+export async function GET(request, props) {
+  const params = await props.params;
   await dbConnect();
   const project_name = params.project; // 'a', 'b', or 'c'
   const section_name = params.section; // '1', '2', or '3'

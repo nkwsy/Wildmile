@@ -1,5 +1,6 @@
 import React from "react";
 import { IdentificationProvider } from "components/cameratrap/ContextCamera";
+import { DeploymentMapProvider } from "components/cameratrap/deployments/DeploymentMapContext";
 import TaxaSearch, { WildlifeSidebar } from "components/cameratrap/TaxaSearch";
 import { Container } from "@mantine/core";
 const title = "Animal Identification";
@@ -17,7 +18,8 @@ export default async function Layout({ children }) {
   return (
     <Container maxwidth="95%" my="5rem">
       <IdentificationProvider>
-        {/* <TabGroup
+        <DeploymentMapProvider>
+          {/* <TabGroup
                   path="/context"
                   items={[
                     {
@@ -30,7 +32,8 @@ export default async function Layout({ children }) {
                   ]}
                 /> */}
 
-        <div>{children}</div>
+          <div>{children}</div>
+        </DeploymentMapProvider>
       </IdentificationProvider>
     </Container>
   );

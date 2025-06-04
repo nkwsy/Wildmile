@@ -133,9 +133,8 @@ export const CellGen = ({ x, y, cellWidth, cellHeight }) => {
   );
 };
 
-const ModuleGrid = ({moduleId}) => {
-
-{ width: cols, height: rows }
+const ModuleGrid = ({ moduleId }) => {
+  // { width: cols, height: rows }
   const gridRef = useRef(null);
   const stageRef = useRef();
   // const [stageHeight, setStageHeight] = useState(0);

@@ -1,0 +1,135 @@
+.mapContainer {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  border-radius: var(--mantine-radius-md);
+  overflow: hidden;
+}
+
+.map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.marker {
+  width: 25px;
+  height: 25px;
+  border: 2px solid white;
+  background-color: var(--mantine-color-blue-6);
+
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  /* transition: all 0.1s ease; */
+}
+
+.marker:hover {
+  transform: scale(1.1);
+}
+
+.active {
+  background-color: var(--mantine-color-green-6);
+}
+
+.active:hover {
+  background-color: var(--mantine-color-green-7);
+}
+
+.inactive {
+  background-color: var(--mantine-color-gray-6);
+}
+
+.inactive:hover {
+  background-color: var(--mantine-color-gray-7);
+}
+
+.popup {
+  padding: 5px;
+}
+
+.deploymentInfo {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.deploymentInfo ul {
+  margin: 5px 0;
+  padding-left: 20px;
+}
+
+.instructions {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: white;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+.legend {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background-color: white;
+  padding: 10px;
+  border-radius: var(--mantine-radius-sm);
+  box-shadow: var(--mantine-shadow-sm);
+  z-index: 1;
+}
+
+.legendMarker {
+  width: 15px;
+  height: 15px;
+  border: 1px solid white;
+  border-radius: 50%;
+}
+
+.styleSwitch {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1;
+  background-color: white;
+  border-radius: var(--mantine-radius-sm);
+  box-shadow: var(--mantine-shadow-sm);
+}
+
+.markerLabel {
+  background: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  opacity: 0.3;
+  pointer-events: none;
+  white-space: nowrap;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: center;
+  z-index: 1000;
+}
+
+.marker:hover + .markerLabel {
+  opacity: 1;
+}
+
+.markerLabel:hover {
+  opacity: 1;
+}
+
+.leaderLine {
+  position: absolute;
+  pointer-events: none;
+  border-left: 2px solid #666;
+  width: 0;
+  left: 0;
+  top: 0;
+  transform-origin: top;
+}

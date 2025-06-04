@@ -9,6 +9,10 @@ const MediaSchema = new mongoose.Schema(
       unique: true,
     },
     imageHash: String, // hash of the image without exif data
+    deploymentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Deployment",
+    },
     timestamp: {
       type: Date,
       required: true,
@@ -31,7 +35,10 @@ const MediaSchema = new mongoose.Schema(
       },
     ],
     exifData: mongoose.Schema.Types.Mixed,
-    favorite: Boolean,
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
     favoriteCount: {
       type: Number,
       default: 0,
@@ -98,6 +105,18 @@ const MediaSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    needsReview: {
+      type: Boolean,
+      default: false,
+    },
+    flagged: {
+      type: Boolean,
+      default: false,
+    },
+    removed: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

@@ -83,12 +83,13 @@ const TaxaSearch = ({ initialQuery = "" }) => {
       {results.length > 0 ? (
         <SimpleGrid
           mt={40}
-          cols={{ base: 2, sm: 2, lg: 5, xl: 4 }}
-          breakpoints={[
-            { maxWidth: "62rem", cols: 3, spacing: "md" },
-            { maxWidth: "48rem", cols: 2, spacing: "sm" },
-            { maxWidth: "36rem", cols: 1, spacing: "sm" },
-          ]}
+          type="container"
+          cols={{ base: 2, sm: 2, lg: 3, xl: 4 }}
+          // breakpoints={[
+          //   { maxWidth: "62rem", cols: 3, spacing: "md" },
+          //   { maxWidth: "48rem", cols: 2, spacing: "sm" },
+          //   { maxWidth: "36rem", cols: 1, spacing: "sm" },
+          // ]}
         >
           <SpeciesCard results={results} />
         </SimpleGrid>

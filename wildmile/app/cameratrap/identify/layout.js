@@ -21,8 +21,9 @@ const title = "Animal Identification";
 export default async function Layout({ children }) {
   //   const categories = await getCategories();
   return (
-    <IdentificationProvider>
-      {/* <TabGroup
+    <>
+      <IdentificationProvider>
+        {/* <TabGroup
                   path="/context"
                   items={[
                     {
@@ -35,8 +36,9 @@ export default async function Layout({ children }) {
                   ]}
                 /> */}
 
-      {/* <TaxaSearch /> */}
-      <div>{children}</div>
-    </IdentificationProvider>
+        {/* <TaxaSearch /> */}
+        <div>{children}</div>
+      </IdentificationProvider>
+    </>
   );
 }

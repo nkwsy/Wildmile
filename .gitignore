@@ -34,8 +34,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
+# 
 # IDE
 .idea
 .nyc_output
 .vscode/launch.json
+
+# package-lock.json
+package-lock.json
+*/package-lock.json
+**/package-lock.json
+

@@ -43,7 +43,8 @@ export async function getPlant(id) {
   return result;
 }
 
-export default async function Page({ params }) {
+export default async function Page(props) {
+  const params = await props.params;
   console.log("Params:", params.id);
 
   const plant = await getPlant(params.id);

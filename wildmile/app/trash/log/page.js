@@ -24,7 +24,7 @@ import { cookies, headers } from "next/headers";
 // };
 
 export default async function TrashLogPage() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get("session");
   const session = await getSession({ headers });
   // if (!session) {
