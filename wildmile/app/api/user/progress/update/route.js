@@ -21,33 +21,38 @@ export async function GET(request) {
 
 export async function POST(request) {
   await dbConnect();
-  const { userId, stats } = await request.json();
+  // userId is expected from the request body.
+  // The `stats` field from the body will be ignored as updateUserProgress triggers a full recalculation.
+  const { userId } = await request.json();
+
+  if (!userId) {
+    return NextResponse.json({ error: "userId is required" }, { status: 400 });
+  }
 
   try {
-    let progress = await UserProgress.findOne({ user: userId });
-    if (!progress) {
-      progress = new UserProgress({ user: userId });
+    // Call the refactored updateUserProgress function
+    // This function now internally calls updateUserStats, which handles all calculations,
+    // streak updates, achievement checks, and saving UserProgress.
+    // It returns { success, newAchievements, progressData, error }
+    const result = await updateUserProgress(userId);
+
+    if (result.success) {
+      return NextResponse.json({
+        progress: result.progressData, // This contains the comprehensive progress details
+        newAchievements: result.newAchievements,
+      });
+    } else {
+      // If updateUserProgress failed, return an error response
+      return NextResponse.json(
+        { error: result.error || "Failed to update progress" },
+        { status: 500 }
+      );
     }
-
-    // Update stats
-    Object.assign(progress.stats, stats);
-
-    // Update streak
-    progress.updateStreak();
-
-    // Check for new achievements
-    const newAchievements = await progress.checkAchievements();
-
-    await progress.save();
-
-    return NextResponse.json({
-      progress,
-      newAchievements,
-    });
   } catch (error) {
-    console.error("Error updating progress:", error);
+    // Catch any unexpected errors during the process
+    console.error("Error in POST /api/user/progress/update:", error);
     return NextResponse.json(
-      { error: "Failed to update progress" },
+      { error: "An unexpected error occurred." },
       { status: 500 }
     );
   }

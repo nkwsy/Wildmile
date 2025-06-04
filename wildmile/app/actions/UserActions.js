@@ -6,6 +6,7 @@ import dbConnect from "lib/db/setup";
 import User from "models/User";
 import UserProgress from "models/users/UserProgress";
 import Observation from "models/cameratrap/Observation";
+import PlantObservation from "models/plant/PlantObservation";
 import TrashLog from "models/Trash";
 import IndividualTrashItem from "models/IndividualTrashItem";
 import TrashItem from "models/TrashItem";
@@ -91,55 +92,64 @@ async function updateUserStats(userId) {
       creator: user._id,
     }).sort({ createdAt: 1 });
 
+    // Get user's plant observations sorted by date
+    const plantObservations = await PlantObservation.find({
+      observedBy: user._id,
+    }).sort({ createdAt: 1 });
+
+    // Combine and sort action dates
+    const actionDates = [
+      ...observations.map(obs => obs.createdAt),
+      ...plantObservations.map(plantObs => plantObs.createdAt),
+    ].sort((a, b) => a - b);
+
     // Calculate streaks
     let currentStreak = 0;
     let longestStreak = 0;
     let lastLoginDate = null;
 
-    if (observations.length > 0) {
-      // Convert observation dates to local date strings (without time)
-      const observationDates = observations.map((obs) =>
-        new Date(obs.createdAt).toLocaleDateString()
-      );
+    if (actionDates.length > 0) {
+      // Convert action dates to local date strings (without time)
+      const uniqueDates = [...new Set(actionDates.map(date => new Date(date).toLocaleDateString()))];
+      uniqueDates.sort((a,b) => new Date(a) - new Date(b)); // Ensure chronological sort for dates
 
-      // Get unique dates
-      const uniqueDates = [...new Set(observationDates)];
-      uniqueDates.sort();
+      if (uniqueDates.length > 0) {
+        currentStreak = 1;
+        longestStreak = 1; // Initialize longestStreak to 1 if there's at least one action
+        let tempStreak = 1;
 
-      // Calculate streaks
-      currentStreak = 1;
-      let tempStreak = 1;
+        for (let i = 1; i < uniqueDates.length; i++) {
+          const prevDate = new Date(uniqueDates[i - 1]);
+          const currDate = new Date(uniqueDates[i]);
 
-      for (let i = 1; i < uniqueDates.length; i++) {
-        const prevDate = new Date(uniqueDates[i - 1]);
-        const currDate = new Date(uniqueDates[i]);
+          const dayDiff = Math.floor(
+            (currDate - prevDate) / (1000 * 60 * 60 * 24)
+          );
 
-        const dayDiff = Math.floor(
-          (currDate - prevDate) / (1000 * 60 * 60 * 24)
-        );
+          if (dayDiff === 1) {
+            tempStreak++;
+          } else if (dayDiff > 1) { // Reset if dates are not consecutive
+            tempStreak = 1;
+          }
+          // If dayDiff is 0, it means same day, streak continues, tempStreak doesn't reset or increment here.
 
-        if (dayDiff === 1) {
-          tempStreak++;
           currentStreak = tempStreak;
           longestStreak = Math.max(longestStreak, currentStreak);
-        } else {
-          tempStreak = 1;
-          currentStreak = 1;
         }
+
+        // Check if current streak is still active
+        const lastDate = new Date(uniqueDates[uniqueDates.length - 1]);
+        const today = new Date(new Date().toLocaleDateString()); // Use today's date without time
+        const daysSinceLastAction = Math.floor(
+          (today - lastDate) / (1000 * 60 * 60 * 24)
+        );
+
+        if (daysSinceLastAction > 1) {
+          currentStreak = 0;
+        }
+         // If daysSinceLastAction is 0 or 1, currentStreak remains as calculated
       }
-
-      // Check if current streak is still active
-      const lastDate = new Date(uniqueDates[uniqueDates.length - 1]);
-      const today = new Date();
-      const daysSinceLastObservation = Math.floor(
-        (today - lastDate) / (1000 * 60 * 60 * 24)
-      );
-
-      if (daysSinceLastObservation > 1) {
-        currentStreak = 0;
-      }
-
-      lastLoginDate = new Date(uniqueDates[uniqueDates.length - 1]);
+      lastLoginDate = new Date(actionDates[actionDates.length - 1]); // Use the latest timestamp from original actionDates
     }
 
     // Initialize stats object
@@ -462,50 +472,71 @@ export async function updateUserProgress(userId, stats) {
   await dbConnect();
 
   try {
-    let progress = await UserProgress.findOne({ user: userId }).populate({
-      path: "achievements.achievement",
-      select: "name description icon badge points",
-    });
+    // 1. Capture the state of achievements *before* calling updateUserStats
+    let previousAchievements = [];
+    const progressBeforeUpdate = await UserProgress.findOne({ user: userId })
+      .select("achievements.achievement achievements.earnedAt") // Select only what's needed
+      .populate({
+        path: "achievements.achievement",
+        select: "_id", // Only need the ID for previousAchievements map
+      });
 
-    if (!progress) {
-      progress = new UserProgress({ user: userId });
+    if (progressBeforeUpdate && progressBeforeUpdate.achievements) {
+      previousAchievements = progressBeforeUpdate.achievements
+        .filter((a) => a.earnedAt && a.achievement) // Ensure achievement is populated
+        .map((a) => a.achievement._id.toString());
     }
 
-    // Store previous achievements for comparison
-    const previousAchievements = progress.achievements
-      .filter((a) => a.earnedAt)
-      .map((a) => a.achievement._id.toString());
+    // 2. Call updateUserStats. This function handles all calculations,
+    //    streak updates, achievement checks, saving UserProgress, and
+    //    returns a comprehensive object with the updated state,
+    //    including populated achievements.
+    const updatedProgressData = await updateUserStats(userId);
 
-    // Update stats and check achievements
-    await updateUserStats(userId);
-    await progress.updateStreak();
-    await progress.checkAchievements();
-    await progress.save();
+    if (!updatedProgressData) {
+      // Handle case where updateUserStats might fail or return null (e.g., user not found)
+      console.error(`updateUserStats returned no data for userId: ${userId}`);
+      return { success: false, error: "Failed to update user stats." };
+    }
 
-    // Get newly earned achievements
-    const newlyEarnedAchievements = progress.achievements
-      .filter(
-        (a) =>
-          a.earnedAt &&
-          !previousAchievements.includes(a.achievement._id.toString())
-      )
-      .map((a) => ({
-        id: a.achievement._id,
-        name: a.achievement.name,
-        description: a.achievement.description,
-        icon: a.achievement.icon,
-        badge: a.achievement.badge,
-        points: a.achievement.points,
-        earnedAt: a.earnedAt,
-      }));
+    // 3. Redundant operations (re-fetch, checkAchievements, save) are removed
+    //    as updateUserStats now handles them.
+
+    // 4. Calculate newlyEarnedAchievements using data from updatedProgressData.
+    //    The `updatedProgressData.achievements` array is already populated and formatted
+    //    by updateUserStats. Each achievement object in it has an `id` and `earnedAt`.
+    let newlyEarnedAchievements = [];
+    if (updatedProgressData.achievements) {
+      newlyEarnedAchievements = updatedProgressData.achievements
+        .filter(
+          (ach) => // `ach` is an achievement object from updatedProgressData.achievements
+            ach.earnedAt &&
+            !previousAchievements.includes(ach.id.toString()) // ach.id is already the stringified _id
+        )
+        .map((ach) => ({ // Map to the structure expected by the caller
+          id: ach.id,
+          name: ach.name,
+          description: ach.description,
+          icon: ach.icon,
+          badge: ach.badge,
+          points: ach.points,
+          earnedAt: ach.earnedAt,
+        }));
+    }
 
     // Revalidate relevant cache tags
     revalidateTag("user-progress");
     revalidateTag("achievements");
 
-    return { success: true, newAchievements: newlyEarnedAchievements };
+    // Return the comprehensive data from updateUserStats along with newAchievements
+    return {
+      success: true,
+      newAchievements: newlyEarnedAchievements,
+      progressData: updatedProgressData
+    };
   } catch (error) {
     console.error("Error updating progress:", error);
-    return { success: false, error: "Failed to update progress" };
+    // Ensure the error object structure is consistent if needed by callers
+    return { success: false, error: error.message || "Failed to update progress" };
   }
 }

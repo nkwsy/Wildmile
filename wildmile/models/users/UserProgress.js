@@ -71,7 +71,7 @@ const UserProgressSchema = new mongoose.Schema(
     streaks: {
       current: { type: Number, default: 0 },
       longest: { type: Number, default: 0 },
-      lastLoginDate: Date,
+      lastActionDate: Date, // Renamed from lastLoginDate
     },
   },
   {
@@ -381,32 +381,6 @@ UserProgressSchema.methods.hasAchievement = function (achievementId) {
       a.achievement.toString() === achievementId.toString() &&
       a.progress === 100
   );
-};
-
-// Method to update streak
-UserProgressSchema.methods.updateStreak = function () {
-  const today = new Date();
-  const lastLogin = this.streaks.lastLoginDate;
-
-  if (!lastLogin) {
-    this.streaks.current = 1;
-  } else {
-    const daysSinceLastLogin = Math.floor(
-      (today - lastLogin) / (1000 * 60 * 60 * 24)
-    );
-
-    if (daysSinceLastLogin === 1) {
-      this.streaks.current += 1;
-      this.streaks.longest = Math.max(
-        this.streaks.current,
-        this.streaks.longest
-      );
-    } else if (daysSinceLastLogin > 1) {
-      this.streaks.current = 1;
-    }
-  }
-
-  this.streaks.lastLoginDate = today;
 };
 
 // Add this before creating the model
