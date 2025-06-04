@@ -224,12 +224,26 @@ export async function getIndividualPlants() {
 }
 
 export async function getRandomPlant() {
-  await dbConnect();
-  const result = await Plant.aggregate([{ $sample: { size: 1 } }]);
-  result[0]._id = result[0]._id.toString();
-  console.log("Random Plant:", result[0]);
-  // const randomPlant = JSON.stringify(result[0])
-  return result[0];
+  try {
+    const conn = await dbConnect();
+    // Wait a small amount of time to ensure connection is ready
+    if (!conn?.client?.connection?.readyState) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+
+    const result = await Plant.aggregate([{ $sample: { size: 1 } }]);
+    if (!result || result.length === 0) {
+      console.log("No plants found");
+      return null;
+    }
+
+    result[0]._id = result[0]._id.toString();
+    console.log("Random Plant:", result[0]);
+    return result[0];
+  } catch (error) {
+    console.error("Error getting random plant:", error);
+    throw error;
+  }
 }
 // Create Plants
 export async function savePlantInputs(PlantList) {

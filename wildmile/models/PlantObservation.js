@@ -16,5 +16,6 @@ const plantObservationSchema = Schema({
   flag: Boolean
 
 }, { timestamps: true })
-const PlantObservation = mongoose.model('plantObservation', plantObservationSchema)
-module.exports = PlantObservation
+
+const PlantObservation = mongoose.models.plantObservation || mongoose.model('plantObservation', plantObservationSchema)
+export default PlantObservation
