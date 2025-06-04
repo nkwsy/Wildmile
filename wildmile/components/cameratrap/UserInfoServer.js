@@ -76,12 +76,12 @@ export async function UserInfoServer({ user, stats }) {
                 ))}
               </Group>
               {stats.totalPoints && (
-                <Group spacing="xs" mt="xs">
-                  <IconTrophy size={16} style={{ color: 'var(--mantine-color-dimmed)' }} />
-                  <Text size="sm" color="dimmed" style={{ lineHeight: 1 }}>
+                <Text size="sm" color="dimmed" mt="xs">
+                  <Group spacing="xs">
+                    <IconTrophy size={16} />
                     {stats.totalPoints.toLocaleString()} points
-                  </Text>
-                </Group>
+                  </Group>
+                </Text>
               )}
             </div>
           </Group>
