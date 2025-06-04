@@ -6,7 +6,7 @@ import dbConnect from "lib/db/setup";
 import User from "models/User";
 import UserProgress from "models/users/UserProgress";
 import Observation from "models/cameratrap/Observation";
-import PlantObservation from "models/plant/PlantObservation";
+import PlantObservation from "models/PlantObservation"; // Corrected import path
 import TrashLog from "models/Trash";
 import IndividualTrashItem from "models/IndividualTrashItem";
 import TrashItem from "models/TrashItem";
