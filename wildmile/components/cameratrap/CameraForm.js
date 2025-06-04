@@ -16,6 +16,7 @@ import {
   TextInput,
   Box,
   Grid,
+  Autocomplete,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 
@@ -45,38 +46,110 @@ export default function CameraForm(props) {
     },
   });
 
+  const [manufacturers, setManufacturers] = useState([]);
+  const [modelOptions, setModelOptions] = useState([]);
+
+  // Fetch camera options on component mount
   useEffect(() => {
-    if (params.cameraId) {
-      if (params.cameraId === "new") {
+    async function fetchCameraOptions() {
+      try {
+        const response = await fetch("/api/cameratrap/camera-options");
+        if (!response.ok) throw new Error("Failed to fetch camera options");
+        const data = await response.json();
+
+        setManufacturers(data.manufacturers);
+        setModelOptions(data.models);
+      } catch (error) {
+        console.error("Error fetching camera options:", error);
+      }
+    }
+
+    fetchCameraOptions();
+  }, []);
+
+  // Filter model options based on selected manufacturer
+  const getModelsByManufacturer = (manufacturer) => {
+    return modelOptions
+      .filter((m) => m.make === manufacturer)
+      .map((m) => m.model);
+  };
+
+  useEffect(() => {
+    async function fetchCameraData() {
+      if (!params.cameraId || params.cameraId === "new") {
         return;
       }
-      const fetchData = async () => {
-        const project_result = await getCamera(params.project);
-        const result = JSON.parse(project_result);
-        // if (result && result.data) {
-        console.log("Data loaded:", result);
-        form.initialize(result);
-        form.setValues({
-          // ...form.values, // Default values for the form
-          ...result, // Data fetched from the server
-        });
-        // } else {
-        //   console.error("Failed to fetch data or data is empty:", result);
-        // }
-      };
 
-      fetchData();
+      try {
+        const cameraData = await getCamera(params.cameraId);
+        const result = JSON.parse(cameraData);
+        console.log("Camera data loaded:", result);
+
+        form.setValues({
+          name: result.name || "",
+          model: result.model || "",
+          manufacturer: result.manufacturer || "",
+          serial: result.serial || "",
+          connectivity: result.connectivity || "",
+          purchaseDate: result.purchaseDate
+            ? new Date(result.purchaseDate)
+            : null,
+          notes: result.notes || "",
+        });
+      } catch (error) {
+        console.error("Error fetching camera data:", error);
+      }
     }
-  }, [params]); // Ensure to depend on params.project
+
+    fetchCameraData();
+  }, [params.cameraId]); // Only depend on cameraId
 
   async function submitForm() {
-    // loading(true);
-    toggle();
-    console.log("Form state on submit:", form.values);
-    const result = await newEditCamera(form.values);
-    console.log("Result:", result);
-    if (result.success === true) {
-      router.push(`/cameratrap/camera/${result.cameraId}`);
+    toggle(); // Start loading
+    try {
+      // Check if name is unique (only for new cameras)
+      if (!params.cameraId || params.cameraId === "new") {
+        const checkResponse = await fetch(
+          `/api/cameratrap/check-name?name=${encodeURIComponent(
+            form.values.name
+          )}`
+        );
+        const { exists } = await checkResponse.json();
+
+        if (exists) {
+          toggle(); // Stop loading
+          form.setFieldError("name", "A camera with this name already exists");
+          return;
+        }
+      }
+
+      // Prepare the submission data
+      const submissionData = {
+        ...form.values,
+        _id: params.cameraId !== "new" ? params.cameraId : undefined,
+      };
+
+      // Submit the data
+      const response = await fetch("/api/cameratrap/camera", {
+        method: params.cameraId !== "new" ? "PUT" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(submissionData),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to save camera");
+      }
+
+      const result = await response.json();
+      router.push("/cameratrap/camera");
+    } catch (error) {
+      console.error("Error saving camera:", error);
+      // You might want to show an error message to the user here
+    } finally {
+      toggle(); // Stop loading
     }
   }
   const initialState = {
@@ -103,14 +176,25 @@ export default function CameraForm(props) {
         <Grid>
           <Grid.Col span={4}>
             <TextInput label="UR ID" {...form.getInputProps("name")} />
-            <TextInput
-              label="Model"
-              key="model"
-              {...form.getInputProps("model")}
-            />
-            <Textarea
+            <Autocomplete
               label="Manufacturer"
+              data={manufacturers}
               {...form.getInputProps("manufacturer")}
+              onChange={(value) => {
+                form.setFieldValue("manufacturer", value);
+                // Clear model when manufacturer changes
+                form.setFieldValue("model", "");
+              }}
+            />
+            <Autocomplete
+              label="Model"
+              data={
+                form.values.manufacturer
+                  ? getModelsByManufacturer(form.values.manufacturer)
+                  : []
+              }
+              {...form.getInputProps("model")}
+              disabled={!form.values.manufacturer}
             />
             <TextInput
               label="Serial Number"

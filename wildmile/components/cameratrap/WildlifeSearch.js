@@ -32,7 +32,6 @@ const WildlifeSearch = () => {
         <TaxaSearch initialQuery={selectedSpecies} />
       </Collapse>
       <Box mt="md" style={{ height: "80vh", overflowY: "auto" }}>
-        <RecentSpecies onSpeciesSelect={handleSpeciesSelect} />
         <PredefinedSpeciesSidebar onSpeciesSelect={handleSpeciesSelect} />
       </Box>
     </Paper>

@@ -1,0 +1,45 @@
+.selectionContainer {
+  border: 1px solid var(--mantine-color-gray-3);
+  border-radius: var(--mantine-radius-md);
+  padding: var(--mantine-spacing-xs);
+  margin-bottom: var(--mantine-spacing-xs);
+  background-color: var(--mantine-color-white);
+  transition: all 0.2s ease;
+}
+
+.selectionContainer:hover {
+  border-color: var(--mantine-color-blue-5);
+  background-color: var(--mantine-color-gray-0);
+}
+
+.selectionContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--mantine-spacing-xs);
+  width: 100%;
+}
+
+.speciesName {
+  font-weight: 600;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-xs);
+  flex-shrink: 0;
+}
+
+.removeButton {
+  transition: all 0.2s ease;
+}
+
+.removeButton:hover {
+  background-color: var(--mantine-color-red-1);
+  color: var(--mantine-color-red-7);
+}

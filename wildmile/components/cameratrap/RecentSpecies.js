@@ -34,7 +34,8 @@ const RecentSpecies = ({ onSpeciesSelect }) => {
   const fetchSpeciesDetails = async (species) => {
     try {
       const response = await fetch(
-        `/api/species?species=${encodeURIComponent(species)}`
+        `/api/species?species=${encodeURIComponent(species)}`,
+        { next: { tags: ["species"] } }
       );
       const data = await response.json();
       return data;

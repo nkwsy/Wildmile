@@ -456,7 +456,7 @@ export const ModMapWrapper = ({ children }) => {
 /////
 ///// CanvasBase
 /////   This is the main component for the canvas, it calls the CanvasComponent from another file which should be rendered w/o server side rendering
-export const CanvasBase = ({ children, width, height }) => {
+export function CanvasBase({ children, width, height }) {
   const {
     selectedModule,
     setSelectedModule,
@@ -638,7 +638,7 @@ export const CanvasBase = ({ children, width, height }) => {
       </CanvasContext.Provider>
     </>
   );
-};
+}
 
 export async function BaseGrid({ children, ...props }) {
   const width = props.width;

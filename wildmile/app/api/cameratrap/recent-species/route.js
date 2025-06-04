@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import Observation from "models/cameratrap/Observation";
+import Species from "models/Species";
 
 // Force dynamic rendering and disable caching
 export const dynamic = "force-dynamic";
@@ -45,11 +46,43 @@ export async function GET() {
       // Sort by most recent first
       { $sort: { lastSeen: -1 } },
 
-      // Get top 6 unique species
-      { $limit: 6 },
+      // Get top 12 unique species
+      { $limit: 12 },
     ]);
 
-    return NextResponse.json(recentSpecies, {
+    // Fetch full species details for each recent species
+    const speciesDetails = await Promise.all(
+      recentSpecies.map(async (recent) => {
+        const species = await Species.findOne({
+          name: new RegExp(recent.species, "i"),
+        });
+
+        if (!species) {
+          try {
+            // Try to fetch from iNaturalist if not in our database
+            const fetchedSpecies = await Species.findOrFetchByName(
+              recent.species
+            );
+            if (fetchedSpecies) {
+              return fetchedSpecies;
+            }
+          } catch (error) {
+            console.warn(
+              `Could not fetch species details for ${recent.species}:`,
+              error
+            );
+            return null;
+          }
+        } else {
+          return species;
+        }
+      })
+    );
+
+    // Filter out any null results and format response
+    const formattedResults = speciesDetails.filter(Boolean);
+
+    return NextResponse.json(formattedResults, {
       headers: {
         "Cache-Control": "no-store, no-cache, must-revalidate",
         Pragma: "no-cache",

@@ -15,11 +15,16 @@ import {
   Center,
   rem,
 } from "@mantine/core";
-import { IconLogout, IconSettings, IconChevronDown } from "@tabler/icons-react";
+import {
+  IconLogout,
+  IconSettings,
+  IconChevronDown,
+  IconBriefcase,
+} from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useUser } from "../lib/hooks";
-// import Router from "next/navigation";
+import { usePathname } from "next/navigation";
 import cx from "clsx";
 import classes from "styles/nav.module.css";
 import { useState } from "react";
@@ -71,8 +76,8 @@ export function HeaderNav({ children }) {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
-  // const { classes, theme, cx } = useStyles()
   const { user, loading, mutate } = useUser();
+  const pathname = usePathname();
 
   let photoSrc = "https://api.multiavatar.com/noname.png";
 
@@ -120,6 +125,10 @@ export function HeaderNav({ children }) {
       </Link>
     );
   });
+
+  const getLoginUrl = () => {
+    return `/login?callbackUrl=${encodeURIComponent(pathname)}`;
+  };
 
   async function handleLogout() {
     await fetch("/api/logout");
@@ -210,6 +219,15 @@ export function HeaderNav({ children }) {
                         Account settings
                       </Menu.Item>
                     </Link>
+                    {user.roles && user.roles.length > 0 && (
+                      <Link href="/admin">
+                        <Menu.Item
+                          icon={<IconBriefcase size="0.9rem" stroke={1.5} />}
+                        >
+                          Admin
+                        </Menu.Item>
+                      </Link>
+                    )}
                     <Menu.Item
                       icon={<IconLogout size="0.9rem" stroke={1.5} />}
                       onClick={handleLogout}
@@ -220,7 +238,7 @@ export function HeaderNav({ children }) {
                 </Menu>
               ) : (
                 <>
-                  <Link href="/login">
+                  <Link href={getLoginUrl()}>
                     <Button variant="default">Log in</Button>
                   </Link>
                   <Link href="/signup">
@@ -254,8 +272,14 @@ export function HeaderNav({ children }) {
 
             <Divider my="sm" color={"dark"} />
             <Group position="center" grow pb="xl" px="md">
-              <Button variant="default">Log in</Button>
-              <Button>Sign up</Button>
+              <Link href={getLoginUrl()}>
+                <Button variant="default" fullWidth>
+                  Log in
+                </Button>
+              </Link>
+              <Link href="/signup">
+                <Button fullWidth>Sign up</Button>
+              </Link>
             </Group>
           </ScrollArea>
         </Drawer>

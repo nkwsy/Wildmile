@@ -1,0 +1,43 @@
+.sidebar {
+  width: 250px;
+  height: 100%;
+  border-right: 1px solid var(--mantine-color-gray-3);
+  background-color: var(--mantine-color-gray-0);
+  display: flex;
+  flex-direction: column;
+}
+
+.locationList {
+  flex: 1;
+  max-height: calc(100vh - 140px);
+}
+
+.locationCard {
+  padding: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+  transition: background-color 0.2s ease;
+}
+
+.locationCard:hover {
+  background-color: var(--mantine-color-gray-1);
+}
+
+.selected {
+  border-left: 4px solid var(--mantine-color-blue-6);
+  background-color: var(--mantine-color-blue-0);
+}
+
+.activeIndicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--mantine-color-green-6);
+}
+
+.inactiveIndicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--mantine-color-gray-5);
+}

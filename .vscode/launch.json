@@ -28,10 +28,11 @@
     },
     {
       "name": "Next.js: debug full stack",
-      "type": "node-terminal",
+      "type": "node",
       "request": "launch",
+      "program": "${workspaceFolder}/wildmile/node_modules/.bin/next",
       "cwd": "${workspaceFolder}/wildmile",
-      "command": "npm run dev",
+      "runtimeArgs": ["--inspect"],
       "skipFiles": ["<node_internals>/**"],
       "sourceMaps": true,
 

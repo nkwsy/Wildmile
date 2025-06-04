@@ -1,3 +1,4 @@
+"use client";
 import {
   SimpleGrid,
   Text,
@@ -25,30 +26,45 @@ import {
   IconUsers,
   IconBackhoe,
   IconCameraBolt,
+  IconMapPin,
   IconCameraDollar,
+  IconHomePlus,
 } from "@tabler/icons-react";
-
+import Tabs from "/components/Tabs";
 import AllDeployments, { DeploymentCards } from "./AllDeployments";
 export default function Page() {
-  const cards = [
+  const defaultTabs = [
     {
-      icon: IconCameraDollar,
-      title: "Camera Traps",
-      href: "/cameratrap",
-      description: "WM Camera Trap Data",
+      value: "deployments",
+      label: "All Deployments",
+      icon: IconListDetails,
+      href: "/cameratrap/deployment",
     },
     {
-      icon: IconBackhoe,
-      title: "New Deployment",
-      href: "/cameratrap/deployment/edit/new",
-      description: "Create a new deployment",
+      value: "new",
+      label: "New Deployment",
+      icon: IconHomePlus,
+      href: "/cameratrap/deployment/new",
+    },
+    {
+      value: "locations",
+      label: "Locations",
+      icon: IconMapPin,
+      href: "/cameratrap/locations",
+    },
+    {
+      value: "cameras",
+      label: "Cameras",
+      icon: IconCameraBolt,
+      href: "/cameratrap/camera",
     },
   ];
   return (
     <div>
       <h1>Camera Deployments</h1>
-      <IconCardGrid cards={cards} />
-      <AllDeployments />
+      <Tabs tabs={defaultTabs} activeTab="deployments">
+        <AllDeployments />
+      </Tabs>
     </div>
   );
 }

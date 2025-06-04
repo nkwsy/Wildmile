@@ -3,19 +3,20 @@
 import { getSession } from "lib/getSession";
 import { cookies, headers } from "next/headers";
 import { AlertLogin } from "components/alert";
-import DeploymentForm from "components/cameratrap/DeploymentForm";
+import DeploymentDash from "components/cameratrap/deployments/DeploymentDash";
 
 export const metadata = {
   title: "Camera Trap Edit Deployment",
   description: "Edit a deployment of a camera trap.",
 };
-export default async function Page({ params }) {
+export default async function Page(props) {
+  const params = await props.params;
   const session = await getSession({ headers });
   if (!session) return <AlertLogin />;
 
   if (params.deploymentId) {
     // if (params.deploymentId === "new") {
-    return <DeploymentForm />;
+    return <DeploymentDash deploymentId={params.deploymentId} />;
     console.log("New Deployment");
     // }
 

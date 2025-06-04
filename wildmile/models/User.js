@@ -20,6 +20,23 @@ const UserSchema = new mongoose.Schema(
       phone: String,
       picture: Buffer,
     },
+
+    roles: [
+      {
+        type: String,
+        enum: [
+          "User",
+          "SuperAdmin",
+          "Admin",
+          "Ranger",
+          "CameraManager",
+          "CameraAdmin",
+          "PlantManager",
+          "PlantAdmin",
+        ],
+        default: "User",
+      },
+    ],
   },
   { timestamps: true }
 );

@@ -17,11 +17,13 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useUser } from "lib/hooks";
 import { useRouter } from "next/navigation";
-
+import { useSearchParams } from "next/navigation";
 export default function Login() {
   const { user, loading, mutate } = useUser();
   const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const form = useForm({
     initialValues: {
@@ -54,7 +56,7 @@ export default function Login() {
 
   useEffect(() => {
     // redirect to home if user is authenticated
-    if (user) router.push("/");
+    if (user) router.push(callbackUrl);
   }, [user]);
 
   return (
