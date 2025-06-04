@@ -52,6 +52,11 @@ npm install
 npm install --save-dev cross-env
 ```
 
+If you're having trouble with the env - try a full refresh in the ..Wildmile/wildmile directory:
+```bash
+npm cache clean --force; del /s /q node_modules; del package-lock.json; npm install
+```
+
 Then start the development server:
 ```bash
 npm run dev
