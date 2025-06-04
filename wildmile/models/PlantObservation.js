@@ -17,5 +17,5 @@ const plantObservationSchema = Schema({
 
 }, { timestamps: true })
 
-const PlantObservation = mongoose.models.plantObservation || mongoose.model('plantObservation', plantObservationSchema)
-export default PlantObservation
+const PlantObservation = mongoose.model('plantObservation', plantObservationSchema)
+module.exports = PlantObservation
