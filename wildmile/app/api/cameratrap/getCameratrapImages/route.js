@@ -41,9 +41,24 @@ export async function GET(request) {
 
   const session = await getSession({ headers });
   let query = {};
-  query['aiResults.confHuman'] = { $lte: 0.50 };
   let sortQuery = {};
   let timeQuery = [];
+
+  let aiFiltersCriteria = {};
+
+  // Default filter for confHuman
+  aiFiltersCriteria.confHuman = { $lte: 0.50 };
+
+  // Conditional filter for confBlank
+  if (maxConfBlank && !isNaN(parseFloat(maxConfBlank))) {
+    aiFiltersCriteria.confBlank = { $lte: parseFloat(maxConfBlank) };
+  }
+
+  // Apply the AI filters if there are any criteria set
+  // Given confHuman is always set, this will always apply.
+  if (Object.keys(aiFiltersCriteria).length > 0) {
+    query.aiResults = { $elemMatch: aiFiltersCriteria };
+  }
 
   // Sorting methods
   if (sort) {
@@ -169,10 +184,6 @@ export async function GET(request) {
 
   if (reviewed === "true") {
     query.reviewCount = { $gt: 0 };
-  }
-
-  if (maxConfBlank) {
-    query['aiResults.confBlank'] = { $lte: parseFloat(maxConfBlank) };
   }
 
   try {
