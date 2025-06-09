@@ -9,7 +9,7 @@ import {
   Switch,
   ActionIcon,
   Drawer,
-  Text, // Added
+  Text,
   Slider, // Added
 } from "@mantine/core";
 import {
@@ -235,7 +235,7 @@ export function ImageFilterControls({ onApplyFilters }) {
               handleFilterChange("reviewedByUser", event.currentTarget.checked)
             }
           />
-
+          {/* Controls for filter based on aiResults.confBlank */}
           <Text size="sm" weight={500} mt="md">
             Max Confidence Blank: {filters.maxConfBlank !== null ? filters.maxConfBlank.toFixed(2) : 'Any'}
           </Text>
