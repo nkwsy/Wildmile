@@ -37,28 +37,11 @@ export async function GET(request) {
   const sort = searchParams.get("sort");
   const sortDirection = searchParams.get("sortDirection");
   const currentImageId = searchParams.get("currentImageId");
-  const maxConfBlank = searchParams.get("maxConfBlank");
 
   const session = await getSession({ headers });
   let query = {};
   let sortQuery = {};
   let timeQuery = [];
-
-  let aiFiltersCriteria = {};
-
-  // Default filter for confHuman
-  aiFiltersCriteria.confHuman = { $lte: 0.50 };
-
-  // Conditional filter for confBlank
-  if (maxConfBlank && !isNaN(parseFloat(maxConfBlank))) {
-    aiFiltersCriteria.confBlank = { $lte: parseFloat(maxConfBlank) };
-  }
-
-  // Apply the AI filters if there are any criteria set
-  // Given confHuman is always set, this will always apply.
-  if (Object.keys(aiFiltersCriteria).length > 0) {
-    query.aiResults = { $elemMatch: aiFiltersCriteria };
-  }
 
   // Sorting methods
   if (sort) {
