@@ -9,7 +9,8 @@ import {
   Switch,
   ActionIcon,
   Drawer,
-  Text,
+  Text, // Added
+  Slider, // Added
 } from "@mantine/core";
 import {
   IconX,
@@ -28,6 +29,7 @@ export function ImageFilterControls({ onApplyFilters }) {
     endTime: null,
     reviewed: false,
     reviewedByUser: false,
+    maxConfBlank: 1.0, // Added
   });
 
   const [locations, setLocations] = useState([]);
@@ -71,6 +73,7 @@ export function ImageFilterControls({ onApplyFilters }) {
       endTime: null,
       reviewed: false,
       reviewedByUser: false,
+      maxConfBlank: 1.0, // Added
     });
   };
 
@@ -232,6 +235,32 @@ export function ImageFilterControls({ onApplyFilters }) {
               handleFilterChange("reviewedByUser", event.currentTarget.checked)
             }
           />
+
+          <Text size="sm" weight={500} mt="md">
+            Max Confidence Blank: {filters.maxConfBlank !== null ? filters.maxConfBlank.toFixed(2) : 'Any'}
+          </Text>
+          <Slider
+            value={filters.maxConfBlank === null ? 1 : filters.maxConfBlank}
+            onChange={(value) => handleFilterChange("maxConfBlank", value)}
+            min={0}
+            max={1}
+            step={0.01}
+            label={(value) => value.toFixed(2)}
+            mb="md"
+          />
+          {/* Add an ActionIcon to clear this specific filter */}
+          {filters.maxConfBlank !== null && filters.maxConfBlank < 1.0 && (
+            <Button
+              variant="light"
+              color="blue"
+              size="xs"
+              onClick={() => handleFilterChange("maxConfBlank", 1.0)}
+              fullWidth
+              mb="md"
+            >
+              Reset Max Confidence Blank
+            </Button>
+          )}
         </Stack>
       </Drawer>
     </>

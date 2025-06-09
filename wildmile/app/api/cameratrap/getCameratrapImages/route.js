@@ -37,9 +37,11 @@ export async function GET(request) {
   const sort = searchParams.get("sort");
   const sortDirection = searchParams.get("sortDirection");
   const currentImageId = searchParams.get("currentImageId");
+  const maxConfBlank = searchParams.get("maxConfBlank");
 
   const session = await getSession({ headers });
   let query = {};
+  query['aiResults.confHuman'] = { $lte: 0.50 };
   let sortQuery = {};
   let timeQuery = [];
 
@@ -167,6 +169,10 @@ export async function GET(request) {
 
   if (reviewed === "true") {
     query.reviewCount = { $gt: 0 };
+  }
+
+  if (maxConfBlank) {
+    query['aiResults.confBlank'] = { $lte: parseFloat(maxConfBlank) };
   }
 
   try {
