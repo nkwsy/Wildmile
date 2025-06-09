@@ -17,8 +17,23 @@ export async function GET(request) {
   const direction = searchParams.get("direction");
   const currentImageId = searchParams.get("currentImageId");
   const selectedImageId = searchParams.get("selectedImageId");
+  const maxConfBlank = searchParams.get("maxConfBlank");
   let query = {};
   let timeQuery = [];
+
+  let aiFiltersCriteria = {};
+
+  // Default filter for confHuman
+  aiFiltersCriteria.confHuman = { $lte: 0.50 };
+
+  // Conditional filter for confBlank
+  if (maxConfBlank && !isNaN(parseFloat(maxConfBlank))) {
+    aiFiltersCriteria.confBlank = { $lte: parseFloat(maxConfBlank) };
+  }
+
+  // Apply the AI filters. Since confHuman is always a criterion,
+  // aiFiltersCriteria will not be empty.
+  query.aiResults = { $elemMatch: aiFiltersCriteria };
 
   if (selectedImageId) {
     query.mediaID = selectedImageId;
