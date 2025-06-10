@@ -23,18 +23,19 @@ import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 export const ImageAnnotationPage = ({ initialImageId }) => {
   const [currentImage, setCurrentImage] = useImage();
   const [deployments, setDeployments] = useState([]);
+  const [appliedFilters, setAppliedFilters] = useState({});
 
   // In your component, use initialImageId to fetch and set the initial image
   useEffect(() => {
     fetchDeployments();
     if (initialImageId) {
       // Fetch and set the specific image
-      fetchCamtrapImage({ selectedImageId: initialImageId });
+      fetchCamtrapImage({ ...appliedFilters, selectedImageId: initialImageId });
     } else {
       // Your existing logic for getting the next image
-      fetchCamtrapImage();
+      fetchCamtrapImage(appliedFilters);
     }
-  }, [initialImageId]);
+  }, [initialImageId, appliedFilters]);
 
   const fetchDeployments = async () => {
     try {
@@ -81,23 +82,29 @@ export const ImageAnnotationPage = ({ initialImageId }) => {
   };
 
   const handleApplyFilters = (filters) => {
+    setAppliedFilters(filters);
     fetchCamtrapImage(filters);
   };
 
   const handleNavigateImage = (direction) => {
     if (currentImage) {
-      fetchCamtrapImage({ direction, currentImageId: currentImage._id });
+      fetchCamtrapImage({
+        ...appliedFilters,
+        direction,
+        currentImageId: currentImage._id,
+      });
     }
   };
 
   const fetchNextImage = async () => {
     if (currentImage) {
       await fetchCamtrapImage({
+        ...appliedFilters,
         direction: "next",
         currentImageId: currentImage._id,
       });
     } else {
-      await fetchCamtrapImage();
+      await fetchCamtrapImage(appliedFilters);
     }
   };
 
@@ -150,7 +157,10 @@ export const ImageAnnotationPage = ({ initialImageId }) => {
           </Group>
 
           {/* <ScrollArea style={{ flex: 1 }} offsetScrollbars> */}
-          <ImageAnnotation fetchNextImage={fetchNextImage} />
+          <ImageAnnotation
+            fetchNextImage={fetchNextImage}
+            filters={appliedFilters}
+          />
           {/* </ScrollArea> */}
           {/* </Paper> */}
         </GridCol>
