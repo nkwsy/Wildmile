@@ -10,8 +10,7 @@ import {
   ActionIcon,
   Drawer,
   Text,
-  NumberInput, // Add this
-  // RangeSlider, // Removed
+  NumberInput,
 } from "@mantine/core";
 import {
   IconX,
@@ -33,17 +32,11 @@ export function ImageFilterControls({ onApplyFilters }) {
     animalProbability: [0.75, 1.0], // New default
   });
 
-  // const [currentSliderValue, setCurrentSliderValue] = useState(filters.animalProbability); // Removed
-  // const [sliderKey, setSliderKey] = useState(0); // Removed
   const [locations, setLocations] = useState([]);
 
   useEffect(() => {
     fetchLocations();
   }, []);
-
-  // useEffect(() => { // Removed
-  //   setCurrentSliderValue(filters.animalProbability);
-  // }, [filters.animalProbability]);
 
   const fetchLocations = async () => {
     try {
@@ -64,9 +57,7 @@ export function ImageFilterControls({ onApplyFilters }) {
   };
 
   const handleFilterChange = (key, value) => {
-    // console.log(`handleFilterChange called. Key: ${key}, Value:`, value); // Console log removed for cleanup
     if (key !== "animalProbability") { // Only process if not animalProbability for now
-      // console.log(`Setting ${key} to:`, value); // Console log removed for cleanup
       setFilters((prev) => ({ ...prev, [key]: value }));
     }
     // animalProbability will be handled by new dedicated functions for min/max inputs
@@ -87,7 +78,6 @@ export function ImageFilterControls({ onApplyFilters }) {
       reviewedByUser: false,
       animalProbability: [0, 1], // This resets the logical filter value
     });
-    // setSliderKey(prevKey => prevKey + 1); // Removed
   };
 
   const handleApplyFilters = () => {
@@ -284,6 +274,15 @@ export function ImageFilterControls({ onApplyFilters }) {
               step={1}
             />
           </Group>
+          <Button
+            variant="outline"
+            color="gray"
+            fullWidth
+            mt="lg" // Add some margin top
+            onClick={handleClearAllFilters}
+          >
+            Clear All Filters
+          </Button>
         </Stack>
       </Drawer>
     </>
