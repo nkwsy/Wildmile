@@ -10,6 +10,7 @@ import {
   ActionIcon,
   Drawer,
   Text,
+  NumberInput,
 } from "@mantine/core";
 import {
   IconX,
@@ -24,10 +25,11 @@ export function ImageFilterControls({ onApplyFilters }) {
     locationId: null,
     startDate: null,
     endDate: null,
-    startTime: null,
-    endTime: null,
+    startTime: "", // Changed from null
+    endTime: "",   // Changed from null
     reviewed: false,
     reviewedByUser: false,
+    animalProbability: [0.75, 1.0], // New default
   });
 
   const [locations, setLocations] = useState([]);
@@ -55,7 +57,10 @@ export function ImageFilterControls({ onApplyFilters }) {
   };
 
   const handleFilterChange = (key, value) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
+    if (key !== "animalProbability") { // Only process if not animalProbability for now
+      setFilters((prev) => ({ ...prev, [key]: value }));
+    }
+    // animalProbability will be handled by new dedicated functions for min/max inputs
   };
 
   const handleClearFilter = (key) => {
@@ -67,10 +72,11 @@ export function ImageFilterControls({ onApplyFilters }) {
       locationId: null,
       startDate: null,
       endDate: null,
-      startTime: null,
-      endTime: null,
+      startTime: "", // Should also be empty string here for consistency if cleared
+      endTime: "",   // Should also be empty string here for consistency if cleared
       reviewed: false,
       reviewedByUser: false,
+      animalProbability: [0, 1], // This resets the logical filter value
     });
   };
 
@@ -232,6 +238,51 @@ export function ImageFilterControls({ onApplyFilters }) {
               handleFilterChange("reviewedByUser", event.currentTarget.checked)
             }
           />
+          <Group grow align="flex-start" mt="md">
+            <NumberInput
+              label="Min Animal %"
+              placeholder="Enter min % (0-100)"
+              value={Math.round(filters.animalProbability[0] * 100)}
+              onChange={(value) => {
+                const newMinDecimal = Math.max(0, Math.min(100, Number(value))) / 100;
+                const currentMaxDecimal = filters.animalProbability[1];
+                if (newMinDecimal <= currentMaxDecimal) {
+                  setFilters(prev => ({ ...prev, animalProbability: [newMinDecimal, currentMaxDecimal] }));
+                } else {
+                  setFilters(prev => ({ ...prev, animalProbability: [currentMaxDecimal, currentMaxDecimal] }));
+                }
+              }}
+              min={0}
+              max={100}
+              step={1}
+            />
+            <NumberInput
+              label="Max Animal %"
+              placeholder="Enter max % (0-100)"
+              value={Math.round(filters.animalProbability[1] * 100)}
+              onChange={(value) => {
+                const newMaxDecimal = Math.max(0, Math.min(100, Number(value))) / 100;
+                const currentMinDecimal = filters.animalProbability[0];
+                if (newMaxDecimal >= currentMinDecimal) {
+                  setFilters(prev => ({ ...prev, animalProbability: [currentMinDecimal, newMaxDecimal] }));
+                } else {
+                  setFilters(prev => ({ ...prev, animalProbability: [currentMinDecimal, currentMinDecimal] }));
+                }
+              }}
+              min={0}
+              max={100}
+              step={1}
+            />
+          </Group>
+          <Button
+            variant="outline"
+            color="gray"
+            fullWidth
+            mt="lg" // Add some margin top
+            onClick={handleClearAllFilters}
+          >
+            Clear All Filters
+          </Button>
         </Stack>
       </Drawer>
     </>
