@@ -97,7 +97,6 @@ export function ImageAnnotation({ fetchNextImage, filters }) {
         eventEnd: currentImage.timestamp,
         observationLevel: "media",
         observationType: "blank",
-        max_blank_confidence: filters?.maxConfBlank,
       });
     } else {
       if (selection.length > 0) {
@@ -115,7 +114,6 @@ export function ImageAnnotation({ fetchNextImage, filters }) {
           eventEnd: currentImage.timestamp,
           observationLevel: "media",
           observationType: "animal",
-          max_blank_confidence: filters?.maxConfBlank,
         }));
       }
 
@@ -130,7 +128,6 @@ export function ImageAnnotation({ fetchNextImage, filters }) {
           eventEnd: currentImage.timestamp,
           observationLevel: "media",
           observationType: "human",
-          max_blank_confidence: filters?.maxConfBlank,
         });
       }
 
@@ -145,7 +142,6 @@ export function ImageAnnotation({ fetchNextImage, filters }) {
           eventEnd: currentImage.timestamp,
           observationLevel: "media",
           observationType: "vehicle",
-          max_blank_confidence: filters?.maxConfBlank,
         });
       }
     }

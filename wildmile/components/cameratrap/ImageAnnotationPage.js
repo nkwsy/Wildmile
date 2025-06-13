@@ -20,10 +20,21 @@ import { ImageFilterControls } from "./ImageFilterControls";
 import WildlifeSearch from "./WildlifeSearch";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 
+const defaultPageFilters = {
+  locationId: null,
+  startDate: null,
+  endDate: null,
+  startTime: null,
+  endTime: null,
+  reviewed: false,
+  reviewedByUser: false,
+  animalProbability: [0.75, 1.0],
+};
+
 export const ImageAnnotationPage = ({ initialImageId }) => {
   const [currentImage, setCurrentImage] = useImage();
   const [deployments, setDeployments] = useState([]);
-  const [appliedFilters, setAppliedFilters] = useState({});
+  const [appliedFilters, setAppliedFilters] = useState(defaultPageFilters);
 
   // In your component, use initialImageId to fetch and set the initial image
   useEffect(() => {
@@ -54,7 +65,14 @@ export const ImageAnnotationPage = ({ initialImageId }) => {
   };
 
   const fetchCamtrapImage = async (params = {}) => {
-    const validParams = Object.entries(params).reduce((acc, [key, value]) => {
+    let processedParams = { ...params }; // Clone to avoid modifying the state directly
+
+    // Convert animalProbability array to comma-separated string
+    if (processedParams.animalProbability && Array.isArray(processedParams.animalProbability) && processedParams.animalProbability.length === 2) {
+      processedParams.animalProbability = processedParams.animalProbability.join(',');
+    }
+
+    const validParams = Object.entries(processedParams).reduce((acc, [key, value]) => {
       if (value !== null && value !== undefined && value !== "") {
         if (key === "reviewed" || key === "reviewedByUser") {
           acc[key] = value.toString();
