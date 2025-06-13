@@ -267,6 +267,11 @@ export function ImageFilterControls({ onApplyFilters }) {
             label={(value) => `${Math.round(value * 100)}%`}
             mb="md"
           />
+          <Group position="apart" mt="xl">
+            <Button color="red" variant="outline" onClick={handleClearAllFilters}>
+              Clear All Filters
+            </Button>
+          </Group>
         </Stack>
       </Drawer>
     </>
