@@ -17,8 +17,7 @@ export async function GET(request) {
   const direction = searchParams.get("direction");
   const currentImageId = searchParams.get("currentImageId");
   const selectedImageId = searchParams.get("selectedImageId");
-  // const maxConfBlank = searchParams.get("maxConfBlank"); // Removed
-
+  
   const animalProbabilityParam = searchParams.get("animalProbability");
   let minAnimalConf, maxAnimalConf;
 
@@ -32,8 +31,6 @@ export async function GET(request) {
 
   let query = {};
   let timeQuery = [];
-
-  // Note: The old aiFiltersCriteria logic and its application to query.aiResults has been removed.
 
   if (selectedImageId) {
     query.mediaID = selectedImageId;
