@@ -17,23 +17,23 @@ export async function GET(request) {
   const direction = searchParams.get("direction");
   const currentImageId = searchParams.get("currentImageId");
   const selectedImageId = searchParams.get("selectedImageId");
-  const maxConfBlank = searchParams.get("maxConfBlank");
+  // const maxConfBlank = searchParams.get("maxConfBlank"); // Removed
+
+  const animalProbabilityParam = searchParams.get("animalProbability");
+  let minAnimalConf, maxAnimalConf;
+
+  if (animalProbabilityParam) {
+    const parts = animalProbabilityParam.split(',');
+    if (parts.length === 2) {
+      minAnimalConf = parseFloat(parts[0]);
+      maxAnimalConf = parseFloat(parts[1]);
+    }
+  }
+
   let query = {};
   let timeQuery = [];
 
-  let aiFiltersCriteria = {};
-
-  // Default filter for confHuman
-  aiFiltersCriteria.confHuman = { $lte: 0.50 };
-
-  // Conditional filter for confBlank
-  if (maxConfBlank && !isNaN(parseFloat(maxConfBlank))) {
-    aiFiltersCriteria.confBlank = { $lte: parseFloat(maxConfBlank) };
-  }
-
-  // Apply the AI filters. Since confHuman is always a criterion,
-  // aiFiltersCriteria will not be empty.
-  query.aiResults = { $elemMatch: aiFiltersCriteria };
+  // Note: The old aiFiltersCriteria logic and its application to query.aiResults has been removed.
 
   if (selectedImageId) {
     query.mediaID = selectedImageId;
@@ -106,6 +106,17 @@ export async function GET(request) {
 
   if (reviewed === "true") {
     query.reviewCount = { $gt: 0 };
+  }
+
+  if (typeof minAnimalConf === 'number' && typeof maxAnimalConf === 'number' && !isNaN(minAnimalConf) && !isNaN(maxAnimalConf)) {
+    query.aiResults = {
+      $elemMatch: {
+        confAnimal: {
+          $gte: minAnimalConf,
+          $lte: maxAnimalConf,
+        },
+      },
+    };
   }
 
   try {

@@ -10,7 +10,7 @@ import {
   ActionIcon,
   Drawer,
   Text,
-  Slider, // Added
+  RangeSlider, // Replaced Slider with RangeSlider
 } from "@mantine/core";
 import {
   IconX,
@@ -29,7 +29,7 @@ export function ImageFilterControls({ onApplyFilters }) {
     endTime: null,
     reviewed: false,
     reviewedByUser: false,
-    maxConfBlank: 1.0, // Added
+    animalProbability: [0, 1], // Added animalProbability
   });
 
   const [locations, setLocations] = useState([]);
@@ -73,7 +73,7 @@ export function ImageFilterControls({ onApplyFilters }) {
       endTime: null,
       reviewed: false,
       reviewedByUser: false,
-      maxConfBlank: 1.0, // Added
+      animalProbability: [0, 1], // Added animalProbability
     });
   };
 
@@ -235,32 +235,19 @@ export function ImageFilterControls({ onApplyFilters }) {
               handleFilterChange("reviewedByUser", event.currentTarget.checked)
             }
           />
-          {/* Controls for filter based on aiResults.confBlank */}
+          {/* Controls for filter based on animalProbability */}
           <Text size="sm" weight={500} mt="md">
-            Max Confidence Blank: {filters.maxConfBlank !== null ? filters.maxConfBlank.toFixed(2) : 'Any'}
+            Animal Probability: {filters.animalProbability[0].toFixed(2)} - {filters.animalProbability[1].toFixed(2)}
           </Text>
-          <Slider
-            value={filters.maxConfBlank === null ? 1 : filters.maxConfBlank}
-            onChange={(value) => handleFilterChange("maxConfBlank", value)}
+          <RangeSlider
+            value={filters.animalProbability}
+            onChange={(value) => handleFilterChange("animalProbability", value)}
             min={0}
             max={1}
             step={0.01}
             label={(value) => value.toFixed(2)}
             mb="md"
           />
-          {/* Add an ActionIcon to clear this specific filter */}
-          {filters.maxConfBlank !== null && filters.maxConfBlank < 1.0 && (
-            <Button
-              variant="light"
-              color="blue"
-              size="xs"
-              onClick={() => handleFilterChange("maxConfBlank", 1.0)}
-              fullWidth
-              mb="md"
-            >
-              Reset Max Confidence Blank
-            </Button>
-          )}
         </Stack>
       </Drawer>
     </>
