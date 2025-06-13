@@ -57,6 +57,7 @@ export function ImageFilterControls({ onApplyFilters }) {
   };
 
   const handleFilterChange = (key, value) => {
+    console.log(`handleFilterChange called. Key: ${key}, Value:`, value);
     if (key === "animalProbability") {
       let adjustedValue = [...value]; // Make a copy
       if (adjustedValue[0] === 0 && adjustedValue[1] === 0) {
@@ -64,8 +65,10 @@ export function ImageFilterControls({ onApplyFilters }) {
       } else if (adjustedValue[0] === 1 && adjustedValue[1] === 1) {
         adjustedValue = [0.99, 1];
       }
+      console.log("Setting animalProbability to (adjusted):", adjustedValue);
       setFilters((prev) => ({ ...prev, animalProbability: adjustedValue }));
     } else {
+      console.log(`Setting ${key} to:`, value);
       setFilters((prev) => ({ ...prev, [key]: value }));
     }
   };
@@ -251,7 +254,10 @@ export function ImageFilterControls({ onApplyFilters }) {
           </Text>
           <RangeSlider
             value={filters.animalProbability}
-            onChange={(value) => handleFilterChange("animalProbability", value)}
+            onChange={(value) => {
+              console.log("RangeSlider onChange fired. New value:", value);
+              handleFilterChange("animalProbability", value);
+            }}
             min={0}
             max={1}
             step={0.01}
