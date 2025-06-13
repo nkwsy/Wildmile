@@ -29,7 +29,7 @@ export function ImageFilterControls({ onApplyFilters }) {
     endTime: null,
     reviewed: false,
     reviewedByUser: false,
-    animalProbability: [0, 1], // Added animalProbability
+    animalProbability: [0, 0.75], // New default
   });
 
   const [locations, setLocations] = useState([]);
@@ -57,7 +57,17 @@ export function ImageFilterControls({ onApplyFilters }) {
   };
 
   const handleFilterChange = (key, value) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
+    if (key === "animalProbability") {
+      let adjustedValue = [...value]; // Make a copy
+      if (adjustedValue[0] === 0 && adjustedValue[1] === 0) {
+        adjustedValue = [0, 0.01];
+      } else if (adjustedValue[0] === 1 && adjustedValue[1] === 1) {
+        adjustedValue = [0.99, 1];
+      }
+      setFilters((prev) => ({ ...prev, animalProbability: adjustedValue }));
+    } else {
+      setFilters((prev) => ({ ...prev, [key]: value }));
+    }
   };
 
   const handleClearFilter = (key) => {
@@ -237,7 +247,7 @@ export function ImageFilterControls({ onApplyFilters }) {
           />
           {/* Controls for filter based on animalProbability */}
           <Text size="sm" weight={500} mt="md">
-            Animal Probability: {filters.animalProbability[0].toFixed(2)} - {filters.animalProbability[1].toFixed(2)}
+            Animal Probability: {Math.round(filters.animalProbability[0] * 100)}% - {Math.round(filters.animalProbability[1] * 100)}%
           </Text>
           <RangeSlider
             value={filters.animalProbability}
@@ -245,7 +255,7 @@ export function ImageFilterControls({ onApplyFilters }) {
             min={0}
             max={1}
             step={0.01}
-            label={(value) => value.toFixed(2)}
+            label={(value) => `${Math.round(value * 100)}%`}
             mb="md"
           />
         </Stack>
