@@ -67,8 +67,9 @@ export function ImageFilterControls({ onApplyFilters }) {
     if (key === "animalProbability") {
       console.log("Attempting to set animalProbability (from onChangeEnd) directly to:", value);
       setFilters((prev) => ({ ...prev, animalProbability: value }));
+      setSliderKey(prevKey => prevKey + 1); // Force re-mount of RangeSlider
     } else {
-      console.log(`Setting ${key} to:`, value); // For other filters
+      console.log(`Setting ${key} to:`, value);
       setFilters((prev) => ({ ...prev, [key]: value }));
     }
   };
@@ -254,8 +255,8 @@ export function ImageFilterControls({ onApplyFilters }) {
             Animal Probability: {Math.round(filters.animalProbability[0] * 100)}% - {Math.round(filters.animalProbability[1] * 100)}%
           </Text>
           <RangeSlider
-            key={sliderKey} // New
-            defaultValue={filters.animalProbability} // New
+            key={sliderKey}
+            value={filters.animalProbability} // Changed from defaultValue
             // onChange prop removed
             onChangeEnd={(finalValue) => {
               console.log("RangeSlider onChangeEnd. finalValue from event:", finalValue);
