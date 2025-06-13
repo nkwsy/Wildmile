@@ -20,10 +20,21 @@ import { ImageFilterControls } from "./ImageFilterControls";
 import WildlifeSearch from "./WildlifeSearch";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 
+const defaultPageFilters = {
+  locationId: null,
+  startDate: null,
+  endDate: null,
+  startTime: null,
+  endTime: null,
+  reviewed: false,
+  reviewedByUser: false,
+  animalProbability: [0.75, 1.0],
+};
+
 export const ImageAnnotationPage = ({ initialImageId }) => {
   const [currentImage, setCurrentImage] = useImage();
   const [deployments, setDeployments] = useState([]);
-  const [appliedFilters, setAppliedFilters] = useState({});
+  const [appliedFilters, setAppliedFilters] = useState(defaultPageFilters);
 
   // In your component, use initialImageId to fetch and set the initial image
   useEffect(() => {

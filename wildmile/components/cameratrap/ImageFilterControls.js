@@ -29,7 +29,7 @@ export function ImageFilterControls({ onApplyFilters }) {
     endTime: null,
     reviewed: false,
     reviewedByUser: false,
-    animalProbability: [0, 0.75], // New default
+    animalProbability: [0.75, 1.0], // New default
   });
 
   const [locations, setLocations] = useState([]);
