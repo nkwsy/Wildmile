@@ -62,15 +62,12 @@ export function ImageFilterControls({ onApplyFilters }) {
   };
 
   const handleFilterChange = (key, value) => {
+    console.log(`handleFilterChange called by onChangeEnd. Key: ${key}, Value:`, value);
     if (key === "animalProbability") {
-      let adjustedValue = [...value]; // Make a copy
-      if (adjustedValue[0] === 0 && adjustedValue[1] === 0) {
-        adjustedValue = [0, 0.01];
-      } else if (adjustedValue[0] === 1 && adjustedValue[1] === 1) {
-        adjustedValue = [0.99, 1];
-      }
-      setFilters((prev) => ({ ...prev, animalProbability: adjustedValue }));
+      console.log("Attempting to set animalProbability (from onChangeEnd) directly to:", value);
+      setFilters((prev) => ({ ...prev, animalProbability: value }));
     } else {
+      console.log(`Setting ${key} to:`, value); // For other filters
       setFilters((prev) => ({ ...prev, [key]: value }));
     }
   };
@@ -256,10 +253,9 @@ export function ImageFilterControls({ onApplyFilters }) {
           </Text>
           <RangeSlider
             value={currentSliderValue}
-            onChange={(newValue) => {
-              setCurrentSliderValue(newValue);
-            }}
+            // onChange prop removed
             onChangeEnd={(finalValue) => {
+              console.log("RangeSlider onChangeEnd. finalValue from event:", finalValue);
               handleFilterChange("animalProbability", finalValue);
             }}
             min={0}
