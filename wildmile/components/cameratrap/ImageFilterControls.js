@@ -29,7 +29,7 @@ export function ImageFilterControls({ onApplyFilters }) {
     endTime: null,
     reviewed: false,
     reviewedByUser: false,
-    animalProbability: [0.75, 1.00], // Default when page loads
+    animalProbability: [0, 0.75], // New default
   });
 
   const [locations, setLocations] = useState([]);
@@ -59,14 +59,20 @@ export function ImageFilterControls({ onApplyFilters }) {
   const handleFilterChange = (key, value) => {
     console.log(`handleFilterChange called. Key: ${key}, Value:`, value);
     if (key === "animalProbability") {
-      let adjustedValue = [...value]; // Make a copy
-      if (adjustedValue[0] === 0 && adjustedValue[1] === 0) {
-        adjustedValue = [0, 0.01];
-      } else if (adjustedValue[0] === 1 && adjustedValue[1] === 1) {
-        adjustedValue = [0.99, 1];
-      }
-      console.log("Setting animalProbability to (adjusted):", adjustedValue);
-      setFilters((prev) => ({ ...prev, animalProbability: adjustedValue }));
+      // TEMPORARILY REMOVE ADJUSTMENT LOGIC
+      // let adjustedValue = [...value];
+      // if (adjustedValue[0] === 0 && adjustedValue[1] === 0) {
+      //   adjustedValue = [0, 0.01];
+      // } else if (adjustedValue[0] === 1 && adjustedValue[1] === 1) {
+      //   adjustedValue = [0.99, 1];
+      // }
+      // console.log("Setting animalProbability to (raw from slider):", value);
+      // setFilters((prev) => ({ ...prev, animalProbability: value })); // Use 'value' directly
+
+      // Simpler direct set for diagnosis:
+      console.log("Attempting to set animalProbability directly to:", value);
+      setFilters((prev) => ({ ...prev, animalProbability: value }));
+
     } else {
       console.log(`Setting ${key} to:`, value);
       setFilters((prev) => ({ ...prev, [key]: value }));
