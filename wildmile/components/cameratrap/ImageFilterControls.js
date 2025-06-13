@@ -25,23 +25,24 @@ export function ImageFilterControls({ onApplyFilters }) {
     locationId: null,
     startDate: null,
     endDate: null,
-    startTime: null,
-    endTime: null,
+    startTime: "", // Changed from null
+    endTime: "",   // Changed from null
     reviewed: false,
     reviewedByUser: false,
     animalProbability: [0.75, 1.0], // New default
   });
 
-  const [currentSliderValue, setCurrentSliderValue] = useState(filters.animalProbability);
+  // const [currentSliderValue, setCurrentSliderValue] = useState(filters.animalProbability); // Removed
+  const [sliderKey, setSliderKey] = useState(0); // Added
   const [locations, setLocations] = useState([]);
 
   useEffect(() => {
     fetchLocations();
   }, []);
 
-  useEffect(() => {
-    setCurrentSliderValue(filters.animalProbability);
-  }, [filters.animalProbability]);
+  // useEffect(() => { // Removed
+  //   setCurrentSliderValue(filters.animalProbability);
+  // }, [filters.animalProbability]);
 
   const fetchLocations = async () => {
     try {
@@ -81,12 +82,13 @@ export function ImageFilterControls({ onApplyFilters }) {
       locationId: null,
       startDate: null,
       endDate: null,
-      startTime: null,
-      endTime: null,
+      startTime: "", // Should also be empty string here for consistency if cleared
+      endTime: "",   // Should also be empty string here for consistency if cleared
       reviewed: false,
       reviewedByUser: false,
-      animalProbability: [0, 1], // Added animalProbability
+      animalProbability: [0, 1], // This resets the logical filter value
     });
+    setSliderKey(prevKey => prevKey + 1); // This forces RangeSlider to re-mount with new defaultValue
   };
 
   const handleApplyFilters = () => {
@@ -252,7 +254,8 @@ export function ImageFilterControls({ onApplyFilters }) {
             Animal Probability: {Math.round(filters.animalProbability[0] * 100)}% - {Math.round(filters.animalProbability[1] * 100)}%
           </Text>
           <RangeSlider
-            value={currentSliderValue}
+            key={sliderKey} // New
+            defaultValue={filters.animalProbability} // New
             // onChange prop removed
             onChangeEnd={(finalValue) => {
               console.log("RangeSlider onChangeEnd. finalValue from event:", finalValue);
