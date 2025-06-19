@@ -134,6 +134,23 @@ export function ImageAnnotation({ fetchNextImage }) {
 
   useEffect(redrawCanvas, [drawnBoxes, tempDrawingBox]); // Redraw when boxes change or temp box changes
 
+  // Effect to initialize animal counts when selection changes
+  useEffect(() => {
+    if (selection && selection.length > 0) {
+      const newCounts = { ...animalCounts };
+      let countsChanged = false;
+      selection.forEach(animal => {
+        if (!(animal.id in newCounts)) {
+          newCounts[animal.id] = 1; // Default count to 1
+          countsChanged = true;
+        }
+      });
+      if (countsChanged) {
+        setAnimalCounts(newCounts);
+      }
+    }
+  }, [selection]);
+
   useEffect(() => {
     if (currentImage) {
       setComments(currentImage.mediaComments || []);
@@ -153,11 +170,18 @@ export function ImageAnnotation({ fetchNextImage }) {
   }, [currentImage]);
 
   const handleActivateDrawingMode = (species) => {
-    const speciesCount = animalCounts[species.id] || 0;
+    // animalCounts should be populated by the useEffect hook by now
+    const speciesCount = animalCounts[species.id];
     const boxesForSpecies = drawnBoxes.filter(b => b.speciesId === species.id).length;
 
-    if (boxesForSpecies >= speciesCount) {
-      alert(`You have already drawn ${boxesForSpecies} boxes for ${species.preferred_common_name || species.name}, which is the selected count. Increase the count to add more boxes.`);
+    if (speciesCount === undefined) {
+      // This should ideally not happen if the useEffect for selection works correctly
+      console.warn(`Count for species ${species.id} is undefined. Defaulting to 1 for drawing activation.`);
+      // animalCounts[species.id] = 1; // Or update state, but that's async
+    }
+
+    if (boxesForSpecies >= (speciesCount || 1)) { // Use speciesCount directly, fallback to 1 if somehow still undefined
+      alert(`You have already drawn ${boxesForSpecies} boxes for ${species.preferred_common_name || species.name}, which is the selected count (${speciesCount || 1}). Increase the count to add more boxes.`);
       return;
     }
 
@@ -221,11 +245,16 @@ export function ImageAnnotation({ fetchNextImage }) {
       return;
     }
 
-    const speciesCount = animalCounts[activeSpeciesForDrawing.id] || 0;
+    // animalCounts should be populated by the useEffect hook
+    const speciesCount = animalCounts[activeSpeciesForDrawing.id];
     const boxesForSpecies = drawnBoxes.filter(b => b.speciesId === activeSpeciesForDrawing.id).length;
 
-    if (boxesForSpecies >= speciesCount) {
-      alert(`Cannot add more boxes for ${activeSpeciesForDrawing.preferred_common_name || activeSpeciesForDrawing.name}. Limit is ${speciesCount}.`);
+    if (speciesCount === undefined) {
+       console.warn(`Count for active drawing species ${activeSpeciesForDrawing.id} is undefined. Defaulting to 1 for box limit check.`);
+    }
+
+    if (boxesForSpecies >= (speciesCount || 1)) { // Use speciesCount directly, fallback to 1 if somehow still undefined
+      alert(`Cannot add more boxes for ${activeSpeciesForDrawing.preferred_common_name || activeSpeciesForDrawing.name}. Limit is ${speciesCount || 1}.`);
       setTempDrawingBox(null);
       setIsDrawingMode(false);
       setActiveSpeciesForDrawing(null);
