@@ -66,26 +66,16 @@ const ObservationSchema = new mongoose.Schema(
       type: Number,
       min: 0,
     },
-    bboxX: {
-      type: Number,
-      min: 0,
-      max: 1,
-    },
-    bboxY: {
-      type: Number,
-      min: 0,
-      max: 1,
-    },
-    bboxWidth: {
-      type: Number,
-      min: 1e-15,
-      max: 1,
-    },
-    bboxHeight: {
-      type: Number,
-      min: 1e-15,
-      max: 1,
-    },
+    // Removed single bbox fields: bboxX, bboxY, bboxWidth, bboxHeight
+    boundingBoxes: [
+      {
+        _id: false, // Don't create a separate _id for each bounding box object
+        bboxX: { type: Number, required: true, min: 0, max: 1 },
+        bboxY: { type: Number, required: true, min: 0, max: 1 },
+        bboxWidth: { type: Number, required: true, min: 1e-15, max: 1 },
+        bboxHeight: { type: Number, required: true, min: 1e-15, max: 1 },
+      },
+    ],
     classificationMethod: String,
     classifiedBy: String,
 
