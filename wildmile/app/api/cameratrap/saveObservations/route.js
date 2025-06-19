@@ -17,20 +17,20 @@ export async function POST(request) {
     const observations = await request.json();
 
     const observationsWithCreator = observations.map((obs) => {
+      // The ...obs spread operator will carry over all fields from the incoming observation,
+      // including the `boundingBoxes` array if it's present.
+      // The Mongoose model `Observation.js` is expected to have the `boundingBoxes` field
+      // defined as an array of objects, each with bboxX, bboxY, bboxWidth, bboxHeight.
       const observationData = {
-        ...obs, // Spread existing fields like mediaId, taxonId, etc.
+        ...obs,
         creator: session._id,
       };
 
-      // Explicitly include bounding box fields if they exist
-      if (obs.bboxX !== undefined) observationData.bboxX = obs.bboxX;
-      if (obs.bboxY !== undefined) observationData.bboxY = obs.bboxY;
-      if (obs.bboxWidth !== undefined) observationData.bboxWidth = obs.bboxWidth;
-      if (obs.bboxHeight !== undefined) observationData.bboxHeight = obs.bboxHeight;
-
-      // For 'blank', 'human', 'vehicle' types, these fields might not be present.
-      // If they are not in 'obs', they won't be added to 'observationData',
-      // and Mongoose will handle them as per schema (likely storing them as undefined or default).
+      // If obs.boundingBoxes is not present (e.g. for 'blank' images or if no boxes drawn),
+      // it will simply not be part of observationData, and Mongoose will store it as undefined
+      // or an empty array if the schema has `default: []` for `boundingBoxes`.
+      // No explicit check or manipulation of boundingBoxes is needed here if the frontend
+      // sends it correctly structured and the Mongoose model expects it.
 
       return observationData;
     });
