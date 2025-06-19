@@ -345,7 +345,7 @@ export function ImageAnnotation({ fetchNextImage }) {
       if (selection.length > 0) {
         observations = selection.map((animal) => {
           const speciesSpecificBoxes = drawnBoxes
-            .filter((box) => box.speciesId === animal.id)
+            .filter((box) => Number(box.speciesId) === Number(animal.id)) // Ensure numeric comparison
             .map((box) => box.normalizedCoordinates);
 
           const obs = {
