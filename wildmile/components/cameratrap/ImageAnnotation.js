@@ -82,15 +82,10 @@ export function ImageAnnotation({ fetchNextImage }) {
     "#A52A2A", // Brown
   ];
 
-  // Helper to get or assign color to a species
-  const getSpeciesColor = (speciesId) => {
-    if (speciesColors[speciesId]) {
-      return speciesColors[speciesId];
-    }
-    const color = BOX_COLORS[nextColorIndex % BOX_COLORS.length];
-    setNextColorIndex((prev) => prev + 1);
-    setSpeciesColors((prev) => ({ ...prev, [speciesId]: color }));
-    return color;
+  // speciesColors and nextColorIndex are now primarily managed by the useEffect hook watching 'selection'.
+  // This function can act as a simple getter or a fallback if needed, but should avoid setting state if called during render.
+  const getSpeciesColor = (speciesId, fallbackColor = '#CCCCCC') => {
+    return speciesColors[speciesId] || fallbackColor;
   };
 
   const redrawCanvas = () => {
@@ -134,22 +129,55 @@ export function ImageAnnotation({ fetchNextImage }) {
 
   useEffect(redrawCanvas, [drawnBoxes, tempDrawingBox]); // Redraw when boxes change or temp box changes
 
-  // Effect to initialize animal counts when selection changes
+  // Effect to initialize animal counts and assign colors when selection changes
   useEffect(() => {
     if (selection && selection.length > 0) {
-      const newCounts = { ...animalCounts };
+      let newCounts = { ...animalCounts };
+      let newColors = { ...speciesColors };
+      let localNextColorIndex = nextColorIndex; // Use a local copy for batch assignment
       let countsChanged = false;
+      let colorsAssigned = false;
+
       selection.forEach(animal => {
+        // Initialize count if not present
         if (!(animal.id in newCounts)) {
           newCounts[animal.id] = 1; // Default count to 1
           countsChanged = true;
         }
+        // Assign color if not present
+        if (!(animal.id in newColors)) {
+          newColors[animal.id] = BOX_COLORS[localNextColorIndex % BOX_COLORS.length];
+          localNextColorIndex++;
+          colorsAssigned = true;
+        }
       });
+
       if (countsChanged) {
         setAnimalCounts(newCounts);
       }
+      if (colorsAssigned) {
+        setSpeciesColors(newColors);
+        setNextColorIndex(localNextColorIndex); // Update the main index after batch assignment
+      }
     }
-  }, [selection]);
+    // Clean up colors for species no longer in selection (optional, but good practice)
+    const selectionIds = new Set(selection.map(s => s.id));
+    const currentSpeciesWithColors = Object.keys(speciesColors);
+    let colorsToClean = false;
+    let cleanedColors = {...speciesColors};
+    currentSpeciesWithColors.forEach(id => {
+      if (!selectionIds.has(id) && !selectionIds.has(Number(id))) { // Check for both string and number IDs due to object key nature
+         delete cleanedColors[id];
+         colorsToClean = true;
+      }
+    });
+    if (colorsToClean) {
+      setSpeciesColors(cleanedColors);
+    }
+
+  }, [selection]); // Only re-run when selection itself changes.
+                  // animalCounts, speciesColors, nextColorIndex are not dependencies here to avoid loops.
+                  // Their state is managed based on `selection`.
 
   // Effect to recalculate box coordinates on window resize
   useEffect(() => {
@@ -220,13 +248,35 @@ export function ImageAnnotation({ fetchNextImage }) {
       // animalCounts[species.id] = 1; // Or update state, but that's async
     }
 
+    const currentSpeciesColor = speciesColors[species.id];
+    if (!currentSpeciesColor) {
+      // This should ideally not happen if useEffect[selection] populates colors correctly.
+      // As a fallback, assign a color now, though this involves a state update.
+      // This could happen if a species is added and drawing mode activated in the same render cycle
+      // before the useEffect for selection has a chance to run and assign the color.
+      // To make it more robust, we might need a more immediate way to assign color or ensure useEffect runs first.
+      console.warn(`Color for species ${species.id} not found in speciesColors. Assigning a new one.`);
+      // For now, let's rely on useEffect[selection] to have pre-assigned.
+      // If it's critical to get a color *now* even if useEffect hasn't run, we'd need a more complex synchronous update
+      // or a different pattern. The current getSpeciesColor modified earlier might be called here if absolutely needed,
+      // but let's assume speciesColors[species.id] is populated.
+      // Fallback to a default if truly missing, though this means the UI might not reflect this color immediately.
+      setActiveSpeciesForDrawing({ ...species, color: BOX_COLORS[nextColorIndex % BOX_COLORS.length] });
+      // Manually update for this activation, though it's a bit of a patch over potential timing issues.
+      // Consider if getSpeciesColor should be called here if speciesColors[species.id] is undefined.
+      // For now, this will use the color from speciesColors, which should be set by useEffect.
+      // If speciesColors[species.id] is undefined, this means the color wasn't assigned by useEffect yet.
+      // This path indicates a potential timing issue or logic flaw if color is not pre-assigned.
+       alert("Color not pre-assigned for species. Please try again or check console.");
+       return;
+    }
+
     if (boxesForSpecies >= (speciesCount || 1)) { // Use speciesCount directly, fallback to 1 if somehow still undefined
       alert(`You have already drawn ${boxesForSpecies} boxes for ${species.preferred_common_name || species.name}, which is the selected count (${speciesCount || 1}). Increase the count to add more boxes.`);
       return;
     }
 
-    const color = getSpeciesColor(species.id);
-    setActiveSpeciesForDrawing({ ...species, color });
+    setActiveSpeciesForDrawing({ ...species, color: currentSpeciesColor });
     setIsDrawingMode(true);
     // Consider changing cursor style here, e.g., canvasRef.current.style.cursor = 'crosshair';
   };
@@ -727,7 +777,7 @@ export function ImageAnnotation({ fetchNextImage }) {
             {!noAnimalsVisible && (
               <Flex direction="column" gap="xs" mt="md">
                 {selection.map((animal) => {
-                  const animalColor = speciesColors[animal.id] || getSpeciesColor(animal.id); // Get color, assign if new
+                  const animalColor = speciesColors[animal.id] || '#CCCCCC'; // Get pre-assigned color, fallback
                   const boxesForThisSpecies = drawnBoxes.filter(b => b.speciesId === animal.id).length;
                   const countForThisSpecies = animalCounts[animal.id] || 1;
                   return (
@@ -742,7 +792,11 @@ export function ImageAnnotation({ fetchNextImage }) {
                               onClick={() => handleActivateDrawingMode(animal)}
                               disabled={isDrawingMode && activeSpeciesForDrawing?.id !== animal.id}
                               variant={activeSpeciesForDrawing?.id === animal.id ? "filled" : "outline"}
-                              style={{ backgroundColor: activeSpeciesForDrawing?.id === animal.id ? animalColor : undefined, borderColor: animalColor, color: activeSpeciesForDrawing?.id === animal.id ? 'white' : animalColor }}
+                              style={{
+                                backgroundColor: activeSpeciesForDrawing?.id === animal.id ? animalColor : undefined,
+                                borderColor: animalColor, // Always use animalColor for border
+                                color: activeSpeciesForDrawing?.id === animal.id ? 'white' : animalColor // Text color
+                              }}
                             >
                               <IconPencil size={16} />
                             </ActionIcon>
