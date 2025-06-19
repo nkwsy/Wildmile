@@ -16,10 +16,24 @@ export async function POST(request) {
 
     const observations = await request.json();
 
-    const observationsWithCreator = observations.map((obs) => ({
-      ...obs,
-      creator: session._id,
-    }));
+    const observationsWithCreator = observations.map((obs) => {
+      const observationData = {
+        ...obs, // Spread existing fields like mediaId, taxonId, etc.
+        creator: session._id,
+      };
+
+      // Explicitly include bounding box fields if they exist
+      if (obs.bboxX !== undefined) observationData.bboxX = obs.bboxX;
+      if (obs.bboxY !== undefined) observationData.bboxY = obs.bboxY;
+      if (obs.bboxWidth !== undefined) observationData.bboxWidth = obs.bboxWidth;
+      if (obs.bboxHeight !== undefined) observationData.bboxHeight = obs.bboxHeight;
+
+      // For 'blank', 'human', 'vehicle' types, these fields might not be present.
+      // If they are not in 'obs', they won't be added to 'observationData',
+      // and Mongoose will handle them as per schema (likely storing them as undefined or default).
+
+      return observationData;
+    });
 
     const savedObservations = await Observation.insertMany(
       observationsWithCreator

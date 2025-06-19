@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Card,
   CardSection,
@@ -54,6 +54,15 @@ export function ImageAnnotation({ fetchNextImage }) {
   const [vehiclePresent, setVehiclePresent] = useState(false);
   const [needsReview, setNeedsReview] = useState(false);
   const [flagged, setFlagged] = useState(false);
+  // Bounding box state
+  const [drawing, setDrawing] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [startY, setStartY] = useState(0);
+  const [currentX, setCurrentX] = useState(0);
+  const [currentY, setCurrentY] = useState(0);
+  const [boundingBox, setBoundingBox] = useState(null); // [x, y, width, height] normalized
+  const canvasRef = useRef(null);
+  const imageRef = useRef(null);
 
   useEffect(() => {
     if (currentImage) {
@@ -61,8 +70,82 @@ export function ImageAnnotation({ fetchNextImage }) {
       setIsFavorite(currentImage.favorite || false);
       setNeedsReview(currentImage.needsReview || false);
       setFlagged(currentImage.flagged || false);
+      // Reset bounding box and clear canvas when new image is loaded
+      setBoundingBox(null);
+      if (canvasRef.current) {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
     }
   }, [currentImage]);
+
+  // Event handlers for drawing
+  const handleMouseDown = (event) => {
+    if (!imageRef.current) return;
+    const rect = imageRef.current.getBoundingClientRect();
+    setStartX(event.clientX - rect.left);
+    setStartY(event.clientY - rect.top);
+    setCurrentX(event.clientX - rect.left);
+    setCurrentY(event.clientY - rect.top);
+    setDrawing(true);
+  };
+
+  const handleMouseMove = (event) => {
+    if (!drawing || !imageRef.current) return;
+    const rect = imageRef.current.getBoundingClientRect();
+    setCurrentX(event.clientX - rect.left);
+    setCurrentY(event.clientY - rect.top);
+
+    if (canvasRef.current) {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+      ctx.strokeStyle = "red";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(startX, startY, currentX - startX, currentY - startY);
+    }
+  };
+
+  const handleMouseUp = () => {
+    if (!drawing || !imageRef.current) return;
+    setDrawing(false);
+
+    const imageElement = imageRef.current;
+    const naturalWidth = imageElement.naturalWidth;
+    const naturalHeight = imageElement.naturalHeight;
+    const displayWidth = imageElement.width;
+    const displayHeight = imageElement.height;
+
+
+    // Ensure start is top-left and end is bottom-right
+    const finalStartX = Math.min(startX, currentX);
+    const finalStartY = Math.min(startY, currentY);
+    const finalEndX = Math.max(startX, currentX);
+    const finalEndY = Math.max(startY, currentY);
+
+    // Normalize coordinates
+    const normalizedX = finalStartX / displayWidth;
+    const normalizedY = finalStartY / displayHeight;
+    const normalizedWidth = (finalEndX - finalStartX) / displayWidth;
+    const normalizedHeight = (finalEndY - finalStartY) / displayHeight;
+
+    setBoundingBox([
+      normalizedX,
+      normalizedY,
+      normalizedWidth,
+      normalizedHeight,
+    ]);
+  };
+
+  const clearBoundingBox = () => {
+    setBoundingBox(null);
+    if (canvasRef.current) {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  };
 
   const handleCountChange = (id, value) => {
     setAnimalCounts((prev) => ({ ...prev, [id]: value }));
@@ -100,21 +183,30 @@ export function ImageAnnotation({ fetchNextImage }) {
       });
     } else {
       if (selection.length > 0) {
-        observations = selection.map((animal) => ({
-          mediaId: currentImage.mediaID,
-          mediaInfo: {
-            md5: currentImage.mediaID,
-            imageHash: currentImage.imageHash,
-          },
-          taxonId: animal.id,
-          scientificName: animal.name,
-          commonName: animal.preferred_common_name || animal.name,
-          count: animalCounts[animal.id] || 1,
-          eventStart: currentImage.timestamp,
-          eventEnd: currentImage.timestamp,
-          observationLevel: "media",
-          observationType: "animal",
-        }));
+        observations = selection.map((animal) => {
+          const obs = {
+            mediaId: currentImage.mediaID,
+            mediaInfo: {
+              md5: currentImage.mediaID,
+              imageHash: currentImage.imageHash,
+            },
+            taxonId: animal.id,
+            scientificName: animal.name,
+            commonName: animal.preferred_common_name || animal.name,
+            count: animalCounts[animal.id] || 1,
+            eventStart: currentImage.timestamp,
+            eventEnd: currentImage.timestamp,
+            observationLevel: "media",
+            observationType: "animal",
+          };
+          if (boundingBox) {
+            obs.bboxX = boundingBox[0];
+            obs.bboxY = boundingBox[1];
+            obs.bboxWidth = boundingBox[2];
+            obs.bboxHeight = boundingBox[3];
+          }
+          return obs;
+        });
       }
 
       if (humanPresent) {
@@ -169,6 +261,8 @@ export function ImageAnnotation({ fetchNextImage }) {
     } finally {
       setIsSaving(false);
     }
+    // Reset bounding box after saving
+    clearBoundingBox();
   };
 
   const handleAddComment = async () => {
@@ -281,14 +375,42 @@ export function ImageAnnotation({ fetchNextImage }) {
             wheel={{ step: 0.4 }} // how fast you zoom with the mouse wheel
             pinch={{ step: 0.2 }} // how fast you zoom with pinch gesture
             // doubleClick={{ disabled: true }} // optional: disable double-click zoom
+            disabled={drawing} // Disable pan/zoom when drawing
           >
-            <TransformComponent>
+            <TransformComponent
+              wrapperStyle={{
+                width: "100%",
+                height: "auto", // Adjust as per your layout needs
+                position: "relative", // Needed for canvas overlay
+              }}
+            >
               <Image
+                ref={imageRef}
                 src={currentImage.publicURL}
                 fit="contain"
-                // maxHeight={700}
                 width="100%"
                 alt="Wildlife image"
+                onLoad={() => {
+                  // Ensure canvas is same size as displayed image
+                  if (canvasRef.current && imageRef.current) {
+                    canvasRef.current.width = imageRef.current.width;
+                    canvasRef.current.height = imageRef.current.height;
+                  }
+                }}
+              />
+              <canvas
+                ref={canvasRef}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseUp} // Stop drawing if mouse leaves canvas
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  cursor: "crosshair",
+                  zIndex: 10, // Ensure canvas is on top
+                }}
               />
             </TransformComponent>
           </TransformWrapper>
@@ -311,6 +433,17 @@ export function ImageAnnotation({ fetchNextImage }) {
             Media ID: {currentImage.mediaID}
           </Text>
           {/* </Group> */}
+          {boundingBox && (
+            <Button
+              onClick={clearBoundingBox}
+              color="orange"
+              variant="outline"
+              mt="xs"
+              size="xs"
+            >
+              Clear Bounding Box
+            </Button>
+          )}
           <GridCol span={{ base: 12, md: 12, lg: 6 }}>
             <Group position="apart" mt="md">
               <ActionIcon
