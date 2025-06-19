@@ -66,21 +66,33 @@ export function ImageAnnotation({ fetchNextImage }) {
   const [activeSpeciesForDrawing, setActiveSpeciesForDrawing] = useState(null); // { id, name, color }
   const [drawnBoxes, setDrawnBoxes] = useState([]); // Array of { id: uuid, speciesId, speciesName, coordinates: {x,y,w,h}, normalizedCoordinates: {bboxX,...}, color }
   const [tempDrawingBox, setTempDrawingBox] = useState(null); // {startX, startY, currentX, currentY, color} for current drag
-  const [nextColorIndex, setNextColorIndex] = useState(0);
-  const [speciesColors, setSpeciesColors] = useState({}); // Maps speciesId to color
+  // Load initial values from localStorage
+  const [nextColorIndex, setNextColorIndex] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const storedIndex = localStorage.getItem('nextColorIndex');
+        return storedIndex ? parseInt(storedIndex, 10) : 0;
+      } catch (e) {
+        console.error('Failed to parse nextColorIndex from localStorage', e);
+        return 0;
+      }
+    }
+    return 0;
+  });
+  const [speciesColors, setSpeciesColors] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const storedColors = localStorage.getItem('speciesColors');
+        return storedColors ? JSON.parse(storedColors) : {};
+      } catch (e) {
+        console.error('Failed to parse speciesColors from localStorage', e);
+        return {};
+      }
+    }
+    return {};
+  });
 
-  const BOX_COLORS = [
-    "#FF0000", // Red
-    "#00FF00", // Lime
-    "#0000FF", // Blue
-    "#FFFF00", // Yellow
-    "#FF00FF", // Magenta
-    "#00FFFF", // Cyan
-    "#FFA500", // Orange
-    "#800080", // Purple
-    "#008000", // Green
-    "#A52A2A", // Brown
-  ];
+  const BOX_COLORS = ['#E6194B', '#3CB44B', '#FFE119', '#4363D8', '#F58231'];
 
   // speciesColors and nextColorIndex are now primarily managed by the useEffect hook watching 'selection'.
   // This function can act as a simple getter or a fallback if needed, but should avoid setting state if called during render.
@@ -158,26 +170,41 @@ export function ImageAnnotation({ fetchNextImage }) {
       if (colorsAssigned) {
         setSpeciesColors(newColors);
         setNextColorIndex(localNextColorIndex); // Update the main index after batch assignment
+        if (typeof window !== 'undefined') {
+          try {
+            localStorage.setItem('speciesColors', JSON.stringify(newColors));
+            localStorage.setItem('nextColorIndex', localNextColorIndex.toString());
+          } catch (e) {
+            console.error('Failed to save to localStorage', e);
+          }
+        }
       }
     }
     // Clean up colors for species no longer in selection (optional, but good practice)
+    // This part also needs to update localStorage if changes are made.
     const selectionIds = new Set(selection.map(s => s.id));
     const currentSpeciesWithColors = Object.keys(speciesColors);
     let colorsToClean = false;
-    let cleanedColors = {...speciesColors};
+    let cleanedColors = { ...speciesColors };
     currentSpeciesWithColors.forEach(id => {
       if (!selectionIds.has(id) && !selectionIds.has(Number(id))) { // Check for both string and number IDs due to object key nature
-         delete cleanedColors[id];
-         colorsToClean = true;
+        delete cleanedColors[id];
+        colorsToClean = true;
       }
     });
     if (colorsToClean) {
       setSpeciesColors(cleanedColors);
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem('speciesColors', JSON.stringify(cleanedColors));
+          // nextColorIndex doesn't change here, so no need to update it in localStorage
+        } catch (e) {
+          console.error('Failed to save cleaned colors to localStorage', e);
+        }
+      }
     }
 
-  }, [selection]); // Only re-run when selection itself changes.
-                  // animalCounts, speciesColors, nextColorIndex are not dependencies here to avoid loops.
-                  // Their state is managed based on `selection`.
+  }, [selection, animalCounts, speciesColors, nextColorIndex, BOX_COLORS]); // Added dependencies that were implicitly used or should be explicit
 
   // Effect to recalculate box coordinates on window resize
   useEffect(() => {
@@ -231,8 +258,9 @@ export function ImageAnnotation({ fetchNextImage }) {
       setActiveSpeciesForDrawing(null);
       setIsDrawingMode(false);
       setTempDrawingBox(null);
-      setNextColorIndex(0);
-      setSpeciesColors({});
+      // speciesColors and nextColorIndex are now persisted, so don't reset them here
+      // setNextColorIndex(0);
+      // setSpeciesColors({});
       redrawCanvas(); // Clear canvas for new image
     }
   }, [currentImage]);
@@ -260,14 +288,10 @@ export function ImageAnnotation({ fetchNextImage }) {
       // If it's critical to get a color *now* even if useEffect hasn't run, we'd need a more complex synchronous update
       // or a different pattern. The current getSpeciesColor modified earlier might be called here if absolutely needed,
       // but let's assume speciesColors[species.id] is populated.
-      // Fallback to a default if truly missing, though this means the UI might not reflect this color immediately.
-      setActiveSpeciesForDrawing({ ...species, color: BOX_COLORS[nextColorIndex % BOX_COLORS.length] });
-      // Manually update for this activation, though it's a bit of a patch over potential timing issues.
-      // Consider if getSpeciesColor should be called here if speciesColors[species.id] is undefined.
-      // For now, this will use the color from speciesColors, which should be set by useEffect.
-      // If speciesColors[species.id] is undefined, this means the color wasn't assigned by useEffect yet.
-      // This path indicates a potential timing issue or logic flaw if color is not pre-assigned.
-       alert("Color not pre-assigned for species. Please try again or check console.");
+      // If a color is missing here, it implies an issue with the useEffect hook not populating it,
+      // or an unexpected state. Alerting and returning is safer than assigning a temporary color
+      // that isn't reflected in the main speciesColors state or localStorage.
+       alert("Color not pre-assigned for species. Please try again or check console. This may indicate an issue with color assignment.");
        return;
     }
 
@@ -517,8 +541,9 @@ export function ImageAnnotation({ fetchNextImage }) {
     setActiveSpeciesForDrawing(null);
     setIsDrawingMode(false);
     setTempDrawingBox(null);
-    setNextColorIndex(0);
-    setSpeciesColors({});
+    // speciesColors and nextColorIndex are now persisted, so don't reset them here
+    // setNextColorIndex(0);
+    // setSpeciesColors({});
     redrawCanvas();
   };
 
