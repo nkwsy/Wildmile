@@ -239,7 +239,6 @@ export function ImageAnnotation({ fetchNextImage }) {
 
     window.addEventListener('resize', handleResize);
     // Call it once initially in case the image loaded before this effect ran or dimensions changed
-    // handleResize();
 
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -258,9 +257,6 @@ export function ImageAnnotation({ fetchNextImage }) {
       setActiveSpeciesForDrawing(null);
       setIsDrawingMode(false);
       setTempDrawingBox(null);
-      // speciesColors and nextColorIndex are now persisted, so don't reset them here
-      // setNextColorIndex(0);
-      // setSpeciesColors({});
       redrawCanvas(); // Clear canvas for new image
     }
   }, [currentImage]);
@@ -280,17 +276,9 @@ export function ImageAnnotation({ fetchNextImage }) {
     if (!currentSpeciesColor) {
       // This should ideally not happen if useEffect[selection] populates colors correctly.
       // As a fallback, assign a color now, though this involves a state update.
-      // This could happen if a species is added and drawing mode activated in the same render cycle
-      // before the useEffect for selection has a chance to run and assign the color.
-      // To make it more robust, we might need a more immediate way to assign color or ensure useEffect runs first.
       console.warn(`Color for species ${species.id} not found in speciesColors. Assigning a new one.`);
       // For now, let's rely on useEffect[selection] to have pre-assigned.
-      // If it's critical to get a color *now* even if useEffect hasn't run, we'd need a more complex synchronous update
-      // or a different pattern. The current getSpeciesColor modified earlier might be called here if absolutely needed,
-      // but let's assume speciesColors[species.id] is populated.
       // If a color is missing here, it implies an issue with the useEffect hook not populating it,
-      // or an unexpected state. Alerting and returning is safer than assigning a temporary color
-      // that isn't reflected in the main speciesColors state or localStorage.
        alert("Color not pre-assigned for species. Please try again or check console. This may indicate an issue with color assignment.");
        return;
     }
@@ -341,8 +329,6 @@ export function ImageAnnotation({ fetchNextImage }) {
     const imageElement = imageRef.current;
     const displayWidth = imageElement.offsetWidth;
     const displayHeight = imageElement.offsetHeight;
-    // const naturalWidth = imageElement.naturalWidth; // Use for normalization if available & needed
-    // const naturalHeight = imageElement.naturalHeight;
 
     const finalStartX = Math.min(tempDrawingBox.startX, tempDrawingBox.currentX);
     const finalStartY = Math.min(tempDrawingBox.startY, tempDrawingBox.currentY);
@@ -354,8 +340,6 @@ export function ImageAnnotation({ fetchNextImage }) {
 
     if (boxWidth < 5 || boxHeight < 5) { // Ignore tiny boxes
       setTempDrawingBox(null);
-      // setIsDrawingMode(false); // Optional: deactivate drawing mode
-      // setActiveSpeciesForDrawing(null);
       return;
     }
 
@@ -431,6 +415,22 @@ export function ImageAnnotation({ fetchNextImage }) {
 
   const handleSaveObservations = async ({ forceNoAnimals = false } = {}) => {
     if (!currentImage) return;
+    
+    // Validation: Check if animal counts match drawn boxes for each selected species
+    if (!forceNoAnimals && selection && selection.length > 0) {
+      for (const animal of selection) {
+        const count = animalCounts[animal.id] || 0; // Default to 0 if not set
+        const numBoxes = drawnBoxes.filter(box => Number(box.speciesId) === Number(animal.id)).length;
+
+        if (count !== numBoxes) {
+          alert(
+            `Mismatch for ${animal.preferred_common_name || animal.name}: Selected count is ${count}, but ${numBoxes} boxes are drawn. Please correct before saving.`
+          );
+          setIsSaving(false); // Ensure saving state is reset if it was set before this check
+          return; // Stop execution
+        }
+      }
+    }
 
     setIsSaving(true);
     if (comment.trim()) {
@@ -458,6 +458,7 @@ export function ImageAnnotation({ fetchNextImage }) {
     } else {
       if (selection.length > 0) {
         observations = selection.map((animal) => {
+          // Animal count and box count are validated now
           const speciesSpecificBoxes = drawnBoxes
             .filter((box) => Number(box.speciesId) === Number(animal.id)) // Ensure numeric comparison
             .map((box) => box.normalizedCoordinates);
@@ -522,10 +523,6 @@ export function ImageAnnotation({ fetchNextImage }) {
 
       fetchNextImage();
       if (response.ok) {
-        // Instead of fetchRandomImage, use fetchNextImage
-        // await fetchNextImage();
-        // setSelection([]);
-        // setAnimalCounts({});
         setNoAnimalsVisible(false);
       } else {
         alert("Failed to save observations. Make sure you're logged in");
@@ -541,9 +538,6 @@ export function ImageAnnotation({ fetchNextImage }) {
     setActiveSpeciesForDrawing(null);
     setIsDrawingMode(false);
     setTempDrawingBox(null);
-    // speciesColors and nextColorIndex are now persisted, so don't reset them here
-    // setNextColorIndex(0);
-    // setSpeciesColors({});
     redrawCanvas();
   };
 
