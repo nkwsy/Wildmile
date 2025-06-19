@@ -151,6 +151,46 @@ export function ImageAnnotation({ fetchNextImage }) {
     }
   }, [selection]);
 
+  // Effect to recalculate box coordinates on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (!imageRef.current) return;
+
+      const newImageWidth = imageRef.current.offsetWidth;
+      const newImageHeight = imageRef.current.offsetHeight;
+
+      setDrawnBoxes(currentBoxes =>
+        currentBoxes.map(box => {
+          if (!box.normalizedCoordinates) return box; // Should not happen for committed boxes
+
+          const newCanvasX = box.normalizedCoordinates.bboxX * newImageWidth;
+          const newCanvasY = box.normalizedCoordinates.bboxY * newImageHeight;
+          const newCanvasWidth = box.normalizedCoordinates.bboxWidth * newImageWidth;
+          const newCanvasHeight = box.normalizedCoordinates.bboxHeight * newImageHeight;
+
+          return {
+            ...box,
+            coordinates: {
+              x: newCanvasX,
+              y: newCanvasY,
+              width: newCanvasWidth,
+              height: newCanvasHeight,
+            },
+          };
+        })
+      );
+      // redrawCanvas will be triggered by the useEffect watching drawnBoxes
+    };
+
+    window.addEventListener('resize', handleResize);
+    // Call it once initially in case the image loaded before this effect ran or dimensions changed
+    // handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [imageRef]); // Rerun if imageRef itself changes, though it's a ref, its .current changes are what matter.
+
   useEffect(() => {
     if (currentImage) {
       setComments(currentImage.mediaComments || []);
