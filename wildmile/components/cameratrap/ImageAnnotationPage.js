@@ -46,7 +46,7 @@ export const ImageAnnotationPage = ({ initialImageId }) => {
       // Your existing logic for getting the next image
       fetchCamtrapImage(appliedFilters);
     }
-  }, [initialImageId, appliedFilters]);
+  }, [initialImageId]);
 
   const fetchDeployments = async () => {
     try {
