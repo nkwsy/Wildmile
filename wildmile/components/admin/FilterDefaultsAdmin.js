@@ -8,14 +8,15 @@ import {
   Title,
   Text,
   Select,
-  DateInput,
-  TimeInput,
+  // DateInput, // Will be imported from @mantine/dates
+  // TimeInput, // Will be imported from @mantine/dates
   Switch,
   NumberInput,
   LoadingOverlay,
   Alert,
   ActionIcon,
 } from "@mantine/core";
+import { DateInput, TimeInput } from "@mantine/dates"; // Correct import
 import { IconX, IconAlertCircle, IconCheck } from "@tabler/icons-react";
 
 const initialFormState = {
