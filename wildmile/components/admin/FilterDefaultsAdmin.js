@@ -208,7 +208,7 @@ export function FilterDefaultsAdmin() {
           data={locations}
           value={formState.locationId}
           onChange={(value) => handleInputChange("locationId", value)}
-          clearable
+          clearable={true}
           rightSection={
             formState.locationId && (
               <ActionIcon onClick={() => handleClearInput("locationId")} size="sm" variant="transparent">
@@ -223,14 +223,14 @@ export function FilterDefaultsAdmin() {
             placeholder="No default start date"
             value={formState.startDate}
             onChange={(value) => handleInputChange("startDate", value)}
-            clearable
+            clearable={true}
           />
           <DateInput
             label="Default End Date"
             placeholder="No default end date"
             value={formState.endDate}
             onChange={(value) => handleInputChange("endDate", value)}
-            clearable
+            clearable={true}
           />
         </Group>
         <Group grow>
@@ -240,7 +240,7 @@ export function FilterDefaultsAdmin() {
             value={formState.startTime}
             onChange={(value) => handleTimeChange("startTime", value)}
             onBlur={(e) => handleTimeChange("startTime", e.currentTarget.value)}
-            clearable
+            clearable={true}
             rightSection={
                 formState.startTime && (
                   <ActionIcon onClick={() => handleClearInput("startTime")} size="sm" variant="transparent">
@@ -255,7 +255,7 @@ export function FilterDefaultsAdmin() {
             value={formState.endTime}
             onChange={(value) => handleTimeChange("endTime", value)}
             onBlur={(e) => handleTimeChange("endTime", e.currentTarget.value)}
-            clearable
+            clearable={true}
             rightSection={
                 formState.endTime && (
                   <ActionIcon onClick={() => handleClearInput("endTime")} size="sm" variant="transparent">
