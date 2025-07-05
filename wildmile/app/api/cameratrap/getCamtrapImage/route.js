@@ -17,6 +17,18 @@ export async function GET(request) {
   const direction = searchParams.get("direction");
   const currentImageId = searchParams.get("currentImageId");
   const selectedImageId = searchParams.get("selectedImageId");
+  
+  const animalProbabilityParam = searchParams.get("animalProbability");
+  let minAnimalConf, maxAnimalConf;
+
+  if (animalProbabilityParam) {
+    const parts = animalProbabilityParam.split(',');
+    if (parts.length === 2) {
+      minAnimalConf = parseFloat(parts[0]);
+      maxAnimalConf = parseFloat(parts[1]);
+    }
+  }
+
   let query = {};
   let timeQuery = [];
 
@@ -91,6 +103,17 @@ export async function GET(request) {
 
   if (reviewed === "true") {
     query.reviewCount = { $gt: 0 };
+  }
+
+  if (typeof minAnimalConf === 'number' && typeof maxAnimalConf === 'number' && !isNaN(minAnimalConf) && !isNaN(maxAnimalConf)) {
+    query.aiResults = {
+      $elemMatch: {
+        confAnimal: {
+          $gte: minAnimalConf,
+          $lte: maxAnimalConf,
+        },
+      },
+    };
   }
 
   try {

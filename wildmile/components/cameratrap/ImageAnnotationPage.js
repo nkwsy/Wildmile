@@ -20,19 +20,31 @@ import { ImageFilterControls } from "./ImageFilterControls";
 import WildlifeSearch from "./WildlifeSearch";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 
+const defaultPageFilters = {
+  locationId: null,
+  startDate: null,
+  endDate: null,
+  startTime: null,
+  endTime: null,
+  reviewed: false,
+  reviewedByUser: false,
+  animalProbability: [0.75, 1.0],
+};
+
 export const ImageAnnotationPage = ({ initialImageId }) => {
   const [currentImage, setCurrentImage] = useImage();
   const [deployments, setDeployments] = useState([]);
+  const [appliedFilters, setAppliedFilters] = useState(defaultPageFilters);
 
   // In your component, use initialImageId to fetch and set the initial image
   useEffect(() => {
     fetchDeployments();
     if (initialImageId) {
       // Fetch and set the specific image
-      fetchCamtrapImage({ selectedImageId: initialImageId });
+      fetchCamtrapImage({ ...appliedFilters, selectedImageId: initialImageId });
     } else {
       // Your existing logic for getting the next image
-      fetchCamtrapImage();
+      fetchCamtrapImage(appliedFilters);
     }
   }, [initialImageId]);
 
@@ -53,7 +65,14 @@ export const ImageAnnotationPage = ({ initialImageId }) => {
   };
 
   const fetchCamtrapImage = async (params = {}) => {
-    const validParams = Object.entries(params).reduce((acc, [key, value]) => {
+    let processedParams = { ...params }; // Clone to avoid modifying the state directly
+
+    // Convert animalProbability array to comma-separated string
+    if (processedParams.animalProbability && Array.isArray(processedParams.animalProbability) && processedParams.animalProbability.length === 2) {
+      processedParams.animalProbability = processedParams.animalProbability.join(',');
+    }
+
+    const validParams = Object.entries(processedParams).reduce((acc, [key, value]) => {
       if (value !== null && value !== undefined && value !== "") {
         if (key === "reviewed" || key === "reviewedByUser") {
           acc[key] = value.toString();
@@ -81,23 +100,29 @@ export const ImageAnnotationPage = ({ initialImageId }) => {
   };
 
   const handleApplyFilters = (filters) => {
+    setAppliedFilters(filters);
     fetchCamtrapImage(filters);
   };
 
   const handleNavigateImage = (direction) => {
     if (currentImage) {
-      fetchCamtrapImage({ direction, currentImageId: currentImage._id });
+      fetchCamtrapImage({
+        ...appliedFilters,
+        direction,
+        currentImageId: currentImage._id,
+      });
     }
   };
 
   const fetchNextImage = async () => {
     if (currentImage) {
       await fetchCamtrapImage({
+        ...appliedFilters,
         direction: "next",
         currentImageId: currentImage._id,
       });
     } else {
-      await fetchCamtrapImage();
+      await fetchCamtrapImage(appliedFilters);
     }
   };
 
@@ -150,7 +175,10 @@ export const ImageAnnotationPage = ({ initialImageId }) => {
           </Group>
 
           {/* <ScrollArea style={{ flex: 1 }} offsetScrollbars> */}
-          <ImageAnnotation fetchNextImage={fetchNextImage} />
+          <ImageAnnotation
+            fetchNextImage={fetchNextImage}
+            filters={appliedFilters}
+          />
           {/* </ScrollArea> */}
           {/* </Paper> */}
         </GridCol>

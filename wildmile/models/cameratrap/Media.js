@@ -35,6 +35,13 @@ const MediaSchema = new mongoose.Schema(
       },
     ],
     exifData: mongoose.Schema.Types.Mixed,
+    aiResults: [{
+      modelName: String,
+      runDate: String, // Consider Date type if needed
+      confBlank: Number,
+      confHuman: Number,
+      confAnimal: Number
+    }],
     favorite: {
       type: Boolean,
       default: false,

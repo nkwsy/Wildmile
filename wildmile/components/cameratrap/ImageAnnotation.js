@@ -40,7 +40,7 @@ import styles from "styles/animalSelection.module.css";
 import { ObservationHistoryPopover } from "./ObservationHistory";
 import { SpeciesConsensusBadges } from "./SpeciesConsensusBadges";
 
-export function ImageAnnotation({ fetchNextImage }) {
+export function ImageAnnotation({ fetchNextImage, filters }) {
   const [currentImage, setCurrentImage] = useImage();
   const [selection, setSelection] = useSelection();
   const [animalCounts, setAnimalCounts] = useState({});
