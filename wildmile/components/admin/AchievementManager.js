@@ -428,7 +428,7 @@ export function AchievementManager() {
                 <Table.Td>
                   <Group>
                     <Image
-                      src={achievement.badge}
+                      src={achievement.badge || null} // Ensure null if empty string
                       alt={achievement.name}
                       width={40}
                       height={40}
