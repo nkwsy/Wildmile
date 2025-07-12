@@ -55,7 +55,7 @@ const ROLE_CONFIG = {
   },
 };
 
-export default function CameraAdminPage() {
+export default function UserAdminPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
