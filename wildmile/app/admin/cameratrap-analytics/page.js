@@ -8,25 +8,7 @@ import {
   Center,
   Text,
 } from "@mantine/core";
-import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title as ChartTitle,
-  Tooltip,
-  Legend,
-} from "chart.js";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  ChartTitle,
-  Tooltip,
-  Legend
-);
+import { BarChart } from "@mantine/charts";
 
 export default function CameraTrapAnalyticsPage() {
   const [year, setYear] = useState(new Date().getFullYear().toString());
@@ -49,7 +31,13 @@ export default function CameraTrapAnalyticsPage() {
           throw new Error("Failed to fetch data");
         }
         const jsonData = await res.json();
-        setData(jsonData);
+        const formattedData = jsonData.map((count, index) => ({
+          month: new Date(0, index).toLocaleString("default", {
+            month: "long",
+          }),
+          Observations: count,
+        }));
+        setData(formattedData);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -59,52 +47,6 @@ export default function CameraTrapAnalyticsPage() {
 
     fetchData();
   }, [year]);
-
-  const chartData = {
-    labels: [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ],
-    datasets: [
-      {
-        label: "Number of Observations",
-        data: data,
-        backgroundColor: "rgba(75, 192, 192, 0.6)",
-      },
-    ],
-  };
-
-  const chartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      title: {
-        display: true,
-        text: `Monthly Observations for ${year}`,
-      },
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: "Number of Observations",
-        },
-      },
-    },
-  };
 
   return (
     <Paper shadow="md" p="md">
@@ -127,9 +69,15 @@ export default function CameraTrapAnalyticsPage() {
         </Center>
       )}
       {data && !loading && (
-        <div style={{ height: "400px" }}>
-          <Bar data={chartData} options={chartOptions} />
-        </div>
+        <BarChart
+          h={400}
+          data={data}
+          dataKey="month"
+          series={[{ name: "Observations", color: "blue.6" }]}
+          tickLine="y"
+          yAxisLabel="Number of Observations"
+          xAxisLabel="Months"
+        />
       )}
     </Paper>
   );
