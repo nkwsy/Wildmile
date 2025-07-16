@@ -57,7 +57,7 @@ export default function RootLayout({ children }) {
 
         <MantineProvider theme={theme}>
           <Notifications />
-          {/* <HeaderNav /> */}
+          <HeaderNav />
           {children}
           <SpeedInsights />
           <Analytics />
