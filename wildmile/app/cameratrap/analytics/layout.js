@@ -17,10 +17,7 @@ export default function AnalyticsLayout({ children }) {
       padding="md"
     >
       <AppShell.Header>
-        <Group h="100%" px="md">
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <HeaderNav />
-        </Group>
+        <HeaderNav />
       </AppShell.Header>
       <AppShell.Navbar p="md">
         <AnalyticsSidebar />
