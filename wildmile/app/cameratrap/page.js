@@ -44,6 +44,12 @@ function CameraTrapCards() {
       href: "/cameratrap/explore",
       description: "Explore wildlife images which have been catagorized",
     },
+    {
+      icon: IconUsers,
+      title: "Analytics",
+      href: "/cameratrap/analytics",
+      description: "See analytics on the camera trap project",
+    },
   ];
 
   return <IconCardGrid cards={cards} />;

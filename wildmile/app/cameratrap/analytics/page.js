@@ -50,7 +50,7 @@ export default function CameraTrapAnalyticsPage() {
 
   return (
     <Paper shadow="md" p="md">
-      <Title order={2}>CameraTrap Analytics</Title>
+      <Title order={2}>Community Observation Activity</Title>
       <Select
         label="Select Year"
         value={year}

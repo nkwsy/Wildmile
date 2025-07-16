@@ -31,12 +31,6 @@ export function AdminSidebar() {
         href="/admin/filters"
         active={pathname === "/admin/filters"}
       />
-      <NavLink
-        label="CameraTrap Analytics"
-        component={Link}
-        href="/admin/cameratrap-analytics"
-        active={pathname === "/admin/cameratrap-analytics"}
-      />
     </div>
   );
 }
