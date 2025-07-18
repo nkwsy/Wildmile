@@ -55,7 +55,7 @@ const ROLE_CONFIG = {
   },
 };
 
-export default function CameraAdminPage() {
+export default function UserAdminPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -69,23 +69,25 @@ export default function CameraAdminPage() {
     const fetchInitialData = async () => {
       setLoading(true);
       try {
-        // Fetch permissions
-        const permResponse = await fetch("/api/admin/update-user-roles", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            userId: "test",
-            role: "CameraManager",
-            action: "add",
-          }),
-        });
+        // Fetch permissions - Temporarily disabled problematic POST call
+        // TODO: Implement a dedicated GET endpoint to fetch user's manageable permissions
+        // For now, userPermissions will use its initial default value.
+        // const permResponse = await fetch("/api/admin/update-user-roles", {
+        //   method: "POST",
+        //   headers: { "Content-Type": "application/json" },
+        //   body: JSON.stringify({
+        //     userId: "test",
+        //     role: "CameraManager",
+        //     action: "add",
+        //   }),
+        // });
 
-        if (permResponse.ok) {
-          const data = await permResponse.json();
-          if (data.permissions) {
-            setUserPermissions(data.permissions);
-          }
-        }
+        // if (permResponse.ok) {
+        //   const data = await permResponse.json();
+        //   if (data.permissions) {
+        //     setUserPermissions(data.permissions);
+        //   }
+        // }
 
         // Fetch users with roles
         const usersResponse = await fetch(
