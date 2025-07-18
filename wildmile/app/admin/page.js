@@ -16,6 +16,7 @@ import { getSession } from "lib/getSession";
 import { Suspense } from "react";
 import { cookies, headers } from "next/headers";
 import { AchievementManager } from "components/admin/AchievementManager";
+import { FilterDefaultsAdmin } from "components/admin/FilterDefaultsAdmin";
 
 // In your admin page component
 export const metadata = {
@@ -45,8 +46,11 @@ export default async function Page(props) {
   return (
     <Container>
       <Suspense fallback={<LoadingOverlay visible />}>
-        <Card shadow="sm" p="md" withBorder>
+        <Card shadow="sm" p="md" withBorder mb="lg">
           <CameraAdminPage />
+        </Card>
+        <Card shadow="sm" p="md" withBorder mb="lg">
+          <FilterDefaultsAdmin />
         </Card>
         <Card shadow="sm" p="md" withBorder>
           <AchievementManager />
