@@ -32,7 +32,7 @@ export async function createUser({
   await dbConnect()
   // Here you should insert the user into the database
   const user = await User.create({
-    email: email,
+    email: email.toLowerCase(),
     password: password,
     profile: {
       name: name,
@@ -80,10 +80,10 @@ export async function findUserByEmail(email) {
 export async function updateUserByEmail(req, email, update) {
   await dbConnect()
   // Updating requires the _id which we filter out of results in other places so lets
-  const user = await User.findOne({ email: email });
+  const user = await User.findOne({ email: email.toLowerCase() });
 
-  if (update.email && update.email != user.email) {
-    user.email = update.email;
+  if (update.email && update.email.toLowerCase() != user.email) {
+    user.email = update.email.toLowerCase();
   }
   if (update.password && !(await user.comparePassword(password))) {
     user.password = update.password;
