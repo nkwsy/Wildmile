@@ -77,6 +77,7 @@ export default function CameraTrapAnalyticsPage() {
           tickLine="y"
           yAxisLabel="Number of Observations"
           xAxisLabel="Months"
+          withBarValueLabel
         />
       )}
     </Paper>
