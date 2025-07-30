@@ -58,6 +58,9 @@ export async function GET(request) {
     query["speciesConsensus"] = {
       $elemMatch: { observationType: "animal" },
     };
+    query["aiResults"] = {
+      $elemMatch: { confHuman: { $lte: 0.85 } },
+    }
   } else if (type === "humans") {
     query["speciesConsensus"] = {
       $elemMatch: { observationType: "human" },

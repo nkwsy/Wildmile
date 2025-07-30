@@ -114,6 +114,9 @@ export async function GET(request) {
           $gte: minAnimalConf,
           $lte: maxAnimalConf,
         },
+        confHuman: {
+          $lte: 0.85,
+        }
       },
     };
   }
