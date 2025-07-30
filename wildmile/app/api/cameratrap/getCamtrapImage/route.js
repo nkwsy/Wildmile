@@ -32,6 +32,8 @@ export async function GET(request) {
   let query = {};
   let timeQuery = [];
 
+  query.flagged = { $ne: true };
+
   if (selectedImageId) {
     query.mediaID = selectedImageId;
   }
@@ -112,6 +114,9 @@ export async function GET(request) {
           $gte: minAnimalConf,
           $lte: maxAnimalConf,
         },
+        confHuman: {
+          $lte: 0.85,
+        }
       },
     };
   }

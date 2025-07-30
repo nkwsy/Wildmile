@@ -43,6 +43,8 @@ export async function GET(request) {
   let sortQuery = {};
   let timeQuery = [];
 
+  query.flagged = { $ne: true };
+
   // Sorting methods
   if (sort) {
     sortQuery = { [sort]: sortDirection === "asc" ? 1 : -1 };
@@ -52,6 +54,9 @@ export async function GET(request) {
   }
 
   // Logic for consensus
+  query["aiResults"] = {
+    $elemMatch: { confHuman: { $lte: 0.85 } },
+  }
   if (type === "animals") {
     query["speciesConsensus"] = {
       $elemMatch: { observationType: "animal" },
