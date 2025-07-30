@@ -54,13 +54,13 @@ export async function GET(request) {
   }
 
   // Logic for consensus
+  query["aiResults"] = {
+    $elemMatch: { confHuman: { $lte: 0.85 } },
+  }
   if (type === "animals") {
     query["speciesConsensus"] = {
       $elemMatch: { observationType: "animal" },
     };
-    query["aiResults"] = {
-      $elemMatch: { confHuman: { $lte: 0.85 } },
-    }
   } else if (type === "humans") {
     query["speciesConsensus"] = {
       $elemMatch: { observationType: "human" },
