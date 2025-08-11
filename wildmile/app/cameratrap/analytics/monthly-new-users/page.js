@@ -74,7 +74,7 @@ export default function MonthlyNewUsersPage() {
       {data && !loading && (
         <ScrollArea w="100%" type={year === 'All' ? 'auto' : 'never'}>
           <BarChart
-            h={400}
+            h={500}
             data={data}
             dataKey="month"
             series={[{ name: "New Users", color: "green.6" }]}

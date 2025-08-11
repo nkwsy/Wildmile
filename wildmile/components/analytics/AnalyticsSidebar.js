@@ -18,6 +18,10 @@ export default function AnalyticsSidebar() {
       label: "Monthly New Users",
       href: "/cameratrap/analytics/monthly-new-users",
     },
+    {
+      label: "Total Images with Observations",
+      href: "/cameratrap/analytics/total-images",
+    },
   ];
   return (
     <div>
