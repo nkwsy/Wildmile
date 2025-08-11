@@ -33,8 +33,17 @@ export async function GET(request) {
           _id: {
             year: { $year: "$createdAt" },
             month: { $month: "$createdAt" },
+            creator: "$creator",
           },
-          count: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            year: "$_id.year",
+            month: "$_id.month",
+          },
+          uniqueUsers: { $sum: 1 },
         },
       },
       {
@@ -46,26 +55,26 @@ export async function GET(request) {
     if (year === "All") {
       formattedData = monthlyData.map((d) => ({
         month: `${d._id.month}/${d._id.year}`,
-        Observations: d.count,
+        "Active Users": d.uniqueUsers,
       }));
     } else {
       const yearData = Array(12).fill(0);
       monthlyData.forEach((d) => {
         if (d._id.year === parseInt(year)) {
-          yearData[d._id.month - 1] = d.count;
+          yearData[d._id.month - 1] = d.uniqueUsers;
         }
       });
       formattedData = yearData.map((count, index) => ({
         month: new Date(0, index).toLocaleString("default", {
           month: "long",
         }),
-        Observations: count,
+        "Active Users": count,
       }));
     }
 
     return NextResponse.json(formattedData);
   } catch (error) {
-    console.error("Error fetching camera trap analytics:", error);
+    console.error("Error fetching monthly active users:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

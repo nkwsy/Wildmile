@@ -10,6 +10,14 @@ export default function AnalyticsSidebar() {
       label: "Community Observation Activity",
       href: "/cameratrap/analytics",
     },
+    {
+      label: "Monthly Active Users",
+      href: "/cameratrap/analytics/monthly-active-users",
+    },
+    {
+      label: "Monthly New Users",
+      href: "/cameratrap/analytics/monthly-new-users",
+    },
   ];
   return (
     <div>

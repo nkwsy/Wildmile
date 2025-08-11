@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
-import Observation from "models/cameratrap/Observation";
+import User from "models/User";
 
 export async function GET(request) {
   await dbConnect();
@@ -24,7 +24,7 @@ export async function GET(request) {
             },
           };
 
-    const monthlyData = await Observation.aggregate([
+    const monthlyData = await User.aggregate([
       {
         $match: matchStage,
       },
@@ -34,7 +34,7 @@ export async function GET(request) {
             year: { $year: "$createdAt" },
             month: { $month: "$createdAt" },
           },
-          count: { $sum: 1 },
+          newUsers: { $sum: 1 },
         },
       },
       {
@@ -46,26 +46,26 @@ export async function GET(request) {
     if (year === "All") {
       formattedData = monthlyData.map((d) => ({
         month: `${d._id.month}/${d._id.year}`,
-        Observations: d.count,
+        "New Users": d.newUsers,
       }));
     } else {
       const yearData = Array(12).fill(0);
       monthlyData.forEach((d) => {
         if (d._id.year === parseInt(year)) {
-          yearData[d._id.month - 1] = d.count;
+          yearData[d._id.month - 1] = d.newUsers;
         }
       });
       formattedData = yearData.map((count, index) => ({
         month: new Date(0, index).toLocaleString("default", {
           month: "long",
         }),
-        Observations: count,
+        "New Users": count,
       }));
     }
 
     return NextResponse.json(formattedData);
   } catch (error) {
-    console.error("Error fetching camera trap analytics:", error);
+    console.error("Error fetching monthly new users:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }
