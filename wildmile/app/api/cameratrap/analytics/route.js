@@ -61,46 +61,6 @@ export async function GET(request) {
       { $sort: { "_id.year": 1, "_id.month": 1 } },
     ]);
 
-    const monthlyValidatedImages = await Observation.aggregate([
-      { $match: matchStage },
-      {
-        $group: {
-          _id: {
-            mediaId: "$mediaId",
-            scientificName: "$scientificName",
-            year: { $year: "$createdAt" },
-            month: { $month: "$createdAt" },
-          },
-          observationCount: { $sum: 1 },
-        },
-      },
-      {
-        $match: {
-          observationCount: { $gte: 2 },
-          "_id.scientificName": { $ne: null },
-        },
-      },
-      {
-        $group: {
-          _id: {
-            year: "$_id.year",
-            month: "$_id.month",
-            mediaId: "$_id.mediaId",
-          },
-        },
-      },
-      {
-        $group: {
-          _id: {
-            year: "$_id.year",
-            month: "$_id.month",
-          },
-          count: { $sum: 1 },
-        },
-      },
-      { $sort: { "_id.year": 1, "_id.month": 1 } },
-    ]);
-
     const allMonths = new Map();
 
     const processData = (data, key) => {
@@ -116,7 +76,6 @@ export async function GET(request) {
             month: monthId,
             Observations: 0,
             "Images with observations": 0,
-            "Validated image observations": 0,
             year: d._id.year,
             monthNum: d._id.month,
           });
@@ -127,7 +86,6 @@ export async function GET(request) {
 
     processData(monthlyObservations, "Observations");
     processData(monthlyImagesWithObservations, "Images with observations");
-    processData(monthlyValidatedImages, "Validated image observations");
 
     let formattedData;
     if (year === "All") {
@@ -146,7 +104,6 @@ export async function GET(request) {
             month: monthName,
             Observations: 0,
             "Images with observations": 0,
-            "Validated image observations": 0,
           }
         );
       });
