@@ -16,7 +16,36 @@ export async function GET(request) {
     const totalImages = await CameratrapMedia.countDocuments();
 
     // Get unique mediaIds in observations
-    const uniqueMediaIds = await Observation.distinct("mediaId");
+    const uniqueMediaIdsWithObservations = await Observation.distinct("mediaId");
+
+    // Get total images with validated observations
+    const validatedObservations = await Observation.aggregate([
+      {
+        $group: {
+          _id: {
+            mediaId: "$mediaId",
+            scientificName: "$scientificName",
+          },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $match: {
+          count: { $gte: 2 },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.mediaId",
+        },
+      },
+      {
+        $count: "count",
+      },
+    ]);
+
+    // Get total number of volunteers
+    const totalVolunteers = await Observation.distinct("creator");
 
     // Get new images in last 30 days
     const thirtyDaysAgo = new Date();
@@ -148,7 +177,10 @@ export async function GET(request) {
 
     const response = NextResponse.json({
       totalImages,
-      uniqueMediaIds: uniqueMediaIds.length,
+      totalImagesWithObservations: uniqueMediaIdsWithObservations.length,
+      totalValidatedImages: validatedObservations[0]?.count || 0,
+      totalVolunteers: totalVolunteers.length,
+      uniqueMediaIds: uniqueMediaIdsWithObservations.length, // for backwards compatibility
       newImages30Days,
       topCreators: topCreators.map((creator) => ({
         ...creator,

@@ -1,0 +1,3 @@
+
+> wildmile@1.0.0 dev
+> cross-env NODE_OPTIONS=--inspect next dev
