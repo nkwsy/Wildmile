@@ -2,26 +2,17 @@
 import { useState, useEffect } from "react";
 import {
   Title,
-  Select,
   Paper,
   Loader,
   Center,
   Text,
-  ScrollArea,
 } from "@mantine/core";
 import { BarChart } from "@mantine/charts";
 
 export default function TotalImagesPage() {
-  const [year, setYear] = useState(new Date().getFullYear().toString());
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: currentYear - 2023 }, (_, i) =>
-    (2024 + i).toString()
-  );
-  years.unshift("All");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +20,7 @@ export default function TotalImagesPage() {
       setError(null);
       try {
         const res = await fetch(
-          `/api/cameratrap/analytics/total-images?year=${year}`
+          `/api/cameratrap/analytics/total-images?year=All`
         );
         if (!res.ok) {
           throw new Error("Failed to fetch data");
@@ -44,7 +35,7 @@ export default function TotalImagesPage() {
     };
 
     fetchData();
-  }, [year]);
+  }, []);
 
   const today = new Date().toISOString().split("T")[0];
 
@@ -54,13 +45,6 @@ export default function TotalImagesPage() {
       <Text size="sm" c="dimmed" fs="italic">
         Data current as of {today}
       </Text>
-      <Select
-        label="Select Year"
-        value={year}
-        onChange={setYear}
-        data={years}
-        style={{ marginTop: "1rem", marginBottom: "1rem" }}
-      />
       {loading && (
         <Center>
           <Loader />
@@ -72,7 +56,6 @@ export default function TotalImagesPage() {
         </Center>
       )}
       {data && !loading && (
-        <ScrollArea w="100%" type={year === 'All' ? 'auto' : 'never'}>
           <BarChart
             h={500}
             data={data}
@@ -84,9 +67,7 @@ export default function TotalImagesPage() {
             yAxisLabel="Cumulative Count"
             xAxisLabel="Months"
             withBarValueLabel
-            style={{ width: year === 'All' ? `${data.length * 80}px` : '100%' }}
           />
-        </ScrollArea>
       )}
     </Paper>
   );
