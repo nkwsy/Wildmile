@@ -15,12 +15,8 @@ export default function AnalyticsSidebar() {
       href: "/cameratrap/analytics/community-observation-activity",
     },
     {
-      label: "Monthly Active Users",
-      href: "/cameratrap/analytics/monthly-active-users",
-    },
-    {
-      label: "Monthly New Users",
-      href: "/cameratrap/analytics/monthly-new-users",
+      label: "Monthly User Activity",
+      href: "/cameratrap/analytics/monthly-user-activity",
     },
   ];
   return (

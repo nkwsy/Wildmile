@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { BarChart } from "@mantine/charts";
 
-export default function MonthlyActiveUsersPage() {
+export default function MonthlyUserActivityPage() {
   const [year, setYear] = useState(new Date().getFullYear().toString());
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -29,7 +29,7 @@ export default function MonthlyActiveUsersPage() {
       setError(null);
       try {
         const res = await fetch(
-          `/api/cameratrap/analytics/monthly-active-users?year=${year}`
+          `/api/cameratrap/analytics/monthly-user-activity?year=${year}`
         );
         if (!res.ok) {
           throw new Error("Failed to fetch data");
@@ -50,7 +50,7 @@ export default function MonthlyActiveUsersPage() {
 
   return (
     <Paper shadow="md" p="md">
-      <Title order={2}>Monthly Active Users</Title>
+      <Title order={2}>Monthly User Activity</Title>
       <Text size="sm" c="dimmed" fs="italic">
         Data current as of {today}
       </Text>
@@ -69,7 +69,7 @@ export default function MonthlyActiveUsersPage() {
       {error && (
         <Center>
           <Text color="red">{error}</Text>
-        </Center>
+        </center>
       )}
       {data && !loading && (
         <ScrollArea w="100%" type={year === 'All' ? 'auto' : 'never'}>
@@ -77,9 +77,14 @@ export default function MonthlyActiveUsersPage() {
             h={500}
             data={data}
             dataKey="month"
-            series={[{ name: "Active Users", color: "blue.6" }]}
-            tickLine="y"
-            yAxisLabel="Number of Active Users"
+            series={[
+              { name: "Active Users", color: "blue.6", yAxisId: "left" },
+              { name: "New Users", color: "green.6", yAxisId: "right" },
+            ]}
+            yAxis={[
+                { yAxisId: 'left', label: 'Active Users' },
+                { yAxisId: 'right', label: 'New Users', orientation: 'right' },
+            ]}
             xAxisLabel="Months"
             withBarValueLabel
             style={{ width: year === 'All' ? `${data.length * 80}px` : '100%' }}
