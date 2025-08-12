@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { BarChart } from "@mantine/charts";
 
-export default function CameraTrapAnalyticsPage() {
+export default function TotalImagesPage() {
   const [year, setYear] = useState(new Date().getFullYear().toString());
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,7 +28,9 @@ export default function CameraTrapAnalyticsPage() {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(`/api/cameratrap/analytics?year=${year}`);
+        const res = await fetch(
+          `/api/cameratrap/analytics/total-images?year=${year}`
+        );
         if (!res.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -48,7 +50,7 @@ export default function CameraTrapAnalyticsPage() {
 
   return (
     <Paper shadow="md" p="md">
-      <Title order={2}>Community Observation Activity</Title>
+      <Title order={2}>Total Images with Observations</Title>
       <Text size="sm" c="dimmed" fs="italic">
         Data current as of {today}
       </Text>
@@ -75,9 +77,11 @@ export default function CameraTrapAnalyticsPage() {
             h={500}
             data={data}
             dataKey="month"
-            series={[{ name: "Observations", color: "blue.6" }]}
-            tickLine="y"
-            yAxisLabel="Number of Observations"
+            series={[
+              { name: "Observed Images", color: "violet.6" },
+              { name: "New Images", color: "orange.6" },
+            ]}
+            yAxisLabel="Count"
             xAxisLabel="Months"
             withBarValueLabel
             style={{ minWidth: year === 'All' ? 1200 : 'auto' }}

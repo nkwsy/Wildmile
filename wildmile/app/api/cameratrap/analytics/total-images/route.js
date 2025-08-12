@@ -48,13 +48,22 @@ export async function GET(request) {
       { $sort: { "_id.year": 1, "_id.month": 1 } },
     ]);
 
+    const matchStageByTimestamp =
+      year === "All"
+        ? {}
+        : {
+            $expr: {
+              $eq: [{ $year: "$timestamp" }, parseInt(year)],
+            },
+          };
+
     const newImagesData = await Media.aggregate([
-      { $match: matchStage },
+      { $match: matchStageByTimestamp },
       {
         $group: {
           _id: {
-            year: { $year: "$createdAt" },
-            month: { $month: "$createdAt" },
+            year: { $year: "$timestamp" },
+            month: { $month: "$timestamp" },
           },
           count: { $sum: 1 },
         },

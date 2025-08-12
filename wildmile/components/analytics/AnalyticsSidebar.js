@@ -7,8 +7,12 @@ export default function AnalyticsSidebar() {
   const pathname = usePathname();
   const links = [
     {
-      label: "Community Observation Activity",
+      label: "Total Images with Observations",
       href: "/cameratrap/analytics",
+    },
+    {
+      label: "Community Observation Activity",
+      href: "/cameratrap/analytics/community-observation-activity",
     },
     {
       label: "Monthly Active Users",
@@ -17,10 +21,6 @@ export default function AnalyticsSidebar() {
     {
       label: "Monthly New Users",
       href: "/cameratrap/analytics/monthly-new-users",
-    },
-    {
-      label: "Total Images with Observations",
-      href: "/cameratrap/analytics/total-images",
     },
   ];
   return (
