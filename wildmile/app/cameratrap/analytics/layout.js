@@ -18,13 +18,13 @@ export default function AnalyticsLayout({ children }) {
       padding="md"
     >
       <AppShell.Header>
-        <HeaderNav />
+        <HeaderNav /> 
       </AppShell.Header>
       <AppShell.Navbar p="md">
         <AnalyticsSidebar />
       </AppShell.Navbar>
 
-      <AppShell.Main>
+      <AppShell.Main style={{ paddingTop: 20 }}>
         <Stack>
           <Title order={2}>Camera Trap Analytics</Title>
           <AnalyticsStats />
