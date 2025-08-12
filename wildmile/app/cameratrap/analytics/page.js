@@ -9,7 +9,7 @@ import {
   Text,
   ScrollArea,
 } from "@mantine/core";
-import { LineChart } from "@mantine/charts";
+import { BarChart } from "@mantine/charts";
 
 export default function TotalImagesPage() {
   const [year, setYear] = useState(new Date().getFullYear().toString());
@@ -73,7 +73,7 @@ export default function TotalImagesPage() {
       )}
       {data && !loading && (
         <ScrollArea w="100%" type={year === 'All' ? 'auto' : 'never'}>
-          <LineChart
+          <BarChart
             h={500}
             data={data}
             dataKey="month"
@@ -83,6 +83,7 @@ export default function TotalImagesPage() {
             ]}
             yAxisLabel="Cumulative Count"
             xAxisLabel="Months"
+            withBarValueLabel
             style={{ width: year === 'All' ? `${data.length * 80}px` : '100%' }}
           />
         </ScrollArea>
