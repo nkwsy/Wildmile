@@ -15,7 +15,7 @@ export default function AnalyticsSidebar() {
       href: "/cameratrap/analytics/community-observation-activity",
     },
     {
-      label: "Monthly Volunteer Activity",
+      label: "Volunteer Activity",
       href: "/cameratrap/analytics/monthly-user-activity",
     },
   ];
