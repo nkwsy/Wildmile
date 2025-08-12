@@ -72,7 +72,7 @@ export default function CameraTrapAnalyticsPage() {
       {data && !loading && (
         <ScrollArea w="100%" type={year === 'All' ? 'auto' : 'never'}>
           <BarChart
-            h={300}
+            h={400}
             data={data}
             dataKey="month"
             series={[

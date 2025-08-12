@@ -72,7 +72,7 @@ export default function MonthlyUserActivityPage() {
       )}
       {data && !loading && (
         <BarChart
-          h={300}
+          h={400}
           data={data}
           dataKey="month"
           series={[
