@@ -71,64 +71,68 @@ export async function GET(request) {
       { $sort: { "_id.year": 1, "_id.month": 1 } },
     ]);
 
-    let combinedData = {};
+    let combinedMonthlyData = {};
 
     observedImagesData.forEach((d) => {
       const key = `${d._id.year}-${String(d._id.month).padStart(2, "0")}`;
-      if (!combinedData[key]) {
-        combinedData[key] = {
-          month: `${d._id.month}/${d._id.year}`,
-          "Observed Images": 0,
-          "New Images": 0,
-        };
+      if (!combinedMonthlyData[key]) {
+        combinedMonthlyData[key] = { "Images with Observations": 0, "Total Images": 0 };
       }
-      combinedData[key]["Observed Images"] = d.count;
+      combinedMonthlyData[key]["Images with Observations"] = d.count;
     });
 
     newImagesData.forEach((d) => {
       const key = `${d._id.year}-${String(d._id.month).padStart(2, "0")}`;
-      if (!combinedData[key]) {
-        combinedData[key] = {
-          month: `${d._id.month}/${d._id.year}`,
-          "Observed Images": 0,
-          "New Images": 0,
-        };
+      if (!combinedMonthlyData[key]) {
+        combinedMonthlyData[key] = { "Images with Observations": 0, "Total Images": 0 };
       }
-      combinedData[key]["New Images"] = d.count;
+      combinedMonthlyData[key]["Total Images"] = d.count;
     });
 
-    if (year !== "All") {
-      const yearData = Array(12)
-        .fill(null)
-        .map((_, i) => {
-          const month = i + 1;
-          const key = `${year}-${String(month).padStart(2, "0")}`;
-          const dataPoint = combinedData[key];
-
-          const monthName = new Date(0, i).toLocaleString("default", {
-            month: "long",
-          });
-
-          if (dataPoint) {
-            return {
-              ...dataPoint,
-              month: monthName,
-            };
-          }
-
-          return {
-            month: monthName,
-            "Observed Images": 0,
-            "New Images": 0,
-          };
-        });
-      return NextResponse.json(yearData);
+    const sortedKeys = Object.keys(combinedMonthlyData).sort();
+    if (sortedKeys.length === 0) {
+        return NextResponse.json([]);
     }
 
-    const sortedKeys = Object.keys(combinedData).sort();
-    const formattedData = sortedKeys.map((key) => combinedData[key]);
+    const [startYear, startMonth] = sortedKeys[0].split('-').map(Number);
+    const today = new Date();
+    const endYear = today.getFullYear();
+    const endMonth = today.getMonth(); // 0-indexed
 
-    return NextResponse.json(formattedData);
+    let cumulativeTotal = 0;
+    let cumulativeObserved = 0;
+    const cumulativeResult = [];
+
+    for (let y = startYear; y <= endYear; y++) {
+        const mStart = (y === startYear) ? startMonth - 1 : 0;
+        const mEnd = (y === endYear) ? endMonth : 11;
+
+        for (let m = mStart; m <= mEnd; m++) {
+            const key = `${y}-${String(m + 1).padStart(2, '0')}`;
+            const monthly = combinedMonthlyData[key] || { "Total Images": 0, "Images with Observations": 0 };
+
+            cumulativeTotal += monthly["Total Images"];
+            cumulativeObserved += monthly["Images with Observations"];
+
+            cumulativeResult.push({
+                year: y,
+                monthIndex: m,
+                month: `${m + 1}/${y}`,
+                "Total Images": cumulativeTotal,
+                "Images with Observations": cumulativeObserved,
+            });
+        }
+    }
+
+    if (year === 'All') {
+        return NextResponse.json(cumulativeResult);
+    } else {
+        const yearData = cumulativeResult.filter(d => d.year === parseInt(year)).map(d => ({
+            ...d,
+            month: new Date(0, d.monthIndex).toLocaleString("default", { month: "long" }),
+        }));
+        return NextResponse.json(yearData);
+    }
   } catch (error) {
     console.error("Error fetching total images analytics:", error);
     return NextResponse.json(
