@@ -24,10 +24,8 @@ export async function GET(request) {
             },
           };
 
-    const monthlyData = await Observation.aggregate([
-      {
-        $match: matchStage,
-      },
+    const monthlyObservations = await Observation.aggregate([
+      { $match: matchStage },
       {
         $group: {
           _id: {
@@ -37,32 +35,79 @@ export async function GET(request) {
           count: { $sum: 1 },
         },
       },
-      {
-        $sort: { "_id.year": 1, "_id.month": 1 },
-      },
+      { $sort: { "_id.year": 1, "_id.month": 1 } },
     ]);
+
+    const monthlyImagesWithObservations = await Observation.aggregate([
+      { $match: matchStage },
+      {
+        $group: {
+          _id: {
+            year: { $year: "$createdAt" },
+            month: { $month: "$createdAt" },
+            mediaId: "$mediaId",
+          },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            year: "$_id.year",
+            month: "$_id.month",
+          },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { "_id.year": 1, "_id.month": 1 } },
+    ]);
+
+    const allMonths = new Map();
+
+    const processData = (data, key) => {
+      data.forEach((d) => {
+        const monthId =
+          year === "All"
+            ? `${d._id.month}/${d._id.year}`
+            : new Date(d._id.year, d._id.month - 1).toLocaleString("default", {
+                month: "long",
+              });
+        if (!allMonths.has(monthId)) {
+          allMonths.set(monthId, {
+            month: monthId,
+            Observations: 0,
+            "Images with observations": 0,
+            year: d._id.year,
+            monthNum: d._id.month,
+          });
+        }
+        allMonths.get(monthId)[key] = d.count;
+      });
+    };
+
+    processData(monthlyObservations, "Observations");
+    processData(monthlyImagesWithObservations, "Images with observations");
 
     let formattedData;
     if (year === "All") {
-      formattedData = monthlyData.map((d) => ({
-        month: `${d._id.month}/${d._id.year}`,
-        Observations: d.count,
-      }));
-    } else {
-      const yearData = Array(12).fill(0);
-      monthlyData.forEach((d) => {
-        if (d._id.year === parseInt(year)) {
-          yearData[d._id.month - 1] = d.count;
-        }
+      formattedData = Array.from(allMonths.values()).sort((a, b) => {
+        if (a.year !== b.year) return a.year - b.year;
+        return a.monthNum - b.monthNum;
       });
-      formattedData = yearData.map((count, index) => ({
-        month: new Date(0, index).toLocaleString("default", {
-          month: "long",
-        }),
-        Observations: count,
-      }));
+    } else {
+      formattedData = Array.from({ length: 12 }, (_, i) => {
+        const monthName = new Date(parseInt(year), i).toLocaleString(
+          "default",
+          { month: "long" }
+        );
+        return (
+          allMonths.get(monthName) || {
+            month: monthName,
+            Observations: 0,
+            "Images with observations": 0,
+          }
+        );
+      });
     }
-
     return NextResponse.json(formattedData);
   } catch (error) {
     console.error("Error fetching camera trap analytics:", error);
