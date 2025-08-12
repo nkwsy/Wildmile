@@ -24,42 +24,23 @@ export async function GET(request) {
             },
           };
 
-    const results = await Observation.aggregate([
+    const monthlyData = await Observation.aggregate([
       {
         $match: matchStage,
       },
       {
-        $facet: {
-          monthlyData: [
-            {
-              $group: {
-                _id: {
-                  year: { $year: "$createdAt" },
-                  month: { $month: "$createdAt" },
-                },
-                count: { $sum: 1 },
-              },
-            },
-            {
-              $sort: { "_id.year": 1, "_id.month": 1 },
-            },
-          ],
-          totalVolunteers: [
-            {
-              $group: {
-                _id: "$creator",
-              },
-            },
-            {
-              $count: "count",
-            },
-          ],
+        $group: {
+          _id: {
+            year: { $year: "$createdAt" },
+            month: { $month: "$createdAt" },
+          },
+          count: { $sum: 1 },
         },
       },
+      {
+        $sort: { "_id.year": 1, "_id.month": 1 },
+      },
     ]);
-
-    const monthlyData = results[0].monthlyData;
-    const totalVolunteers = results[0].totalVolunteers[0]?.count || 0;
 
     let formattedData;
     if (year === "All") {
@@ -82,10 +63,7 @@ export async function GET(request) {
       }));
     }
 
-    return NextResponse.json({
-      monthlyData: formattedData,
-      totalVolunteers: totalVolunteers,
-    });
+    return NextResponse.json(formattedData);
   } catch (error) {
     console.error("Error fetching camera trap analytics:", error);
     return NextResponse.json(

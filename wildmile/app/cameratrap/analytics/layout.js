@@ -2,6 +2,7 @@
 import { AppShell, Burger, Group } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import AnalyticsSidebar from "components/analytics/AnalyticsSidebar";
+import AnalyticsStats from "components/analytics/AnalyticsStats";
 import { HeaderNav } from "/components/nav_bar";
 
 export default function AnalyticsLayout({ children }) {
@@ -23,7 +24,10 @@ export default function AnalyticsLayout({ children }) {
         <AnalyticsSidebar />
       </AppShell.Navbar>
 
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main>
+        <AnalyticsStats />
+        {children}
+      </AppShell.Main>
     </AppShell>
   );
 }
