@@ -40,6 +40,9 @@ export default function TotalImagesPage() {
   const today = new Date().toISOString().split("T")[0];
 
   const valueFormatter = (value) => {
+    if (value === 0 ) {
+      return ""
+    }
     if (value >= 1000) {
       return `${(value / 1000).toFixed(1)}K`;
     }
@@ -67,17 +70,17 @@ export default function TotalImagesPage() {
             h={500}
             data={data}
             dataKey="month"
+            valueFormatter={valueFormatter}
+            valueLabelProps={{ angle: -90, dy: -15, dx: 0, fill: 'black' }}
+            withBarValueLabel
             series={[
               { name: "Images with Observations", color: "violet.6" },
               { name: "Total Images", color: "orange.6" },
             ]}
             yAxisLabel="Cumulative Count"
             xAxisLabel="Months"
-            withBarValueLabel
-            valueFormatter={valueFormatter}
-            withLegend
             legendProps={{ verticalAlign: 'top', align: 'right' }}
-            valueLabelProps={{ angle: -90, position: 'insideTop', dy: 20 }}
+            withLegend
           />
       )}
     </Paper>
