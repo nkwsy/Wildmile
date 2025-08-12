@@ -75,12 +75,16 @@ export default function CameraTrapAnalyticsPage() {
             h={500}
             data={data}
             dataKey="month"
-            series={[{ name: "Observations", color: "blue.6" }]}
+            series={[
+              { name: "Observations", color: "blue.6" },
+              { name: "Images with observations", color: "orange.6" },
+              { name: "Validated image observations", color: "green.6" },
+            ]}
             tickLine="y"
-            yAxisLabel="Number of Observations"
+            yAxisLabel="Count"
             xAxisLabel="Months"
             withBarValueLabel
-            style={{ width: year === 'All' ? `${data.length * 80}px` : '100%' }}
+            style={{ width: year === 'All' ? `${data.length * 120}px` : '100%' }}
           />
         </ScrollArea>
       )}
