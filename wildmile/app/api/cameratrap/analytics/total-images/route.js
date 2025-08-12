@@ -16,17 +16,9 @@ export async function GET(request) {
   }
 
   try {
-    const matchStage =
-      year === "All"
-        ? {}
-        : {
-            $expr: {
-              $eq: [{ $year: "$createdAt" }, parseInt(year)],
-            },
-          };
-
+    // Since the frontend now only requests 'All', we can simplify the logic.
+    // The `year` parameter is effectively ignored for aggregation match stages.
     const observedImagesData = await Observation.aggregate([
-      { $match: matchStage },
       {
         $group: {
           _id: {
@@ -48,17 +40,7 @@ export async function GET(request) {
       { $sort: { "_id.year": 1, "_id.month": 1 } },
     ]);
 
-    const matchStageByTimestamp =
-      year === "All"
-        ? {}
-        : {
-            $expr: {
-              $eq: [{ $year: "$timestamp" }, parseInt(year)],
-            },
-          };
-
     const newImagesData = await Media.aggregate([
-      { $match: matchStageByTimestamp },
       {
         $group: {
           _id: {
@@ -89,50 +71,47 @@ export async function GET(request) {
       combinedMonthlyData[key]["Total Images"] = d.count;
     });
 
-    const sortedKeys = Object.keys(combinedMonthlyData).sort();
-    if (sortedKeys.length === 0) {
-        return NextResponse.json([]);
+    const processedMonthlyData = {};
+    const pre2024Data = { "Total Images": 0, "Images with Observations": 0 };
+
+    Object.keys(combinedMonthlyData).forEach((key) => {
+      const [y] = key.split("-").map(Number);
+      if (y < 2024) {
+        pre2024Data["Total Images"] += combinedMonthlyData[key]["Total Images"];
+        pre2024Data["Images with Observations"] += combinedMonthlyData[key]["Images with Observations"];
+      } else {
+        processedMonthlyData[key] = combinedMonthlyData[key];
+      }
+    });
+
+    const jan2024Key = "2024-01";
+    if (!processedMonthlyData[jan2024Key]) {
+      processedMonthlyData[jan2024Key] = { "Total Images": 0, "Images with Observations": 0 };
     }
+    processedMonthlyData[jan2024Key]["Total Images"] += pre2024Data["Total Images"];
+    processedMonthlyData[jan2024Key]["Images with Observations"] += pre2024Data["Images with Observations"];
 
-    const [startYear, startMonth] = sortedKeys[0].split('-').map(Number);
-    const today = new Date();
-    const endYear = today.getFullYear();
-    const endMonth = today.getMonth(); // 0-indexed
-
+    const finalResult = [];
     let cumulativeTotal = 0;
     let cumulativeObserved = 0;
-    const cumulativeResult = [];
 
-    for (let y = startYear; y <= endYear; y++) {
-        const mStart = (y === startYear) ? startMonth - 1 : 0;
-        const mEnd = (y === endYear) ? endMonth : 11;
+    const sortedKeys = Object.keys(processedMonthlyData).sort();
 
-        for (let m = mStart; m <= mEnd; m++) {
-            const key = `${y}-${String(m + 1).padStart(2, '0')}`;
-            const monthly = combinedMonthlyData[key] || { "Total Images": 0, "Images with Observations": 0 };
+    for (const key of sortedKeys) {
+        const [year, month] = key.split('-').map(Number);
+        const monthly = processedMonthlyData[key];
 
-            cumulativeTotal += monthly["Total Images"];
-            cumulativeObserved += monthly["Images with Observations"];
+        cumulativeTotal += monthly["Total Images"];
+        cumulativeObserved += monthly["Images with Observations"];
 
-            cumulativeResult.push({
-                year: y,
-                monthIndex: m,
-                month: `${m + 1}/${y}`,
-                "Total Images": cumulativeTotal,
-                "Images with Observations": cumulativeObserved,
-            });
-        }
+        finalResult.push({
+            month: `${month}/${year}`,
+            "Total Images": cumulativeTotal,
+            "Images with Observations": cumulativeObserved,
+        });
     }
 
-    if (year === 'All') {
-        return NextResponse.json(cumulativeResult);
-    } else {
-        const yearData = cumulativeResult.filter(d => d.year === parseInt(year)).map(d => ({
-            ...d,
-            month: new Date(0, d.monthIndex).toLocaleString("default", { month: "long" }),
-        }));
-        return NextResponse.json(yearData);
-    }
+    return NextResponse.json(finalResult);
   } catch (error) {
     console.error("Error fetching total images analytics:", error);
     return NextResponse.json(
