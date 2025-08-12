@@ -7,7 +7,7 @@ import {
   Center,
   Text,
 } from "@mantine/core";
-import { BarChart } from "@mantine/charts";
+import { CompositeChart } from "@mantine/charts";
 
 export default function TotalImagesPage() {
   const [data, setData] = useState(null);
@@ -66,21 +66,23 @@ export default function TotalImagesPage() {
         </Center>
       )}
       {data && !loading && (
-          <BarChart
-            h={300}
+          <CompositeChart
+            h={400}
             data={data}
             dataKey="month"
             valueFormatter={valueFormatter}
-            valueLabelProps={{ angle: -90, dy: -15, dx: 0, fill: 'black' }}
-            withBarValueLabel
+            withPointLabels
             series={[
-              { name: "Images with Observations", color: "violet.6" },
-              { name: "Total Images", color: "orange.6" },
+              { name: "Total Images", color: "orange.6", type: "area" },
+              { name: "Images with Observations", color: "green.6", type: "area" },
             ]}
             yAxisLabel="Cumulative Count"
             xAxisLabel="Months"
             legendProps={{ verticalAlign: 'top', align: 'right' }}
             withLegend
+            referenceLines={[
+              { x: '1/2025', label: '2025', color: 'blue.2', strokeDasharray: '5 5'}
+            ]}
           />
       )}
     </Paper>
