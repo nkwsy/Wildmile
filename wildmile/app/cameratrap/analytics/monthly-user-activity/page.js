@@ -81,6 +81,8 @@ export default function MonthlyUserActivityPage() {
           ]}
           yAxisLabel="Number of Volunteers"
           withLegend
+          withBarValueLabel
+          valueFormatter={(value) => (value === 0 ? "" : value)}
         />
       )}
     </Paper>
