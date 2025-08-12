@@ -39,6 +39,13 @@ export default function TotalImagesPage() {
 
   const today = new Date().toISOString().split("T")[0];
 
+  const valueFormatter = (value) => {
+    if (value >= 1000) {
+      return `${(value / 1000).toFixed(1)}k`;
+    }
+    return value.toString();
+  };
+
   return (
     <Paper shadow="md" p="md">
       <Title order={2}>Cumulative Images Over Time</Title>
@@ -67,6 +74,9 @@ export default function TotalImagesPage() {
             yAxisLabel="Cumulative Count"
             xAxisLabel="Months"
             withBarValueLabel
+            valueFormatter={valueFormatter}
+            withLegend
+            legendProps={{ verticalAlign: 'top', align: 'right' }}
           />
       )}
     </Paper>
