@@ -73,22 +73,28 @@ export default function MonthlyUserActivityPage() {
       )}
       {data && !loading && (
         <ScrollArea w="100%" type={year === 'All' ? 'auto' : 'never'}>
-          <BarChart
-            h={500}
-            data={data}
-            dataKey="month"
-            series={[
-              { name: "Active Users", color: "blue.6", yAxisId: "left" },
-              { name: "New Users", color: "green.6", yAxisId: "right" },
-            ]}
-            yAxis={[
-                { yAxisId: 'left', label: 'Active Users' },
-                { yAxisId: 'right', label: 'New Users', orientation: 'right' },
-            ]}
-            xAxisLabel="Months"
-            withBarValueLabel
-            style={{ width: year === 'All' ? `${data.length * 80}px` : '100%' }}
-          />
+          <div style={{ width: year === 'All' ? `${data.length * 80}px` : '100%' }}>
+            <Title order={3} mt="md">Monthly Active Users</Title>
+            <BarChart
+              h={300}
+              data={data}
+              dataKey="month"
+              series={[{ name: "Active Users", color: "blue.6" }]}
+              yAxisLabel="Number of Active Users"
+              syncId="userActivity"
+              withBarValueLabel
+            />
+            <Title order={3} mt="xl">Monthly New Users</Title>
+            <BarChart
+              h={300}
+              data={data}
+              dataKey="month"
+              series={[{ name: "New Users", color: "green.6" }]}
+              yAxisLabel="Number of New Users"
+              syncId="userActivity"
+              withBarValueLabel
+            />
+          </div>
         </ScrollArea>
       )}
     </Paper>
