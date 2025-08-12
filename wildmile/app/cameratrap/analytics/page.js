@@ -41,7 +41,7 @@ export default function TotalImagesPage() {
 
   const valueFormatter = (value) => {
     if (value >= 1000) {
-      return `${(value / 1000).toFixed(1)}k`;
+      return `${(value / 1000).toFixed(1)}K`;
     }
     return value.toString();
   };
@@ -77,6 +77,7 @@ export default function TotalImagesPage() {
             valueFormatter={valueFormatter}
             withLegend
             legendProps={{ verticalAlign: 'top', align: 'right' }}
+            valueLabelProps={{ angle: -90, position: 'insideTop', dy: 20 }}
           />
       )}
     </Paper>
