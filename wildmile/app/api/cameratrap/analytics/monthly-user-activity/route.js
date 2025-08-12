@@ -48,13 +48,22 @@ export async function GET(request) {
       { $sort: { "_id.year": 1, "_id.month": 1 } },
     ]);
 
-    const monthlyNewUsers = await User.aggregate([
+    const monthlyNewUsers = await Observation.aggregate([
       { $match: matchStage },
+      {
+        $sort: { createdAt: 1 },
+      },
+      {
+        $group: {
+          _id: "$creator",
+          firstObservation: { $first: "$createdAt" },
+        },
+      },
       {
         $group: {
           _id: {
-            year: { $year: "$createdAt" },
-            month: { $month: "$createdAt" },
+            year: { $year: "$firstObservation" },
+            month: { $month: "$firstObservation" },
           },
           "New Volunteers": { $sum: 1 },
         },

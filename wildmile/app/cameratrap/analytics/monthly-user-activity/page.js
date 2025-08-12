@@ -21,7 +21,6 @@ export default function MonthlyUserActivityPage() {
   const years = Array.from({ length: currentYear - 2023 }, (_, i) =>
     (2024 + i).toString()
   );
-  years.unshift("All");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,7 +49,7 @@ export default function MonthlyUserActivityPage() {
 
   return (
     <Paper shadow="md" p="md">
-      <Title order={2}>Monthly Volunteer Activity</Title>
+      <Title order={2}>Volunteer Activity</Title>
       <Text size="sm" c="dimmed" fs="italic">
         Data current as of {today}
       </Text>
@@ -72,30 +71,17 @@ export default function MonthlyUserActivityPage() {
         </Center>
       )}
       {data && !loading && (
-        <ScrollArea w="100%" type={year === 'All' ? 'auto' : 'never'}>
-          <div style={{ width: year === 'All' ? `${data.length * 80}px` : '100%' }}>
-            <Title order={3} mt="md">Active Volunteers Per Month</Title>
-            <BarChart
-              h={300}
-              data={data}
-              dataKey="month"
-              series={[{ name: "Active Volunteers", color: "blue.6" }]}
-              yAxisLabel="Number of Active Volunteers"
-              syncId="userActivity"
-              withBarValueLabel
-            />
-            <Title order={3} mt="xl">New Volunteers Per Month</Title>
-            <BarChart
-              h={300}
-              data={data}
-              dataKey="month"
-              series={[{ name: "New Volunteers", color: "green.6" }]}
-              yAxisLabel="Number of New Volunteers"
-              syncId="userActivity"
-              withBarValueLabel
-            />
-          </div>
-        </ScrollArea>
+        <BarChart
+          h={300}
+          data={data}
+          dataKey="month"
+          series={[
+            { name: "Active Volunteers", color: "blue.6" },
+            { name: "New Volunteers", color: "green.6" },
+          ]}
+          yAxisLabel="Number of Volunteers"
+          withLegend
+        />
       )}
     </Paper>
   );
