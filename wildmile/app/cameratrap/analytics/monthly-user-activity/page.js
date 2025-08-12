@@ -50,7 +50,7 @@ export default function MonthlyUserActivityPage() {
 
   return (
     <Paper shadow="md" p="md">
-      <Title order={2}>Monthly User Activity</Title>
+      <Title order={2}>Monthly Volunteer Activity</Title>
       <Text size="sm" c="dimmed" fs="italic">
         Data current as of {today}
       </Text>
@@ -74,23 +74,23 @@ export default function MonthlyUserActivityPage() {
       {data && !loading && (
         <ScrollArea w="100%" type={year === 'All' ? 'auto' : 'never'}>
           <div style={{ width: year === 'All' ? `${data.length * 80}px` : '100%' }}>
-            <Title order={3} mt="md">Monthly Active Users</Title>
+            <Title order={3} mt="md">Active Volunteers Per Month</Title>
             <BarChart
               h={300}
               data={data}
               dataKey="month"
-              series={[{ name: "Active Users", color: "blue.6" }]}
-              yAxisLabel="Number of Active Users"
+              series={[{ name: "Active Volunteers", color: "blue.6" }]}
+              yAxisLabel="Number of Active Volunteers"
               syncId="userActivity"
               withBarValueLabel
             />
-            <Title order={3} mt="xl">Monthly New Users</Title>
+            <Title order={3} mt="xl">New Volunteers Per Month</Title>
             <BarChart
               h={300}
               data={data}
               dataKey="month"
-              series={[{ name: "New Users", color: "green.6" }]}
-              yAxisLabel="Number of New Users"
+              series={[{ name: "New Volunteers", color: "green.6" }]}
+              yAxisLabel="Number of New Volunteers"
               syncId="userActivity"
               withBarValueLabel
             />

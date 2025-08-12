@@ -42,7 +42,7 @@ export async function GET(request) {
             year: "$_id.year",
             month: "$_id.month",
           },
-          "Active Users": { $sum: 1 },
+          "Active Volunteers": { $sum: 1 },
         },
       },
       { $sort: { "_id.year": 1, "_id.month": 1 } },
@@ -56,7 +56,7 @@ export async function GET(request) {
             year: { $year: "$createdAt" },
             month: { $month: "$createdAt" },
           },
-          "New Users": { $sum: 1 },
+          "New Volunteers": { $sum: 1 },
         },
       },
       { $sort: { "_id.year": 1, "_id.month": 1 } },
@@ -69,11 +69,11 @@ export async function GET(request) {
       if (!combinedData[key]) {
         combinedData[key] = {
           month: `${d._id.month}/${d._id.year}`,
-          "Active Users": 0,
-          "New Users": 0,
+          "Active Volunteers": 0,
+          "New Volunteers": 0,
         };
       }
-      combinedData[key]["Active Users"] = d["Active Users"];
+      combinedData[key]["Active Volunteers"] = d["Active Volunteers"];
     });
 
     monthlyNewUsers.forEach((d) => {
@@ -81,11 +81,11 @@ export async function GET(request) {
       if (!combinedData[key]) {
         combinedData[key] = {
           month: `${d._id.month}/${d._id.year}`,
-          "Active Users": 0,
-          "New Users": 0,
+          "Active Volunteers": 0,
+          "New Volunteers": 0,
         };
       }
-      combinedData[key]["New Users"] = d["New Users"];
+      combinedData[key]["New Volunteers"] = d["New Volunteers"];
     });
 
     if (year !== "All") {
@@ -109,8 +109,8 @@ export async function GET(request) {
 
           return {
             month: monthName,
-            "Active Users": 0,
-            "New Users": 0,
+            "Active Volunteers": 0,
+            "New Volunteers": 0,
           };
         });
       return NextResponse.json(yearData);
