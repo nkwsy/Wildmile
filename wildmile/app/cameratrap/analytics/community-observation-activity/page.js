@@ -72,7 +72,7 @@ export default function CameraTrapAnalyticsPage() {
       {data && !loading && (
         <ScrollArea w="100%" type={year === 'All' ? 'auto' : 'never'}>
           <BarChart
-            h={500}
+            h={300}
             data={data}
             dataKey="month"
             series={[
@@ -82,7 +82,9 @@ export default function CameraTrapAnalyticsPage() {
             tickLine="y"
             yAxisLabel="Count"
             xAxisLabel="Months"
+            withLegend
             withBarValueLabel
+            valueFormatter={(value) => (value === 0 ? "" : value)}
             style={{ width: year === 'All' ? `${data.length * 100}px` : '100%' }}
           />
         </ScrollArea>

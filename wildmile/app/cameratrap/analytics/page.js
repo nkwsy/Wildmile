@@ -67,7 +67,7 @@ export default function TotalImagesPage() {
       )}
       {data && !loading && (
           <BarChart
-            h={500}
+            h={300}
             data={data}
             dataKey="month"
             valueFormatter={valueFormatter}
