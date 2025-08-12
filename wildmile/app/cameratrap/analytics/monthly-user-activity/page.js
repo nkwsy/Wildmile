@@ -69,7 +69,7 @@ export default function MonthlyUserActivityPage() {
       {error && (
         <Center>
           <Text color="red">{error}</Text>
-        </center>
+        </Center>
       )}
       {data && !loading && (
         <ScrollArea w="100%" type={year === 'All' ? 'auto' : 'never'}>
