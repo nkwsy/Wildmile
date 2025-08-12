@@ -74,43 +74,59 @@ export async function GET(request) {
     let combinedData = {};
 
     observedImagesData.forEach((d) => {
-      const key = `${d._id.month}/${d._id.year}`;
+      const key = `${d._id.year}-${String(d._id.month).padStart(2, "0")}`;
       if (!combinedData[key]) {
-        combinedData[key] = { month: key, "Observed Images": 0, "New Images": 0 };
+        combinedData[key] = {
+          month: `${d._id.month}/${d._id.year}`,
+          "Observed Images": 0,
+          "New Images": 0,
+        };
       }
       combinedData[key]["Observed Images"] = d.count;
     });
 
     newImagesData.forEach((d) => {
-      const key = `${d._id.month}/${d._id.year}`;
+      const key = `${d._id.year}-${String(d._id.month).padStart(2, "0")}`;
       if (!combinedData[key]) {
-        combinedData[key] = { month: key, "Observed Images": 0, "New Images": 0 };
+        combinedData[key] = {
+          month: `${d._id.month}/${d._id.year}`,
+          "Observed Images": 0,
+          "New Images": 0,
+        };
       }
       combinedData[key]["New Images"] = d.count;
     });
 
-    const formattedData = Object.values(combinedData).sort((a, b) => {
-        const [aMonth, aYear] = a.month.split('/');
-        const [bMonth, bYear] = b.month.split('/');
-        if (aYear !== bYear) {
-            return aYear - bYear;
-        }
-        return aMonth - bMonth;
-    });
-
-
     if (year !== "All") {
-        const yearData = Array(12).fill(0).map((_, i) => {
-            const month = i + 1;
-            const key = `${month}/${year}`;
-            return combinedData[key] || {
-                month: new Date(0, i).toLocaleString("default", { month: "long" }),
-                "Observed Images": 0,
-                "New Images": 0
+      const yearData = Array(12)
+        .fill(null)
+        .map((_, i) => {
+          const month = i + 1;
+          const key = `${year}-${String(month).padStart(2, "0")}`;
+          const dataPoint = combinedData[key];
+
+          const monthName = new Date(0, i).toLocaleString("default", {
+            month: "long",
+          });
+
+          if (dataPoint) {
+            return {
+              ...dataPoint,
+              month: monthName,
             };
+          }
+
+          return {
+            month: monthName,
+            "Observed Images": 0,
+            "New Images": 0,
+          };
         });
-        return NextResponse.json(yearData);
+      return NextResponse.json(yearData);
     }
+
+    const sortedKeys = Object.keys(combinedData).sort();
+    const formattedData = sortedKeys.map((key) => combinedData[key]);
 
     return NextResponse.json(formattedData);
   } catch (error) {
