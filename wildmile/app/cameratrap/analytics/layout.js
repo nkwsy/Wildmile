@@ -1,5 +1,5 @@
 "use client";
-import { AppShell, Burger, Group } from "@mantine/core";
+import { AppShell, Burger, Group, Title, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import AnalyticsSidebar from "components/analytics/AnalyticsSidebar";
 import AnalyticsStats from "components/analytics/AnalyticsStats";
@@ -25,7 +25,10 @@ export default function AnalyticsLayout({ children }) {
       </AppShell.Navbar>
 
       <AppShell.Main>
-        <AnalyticsStats />
+        <Stack>
+          <Title order={2}>Camera Trap Analytics</Title>
+          <AnalyticsStats />
+        </Stack>
         {children}
       </AppShell.Main>
     </AppShell>
