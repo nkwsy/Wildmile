@@ -82,7 +82,7 @@ export default function MonthlyActiveUsersPage() {
             yAxisLabel="Number of Active Users"
             xAxisLabel="Months"
             withBarValueLabel
-            style={{ minWidth: year === 'All' ? 1200 : 'auto' }}
+            style={{ width: year === 'All' ? `${data.length * 80}px` : '100%' }}
           />
         </ScrollArea>
       )}

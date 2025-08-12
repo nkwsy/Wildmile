@@ -80,7 +80,7 @@ export default function CameraTrapAnalyticsPage() {
             yAxisLabel="Number of Observations"
             xAxisLabel="Months"
             withBarValueLabel
-            style={{ minWidth: year === 'All' ? 1200 : 'auto' }}
+            style={{ width: year === 'All' ? `${data.length * 80}px` : '100%' }}
           />
         </ScrollArea>
       )}
