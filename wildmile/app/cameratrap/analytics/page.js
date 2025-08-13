@@ -46,7 +46,13 @@ export default function TotalImagesPage() {
   });
 
   const valueFormatter = (value) => {
-    return value.toLocaleString();
+    if (value === 0 ) {
+      return ""
+    }
+    if (value >= 1000) {
+      return `${(value / 1000).toFixed(1)}K`;
+    }
+    return value.toString();
   };
 
   return (
@@ -71,7 +77,7 @@ export default function TotalImagesPage() {
             data={data}
             dataKey="month"
             valueFormatter={valueFormatter}
-            // withPointLabels
+            withPointLabels
             series={[
               { name: "Total Images", color: "orange.6", type: "area" },
               { name: "Images with Observations", color: "green.6", type: "area" },
@@ -82,7 +88,7 @@ export default function TotalImagesPage() {
             legendProps={{ verticalAlign: 'top', align: 'right' }}
             withLegend
             referenceLines={[
-              { x: '1/2025', position: 'right', color: 'blue.2', strokeDasharray: '5 5'}
+              { x: '1/2025', color: 'blue.2', strokeDasharray: '5 5'}
             ]}
           />
       )}
