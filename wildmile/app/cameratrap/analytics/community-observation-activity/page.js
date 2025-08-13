@@ -82,8 +82,8 @@ export default function CameraTrapAnalyticsPage() {
             data={data}
             dataKey="month"
             series={[
-              { name: "Observations", color: "blue.6" },
-              { name: "Images with observations", color: "orange.6" },
+              { name: "Observations", label: "Total Observations", color: "blue.6" },
+              { name: "Images with observations", label: "Images observed", color: "orange.6" },
             ]}
             tickLine="y"
             yAxisLabel="Count"
