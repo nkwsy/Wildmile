@@ -67,7 +67,7 @@ export default function TotalImagesPage() {
         </Center>
       )}
       {data && !loading && (
-        <ScrollArea w="100%" type="horizontal">
+        <ScrollArea w="100%" type="auto" scrollbars="x">
           <CompositeChart
             h={400}
             data={data}
@@ -98,7 +98,16 @@ export default function TotalImagesPage() {
               }
             }}
             referenceLines={[
-              { x: '1/2025', color: 'blue.2', strokeDasharray: '5 5'}
+              // Add a reference line for every January (month "1/") in the data
+              ...(data
+                ? data
+                    .filter((d) => d.month && d.month.startsWith("1/"))
+                    .map((d) => ({
+                      x: d.month,
+                      color: "blue.2",
+                      strokeDasharray: "5 5",
+                    }))
+                : [])
             ]}
           />
         </ScrollArea>

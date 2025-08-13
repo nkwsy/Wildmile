@@ -76,7 +76,7 @@ export default function CameraTrapAnalyticsPage() {
         </Center>
       )}
       {data && !loading && (
-        <ScrollArea w="100%" type={year === 'All' ? 'auto' : 'never'}>
+        <ScrollArea w="100%" type="auto" scrollbars="x">
           <BarChart
             h={400}
             data={data}

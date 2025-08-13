@@ -78,19 +78,21 @@ export default function MonthlyUserActivityPage() {
         </Center>
       )}
       {data && !loading && (
-        <BarChart
-          h={400}
-          data={data}
-          dataKey="month"
-          series={[
-            { name: "Active Volunteers", color: "blue.6" },
-            { name: "New Volunteers", color: "green.6" },
-          ]}
-          yAxisLabel="Count"
-          withLegend
-          withBarValueLabel
-          valueFormatter={(value) => (value === 0 ? "" : value)}
-        />
+        <ScrollArea w="100%" h="100%" type="auto" scrollbars="x">
+          <BarChart
+            h={400}
+            data={data}
+            dataKey="month"
+            series={[
+              { name: "Active Volunteers", color: "blue.6" },
+              { name: "New Volunteers", color: "green.6" },
+            ]}  
+            yAxisLabel="Count"
+            withLegend
+            withBarValueLabel
+            valueFormatter={(value) => (value === 0 ? "" : value)}
+          />
+        </ScrollArea>
       )}
     </Paper>
   );
