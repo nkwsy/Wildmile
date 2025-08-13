@@ -15,7 +15,7 @@ function StatTile({ title, value }) {
   );
 }
 
-export default function AnalyticsStats() {
+export default function AnalyticsStats({ page = "overview" }) {
   const [stats, setStats] = useState({
     totalImages: 0,
     totalImagesWithObservations: 0,
@@ -45,26 +45,51 @@ export default function AnalyticsStats() {
     return <div>Loading stats...</div>;
   }
 
+  // Define which tiles to show for each page
+  const getTilesForPage = (page) => {
+    switch (page) {
+      case "total-images":
+        return [
+          { title: "Total Images", value: stats.totalImages },
+          { title: "Images with Observations", value: stats.totalImagesWithObservations },
+          { title: "Validated Images", value: stats.totalValidatedImages },
+        ];
+      
+      case "observation-activity":
+        return [
+          { title: "Total Images", value: stats.totalImages },
+          { title: "Images with Observations", value: stats.totalImagesWithObservations },
+          { title: "Total Volunteers", value: stats.totalVolunteers },
+        ];
+      
+      case "volunteer-activity":
+        return [
+          { title: "Total Volunteers", value: stats.totalVolunteers },
+          { title: "Images with Observations", value: stats.totalImagesWithObservations },
+          { title: "Validated Images", value: stats.totalValidatedImages },
+        ];
+      
+      case "overview":
+      default:
+        return [
+          { title: "Total Images", value: stats.totalImages },
+          { title: "Images with Observations", value: stats.totalImagesWithObservations },
+          { title: "Validated Images", value: stats.totalValidatedImages },
+          { title: "Total Volunteers", value: stats.totalVolunteers },
+        ];
+    }
+  };
+
+  const tiles = getTilesForPage(page);
+  const spanSize = tiles.length === 4 ? 3 : 4; // Adjust grid span based on tile count
+
   return (
     <Grid>
-      <Grid.Col span={3}>
-        <StatTile title="Total Images" value={stats.totalImages} />
-      </Grid.Col>
-      <Grid.Col span={3}>
-        <StatTile
-          title="Images with Observations"
-          value={stats.totalImagesWithObservations}
-        />
-      </Grid.Col>
-      <Grid.Col span={3}>
-        <StatTile
-          title="Validated Image Observations"
-          value={stats.totalValidatedImages}
-        />
-      </Grid.Col>
-      <Grid.Col span={3}>
-        <StatTile title="Total Volunteers" value={stats.totalVolunteers} />
-      </Grid.Col>
+      {tiles.map((tile, index) => (
+        <Grid.Col key={index} span={spanSize}>
+          <StatTile title={tile.title} value={tile.value} />
+        </Grid.Col>
+      ))}
     </Grid>
   );
 }

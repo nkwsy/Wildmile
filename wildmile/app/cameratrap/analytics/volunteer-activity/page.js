@@ -10,6 +10,7 @@ import {
   ScrollArea,
 } from "@mantine/core";
 import { BarChart } from "@mantine/charts";
+import AnalyticsStats from "components/analytics/AnalyticsStats";
 
 export default function VolunteerActivityPage() {
   const [year, setYear] = useState(new Date().getFullYear().toString());
@@ -55,45 +56,48 @@ export default function VolunteerActivityPage() {
   });
 
   return (
-    <Paper shadow="md" p="md">
-      <Title order={2}>Volunteer Activity</Title>
-      <Text size="sm" c="dimmed" fs="italic">
-        Data current as of {today}
-      </Text>
-      <Select
-        label="Select Year"
-        value={year}
-        onChange={setYear}
-        data={years}
-        style={{ marginTop: "1rem", marginBottom: "1rem" }}
-      />
-      {loading && (
-        <Center>
-          <Loader />
-        </Center>
-      )}
-      {error && (
-        <Center>
-          <Text color="red">{error}</Text>
-        </Center>
-      )}
-      {data && !loading && (
-        <ScrollArea w="100%" h="100%" type="auto" scrollbars="x">
-          <BarChart
-            h={400}
-            data={data}
-            dataKey="month"
-            series={[
-              { name: "Active Volunteers", color: "blue.6" },
-              { name: "New Volunteers", color: "green.6" },
-            ]}  
-            yAxisLabel="Count"
-            withLegend
-            withBarValueLabel
-            valueFormatter={(value) => (value === 0 ? "" : value)}
-          />
-        </ScrollArea>
-      )}
-    </Paper>
+    <>
+      <AnalyticsStats page="volunteer-activity" />
+      <Paper shadow="md" p="md">
+        <Title order={2}>Volunteer Activity</Title>
+        <Text size="sm" c="dimmed" fs="italic">
+          Data current as of {today}
+        </Text>
+        <Select
+          label="Select Year"
+          value={year}
+          onChange={setYear}
+          data={years}
+          style={{ marginTop: "1rem", marginBottom: "1rem" }}
+        />
+        {loading && (
+          <Center>
+            <Loader />
+          </Center>
+        )}
+        {error && (
+          <Center>
+            <Text color="red">{error}</Text>
+          </Center>
+        )}
+        {data && !loading && (
+          <ScrollArea w="100%" h="100%" type="auto" scrollbars="x">
+            <BarChart
+              h={400}
+              data={data}
+              dataKey="month"
+              series={[
+                { name: "Active Volunteers", color: "blue.6" },
+                { name: "New Volunteers", color: "green.6" },
+              ]}  
+              yAxisLabel="Count"
+              withLegend
+              withBarValueLabel
+              valueFormatter={(value) => (value === 0 ? "" : value)}
+            />
+          </ScrollArea>
+        )}
+      </Paper>
+    </>
   );
 }

@@ -27,7 +27,6 @@ export default function AnalyticsLayout({ children }) {
       <AppShell.Main style={{ paddingTop: 20 }}>
         <Stack>
           <Title order={2}>Camera Trap Analytics</Title>
-          <AnalyticsStats />
         </Stack>
         {children}
       </AppShell.Main>
