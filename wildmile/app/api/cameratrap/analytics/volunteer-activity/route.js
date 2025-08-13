@@ -48,22 +48,32 @@ export async function GET(request) {
       { $sort: { "_id.year": 1, "_id.month": 1 } },
     ]);
 
+    // For new volunteers, we need to track when each user first appeared
     const monthlyNewUsers = await Observation.aggregate([
-      { $match: matchStage },
-      {
-        $sort: { createdAt: 1 },
-      },
+      // When year="All", don't filter by year for new user detection
       {
         $group: {
           _id: "$creator",
-          firstObservation: { $first: "$createdAt" },
+          firstObservation: { $min: "$createdAt" },
         },
       },
       {
+        $addFields: {
+          firstYear: { $year: "$firstObservation" },
+          firstMonth: { $month: "$firstObservation" },
+        },
+      },
+      // Apply year filter to the first observation date, not the observation date
+      ...(year !== "All" ? [{
+        $match: {
+          firstYear: parseInt(year),
+        },
+      }] : []),
+      {
         $group: {
           _id: {
-            year: { $year: "$firstObservation" },
-            month: { $month: "$firstObservation" },
+            year: "$firstYear",
+            month: "$firstMonth",
           },
           "New Volunteers": { $sum: 1 },
         },
@@ -137,3 +147,4 @@ export async function GET(request) {
     );
   }
 }
+

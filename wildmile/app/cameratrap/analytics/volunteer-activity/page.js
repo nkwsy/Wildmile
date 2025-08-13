@@ -21,6 +21,7 @@ export default function MonthlyUserActivityPage() {
   const years = Array.from({ length: currentYear - 2023 }, (_, i) =>
     (2024 + i).toString()
   );
+  years.unshift("All");
 
   useEffect(() => {
     const fetchData = async () => {
