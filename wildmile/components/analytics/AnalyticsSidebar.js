@@ -11,7 +11,7 @@ export default function AnalyticsSidebar() {
       href: "/cameratrap/analytics/total-images",
     },
     {
-      label: "Community Observation Activity",
+      label: "Image Observation Activity",
       href: "/cameratrap/analytics/observation-activity",
     },
     {

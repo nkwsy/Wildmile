@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { BarChart } from "@mantine/charts";
 
-export default function CameraTrapAnalyticsPage() {
+export default function ObservationActivityPage() {
   const [year, setYear] = useState(new Date().getFullYear().toString());
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -54,7 +54,7 @@ export default function CameraTrapAnalyticsPage() {
   
   return (
     <Paper shadow="md" p="md">
-      <Title order={2}>Community Observation Activity</Title>
+      <Title order={2}>Image Observation Activity</Title>
       <Text size="sm" c="dimmed" fs="italic">
         Data current as of {today}
       </Text>
