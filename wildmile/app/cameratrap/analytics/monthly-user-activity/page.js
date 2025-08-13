@@ -85,7 +85,7 @@ export default function MonthlyUserActivityPage() {
             { name: "Active Volunteers", color: "blue.6" },
             { name: "New Volunteers", color: "green.6" },
           ]}
-          yAxisLabel="Number of Volunteers"
+          yAxisLabel="Count"
           withLegend
           withBarValueLabel
           valueFormatter={(value) => (value === 0 ? "" : value)}
