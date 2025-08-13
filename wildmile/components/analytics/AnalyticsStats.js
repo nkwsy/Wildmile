@@ -58,7 +58,7 @@ export default function AnalyticsStats() {
       </Grid.Col>
       <Grid.Col span={3}>
         <StatTile
-          title="Validated Observations"
+          title="Validated Image Observations"
           value={stats.totalValidatedImages}
         />
       </Grid.Col>
