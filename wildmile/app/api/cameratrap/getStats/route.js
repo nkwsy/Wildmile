@@ -15,8 +15,11 @@ export async function GET(request) {
     // Get total images
     const totalImages = await CameratrapMedia.countDocuments();
 
-    // Get unique mediaIds in observations
+    // Get unique mediaIds in observations aka images with observations
     const uniqueMediaIdsWithObservations = await Observation.distinct("mediaId");
+
+    // Get total observations
+    const totalObservations = await Observation.countDocuments();
 
     // Get total images with validated observations
     const validatedObservations = await Observation.aggregate([
@@ -177,6 +180,7 @@ export async function GET(request) {
 
     const response = NextResponse.json({
       totalImages,
+      totalObservations,
       totalImagesWithObservations: uniqueMediaIdsWithObservations.length,
       totalValidatedImages: validatedObservations[0]?.count || 0,
       totalVolunteers: totalVolunteers.length,

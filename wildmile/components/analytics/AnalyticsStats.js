@@ -18,6 +18,7 @@ function StatTile({ title, value }) {
 export default function AnalyticsStats({ page = "overview" }) {
   const [stats, setStats] = useState({
     totalImages: 0,
+    totalObservations: 0,
     totalImagesWithObservations: 0,
     totalValidatedImages: 0,
     totalVolunteers: 0,
@@ -59,7 +60,7 @@ export default function AnalyticsStats({ page = "overview" }) {
         return [
           { title: "Total Images", value: stats.totalImages },
           { title: "Images with Observations", value: stats.totalImagesWithObservations },
-          { title: "Total Volunteers", value: stats.totalVolunteers },
+          { title: "Total Observations", value: stats.totalObservations },
         ];
       
       case "volunteer-activity":
