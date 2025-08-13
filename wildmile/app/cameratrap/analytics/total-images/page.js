@@ -83,6 +83,14 @@ export default function TotalImagesPage() {
             xAxisLabel="Months"
             legendProps={{ verticalAlign: 'top', align: 'right' }}
             withLegend
+            yAxisProps={{
+              tickFormatter: (value) => {
+                if (value >= 1000) {
+                  return `${(value / 1000).toFixed(0)} K`;
+                }
+                return value.toString();
+              }
+            }}
             xAxisProps={{
               tickFormatter: (value, index) => {
                 // Show every other label (even indices: 0, 2, 4, etc.)
