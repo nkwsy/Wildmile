@@ -6,6 +6,7 @@ import {
   Loader,
   Center,
   Text,
+  ScrollArea,
 } from "@mantine/core";
 import { CompositeChart } from "@mantine/charts";
 
@@ -46,13 +47,7 @@ export default function TotalImagesPage() {
   });
 
   const valueFormatter = (value) => {
-    if (value === 0 ) {
-      return ""
-    }
-    if (value >= 1000) {
-      return `${(value / 1000).toFixed(1)}K`;
-    }
-    return value.toString();
+    return value.toLocaleString();
   };
 
   return (
@@ -72,12 +67,13 @@ export default function TotalImagesPage() {
         </Center>
       )}
       {data && !loading && (
+        <ScrollArea w="100%" type="horizontal">
           <CompositeChart
             h={400}
             data={data}
             dataKey="month"
             valueFormatter={valueFormatter}
-            withPointLabels
+            // withPointLabels
             series={[
               { name: "Total Images", color: "orange.6", type: "area" },
               { name: "Images with Observations", color: "green.6", type: "area" },
@@ -87,10 +83,17 @@ export default function TotalImagesPage() {
             xAxisLabel="Months"
             legendProps={{ verticalAlign: 'top', align: 'right' }}
             withLegend
+            xAxisProps={{
+              tickFormatter: (value, index) => {
+                // Show every other label (even indices: 0, 2, 4, etc.)
+                return index % 2 === 0 ? value : '';
+              }
+            }}
             referenceLines={[
               { x: '1/2025', color: 'blue.2', strokeDasharray: '5 5'}
             ]}
           />
+        </ScrollArea>
       )}
     </Paper>
   );
