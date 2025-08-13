@@ -44,7 +44,7 @@ export async function GET(request) {
       },
     ]);
 
-    // Get total number of volunteers
+    // Get total number of volunteers that have added at least one observation
     const totalVolunteers = await Observation.distinct("creator");
 
     // Get new images in last 30 days
@@ -54,7 +54,7 @@ export async function GET(request) {
       createdAt: { $gte: thirtyDaysAgo },
     });
 
-    // Get top 3 creators with proper user lookup
+    // Get top 5 creators with proper user lookup
     const topCreators = await Observation.aggregate([
       {
         $group: {
