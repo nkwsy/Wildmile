@@ -45,7 +45,13 @@ export default function MonthlyUserActivityPage() {
     fetchData();
   }, [year]);
 
-  const today = new Date().toISOString().split("T")[0];
+   // Get today's date in Central Time (America/Chicago) in YYYY-MM-DD format
+  const today = new Date().toLocaleDateString("en-CA", {
+    timeZone: "America/Chicago",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
 
   return (
     <Paper shadow="md" p="md">
