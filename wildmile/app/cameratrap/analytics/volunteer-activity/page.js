@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { BarChart } from "@mantine/charts";
 
-export default function MonthlyUserActivityPage() {
+export default function VolunteerActivityPage() {
   const [year, setYear] = useState(new Date().getFullYear().toString());
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
