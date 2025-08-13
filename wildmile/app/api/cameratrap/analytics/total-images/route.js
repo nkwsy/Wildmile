@@ -7,21 +7,25 @@ export async function GET(request) {
   await dbConnect();
 
   try {
+    // Get monthly counts of unique images with observations - only count each mediaId once
     const observedImagesData = await Observation.aggregate([
       {
+        $addFields: {
+          year: { $year: "$createdAt" },
+          month: { $month: "$createdAt" },
+        },
+      },
+      {
         $group: {
-          _id: {
-            year: { $year: "$createdAt" },
-            month: { $month: "$createdAt" },
-            mediaId: "$mediaId",
-          },
+          _id: "$mediaId",
+          firstObservation: { $min: { year: "$year", month: "$month" } },
         },
       },
       {
         $group: {
           _id: {
-            year: "$_id.year",
-            month: "$_id.month",
+            year: "$firstObservation.year",
+            month: "$firstObservation.month",
           },
           count: { $sum: 1 },
         },
