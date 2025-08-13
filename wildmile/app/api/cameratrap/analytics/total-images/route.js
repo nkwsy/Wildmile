@@ -5,19 +5,8 @@ import Media from "models/cameratrap/Media";
 
 export async function GET(request) {
   await dbConnect();
-  const { searchParams } = new URL(request.url);
-  const year = searchParams.get("year");
-
-  if (!year) {
-    return NextResponse.json(
-      { error: "Year is a required parameter" },
-      { status: 400 }
-    );
-  }
 
   try {
-    // Since the frontend now only requests 'All', we can simplify the logic.
-    // The `year` parameter is effectively ignored for aggregation match stages.
     const observedImagesData = await Observation.aggregate([
       {
         $group: {
