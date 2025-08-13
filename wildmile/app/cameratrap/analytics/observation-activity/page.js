@@ -28,7 +28,7 @@ export default function CameraTrapAnalyticsPage() {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(`/api/cameratrap/analytics?year=${year}`);
+        const res = await fetch(`/api/cameratrap/analytics/observation-activity?year=${year}`);
         if (!res.ok) {
           throw new Error("Failed to fetch data");
         }

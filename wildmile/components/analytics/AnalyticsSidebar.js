@@ -8,15 +8,15 @@ export default function AnalyticsSidebar() {
   const links = [
     {
       label: "Total Images with Observations",
-      href: "/cameratrap/analytics",
+      href: "/cameratrap/analytics/total-images",
     },
     {
       label: "Community Observation Activity",
-      href: "/cameratrap/analytics/community-observation-activity",
+      href: "/cameratrap/analytics/observation-activity",
     },
     {
       label: "Volunteer Activity",
-      href: "/cameratrap/analytics/monthly-user-activity",
+      href: "/cameratrap/analytics/volunteer-activity",
     },
   ];
   return (

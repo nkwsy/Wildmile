@@ -2,17 +2,25 @@
 import { useState, useEffect } from "react";
 import {
   Title,
+  Select,
   Paper,
   Loader,
   Center,
   Text,
+  ScrollArea,
 } from "@mantine/core";
-import { CompositeChart } from "@mantine/charts";
+import { BarChart } from "@mantine/charts";
 
-export default function TotalImagesPage() {
+export default function MonthlyUserActivityPage() {
+  const [year, setYear] = useState(new Date().getFullYear().toString());
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: currentYear - 2023 }, (_, i) =>
+    (2024 + i).toString()
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,7 +28,7 @@ export default function TotalImagesPage() {
       setError(null);
       try {
         const res = await fetch(
-          `/api/cameratrap/analytics/total-images?year=All`
+          `/api/cameratrap/analytics/volunteer-activity?year=${year}`
         );
         if (!res.ok) {
           throw new Error("Failed to fetch data");
@@ -35,9 +43,9 @@ export default function TotalImagesPage() {
     };
 
     fetchData();
-  }, []);
+  }, [year]);
 
-  // Get today's date in Central Time (America/Chicago) in YYYY-MM-DD format
+   // Get today's date in Central Time (America/Chicago) in YYYY-MM-DD format
   const today = new Date().toLocaleDateString("en-CA", {
     timeZone: "America/Chicago",
     year: "numeric",
@@ -45,22 +53,19 @@ export default function TotalImagesPage() {
     day: "2-digit",
   });
 
-  const valueFormatter = (value) => {
-    if (value === 0 ) {
-      return ""
-    }
-    if (value >= 1000) {
-      return `${(value / 1000).toFixed(1)}K`;
-    }
-    return value.toString();
-  };
-
   return (
     <Paper shadow="md" p="md">
-      <Title order={2}>Cumulative Images Over Time</Title>
+      <Title order={2}>Volunteer Activity</Title>
       <Text size="sm" c="dimmed" fs="italic">
         Data current as of {today}
       </Text>
+      <Select
+        label="Select Year"
+        value={year}
+        onChange={setYear}
+        data={years}
+        style={{ marginTop: "1rem", marginBottom: "1rem" }}
+      />
       {loading && (
         <Center>
           <Loader />
@@ -72,25 +77,19 @@ export default function TotalImagesPage() {
         </Center>
       )}
       {data && !loading && (
-          <CompositeChart
-            h={400}
-            data={data}
-            dataKey="month"
-            valueFormatter={valueFormatter}
-            withPointLabels
-            series={[
-              { name: "Total Images", color: "orange.6", type: "area" },
-              { name: "Images with Observations", color: "green.6", type: "area" },
-              { name: "Validated Images", color: "blue.6", type: "area" },
-            ]}
-            yAxisLabel="Cumulative Count"
-            xAxisLabel="Months"
-            legendProps={{ verticalAlign: 'top', align: 'right' }}
-            withLegend
-            referenceLines={[
-              { x: '1/2025', color: 'blue.2', strokeDasharray: '5 5'}
-            ]}
-          />
+        <BarChart
+          h={400}
+          data={data}
+          dataKey="month"
+          series={[
+            { name: "Active Volunteers", color: "blue.6" },
+            { name: "New Volunteers", color: "green.6" },
+          ]}
+          yAxisLabel="Count"
+          withLegend
+          withBarValueLabel
+          valueFormatter={(value) => (value === 0 ? "" : value)}
+        />
       )}
     </Paper>
   );
