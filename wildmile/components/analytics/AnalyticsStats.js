@@ -52,37 +52,37 @@ export default function AnalyticsStats({ page = "overview" }) {
       case "total-images":
         return [
           { title: "Total Images", value: stats.totalImages },
-          { title: "Images with Observations", value: stats.totalImagesWithObservations },
-          { title: "Validated Images", value: stats.totalValidatedImages },
+          { title: "Images with Observations", value: `${stats.totalImagesWithObservations} (${((stats.totalImagesWithObservations / stats.totalImages) * 100).toFixed(1)}%)` },
+          { title: "Validated Images", value: `${stats.totalValidatedImages} (${((stats.totalValidatedImages / stats.totalImages) * 100).toFixed(1)}%)` },
         ];
       
       case "observation-activity":
         return [
-          { title: "Total Images", value: stats.totalImages },
-          { title: "Images with Observations", value: stats.totalImagesWithObservations },
           { title: "Total Observations", value: stats.totalObservations },
+          { title: "Images with Observations", value: `${stats.totalImagesWithObservations} (${((stats.totalImagesWithObservations / stats.totalImages) * 100).toFixed(1)}%)` },
+          { title: "Total Images", value: stats.totalImages },
         ];
       
       case "volunteer-activity":
         return [
           { title: "Total Volunteers", value: stats.totalVolunteers },
-          { title: "Images with Observations", value: stats.totalImagesWithObservations },
-          { title: "Validated Images", value: stats.totalValidatedImages },
+          { title: "Images with Observations", value: `${stats.totalImagesWithObservations} (${((stats.totalImagesWithObservations / stats.totalImages) * 100).toFixed(1)}%)` },
+          { title: "Validated Images", value: `${stats.totalValidatedImages} (${((stats.totalValidatedImages / stats.totalImages) * 100).toFixed(1)}%)` },
         ];
       
       case "overview":
       default:
         return [
           { title: "Total Images", value: stats.totalImages },
-          { title: "Images with Observations", value: stats.totalImagesWithObservations },
-          { title: "Validated Images", value: stats.totalValidatedImages },
+          { title: "Images with Observations", value: `${stats.totalImagesWithObservations} (${((stats.totalImagesWithObservations / stats.totalImages) * 100).toFixed(1)}%)` },
+          { title: "Validated Images", value: `${stats.totalValidatedImages} (${((stats.totalValidatedImages / stats.totalImages) * 100).toFixed(1)}%)` },
           { title: "Total Volunteers", value: stats.totalVolunteers },
         ];
     }
   };
 
   const tiles = getTilesForPage(page);
-  const spanSize = tiles.length === 4 ? 3 : 4; // Adjust grid span based on tile count
+  const spanSize = tiles.length === 3 ? 3 : 4; // Adjust grid span based on tile count
 
   return (
     <Grid>
