@@ -35,17 +35,13 @@ const TaxaSearch = ({ initialQuery = "" }) => {
 
   const handleSearch = async () => {
     try {
-      let apiUrl = `https://api.inaturalist.org/v1/taxa?q=${query}`;
+      const params = new URLSearchParams({
+        q: query,
+        ...(taxonomyClass && { taxon_id: taxonomyClass }),
+        ...(chicagoOnly && { place_id: 674 }),
+      });
 
-      if (taxonomyClass) {
-        apiUrl += `&taxon_id=${taxonomyClass}`;
-      }
-
-      if (chicagoOnly) {
-        apiUrl += `&place_id=674`; // Chicago's place ID
-      }
-
-      const response = await fetch(apiUrl);
+      const response = await fetch(`/api/inaturalist?${params.toString()}`);
       const data = await response.json();
       setResults(data.results || []);
     } catch (error) {

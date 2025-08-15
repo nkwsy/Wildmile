@@ -284,7 +284,7 @@ export function ImageAnnotation({ fetchNextImage, filters }) {
           >
             <TransformComponent>
               <Image
-                src={currentImage.publicURL}
+                src={`/api/image-proxy?url=${encodeURIComponent(currentImage.publicURL)}`}
                 fit="contain"
                 // maxHeight={700}
                 width="100%"
@@ -510,7 +510,7 @@ export function ImageAnnotation({ fetchNextImage, filters }) {
           >
             <TransformComponent>
               <Image
-                src={currentImage.publicURL}
+                src={`/api/image-proxy?url=${encodeURIComponent(currentImage.publicURL)}`}
                 fit="contain"
                 // height="100vh"
                 // width="90vw"
