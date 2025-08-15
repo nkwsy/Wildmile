@@ -52,15 +52,9 @@ export default function ProfilePage() {
     if (!loading && !user) router.replace("/login");
   }, [user, loading]);
 
-  let photoSrc = "https://api.multiavatar.com/noname.png";
-
-  if (user && user.profile) {
-    if (user.profile.picture) {
-      console.log(user.profile.picture);
-    } else {
-      photoSrc = "https://api.multiavatar.com/" + user.profile.name + ".png";
-    }
-  }
+  let photoSrc = `data:image/svg+xml;utf8,${encodeURIComponent(
+    getAvatar(user && user.profile ? user.profile.name : "default")
+  )}`;
 
   async function handleEditProfile(values) {
     // Its ok if other values are empty but not email and password

@@ -25,6 +25,7 @@ import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useUser } from "../lib/hooks";
 import { usePathname } from "next/navigation";
+import getAvatar from "../../lib/avatar.js";
 import cx from "clsx";
 import classes from "styles/nav.module.css";
 import { useState } from "react";
@@ -79,15 +80,9 @@ export function HeaderNav({ children }) {
   const { user, loading, mutate } = useUser();
   const pathname = usePathname();
 
-  let photoSrc = "https://api.multiavatar.com/noname.png";
-
-  if (user && user.profile) {
-    if (user.profile.picture) {
-      console.log(user.profile.picture);
-    } else {
-      photoSrc = "https://api.multiavatar.com/" + user.profile.name + ".png";
-    }
-  }
+  let photoSrc = `data:image/svg+xml;utf8,${encodeURIComponent(
+    getAvatar(user && user.profile ? user.profile.name : "default")
+  )}`;
 
   const items = nav_tabs.map((link) => {
     const menuItems = link.subitems?.map((item) => (
