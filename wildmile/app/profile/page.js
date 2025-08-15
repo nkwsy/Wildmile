@@ -12,6 +12,7 @@ import { useForm, isEmail } from "@mantine/form";
 import { useEffect } from "react";
 import { useUser } from "../../lib/hooks";
 import { useRouter } from "next/navigation";
+import getAvatar from "../../lib/avatar.js";
 
 export default function ProfilePage() {
   const { user, loading, mutate } = useUser();

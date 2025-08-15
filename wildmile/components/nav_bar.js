@@ -25,7 +25,7 @@ import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useUser } from "../lib/hooks";
 import { usePathname } from "next/navigation";
-import getAvatar from "../../lib/avatar.js";
+import getAvatar from "../lib/avatar.js";
 import cx from "clsx";
 import classes from "styles/nav.module.css";
 import { useState } from "react";
