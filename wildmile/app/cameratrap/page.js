@@ -48,7 +48,7 @@ function CameraTrapCards() {
     {
       icon: IconAbacus,
       title: "Analytics",
-      href: "/cameratrap/analytics",
+      href: "/cameratrap/analytics/total-images",
       description: "See analytics on the camera trap project",
     },
   ];
