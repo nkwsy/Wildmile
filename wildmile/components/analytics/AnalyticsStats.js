@@ -22,6 +22,7 @@ export default function AnalyticsStats({ page = "overview" }) {
     totalImagesWithObservations: 0,
     totalValidatedImages: 0,
     totalVolunteers: 0,
+    avgObservationTimeSeconds: 0
   });
   const [loading, setLoading] = useState(true);
 
@@ -66,8 +67,8 @@ export default function AnalyticsStats({ page = "overview" }) {
       case "volunteer-activity":
         return [
           { title: "Total Volunteers", value: stats.totalVolunteers },
-          { title: "Images with Observations", value: `${stats.totalImagesWithObservations} (${((stats.totalImagesWithObservations / stats.totalImages) * 100).toFixed(1)}%)` },
-          { title: "Validated Images", value: `${stats.totalValidatedImages} (${((stats.totalValidatedImages / stats.totalImages) * 100).toFixed(1)}%)` },
+          { title: "Total Observations", value: stats.totalObservations },
+          { title: "Total Volunteer Hours", value: `${(stats.totalObservations * stats.avgObservationTimeSeconds /60 /60).toFixed(0)}` },
         ];
       
       case "overview":

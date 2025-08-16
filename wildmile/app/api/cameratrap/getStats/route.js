@@ -178,12 +178,94 @@ export async function GET(request) {
       },
     ]);
 
+    // Calculate average observation time in seconds
+    const [avgObservationTime] = await Observation.aggregate([
+      { $sort: { creator: 1, createdAt: 1 } },
+      {
+        $group: {
+          _id: "$creator",
+          createdAtDates: { $push: "$createdAt" }
+        }
+      },
+      {
+        $addFields: {
+          timeDifferences: {
+            $map: {
+              input: {
+                $range: [
+                  1,
+                  { $size: "$createdAtDates" }
+                ]
+              },
+              as: "index",
+              in: {
+                $subtract: [
+                  {
+                    $arrayElemAt: [
+                      "$createdAtDates",
+                      "$$index"
+                    ]
+                  },
+                  {
+                    $arrayElemAt: [
+                      "$createdAtDates",
+                      { $subtract: ["$$index", 1] }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      { $unwind: { path: "$timeDifferences" } },
+      {
+        $match: {
+          timeDifferences: { $lt: 3600000 } // Less than 1 hour (3600000 ms)
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          creator: "$_id",
+          timeBetweenObservations: "$timeDifferences"
+        }
+      },
+      {
+        $group: {
+          _id: "$creator",
+          avgObservation_ms: {
+            $avg: "$timeBetweenObservations"
+          }
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          overallAvg_ms: {
+            $avg: "$avgObservation_ms"
+          }
+        }
+      },
+      {
+        $addFields: {
+          overallAvg_seconds: {
+            $divide: [
+              "$overallAvg_ms",
+              1000
+            ]
+          }
+        }
+      }
+    ]);
+
     const response = NextResponse.json({
       totalImages,
       totalObservations,
       totalImagesWithObservations: uniqueMediaIdsWithObservations.length,
       totalValidatedImages: validatedObservations[0]?.count || 0,
       totalVolunteers: totalVolunteers.length,
+      avgObservationTimeSeconds: avgObservationTime?.overallAvg_seconds || 0,
       uniqueMediaIds: uniqueMediaIdsWithObservations.length, // for backwards compatibility
       newImages30Days,
       topCreators: topCreators.map((creator) => ({
