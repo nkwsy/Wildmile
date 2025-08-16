@@ -53,14 +53,14 @@ export default function AnalyticsStats({ page = "overview" }) {
       case "total-images":
         return [
           { title: "Total Images", value: stats.totalImages },
-          { title: "Images with Observations", value: `${stats.totalImagesWithObservations} (${((stats.totalImagesWithObservations / stats.totalImages) * 100).toFixed(1)}%)` },
-          { title: "Validated Images", value: `${stats.totalValidatedImages} (${((stats.totalValidatedImages / stats.totalImages) * 100).toFixed(1)}%)` },
+          { title: "Total Images with Observations", value: `${stats.totalImagesWithObservations} (${((stats.totalImagesWithObservations / stats.totalImages) * 100).toFixed(1)}%)` },
+          { title: "Total Validated Images", value: `${stats.totalValidatedImages} (${((stats.totalValidatedImages / stats.totalImages) * 100).toFixed(1)}%)` },
         ];
       
       case "observation-activity":
         return [
           { title: "Total Observations", value: stats.totalObservations },
-          { title: "Images with Observations", value: `${stats.totalImagesWithObservations} (${((stats.totalImagesWithObservations / stats.totalImages) * 100).toFixed(1)}%)` },
+          { title: "Total Images with Observations", value: `${stats.totalImagesWithObservations} (${((stats.totalImagesWithObservations / stats.totalImages) * 100).toFixed(1)}%)` },
           { title: "Total Images", value: stats.totalImages },
         ];
       
