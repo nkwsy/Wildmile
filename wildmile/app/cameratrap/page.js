@@ -13,6 +13,7 @@ import {
 import { IconCardGrid } from "/components/icon_card_grid";
 import classes from "/styles/card.module.css";
 import {
+  IconAbacus,
   IconUsers,
   IconPokeball,
   IconCameraSearch,
@@ -43,6 +44,12 @@ function CameraTrapCards() {
       title: "Explore Data",
       href: "/cameratrap/explore",
       description: "Explore wildlife images which have been catagorized",
+    },
+    {
+      icon: IconAbacus,
+      title: "Analytics",
+      href: "/cameratrap/analytics/total-images",
+      description: "See analytics on the camera trap project",
     },
   ];
 
