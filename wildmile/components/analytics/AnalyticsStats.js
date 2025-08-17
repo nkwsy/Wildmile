@@ -22,7 +22,7 @@ export default function AnalyticsStats({ page = "overview" }) {
     totalImagesWithObservations: 0,
     totalValidatedImages: 0,
     totalVolunteers: 0,
-    avgObservationTimeSeconds: 0
+    totalObservationTime: 0
   });
   const [loading, setLoading] = useState(true);
 
@@ -61,14 +61,14 @@ export default function AnalyticsStats({ page = "overview" }) {
         return [
           { title: "Total Observations", value: stats.totalObservations },
           { title: "Total Images with Observations", value: `${stats.totalImagesWithObservations} (${((stats.totalImagesWithObservations / stats.totalImages) * 100).toFixed(1)}%)` },
-          { title: "Total Images", value: stats.totalImages },
+          // { title: "Total Images", value: stats.totalImages },
         ];
       
       case "volunteer-activity":
         return [
           { title: "Total Volunteers", value: stats.totalVolunteers },
-          { title: "Total Observations", value: stats.totalObservations },
-          { title: "Total Volunteer Hours", value: `${(stats.totalObservations * stats.avgObservationTimeSeconds /60 /60).toFixed(0)}` },
+          // { title: "Total Observations", value: stats.totalObservations },
+          { title: "Total Volunteer Hours", value: stats.totalObservationTime.toFixed(2) },
         ];
       
       case "overview":

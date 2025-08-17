@@ -179,7 +179,7 @@ export async function GET(request) {
     ]);
 
     // Calculate average observation time in seconds
-    const [avgObservationTime] = await Observation.aggregate([
+    const [sumObservationTime] = await Observation.aggregate([
       { $sort: { creator: 1, createdAt: 1 } },
       {
         $group: {
@@ -191,27 +191,12 @@ export async function GET(request) {
         $addFields: {
           timeDifferences: {
             $map: {
-              input: {
-                $range: [
-                  1,
-                  { $size: "$createdAtDates" }
-                ]
-              },
+              input: { $range: [ 1, { $size: "$createdAtDates" }] },
               as: "index",
               in: {
                 $subtract: [
-                  {
-                    $arrayElemAt: [
-                      "$createdAtDates",
-                      "$$index"
-                    ]
-                  },
-                  {
-                    $arrayElemAt: [
-                      "$createdAtDates",
-                      { $subtract: ["$$index", 1] }
-                    ]
-                  }
+                  { $arrayElemAt: [ "$createdAtDates", "$$index" ] },
+                  { $arrayElemAt: [ "$createdAtDates", { $subtract: ["$$index", 1] } ] }
                 ]
               }
             }
@@ -225,34 +210,20 @@ export async function GET(request) {
         }
       },
       {
-        $project: {
-          _id: 0,
-          creator: "$_id",
-          timeBetweenObservations: "$timeDifferences"
-        }
-      },
-      {
-        $group: {
-          _id: "$creator",
-          avgObservation_ms: {
-            $avg: "$timeBetweenObservations"
-          }
-        }
-      },
-      {
         $group: {
           _id: null,
-          overallAvg_ms: {
-            $avg: "$avgObservation_ms"
+          "sumObservation_ms": {
+            "$sum": "$timeDifferences"
           }
         }
       },
       {
-        $addFields: {
-          overallAvg_seconds: {
+        $project: {
+          _id: 0,
+          overallSum_hours: {
             $divide: [
-              "$overallAvg_ms",
-              1000
+              "$sumObservation_ms",
+              3600000
             ]
           }
         }
@@ -265,7 +236,7 @@ export async function GET(request) {
       totalImagesWithObservations: uniqueMediaIdsWithObservations.length,
       totalValidatedImages: validatedObservations[0]?.count || 0,
       totalVolunteers: totalVolunteers.length,
-      avgObservationTimeSeconds: avgObservationTime?.overallAvg_seconds || 0,
+      totalObservationTime: sumObservationTime?.overallSum_hours || 0,
       uniqueMediaIds: uniqueMediaIdsWithObservations.length, // for backwards compatibility
       newImages30Days,
       topCreators: topCreators.map((creator) => ({

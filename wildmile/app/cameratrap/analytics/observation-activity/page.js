@@ -79,7 +79,7 @@ export default function ObservationActivityPage() {
           </Center>
         )}
         {data && !loading && (
-          <ScrollArea w="100%" type="auto" scrollbars="x">
+          <ScrollArea w="100%" h="100%" type="auto" scrollbars="x">
             <BarChart
               h={400}
               data={data}
