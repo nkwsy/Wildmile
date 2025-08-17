@@ -87,8 +87,26 @@ export default function VolunteerActivityPage() {
               data={data}
               dataKey="month"
               series={[
-                { name: "Active Volunteers", color: "blue.6" },
-                { name: "New Volunteers", color: "green.6" },
+                { name: "Active Volunteers", color: "blue.6", type: "bar" },
+                { name: "New Volunteers", color: "green.6", type: "bar" },
+              ]}  
+              yAxisLabel="Count"
+              withLegend
+              withBarValueLabel
+              valueFormatter={(value) => (value === 0 ? "" : value)}
+            />
+            <br></br>
+            {/* <Title order={2}>Volunteer Activity</Title>
+            <Text size="sm" c="dimmed" fs="italic">
+              Data current as of {today}
+            </Text> */}
+
+            <BarChart
+              h={400}
+              data={data}
+              dataKey="month"
+              series={[
+                { name: "Volunteer Hours", color: "orange.6", type: "bar" },
               ]}  
               yAxisLabel="Count"
               withLegend

@@ -90,6 +90,7 @@ export async function GET(request) {
           month: `${d._id.month}/${d._id.year}`,
           "Active Volunteers": 0,
           "New Volunteers": 0,
+          "Volunteer Hours": 0,
         };
       }
       combinedData[key]["Active Volunteers"] = d["Active Volunteers"];
@@ -102,9 +103,23 @@ export async function GET(request) {
           month: `${d._id.month}/${d._id.year}`,
           "Active Volunteers": 0,
           "New Volunteers": 0,
+          "Volunteer Hours": 0,
         };
       }
       combinedData[key]["New Volunteers"] = d["New Volunteers"];
+    });
+
+    monthlyVolunteerHours.forEach((d) => {
+      const key = `${d._id.year}-${String(d._id.month).padStart(2, "0")}`;
+      if (!combinedData[key]) {
+        combinedData[key] = {
+          month: `${d._id.month}/${d._id.year}`,
+          "Active Volunteers": 0,
+          "New Volunteers": 0,
+          "Volunteer Hours": 0,
+        };
+      }
+      combinedData[key]["Volunteer Hours"] = parseFloat(d["Volunteer Hours"].toFixed(2));
     });
 
     if (year !== "All") {
@@ -130,6 +145,7 @@ export async function GET(request) {
             month: monthName,
             "Active Volunteers": 0,
             "New Volunteers": 0,
+            "Volunteer Hours": 0,
           };
         });
       return NextResponse.json(yearData);
