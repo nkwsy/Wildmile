@@ -81,6 +81,58 @@ export async function GET(request) {
       { $sort: { "_id.year": 1, "_id.month": 1 } },
     ]);
 
+    // Calculate monthly volunteer hours
+    const monthlyVolunteerHours = await Observation.aggregate([
+      { $match: matchStage },
+      { $sort: { creator: 1, createdAt: 1 } },
+      {
+        $group: {
+          _id: {
+            year: { $year: "$createdAt" },
+            month: { $month: "$createdAt" },
+            creator: "$creator",
+          },
+          createdAtDates: { $push: "$createdAt" }
+        }
+      },
+      {
+        $addFields: {
+          timeDifferences: {
+            $map: {
+              input: { $range: [ 1, { $size: "$createdAtDates" }] },
+              as: "index",
+              in: {
+                $subtract: [
+                  { $arrayElemAt: [ "$createdAtDates", "$$index" ] },
+                  { $arrayElemAt: [ "$createdAtDates", { $subtract: ["$$index", 1] } ] }
+                ]
+              }
+            }
+          }
+        }
+      },
+      { $unwind: { path: "$timeDifferences" } },
+      {
+        $match: {
+          timeDifferences: { $lt: 3600000 } // Less than 1 hour (3600000 ms)
+        }
+      },
+      {
+        $group: {
+          _id: {
+            year: "$_id.year",
+            month: "$_id.month",
+          },
+          "Volunteer Hours": {
+            $sum: {
+              $divide: ["$timeDifferences", 3600000] // Convert ms to hours
+            }
+          }
+        }
+      },
+      { $sort: { "_id.year": 1, "_id.month": 1 } },
+    ]);
+
     let combinedData = {};
 
     monthlyActiveUsers.forEach((d) => {
