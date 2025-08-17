@@ -95,11 +95,8 @@ export default function VolunteerActivityPage() {
               withBarValueLabel
               valueFormatter={(value) => (value === 0 ? "" : value)}
             />
+            
             <br></br>
-            {/* <Title order={2}>Volunteer Activity</Title>
-            <Text size="sm" c="dimmed" fs="italic">
-              Data current as of {today}
-            </Text> */}
 
             <BarChart
               h={400}
