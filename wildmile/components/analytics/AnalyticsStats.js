@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Grid, Paper, Text, Title } from "@mantine/core";
+import { getStats } from "app/actions/CameratrapActions";
 
 function StatTile({ title, value }) {
   return (
@@ -30,8 +31,7 @@ export default function AnalyticsStats({ page = "overview" }) {
     const fetchStats = async () => {
       try {
         setLoading(true);
-        const res = await fetch("/api/cameratrap/getStats");
-        const data = await res.json();
+        const data = await getStats();
         setStats(data);
       } catch (error) {
         console.error("Failed to fetch stats", error);

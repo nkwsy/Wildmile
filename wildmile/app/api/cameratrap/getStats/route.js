@@ -15,40 +15,8 @@ export async function GET(request) {
     // Get total images
     const totalImages = await CameratrapMedia.countDocuments();
 
-    // Get unique mediaIds in observations aka images with observations
-    const uniqueMediaIdsWithObservations = await Observation.distinct("mediaId");
-
-    // Get total observations
-    const totalObservations = await Observation.countDocuments();
-
-    // Get total images with validated observations
-    const validatedObservations = await Observation.aggregate([
-      {
-        $group: {
-          _id: {
-            mediaId: "$mediaId",
-            scientificName: "$scientificName",
-          },
-          count: { $sum: 1 },
-        },
-      },
-      {
-        $match: {
-          count: { $gte: 2 },
-        },
-      },
-      {
-        $group: {
-          _id: "$_id.mediaId",
-        },
-      },
-      {
-        $count: "count",
-      },
-    ]);
-
-    // Get total number of volunteers that have added at least one observation
-    const totalVolunteers = await Observation.distinct("creator");
+    // Get unique mediaIds in observations
+    const uniqueMediaIds = await Observation.distinct("mediaId");
 
     // Get new images in last 30 days
     const thirtyDaysAgo = new Date();
@@ -57,7 +25,7 @@ export async function GET(request) {
       createdAt: { $gte: thirtyDaysAgo },
     });
 
-    // Get top 5 creators with proper user lookup
+    // Get top 3 creators with proper user lookup
     const topCreators = await Observation.aggregate([
       {
         $group: {
@@ -178,66 +146,9 @@ export async function GET(request) {
       },
     ]);
 
-    // Calculate average observation time in seconds
-    const [sumObservationTime] = await Observation.aggregate([
-      { $sort: { creator: 1, createdAt: 1 } },
-      {
-        $group: {
-          _id: "$creator",
-          createdAtDates: { $push: "$createdAt" }
-        }
-      },
-      {
-        $addFields: {
-          timeDifferences: {
-            $map: {
-              input: { $range: [ 1, { $size: "$createdAtDates" }] },
-              as: "index",
-              in: {
-                $subtract: [
-                  { $arrayElemAt: [ "$createdAtDates", "$$index" ] },
-                  { $arrayElemAt: [ "$createdAtDates", { $subtract: ["$$index", 1] } ] }
-                ]
-              }
-            }
-          }
-        }
-      },
-      { $unwind: { path: "$timeDifferences" } },
-      {
-        $match: {
-          timeDifferences: { $lt: 3600000 } // Less than 1 hour (3600000 ms)
-        }
-      },
-      {
-        $group: {
-          _id: null,
-          "sumObservation_ms": {
-            "$sum": "$timeDifferences"
-          }
-        }
-      },
-      {
-        $project: {
-          _id: 0,
-          overallSum_hours: {
-            $divide: [
-              "$sumObservation_ms",
-              3600000
-            ]
-          }
-        }
-      }
-    ]);
-
     const response = NextResponse.json({
       totalImages,
-      totalObservations,
-      totalImagesWithObservations: uniqueMediaIdsWithObservations.length,
-      totalValidatedImages: validatedObservations[0]?.count || 0,
-      totalVolunteers: totalVolunteers.length,
-      totalObservationTime: sumObservationTime?.overallSum_hours || 0,
-      uniqueMediaIds: uniqueMediaIdsWithObservations.length, // for backwards compatibility
+      uniqueMediaIds: uniqueMediaIds.length,
       newImages30Days,
       topCreators: topCreators.map((creator) => ({
         ...creator,
