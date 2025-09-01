@@ -2,7 +2,6 @@
 import { AppShell, Burger, Group, Title, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import AnalyticsSidebar from "components/analytics/AnalyticsSidebar";
-import AnalyticsStats from "components/analytics/AnalyticsStats";
 import { HeaderNav } from "/components/nav_bar";
 
 export default function AnalyticsLayout({ children }) {
