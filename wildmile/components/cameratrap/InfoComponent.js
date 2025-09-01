@@ -12,16 +12,40 @@ import {
   Divider,
 } from "@mantine/core";
 import { UserAvatar } from "/components/shared/UserAvatar";
+// import { getStats } from "/actions/CameratrapActions";
+import { getStats } from "app/actions/CameratrapActions";
 import { Suspense } from "react";
+/**
+ * Server-side data fetch
+ */
+async function fetchStats(force = false) {
+  const url = "/api/cameratrap/getStats";
+
+  // const response = await fetch(url, {
+  //   cache: force ? "no-store" : "force-cache", // or use { next: { revalidate: 60 } }
+  // });
+  const response = await fetch(url);
+  console.log(response);
+  const stats = await response.json();
+  return stats;
+}
 
 /**
  * Server Component
  * Suspense boundaries and error boundaries will come from the parent route usage
  */
 export default async function InfoComponent({ force = false }) {
-  // Server fetch using the API route
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/cameratrap/getStats`);
-  const stats = await response.json();
+  // Server fetch
+  const stats = await getStats();
+
+  // // If stats is null or something else, you can handle it here or let it throw
+  // if (!stats) {
+  //   return (
+  //     <Paper p="md" shadow="xs">
+  //       <Text color="red">Unable to load statistics</Text>
+  //     </Paper>
+  //   );
+  // }
 
   return (
     <Stack spacing="lg">
@@ -53,7 +77,7 @@ export default async function InfoComponent({ force = false }) {
               Images with Observations
             </Text>
             <Text size="xl" weight={700} mt="sm">
-              {stats.totalImagesWithObservations.toLocaleString()}
+              {stats.uniqueMediaIds.toLocaleString()}
             </Text>
           </Card>
         </GridCol>
