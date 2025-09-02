@@ -19,13 +19,17 @@ import { ImageAnnotation } from "./ImageAnnotation";
 import { ImageFilterControls } from "./ImageFilterControls";
 import WildlifeSearch from "./WildlifeSearch";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
+import { useCallback } from "react"; // Added for useCallback
+import { LoadingOverlay } from "@mantine/core"; // For page loading state
 
-const defaultPageFilters = {
+// This can serve as a fallback if API fails or for structure reference
+// Also used to structure the fetched defaults.
+const clientSideDefaultFilters = {
   locationId: null,
   startDate: null,
   endDate: null,
-  startTime: null,
-  endTime: null,
+  startTime: "", // Match API and admin form
+  endTime: "",   // Match API and admin form
   reviewed: false,
   reviewedByUser: false,
   animalProbability: [0.75, 1.0],
@@ -34,19 +38,57 @@ const defaultPageFilters = {
 export const ImageAnnotationPage = ({ initialImageId }) => {
   const [currentImage, setCurrentImage] = useImage();
   const [deployments, setDeployments] = useState([]);
-  const [appliedFilters, setAppliedFilters] = useState(defaultPageFilters);
+  // Initialize with client-side defaults, will be overwritten by fetched defaults
+  const [appliedFilters, setAppliedFilters] = useState(clientSideDefaultFilters);
+  const [pageLoading, setPageLoading] = useState(true); // To manage loading state of defaults and initial image
 
-  // In your component, use initialImageId to fetch and set the initial image
-  useEffect(() => {
-    fetchDeployments();
-    if (initialImageId) {
-      // Fetch and set the specific image
-      fetchCamtrapImage({ ...appliedFilters, selectedImageId: initialImageId });
-    } else {
-      // Your existing logic for getting the next image
-      fetchCamtrapImage(appliedFilters);
+  const fetchFilterDefaults = useCallback(async () => {
+    try {
+      const response = await fetch("/api/admin/filter-defaults");
+      if (response.ok) {
+        const serverDefaults = await response.json();
+        // Ensure dates are Date objects and animalProbability is valid, and merge with clientSideStructure
+        const processedDefaults = {
+          ...clientSideDefaultFilters, // Start with base structure for safety
+          ...serverDefaults,       // Override with server values
+          startDate: serverDefaults.startDate ? new Date(serverDefaults.startDate) : null,
+          endDate: serverDefaults.endDate ? new Date(serverDefaults.endDate) : null,
+          animalProbability: Array.isArray(serverDefaults.animalProbability) && serverDefaults.animalProbability.length === 2
+                               ? serverDefaults.animalProbability
+                               : clientSideDefaultFilters.animalProbability,
+          startTime: serverDefaults.startTime || "", // Ensure string, default to empty
+          endTime: serverDefaults.endTime || "",     // Ensure string, default to empty
+        };
+        // Not setting appliedFilters here directly, returning it to the caller in useEffect
+        return processedDefaults;
+      } else {
+        console.warn("Failed to fetch filter defaults, using client-side defaults.");
+        return clientSideDefaultFilters;
+      }
+    } catch (error) {
+      console.error("Error fetching filter defaults:", error);
+      return clientSideDefaultFilters; // Fallback on error
     }
-  }, [initialImageId]);
+  }, []);
+
+  // Effect for initializing page: fetch deployments, then defaults, then initial image
+  useEffect(() => {
+    const initializePage = async () => {
+      setPageLoading(true);
+      await fetchDeployments(); // Fetch deployments first
+      const currentInitialFilters = await fetchFilterDefaults(); // Then fetch defaults
+      setAppliedFilters(currentInitialFilters); // Set state after fetching
+
+      if (initialImageId) {
+        fetchCamtrapImage({ ...currentInitialFilters, selectedImageId: initialImageId });
+      } else {
+        fetchCamtrapImage(currentInitialFilters);
+      }
+      setPageLoading(false);
+    };
+    initializePage();
+    // Adding initialImageId and fetchFilterDefaults to dependencies.
+  }, [initialImageId, fetchFilterDefaults]); // Removed fetchDeployments from here as it's stable and not in useCallback
 
   const fetchDeployments = async () => {
     try {
@@ -129,6 +171,7 @@ export const ImageAnnotationPage = ({ initialImageId }) => {
   return (
     // <Grid style={{ height: "calc(100vh - 60px)" }}>
     <>
+      <LoadingOverlay visible={pageLoading} overlayProps={{ blur: 2 }} />
       <Grid>
         <GridCol
           span={{ base: 12, md: 6, lg: 7, xl: 6 }}
@@ -169,6 +212,7 @@ export const ImageAnnotationPage = ({ initialImageId }) => {
               </Tooltip>
             </ButtonGroup>
             <ImageFilterControls
+              initialFilters={appliedFilters} // Pass the loaded (potentially default) filters
               onApplyFilters={handleApplyFilters}
               deployments={deployments}
             />
@@ -177,7 +221,7 @@ export const ImageAnnotationPage = ({ initialImageId }) => {
           {/* <ScrollArea style={{ flex: 1 }} offsetScrollbars> */}
           <ImageAnnotation
             fetchNextImage={fetchNextImage}
-            filters={appliedFilters}
+            filters={appliedFilters} // This remains the source of truth for annotations/API calls
           />
           {/* </ScrollArea> */}
           {/* </Paper> */}

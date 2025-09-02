@@ -19,24 +19,52 @@ import {
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 
-export function ImageFilterControls({ onApplyFilters }) {
+// Define a truly blank/empty state for filters for the "Clear All" functionality
+const blankFiltersState = {
+  locationId: null,
+  startDate: null,
+  endDate: null,
+  startTime: "",
+  endTime: "",
+  reviewed: false,
+  reviewedByUser: false,
+  animalProbability: [0, 1], // Represents the full possible range, effectively "no filter"
+};
+
+export function ImageFilterControls({ onApplyFilters, initialFilters }) {
   const [opened, { open, close }] = useDisclosure(false);
-  const [filters, setFilters] = useState({
-    locationId: null,
-    startDate: null,
-    endDate: null,
-    startTime: "", // Changed from null
-    endTime: "",   // Changed from null
-    reviewed: false,
-    reviewedByUser: false,
-    animalProbability: [0.75, 1.0], // New default
-  });
+  // Initialize filters with initialFilters if provided, otherwise fallback to blank.
+  // initialFilters will come from ImageAnnotationPage, potentially with server defaults.
+  const [filters, setFilters] = useState(initialFilters || blankFiltersState);
 
   const [locations, setLocations] = useState([]);
 
   useEffect(() => {
     fetchLocations();
   }, []);
+
+  // Effect to update internal state if initialFilters prop changes after initial mount.
+  // This handles cases where ImageAnnotationPage might update defaults and pass them down.
+  useEffect(() => {
+    if (initialFilters) {
+      // Ensure date values are Date objects. ImageAnnotationPage should already do this,
+      // but this adds robustness.
+      const processedInitialFilters = {
+        ...blankFiltersState, // Ensure all fields from blankFiltersState are present
+        ...initialFilters,    // Override with provided initialFilters
+        startDate: initialFilters.startDate ? new Date(initialFilters.startDate) : null,
+        endDate: initialFilters.endDate ? new Date(initialFilters.endDate) : null,
+        // Ensure animalProbability is a valid array or fallback
+        animalProbability: Array.isArray(initialFilters.animalProbability) && initialFilters.animalProbability.length === 2
+                            ? initialFilters.animalProbability
+                            : blankFiltersState.animalProbability,
+        startTime: initialFilters.startTime || "",
+        endTime: initialFilters.endTime || "",
+
+      };
+      setFilters(processedInitialFilters);
+    }
+  }, [initialFilters]);
 
   const fetchLocations = async () => {
     try {
@@ -68,16 +96,9 @@ export function ImageFilterControls({ onApplyFilters }) {
   };
 
   const handleClearAllFilters = () => {
-    setFilters({
-      locationId: null,
-      startDate: null,
-      endDate: null,
-      startTime: "", // Should also be empty string here for consistency if cleared
-      endTime: "",   // Should also be empty string here for consistency if cleared
-      reviewed: false,
-      reviewedByUser: false,
-      animalProbability: [0, 1], // This resets the logical filter value
-    });
+    setFilters(blankFiltersState);
+    // The behavior is that `onApplyFilters` will be called by the user clicking "Get Images"
+    // or "Search Images" button after clearing. This will propagate the blankFiltersState.
   };
 
   const handleApplyFilters = () => {

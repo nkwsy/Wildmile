@@ -10,6 +10,7 @@ import { redirect } from "next/navigation";
 import { uploadFileToS3 } from "./UploadActions";
 import CameratrapMedia from "models/cameratrap/Media";
 import Observation from "models/cameratrap/Observation";
+import User from "models/User";
 
 import {
   S3Client,
@@ -418,157 +419,6 @@ export async function getAllDeployments() {
   return deployments;
 }
 
-export async function getStats() {
-  await dbConnect();
-  // Get total images
-  const totalImages = await CameratrapMedia.countDocuments();
-
-  // Get unique mediaIds in observations
-  const uniqueMediaIds = await Observation.distinct("mediaId");
-
-  // Get new images in last 30 days
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-  const newImages30Days = await CameratrapMedia.countDocuments({
-    createdAt: { $gte: thirtyDaysAgo },
-  });
-
-  // Get top 3 creators with proper user lookup
-  const topCreators = await Observation.aggregate([
-    {
-      $group: {
-        _id: "$creator",
-        count: { $sum: 1 },
-      },
-    },
-    {
-      $sort: { count: -1 },
-    },
-    {
-      $limit: 5,
-    },
-    {
-      $lookup: {
-        from: "users",
-        localField: "_id",
-        foreignField: "_id",
-        as: "userInfo",
-      },
-    },
-    {
-      $project: {
-        id: { $toString: "$_id" },
-        name: {
-          $ifNull: [
-            { $arrayElemAt: ["$userInfo.profile.name", 0] },
-            { $arrayElemAt: ["$userInfo.email", 0] },
-            "Unknown User",
-          ],
-        },
-        count: 1,
-      },
-    },
-  ]);
-
-  // Get most active in last 7 days with proper user lookup
-  const sevenDaysAgo = new Date();
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-  const [mostActive7Days] = await Observation.aggregate([
-    {
-      $match: {
-        createdAt: { $gte: sevenDaysAgo },
-      },
-    },
-    {
-      $group: {
-        _id: "$creator",
-        count: { $sum: 1 },
-      },
-    },
-    {
-      $sort: { count: -1 },
-    },
-    {
-      $limit: 1,
-    },
-    {
-      $lookup: {
-        from: "users",
-        localField: "_id",
-        foreignField: "_id",
-        as: "userInfo",
-      },
-    },
-    {
-      $project: {
-        id: { $toString: "$_id" },
-        name: {
-          $ifNull: [
-            { $arrayElemAt: ["$userInfo.profile.name", 0] },
-            { $arrayElemAt: ["$userInfo.email", 0] },
-            "Unknown User",
-          ],
-        },
-        count: 1,
-      },
-    },
-  ]);
-
-  // Get user with most blank observations with proper user lookup
-  const [mostBlanks] = await Observation.aggregate([
-    {
-      $match: {
-        observationType: "blank",
-      },
-    },
-    {
-      $group: {
-        _id: "$creator",
-        count: { $sum: 1 },
-      },
-    },
-    {
-      $sort: { count: -1 },
-    },
-    {
-      $limit: 1,
-    },
-    {
-      $lookup: {
-        from: "users",
-        localField: "_id",
-        foreignField: "_id",
-        as: "userInfo",
-      },
-    },
-    {
-      $project: {
-        id: { $toString: "$_id" },
-        name: {
-          $ifNull: [
-            { $arrayElemAt: ["$userInfo.profile.name", 0] },
-            { $arrayElemAt: ["$userInfo.email", 0] },
-            "Unknown User",
-          ],
-        },
-        count: 1,
-      },
-    },
-  ]);
-
-  return {
-    totalImages,
-    uniqueMediaIds: uniqueMediaIds.length,
-    newImages30Days,
-    topCreators: topCreators.map((creator) => ({
-      ...creator,
-      name: creator.name || "Unknown User",
-    })),
-    mostActive7Days: mostActive7Days || { name: "No activity", count: 0 },
-    mostBlanks: mostBlanks || { name: "No blanks", count: 0 },
-  };
-}
-
 // Add this to properly close exiftool when the server shuts down
 if (typeof process !== "undefined" && exiftool) {
   process.on("exit", () => {
@@ -578,4 +428,144 @@ if (typeof process !== "undefined" && exiftool) {
       console.error("Error closing exiftool:", e);
     }
   });
+}
+
+// Maintain original ocation of getStats as server action
+export async function getStats({ forceRefresh = false } = {}) {
+  await dbConnect();
+
+  try {
+    const totalImages = await CameratrapMedia.countDocuments();
+    const uniqueMediaIdsWithObservations = await Observation.distinct("mediaId");
+    const totalObservations = await Observation.countDocuments();
+
+    const validatedObservations = await Observation.aggregate([
+      { $group: { _id: { mediaId: "$mediaId", scientificName: "$scientificName" }, count: { $sum: 1 } } },
+      { $match: { count: { $gte: 2 } } },
+      { $group: { _id: "$_id.mediaId" } },
+      { $count: "count" },
+    ]);
+
+    const totalVolunteers = await Observation.distinct("creator");
+
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const newImages30Days = await CameratrapMedia.countDocuments({ createdAt: { $gte: thirtyDaysAgo } });
+
+    const topCreators = await Observation.aggregate([
+      { $group: { _id: "$creator", count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: 5 },
+      { $lookup: { from: "users", localField: "_id", foreignField: "_id", as: "userInfo" } },
+      { $project: {
+        id: { $toString: "$_id" }, // Convert ObjectId to string
+        name: {
+          $ifNull: [
+            { $arrayElemAt: ["$userInfo.profile.name", 0] },
+            { $arrayElemAt: ["$userInfo.email", 0] },
+            "Unknown User",
+          ],
+        },
+        count: 1,
+        _id: 0 // Exclude _id from results
+      } },
+    ]);
+
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const [mostActive7Days] = await Observation.aggregate([
+      { $match: { createdAt: { $gte: sevenDaysAgo } } },
+      { $group: { _id: "$creator", count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: 1 },
+      { $lookup: { from: "users", localField: "_id", foreignField: "_id", as: "userInfo" } },
+      { $project: {
+        id: { $toString: "$_id" }, // Convert ObjectId to string
+        name: {
+          $ifNull: [
+            { $arrayElemAt: ["$userInfo.profile.name", 0] },
+            { $arrayElemAt: ["$userInfo.email", 0] },
+            "Unknown User",
+          ],
+        },
+        count: 1,
+        _id: 0 // Exclude _id from results
+      } },
+    ]);
+
+    const [mostBlanks] = await Observation.aggregate([
+      { $match: { observationType: "blank" } },
+      { $group: { _id: "$creator", count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: 1 },
+      { $lookup: { from: "users", localField: "_id", foreignField: "_id", as: "userInfo" } },
+      { $project: {
+        id: { $toString: "$_id" }, // Convert ObjectId to string
+        name: {
+          $ifNull: [
+            { $arrayElemAt: ["$userInfo.profile.name", 0] },
+            { $arrayElemAt: ["$userInfo.email", 0] },
+            "Unknown User",
+          ],
+        },
+        count: 1,
+        _id: 0 // Exclude _id from results
+      } },
+    ]);
+
+    const [sumObservationTime] = await Observation.aggregate([
+      { $sort: { creator: 1, createdAt: 1 } },
+      { $group: { _id: "$creator", createdAtDates: { $push: "$createdAt" } } },
+      { $addFields: {
+        timeDifferences: {
+          $map: {
+            input: { $range: [1, { $size: "$createdAtDates" }] },
+            as: "index",
+            in: {
+              $subtract: [
+                { $arrayElemAt: ["$createdAtDates", "$$index"] },
+                { $arrayElemAt: ["$createdAtDates", { $subtract: ["$$index", 1] }] }
+              ]
+            }
+          }
+        }
+      } },
+      { $unwind: { path: "$timeDifferences" } },
+      { $match: { timeDifferences: { $lt: 3600000 } } },
+      { $group: { _id: null, sumObservation_ms: { $sum: "$timeDifferences" } } },
+      { $project: { _id: 0, overallSum_hours: { $divide: ["$sumObservation_ms", 3600000] } } }
+    ]);
+
+    // Convert ObjectIds in uniqueMediaIdsWithObservations to strings
+    const stringifiedMediaIds = uniqueMediaIdsWithObservations.map(id => id.toString());
+
+    return {
+      totalImages,
+      totalObservations,
+      totalImagesWithObservations: uniqueMediaIdsWithObservations.length,
+      totalValidatedImages: validatedObservations[0]?.count || 0,
+      totalVolunteers: totalVolunteers.length,
+      totalObservationTime: sumObservationTime?.overallSum_hours || 0,
+      uniqueMediaIds: uniqueMediaIdsWithObservations.length,
+      newImages30Days,
+      topCreators: topCreators.map((creator) => ({
+        id: creator.id,
+        name: creator.name || "Unknown User",
+        count: creator.count
+      })),
+      mostActive7Days: mostActive7Days ? {
+        id: mostActive7Days.id,
+        name: mostActive7Days.name,
+        count: mostActive7Days.count
+      } : { id: "", name: "No activity", count: 0 },
+      mostBlanks: mostBlanks ? {
+        id: mostBlanks.id,
+        name: mostBlanks.name,
+        count: mostBlanks.count
+      } : { id: "", name: "No blanks", count: 0 }
+    };
+  } catch (error) {
+    console.error("Error fetching stats:", error);
+    throw new Error("Error fetching statistics");
+  }
 }
