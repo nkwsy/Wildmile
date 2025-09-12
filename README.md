@@ -5,11 +5,7 @@
 - Node.js 20 or later (Prefer to use the latest LTS version)
     - Node v22.10.0 is incompatible
     - Node v20.19.0 is compatible
-    - if cleaning up and restarting
-        - Remove-Item -Recurse -Force node_modules
-        - Remove-Item -Force package-lock.json
-    - npm install
-    - npm audit fix --force
+
 - A MongoDB server (You can use a free tier at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 
 ## Getting Started
