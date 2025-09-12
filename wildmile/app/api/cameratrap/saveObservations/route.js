@@ -16,10 +16,24 @@ export async function POST(request) {
 
     const observations = await request.json();
 
-    const observationsWithCreator = observations.map((obs) => ({
-      ...obs,
-      creator: session._id,
-    }));
+    const observationsWithCreator = observations.map((obs) => {
+      // The ...obs spread operator will carry over all fields from the incoming observation,
+      // including the `boundingBoxes` array if it's present.
+      // The Mongoose model `Observation.js` is expected to have the `boundingBoxes` field
+      // defined as an array of objects, each with bboxX, bboxY, bboxWidth, bboxHeight.
+      const observationData = {
+        ...obs,
+        creator: session._id,
+      };
+
+      // If obs.boundingBoxes is not present (e.g. for 'blank' images or if no boxes drawn),
+      // it will simply not be part of observationData, and Mongoose will store it as undefined
+      // or an empty array if the schema has `default: []` for `boundingBoxes`.
+      // No explicit check or manipulation of boundingBoxes is needed here if the frontend
+      // sends it correctly structured and the Mongoose model expects it.
+
+      return observationData;
+    });
 
     const savedObservations = await Observation.insertMany(
       observationsWithCreator
