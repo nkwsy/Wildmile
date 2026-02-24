@@ -2,31 +2,17 @@ import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import CameratrapMedia from "models/cameratrap/Media";
 
-// Force dynamic rendering and disable caching
 export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
-export async function GET(request) {
-  await dbConnect();
-
+export async function GET() {
   try {
-    // Find a random document where favorite is true
-    // const randomFavorite = await CameratrapMedia.aggregate([
-    //   { $match: { favorite: true } },
-    //   { $sample: { size: 1 } },
-    // ]);
+    await dbConnect();
+
     const randomFavorite = await CameratrapMedia.aggregate([
       { $match: { favorite: true } },
       { $sample: { size: 1 } },
-      {
-        $lookup: {
-          from: "users",
-          localField: "favorites",
-          foreignField: "_id",
-          as: "favoriteUsers",
-        },
-      },
     ]).exec();
+
     if (!randomFavorite || randomFavorite.length === 0) {
       return NextResponse.json(
         { message: "No favorite images found" },
@@ -34,14 +20,11 @@ export async function GET(request) {
       );
     }
 
-    // Set Cache-Control to prevent caching
-    const response = NextResponse.json(randomFavorite[0], {
+    return NextResponse.json(randomFavorite[0], {
       headers: {
-        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120",
       },
     });
-
-    return response;
   } catch (error) {
     console.error("Error fetching random favorite:", error);
     return NextResponse.json(
