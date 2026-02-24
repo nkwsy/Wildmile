@@ -27,11 +27,11 @@ async function dbConnect() {
 
   const opts = {
     bufferCommands: false,
-    maxPoolSize: 1,
+    maxPoolSize: 5,
     minPoolSize: 1,
     autoIndex: true,
     socketTimeoutMS: 30000,
-    heartbeatFrequencyMS: 10000, // Ping server every 10 seconds
+    heartbeatFrequencyMS: 10000,
     serverSelectionTimeoutMS: 5000,
     maxIdleTimeMS: 10000,
   };
