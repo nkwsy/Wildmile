@@ -50,10 +50,21 @@ export function RandomFavorite() {
 
   if (isLoading) return <div>Loading...</div>;
 
-  if (!favoriteImage) {
+  if (error || !favoriteImage) {
     return (
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Text align="center">No favorite images found</Text>
+        <Button
+          mt="md"
+          variant="light"
+          color="blue"
+          onClick={fetchRandomFavorite}
+          loading={loading}
+          leftSection={<IconArrowsShuffle />}
+          fullWidth
+        >
+          Try Again
+        </Button>
       </Card>
     );
   }
@@ -83,7 +94,7 @@ export function RandomFavorite() {
                   {new Date(favoriteImage.timestamp).toLocaleString()}
                 </Text>
                 <Text size="sm" c="dimmed" mt="md" flex="1">
-                  Favorite by: {favoriteImage.favoriteUsers[0].profile.name}
+                  Favorites: {favoriteImage.favorites?.length || 0}
                 </Text>
                 <Button
                   mt="md"
