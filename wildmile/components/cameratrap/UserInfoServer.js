@@ -24,7 +24,7 @@ import {
   IconCalendarStats,
 } from "@tabler/icons-react";
 
-export async function UserInfoServer({ user, stats }) {
+export async function UserInfoServer({ user }) {
   if (!user) {
     return (
       <Paper p="md" shadow="xs">
@@ -33,6 +33,13 @@ export async function UserInfoServer({ user, stats }) {
         </Text>
       </Paper>
     );
+  }
+
+  let stats;
+  try {
+    stats = user?._id ? await updateUserStats(user._id) : null;
+  } catch (error) {
+    console.error("Error loading user stats:", error);
   }
 
   if (!stats) {
