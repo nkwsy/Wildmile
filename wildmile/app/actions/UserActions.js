@@ -11,64 +11,92 @@ import IndividualTrashItem from "models/IndividualTrashItem";
 import TrashItem from "models/TrashItem";
 import Achievement from "models/users/Achievement";
 
-// Function to get a single user's stats
+// Lightweight read-only function — reads previously computed stats without recalculating
 export async function getUserStats(userId) {
   if (!userId) return null;
+  await dbConnect();
 
   try {
-    const user = await User.findById(userId, "profile roles");
-    const progress = await UserProgress.findOne({ user: userId });
-    await progress.checkAchievements();
-    // await progress.save();
-    // Get achievements with populated details
-    await progress.populate([
-      {
-        path: "achievements.achievement",
-        model: "Achievement",
-        select: "name description icon badge level type domain criteria points",
-      },
-      {
-        path: "domainRanks.$*.currentRank",
-        model: "Achievement",
-        select: "name description icon badge level type domain criteria points",
-      },
+    const [user, progress] = await Promise.all([
+      User.findById(userId, "profile roles").lean(),
+      UserProgress.findOne({ user: userId }).populate([
+        {
+          path: "achievements.achievement",
+          model: "Achievement",
+          select: "name description icon badge level type domain criteria points",
+        },
+        {
+          path: "domainRanks.$*.currentRank",
+          model: "Achievement",
+          select: "name description icon badge level type domain criteria points",
+        },
+      ]),
     ]);
 
-    // Find the highest level RANK achievement that has been earned
+    if (!user || !progress) return null;
+
     const rankAchievements = progress.achievements
       .filter(
-        (a) => a.achievement.type === "RANK" && a.progress === 100 && a.earnedAt
+        (a) => a.achievement?.type === "RANK" && a.progress === 100 && a.earnedAt
       )
       .sort((a, b) => b.achievement.level - a.achievement.level);
 
-    // Get the avatar from the highest rank achievement or use poop emoji
     const avatar =
       rankAchievements.length > 0
         ? rankAchievements[0].achievement.badge
         : "💩";
 
-    // Format achievements for response
-    const achievements = progress.achievements.map((achievement) => ({
-      id: achievement.achievement._id,
-      name: achievement.achievement.name,
-      description: achievement.achievement.description,
-      icon: achievement.achievement.icon,
-      badge: achievement.achievement.badge,
-      level: achievement.achievement.level,
-      type: achievement.achievement.type,
-      domain: achievement.achievement.domain,
-      points: achievement.achievement.points,
-      progress: achievement.progress,
-      earnedAt: achievement.earnedAt,
-      criteria: achievement.achievement.criteria,
-    }));
+    const formattedDomainRanks = {};
+    progress.domainRanks?.forEach((value, domain) => {
+      formattedDomainRanks[domain] = {
+        points: value.points || 0,
+        currentRank: value.currentRank
+          ? {
+              id: value.currentRank._id,
+              name: value.currentRank.name,
+              description: value.currentRank.description,
+              icon: value.currentRank.icon,
+              badge: value.currentRank.badge,
+              level: value.currentRank.level,
+              type: value.currentRank.type,
+              domain: value.currentRank.domain,
+              points: value.currentRank.points,
+            }
+          : null,
+      };
+    });
 
     return {
       user: {
-        ...user.toObject(),
-        avatar: avatar,
+        ...user,
+        avatar,
       },
-      achievements: achievements,
+      stats: progress.stats,
+      streaks: progress.streaks,
+      achievements: progress.achievements
+        .filter((a) => a.achievement)
+        .map((a) => ({
+          id: a.achievement._id,
+          name: a.achievement.name,
+          description: a.achievement.description,
+          icon: a.achievement.icon,
+          badge: a.achievement.badge,
+          level: a.achievement.level,
+          type: a.achievement.type,
+          domain: a.achievement.domain,
+          points: a.achievement.points,
+          progress: a.progress,
+          earnedAt: a.earnedAt,
+          criteria: a.achievement.criteria,
+        })),
+      totalPoints: progress.totalPoints,
+      level: progress.level,
+      domainRanks: formattedDomainRanks,
+      lastActive:
+        progress.stats?.lastActive ||
+        (progress.streaks?.lastLoginDate
+          ? new Date(progress.streaks.lastLoginDate)
+          : null),
     };
   } catch (error) {
     console.error("Error fetching user stats:", error);
@@ -86,64 +114,62 @@ async function updateUserStats(userId) {
       throw new Error(`User not found with ID: ${userId}`);
     }
 
-    const [observations, trashLogResult, trashItemsAggregation] = await Promise.all([
-      Observation.find({ creator: user._id }).sort({ createdAt: 1 }).lean(),
-      TrashLog.aggregate([
-        { $match: { creator: user._id, deleted: false } },
-        {
-          $group: {
-            _id: null,
-            cleanupEvents: { $sum: 1 },
-            weightCollected: { $sum: "$weight" },
-            totalVolunteers: { $sum: "$numOfParticipants" },
-            sitesMonitored: { $addToSet: "$site" },
-            totalHours: {
-              $sum: {
-                $divide: [
-                  { $subtract: ["$timeEnd", "$timeStart"] },
-                  3600000,
-                ],
+    const [observations, trashLogResult, trashItemsAggregation] =
+      await Promise.all([
+        Observation.find({ creator: user._id }).sort({ createdAt: 1 }).lean(),
+        TrashLog.aggregate([
+          { $match: { creator: user._id, deleted: false } },
+          {
+            $group: {
+              _id: null,
+              cleanupEvents: { $sum: 1 },
+              weightCollected: { $sum: "$weight" },
+              totalVolunteers: { $sum: "$numOfParticipants" },
+              sitesMonitored: { $addToSet: "$site" },
+              totalHours: {
+                $sum: {
+                  $divide: [{ $subtract: ["$timeEnd", "$timeStart"] }, 3600000],
+                },
               },
             },
           },
-        },
-      ]),
-      IndividualTrashItem.aggregate([
-        { $match: { creator: user._id } },
-        {
-          $lookup: {
-            from: "trashitems",
-            localField: "itemId",
-            foreignField: "_id",
-            as: "itemDetails",
+        ]),
+        IndividualTrashItem.aggregate([
+          { $match: { creator: user._id } },
+          {
+            $lookup: {
+              from: "trashitems",
+              localField: "itemId",
+              foreignField: "_id",
+              as: "itemDetails",
+            },
           },
-        },
-        { $unwind: "$itemDetails" },
-        {
-          $group: {
-            _id: null,
-            itemsLogged: { $sum: "$quantity" },
-            uniqueMaterials: { $addToSet: "$itemDetails.material" },
-            uniqueCategories: { $addToSet: "$itemDetails.catagory" },
-            locationsMonitored: {
-              $addToSet: {
-                $cond: [
-                  { $ifNull: ["$location", false] },
-                  {
-                    $concat: [
-                      "$location.coordinates.0",
-                      ",",
-                      "$location.coordinates.1",
-                    ],
-                  },
-                  null,
-                ],
+          { $unwind: "$itemDetails" },
+          {
+            $group: {
+              _id: null,
+              itemsLogged: { $sum: "$quantity" },
+              uniqueMaterials: { $addToSet: "$itemDetails.material" },
+              uniqueCategories: { $addToSet: "$itemDetails.catagory" },
+              locationsMonitored: {
+                $addToSet: {
+                  $cond: [
+                    { $ifNull: ["$location", false] },
+                    {
+                      $concat: [
+                        "$location.coordinates.0",
+                        ",",
+                        "$location.coordinates.1",
+                      ],
+                    },
+                    null,
+                  ],
+                },
               },
             },
           },
-        },
-      ]),
-    ]);
+        ]),
+      ]);
 
     const [trashLogStats] = trashLogResult;
 
@@ -153,7 +179,7 @@ async function updateUserStats(userId) {
 
     if (observations.length > 0) {
       const observationDates = observations.map((obs) =>
-        new Date(obs.createdAt).toLocaleDateString()
+        new Date(obs.createdAt).toLocaleDateString(),
       );
       const uniqueDates = [...new Set(observationDates)];
       uniqueDates.sort();
@@ -165,7 +191,7 @@ async function updateUserStats(userId) {
         const prevDate = new Date(uniqueDates[i - 1]);
         const currDate = new Date(uniqueDates[i]);
         const dayDiff = Math.floor(
-          (currDate - prevDate) / (1000 * 60 * 60 * 24)
+          (currDate - prevDate) / (1000 * 60 * 60 * 24),
         );
 
         if (dayDiff === 1) {
@@ -181,7 +207,7 @@ async function updateUserStats(userId) {
       const lastDate = new Date(uniqueDates[uniqueDates.length - 1]);
       const today = new Date();
       const daysSinceLastObservation = Math.floor(
-        (today - lastDate) / (1000 * 60 * 60 * 24)
+        (today - lastDate) / (1000 * 60 * 60 * 24),
       );
 
       if (daysSinceLastObservation > 1) {
@@ -216,33 +242,33 @@ async function updateUserStats(userId) {
     stats.imagesReviewed = uniqueMediaIds.size;
 
     const animalObservations = observations.filter(
-      (obs) => obs.observationType === "animal"
+      (obs) => obs.observationType === "animal",
     );
     stats.animalsObserved = animalObservations.reduce(
       (sum, obs) => sum + (obs.count || 1),
-      0
+      0,
     );
 
     stats.blanksLogged = observations.filter(
-      (obs) => obs.observationType === "blank"
+      (obs) => obs.observationType === "blank",
     ).length;
 
     stats.uniqueSpecies = new Set(
       animalObservations
         .map((obs) => obs.scientificName)
-        .filter((name) => name && name.trim() !== "")
+        .filter((name) => name && name.trim() !== ""),
     );
 
     stats.deploymentsReviewed = new Set(
-      observations.map((obs) => obs.deployment).filter(Boolean)
+      observations.map((obs) => obs.deployment).filter(Boolean),
     );
 
     stats.speciesConsensus = observations.filter(
-      (obs) => obs.consensusReached
+      (obs) => obs.consensusReached,
     ).length;
 
     stats.expertVerified = observations.filter(
-      (obs) => obs.expertVerified
+      (obs) => obs.expertVerified,
     ).length;
 
     // Update stats from trash log aggregation
@@ -252,7 +278,7 @@ async function updateUserStats(userId) {
       stats.totalVolunteers = trashLogStats.totalVolunteers || 0;
       stats.totalHours = Math.round(trashLogStats.totalHours || 0);
       stats.sitesMonitored = new Set(
-        trashLogStats.sitesMonitored.filter(Boolean)
+        trashLogStats.sitesMonitored.filter(Boolean),
       );
     }
 
@@ -261,20 +287,20 @@ async function updateUserStats(userId) {
       const trashItemStats = trashItemsAggregation[0];
       stats.itemsLogged = trashItemStats.itemsLogged || 0;
       stats.uniqueMaterials = new Set(
-        trashItemStats.uniqueMaterials.filter(Boolean)
+        trashItemStats.uniqueMaterials.filter(Boolean),
       );
       stats.uniqueCategories = new Set(
-        trashItemStats.uniqueCategories.filter(Boolean)
+        trashItemStats.uniqueCategories.filter(Boolean),
       );
       stats.locationsMonitored = new Set(
-        trashItemStats.locationsMonitored.filter(Boolean)
+        trashItemStats.locationsMonitored.filter(Boolean),
       );
     }
 
     // Calculate averages
     if (stats.cleanupEvents > 0) {
       stats.avgItemsPerCleanup = Math.round(
-        stats.itemsLogged / stats.cleanupEvents
+        stats.itemsLogged / stats.cleanupEvents,
       );
     }
 
@@ -463,7 +489,7 @@ export async function updateUserProgress(userId, stats) {
       .filter(
         (a) =>
           a.earnedAt &&
-          !previousAchievements.includes(a.achievement._id.toString())
+          !previousAchievements.includes(a.achievement._id.toString()),
       )
       .map((a) => ({
         id: a.achievement._id,
