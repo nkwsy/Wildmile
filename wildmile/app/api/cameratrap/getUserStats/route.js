@@ -45,7 +45,8 @@ export async function GET(request) {
     // Find the highest level RANK achievement that has been earned
     const rankAchievements = progress.achievements
       .filter(
-        (a) => a.achievement.type === "RANK" && a.progress === 100 && a.earnedAt
+        (a) =>
+          a.achievement.type === "RANK" && a.progress === 100 && a.earnedAt,
       )
       .sort((a, b) => b.achievement.level - a.achievement.level);
 
@@ -80,21 +81,23 @@ export async function GET(request) {
 
     // Calculate total animals observed
     const animalObservations = observations.filter(
-      (obs) => obs.observationType === "animal"
+      (obs) => obs.observationType === "animal",
     );
     const totalAnimalsObserved = animalObservations.reduce(
       (sum, obs) => sum + (obs.count || 1),
-      0
+      0,
     );
 
     // Calculate total blanks logged
     const totalBlanksLogged = observations.filter(
-      (obs) => obs.observationType === "blank"
+      (obs) => obs.observationType === "blank",
     ).length;
 
     // Calculate unique species
     const uniqueSpecies = new Set(
-      animalObservations.map((obs) => obs.scientificName).filter((name) => name) // Remove null/undefined
+      animalObservations
+        .map((obs) => obs.scientificName)
+        .filter((name) => name), // Remove null/undefined
     );
 
     // Get top species
@@ -152,7 +155,7 @@ export async function GET(request) {
     console.error("Error fetching user stats:", error);
     return NextResponse.json(
       { error: "Failed to fetch user statistics" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

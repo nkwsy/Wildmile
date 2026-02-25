@@ -163,7 +163,7 @@ export async function GET(request) {
       "Cache-Control",
       forceRefresh
         ? "no-store"
-        : "public, s-maxage=3600, stale-while-revalidate=3600"
+        : "public, s-maxage=3600, stale-while-revalidate=3600",
     );
 
     return response;
@@ -171,7 +171,7 @@ export async function GET(request) {
     console.error("Error fetching stats:", error);
     return NextResponse.json(
       { message: "Error fetching statistics" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -1,4 +1,4 @@
-import { updateUserStats } from "/app/actions/UserActions";
+import { getUserStats } from "/app/actions/UserActions";
 import {
   Paper,
   Title,
@@ -37,7 +37,7 @@ export async function UserInfoServer({ user }) {
 
   let stats;
   try {
-    stats = user?._id ? await updateUserStats(user._id) : null;
+    stats = user?._id ? await getUserStats(user._id) : null;
   } catch (error) {
     console.error("Error loading user stats:", error);
   }
