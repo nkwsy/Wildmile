@@ -138,6 +138,13 @@ ObservationSchema.post("findOneAndUpdate", async function (doc) {
   await triggerMediaUpdate(doc);
 });
 
+// Index for recent-species aggregation (observationType + scientificName filter, createdAt sort)
+ObservationSchema.index({ observationType: 1, scientificName: 1, createdAt: -1 });
+// Index for user-specific queries (updateUserStats, getUserStats)
+ObservationSchema.index({ creator: 1, createdAt: 1 });
+// Index for media-based lookups (observation counts per image)
+ObservationSchema.index({ mediaId: 1 });
+
 module.exports =
   mongoose.models.Observation ||
   mongoose.model("Observation", ObservationSchema);

@@ -8,6 +8,8 @@ import User from "models/User";
 import { getSession } from "lib/getSession";
 import { headers } from "next/headers";
 
+export const maxDuration = 30;
+
 export async function GET(request) {
   await dbConnect();
 
@@ -56,7 +58,7 @@ export async function GET(request) {
   // Logic for consensus
   query["aiResults"] = {
     $elemMatch: { confHuman: { $lte: 0.85 } },
-  }
+  };
   if (type === "animals") {
     query["speciesConsensus"] = {
       $elemMatch: { observationType: "animal" },
@@ -175,38 +177,42 @@ export async function GET(request) {
   }
 
   try {
+    // Run the paginated find and count in parallel.
+    // .lean() skips Mongoose document hydration for faster serialization.
+    // Populates are kept but use .lean() to reduce overhead.
     const [images, totalImages] = await Promise.all([
       CameratrapMedia.find(query)
         .populate({
           path: "deploymentId",
           model: Deployment,
+          select: "locationId cameraId deploymentStart deploymentEnd",
           populate: {
             path: "locationId",
             model: DeploymentLocation,
+            select: "name latitude longitude",
           },
         })
         .populate({
           path: "observations",
           model: Observation,
+          select:
+            "observationType scientificName count creator createdAt commonName",
           populate: {
             path: "creator",
             model: User,
-            select: "name email",
+            select: "profile.name email",
           },
         })
         .populate({
           path: "reviewers",
           model: User,
-          select: "name email",
-        })
-        .populate({
-          path: "favorites",
-          model: User,
-          select: "name email",
+          select: "profile.name email",
         })
         .sort(sortQuery || { timestamp: -1 })
         .skip(skip)
-        .limit(limit),
+        .limit(limit)
+        .lean(),
+      // countDocuments uses the same query — benefits from the new indexes
       CameratrapMedia.countDocuments(query),
     ]);
 
@@ -222,13 +228,13 @@ export async function GET(request) {
           "Cache-Control": "no-store",
           tags: ["media"],
         },
-      }
+      },
     );
   } catch (error) {
     console.error("Error fetching deployment images:", error);
     return NextResponse.json(
       { message: "Error fetching images", error: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

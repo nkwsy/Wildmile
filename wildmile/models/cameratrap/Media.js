@@ -35,13 +35,15 @@ const MediaSchema = new mongoose.Schema(
       },
     ],
     exifData: mongoose.Schema.Types.Mixed,
-    aiResults: [{
-      modelName: String,
-      runDate: String, // Consider Date type if needed
-      confBlank: Number,
-      confHuman: Number,
-      confAnimal: Number
-    }],
+    aiResults: [
+      {
+        modelName: String,
+        runDate: String, // Consider Date type if needed
+        confBlank: Number,
+        confHuman: Number,
+        confAnimal: Number,
+      },
+    ],
     favorite: {
       type: Boolean,
       default: false,
@@ -125,7 +127,7 @@ const MediaSchema = new mongoose.Schema(
       default: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // Add a pre-save hook to ensure timestamp is always valid
@@ -136,8 +138,23 @@ MediaSchema.pre("save", function (next) {
   next();
 });
 
-// Add an index on relativePath for efficient querying
+// --- Indexes ---
+// File path lookups
 MediaSchema.index({ relativePath: 1 });
+// Identify page: filter by AI confidence scores
+MediaSchema.index({ flagged: 1, "aiResults.confAnimal": 1, "aiResults.confHuman": 1 });
+// Navigation by timestamp (prev/next image)
+MediaSchema.index({ flagged: 1, timestamp: 1 });
+// Filtered by deployment + timestamp navigation
+MediaSchema.index({ flagged: 1, deploymentId: 1, timestamp: 1 });
+// Random favorite image lookup
+MediaSchema.index({ favorite: 1 });
+// Explore page: consensus-based browsing sorted by timestamp
+MediaSchema.index({ flagged: 1, consensusStatus: 1, timestamp: -1 });
+// Explore page: species consensus + review status queries
+MediaSchema.index({ "speciesConsensus.scientificName": 1, timestamp: -1 });
+// Review count queries (reviewed=true filter)
+MediaSchema.index({ flagged: 1, reviewCount: 1, timestamp: -1 });
 
 // Updated method to update observations and check for consensus
 MediaSchema.methods.updateObservationsAndCheckConsensus = async function () {
@@ -192,15 +209,15 @@ MediaSchema.methods.updateObservationsAndCheckConsensus = async function () {
           };
         }
       });
-    }
+    },
   );
 
   // Update consensusStatus based on speciesConsensus
   const allAccepted = this.speciesConsensus.every(
-    (consensus) => consensus.accepted
+    (consensus) => consensus.accepted,
   );
   const anyAccepted = this.speciesConsensus.some(
-    (consensus) => consensus.accepted
+    (consensus) => consensus.accepted,
   );
 
   if (allAccepted) {
@@ -220,7 +237,7 @@ MediaSchema.methods.updateObservationsAndCheckConsensus = async function () {
 
 // New method to add an observation and update consensus
 MediaSchema.methods.addObservationAndUpdateConsensus = async function (
-  observation
+  observation,
 ) {
   this.observations.push(observation);
 
@@ -235,7 +252,7 @@ MediaSchema.methods.addObservationAndUpdateConsensus = async function (
 // Updated static method to add an observation and update consensus for a specific media
 MediaSchema.statics.addObservationAndUpdateConsensusForMedia = async function (
   mediaId,
-  observation
+  observation,
 ) {
   const media = await this.findOne({ mediaID: mediaId });
   if (media) {
