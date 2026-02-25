@@ -23,7 +23,7 @@ import classes from "styles/CameraTrap.module.css";
 import useSWR from "swr";
 
 const fetcher = async (url) => {
-  const response = await fetch(url, { cache: "no-store" });
+  const response = await fetch(url);
   if (!response.ok) throw new Error("Failed to fetch");
   return response.json();
 };
@@ -40,12 +40,14 @@ export function RandomFavorite() {
   } = useSWR("/api/cameratrap/randomFavorite", fetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
-    dedupingInterval: 0,
   });
 
   const fetchRandomFavorite = () => {
     setLoading(true);
-    mutate().finally(() => setLoading(false));
+    const freshUrl = `/api/cameratrap/randomFavorite?refresh=${Date.now()}`;
+    mutate(fetcher(freshUrl), { revalidate: false }).finally(() =>
+      setLoading(false)
+    );
   };
 
   if (isLoading) return <div>Loading...</div>;
