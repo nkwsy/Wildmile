@@ -11,12 +11,20 @@ export async function GET() {
     const randomFavorite = await CameratrapMedia.aggregate([
       { $match: { favorite: true } },
       { $sample: { size: 1 } },
+      {
+        $lookup: {
+          from: "users",
+          localField: "favorites",
+          foreignField: "_id",
+          as: "favoriteUsers",
+        },
+      },
     ]).exec();
 
     if (!randomFavorite || randomFavorite.length === 0) {
       return NextResponse.json(
         { message: "No favorite images found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -29,7 +37,7 @@ export async function GET() {
     console.error("Error fetching random favorite:", error);
     return NextResponse.json(
       { message: "Error fetching random favorite" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

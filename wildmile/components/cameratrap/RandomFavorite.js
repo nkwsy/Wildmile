@@ -94,7 +94,7 @@ export function RandomFavorite() {
                   {new Date(favoriteImage.timestamp).toLocaleString()}
                 </Text>
                 <Text size="sm" c="dimmed" mt="md" flex="1">
-                  Favorites: {favoriteImage.favorites?.length || 0}
+                  Favorite by: {favoriteImage.favoriteUsers[0].profile.name}
                 </Text>
                 <Button
                   mt="md"
