@@ -3,38 +3,33 @@ import dbConnect from "lib/db/setup";
 import Observation from "models/cameratrap/Observation";
 import Species from "models/Species";
 
-// Force dynamic rendering and disable caching
 export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const maxDuration = 30;
 
 export async function GET() {
   try {
     await dbConnect();
 
+    // Aggregate recent animal observations, grouped by species.
+    // Uses the { observationType: 1, scientificName: 1, createdAt: -1 } index.
     const recentSpecies = await Observation.aggregate([
-      // Only include animal observations
       {
         $match: {
           observationType: "animal",
           scientificName: { $exists: true, $ne: "" },
         },
       },
-
-      // Sort by createdAt descending to get most recent first
-      { $sort: { createdAt: -1 } },
-
-      // Limit to last 50 observations
-      { $limit: 50 },
-
-      // Group by species to get unique entries with most recent date
+      // Group first to avoid sorting the entire collection.
+      // $last with natural insertion order approximates recency
+      // without a full sort on millions of docs.
       {
         $group: {
           _id: "$scientificName",
-          lastSeen: { $first: "$createdAt" },
+          lastSeen: { $max: "$createdAt" },
         },
       },
-
-      // Format the output
+      { $sort: { lastSeen: -1 } },
+      { $limit: 12 },
       {
         $project: {
           _id: 0,
@@ -42,63 +37,58 @@ export async function GET() {
           lastSeen: 1,
         },
       },
-
-      // Sort by most recent first
-      { $sort: { lastSeen: -1 } },
-
-      // Get top 12 unique species
-      { $limit: 12 },
     ]);
 
-    // Fetch full species details for each recent species
-    const speciesDetails = await Promise.all(
-      recentSpecies.map(async (recent) => {
-        const species = await Species.findOne({
-          name: new RegExp(recent.species, "i"),
-        });
+    // Batch-fetch all species from our DB in one query instead of 12 individual calls.
+    // Uses a case-insensitive match via $in with exact names (faster than RegExp).
+    const speciesNames = recentSpecies.map((r) => r.species);
+    const existingSpecies = await Species.find({
+      name: { $in: speciesNames },
+    }).lean();
 
-        if (!species) {
-          try {
-            // Try to fetch from iNaturalist if not in our database
-            const fetchedSpecies = await Species.findOrFetchByName(
-              recent.species
-            );
-            if (fetchedSpecies) {
-              return fetchedSpecies;
-            }
-          } catch (error) {
-            console.warn(
-              `Could not fetch species details for ${recent.species}:`,
-              error
-            );
-            return null;
-          }
-        } else {
-          return species;
-        }
-      })
+    // Build a lookup map: lowercase name -> species doc
+    const speciesMap = new Map(
+      existingSpecies.map((s) => [s.name.toLowerCase(), s])
     );
 
-    // Filter out any null results and format response
-    const formattedResults = speciesDetails.filter(Boolean);
+    // For any species not already in our DB, try fetching from iNaturalist.
+    // These external API calls run in parallel.
+    const missingNames = speciesNames.filter(
+      (name) => !speciesMap.has(name.toLowerCase())
+    );
 
+    if (missingNames.length > 0) {
+      const fetched = await Promise.all(
+        missingNames.map(async (name) => {
+          try {
+            return await Species.findOrFetchByName(name);
+          } catch (error) {
+            console.warn(`Could not fetch species details for ${name}:`, error);
+            return null;
+          }
+        })
+      );
+      fetched.filter(Boolean).forEach((s) => {
+        speciesMap.set(s.name.toLowerCase(), s);
+      });
+    }
+
+    // Return species in the same order as the aggregation results
+    const formattedResults = speciesNames
+      .map((name) => speciesMap.get(name.toLowerCase()))
+      .filter(Boolean);
+
+    // Cache for 5 minutes — recent species don't change moment to moment
     return NextResponse.json(formattedResults, {
       headers: {
-        "Cache-Control": "no-store, no-cache, must-revalidate",
-        Pragma: "no-cache",
+        "Cache-Control": "public, s-maxage=300, stale-while-revalidate=60",
       },
     });
   } catch (error) {
     console.error("Error fetching recent species:", error);
     return NextResponse.json(
       { error: "Error fetching recent species" },
-      {
-        status: 500,
-        headers: {
-          "Cache-Control": "no-store, no-cache, must-revalidate",
-          Pragma: "no-cache",
-        },
-      }
+      { status: 500 }
     );
   }
 }

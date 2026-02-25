@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import CameratrapMedia from "models/cameratrap/Media";
 import CameratrapDeployment from "models/cameratrap/Deployment";
+
+export const maxDuration = 30;
+
 export async function GET(request) {
   await dbConnect();
 
@@ -123,10 +126,12 @@ export async function GET(request) {
 
   try {
     let image;
-    let totalImages = await CameratrapMedia.countDocuments(query);
 
     if (direction && currentImageId) {
-      const currentImage = await CameratrapMedia.findById(currentImageId);
+      const currentImage = await CameratrapMedia.findById(
+        currentImageId,
+        "timestamp"
+      ).lean();
       if (currentImage) {
         const sort =
           direction === "next" ? { timestamp: 1 } : { timestamp: -1 };
@@ -136,7 +141,7 @@ export async function GET(request) {
             : { $lt: currentImage.timestamp };
 
         query.timestamp = timeCondition;
-        [image] = await CameratrapMedia.find(query).sort(sort).limit(1);
+        image = await CameratrapMedia.findOne(query).sort(sort).lean();
       }
     } else {
       [image] = await CameratrapMedia.aggregate([
