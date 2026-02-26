@@ -25,59 +25,78 @@ import { useDisclosure } from "@mantine/hooks";
 import TaxaSearch from "./TaxaSearch";
 import styles from "styles/components/YesNoButtonGroup.module.css";
 import { DeploymentMapPopover } from "./deployments/DeploymentMap";
+
+// Default filter state — used on initial render and when clearing all filters.
+const DEFAULT_FILTERS = {
+  locationId: null,
+  deploymentId: null,
+  startDate: null,
+  endDate: null,
+  startTime: null,
+  endTime: null,
+  reviewed: null,
+  reviewedByUser: null,
+  userFavorite: null,
+  favorites: null,
+  type: null,
+  consensusStatus: null,
+  species: [],
+  accepted: null,
+  needsReview: null,
+  sort: "timestamp",
+  sortDirection: "desc",
+};
+
+/**
+ * Advanced filter controls for the cameratrap image gallery.
+ *
+ * @param {Function} onApplyFilters - called whenever filters change, receives the full filter object
+ * @param {Function} onClearFilters - called when user clicks "Clear All Filters"
+ * @param {boolean}  onMinimize     - controls whether the filter panel is expanded
+ * @param {Object}   initialFilters - filter values parsed from URL params on page load.
+ *                   Merged into DEFAULT_FILTERS so the UI reflects any bookmarked/shared filter state.
+ */
 export function AdvancedImageFilterControls({
   onApplyFilters,
   onClearFilters,
   onMinimize,
+  initialFilters = {},
 }) {
   const [opened, { open, close }] = useDisclosure(false);
-  // useEffect(() => {
-  //   if (onMinimize === true) {
-  //     opened.close();
-  //   } else if (onMinimize === false) {
-  //     opened.open();
-  //   }
-  // }, [onMinimize]);
+
+  // Merge URL-derived initial filters into the defaults.
+  // This means if someone visits a URL like ?type=animals&locationId=abc,
+  // those controls will already be set when the page loads.
   const [filters, setFilters] = useState({
-    locationId: null,
-    deploymentId: null,
-    startDate: null,
-    endDate: null,
-    startTime: null,
-    endTime: null,
-    reviewed: null,
-    reviewedByUser: null,
-    userFavorite: null,
-    favorites: null,
-    type: null,
-    consensusStatus: null,
-    species: [],
-    accepted: null,
-    needsReview: null,
-    sort: "timestamp",
-    sortDirection: "desc",
+    ...DEFAULT_FILTERS,
+    ...initialFilters,
   });
 
   const [locations, setLocations] = useState([]);
   const [deployments, setDeployments] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
 
+  // When a location is picked from the map popover, update the filter
   useEffect(() => {
     if (selectedLocation) {
       handleFilterChange("locationId", selectedLocation._id);
     }
   }, [selectedLocation]);
 
+  // Fetch the list of available locations on mount
   useEffect(() => {
     fetchLocations();
   }, []);
 
+  // When locationId changes, fetch that location's deployments
   useEffect(() => {
     if (filters.locationId) {
       fetchDeployments(filters.locationId);
     }
   }, [filters.locationId]);
 
+  // Auto-apply filters whenever any filter value changes.
+  // This triggers the parent to update URL params and re-fetch images.
   useEffect(() => {
     handleApplyFilters();
   }, [filters]);
@@ -121,6 +140,7 @@ export function AdvancedImageFilterControls({
     }
   };
 
+  // Update a single filter key, triggering the useEffect above
   const handleFilterChange = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
@@ -136,24 +156,9 @@ export function AdvancedImageFilterControls({
     setFilters((prev) => ({ ...prev, [key]: null }));
   };
 
+  // Reset all filters back to defaults and notify parent
   const handleClearAllFilters = () => {
-    setFilters({
-      locationId: null,
-      deploymentId: null,
-      startDate: null,
-      endDate: null,
-      startTime: null,
-      endTime: null,
-      reviewed: null,
-      reviewedByUser: null,
-      userFavorite: null,
-      type: null,
-      consensusStatus: null,
-      species: [],
-      accepted: null,
-      sort: "timestamp-desc",
-      sortDirection: "desc",
-    });
+    setFilters({ ...DEFAULT_FILTERS });
     if (onClearFilters) {
       onClearFilters();
     }
@@ -161,7 +166,6 @@ export function AdvancedImageFilterControls({
 
   const handleApplyFilters = () => {
     onApplyFilters(filters);
-    // close();
   };
 
   const hasActiveFilters = Object.entries(filters).some(([key, value]) => {
@@ -171,7 +175,6 @@ export function AdvancedImageFilterControls({
   });
 
   const handleTimeChange = (field, value) => {
-    // Value comes in as a string in "HH:mm" format or null
     handleFilterChange(field, value);
   };
 
@@ -297,7 +300,6 @@ export function AdvancedImageFilterControls({
               <Grid.Col span={6} key={key}>
                 <Group className={styles.filterRow}>
                   <Text className={styles.label}>{label}</Text>
-                  {/* <Group className={styles.buttonGroup}> */}
                   <Button.Group>
                     <Button
                       className={styles.button}
@@ -325,7 +327,6 @@ export function AdvancedImageFilterControls({
                     </Button>
                   </Button.Group>
                 </Group>
-                {/* </Group> */}
               </Grid.Col>
             ))}
           </Grid>
