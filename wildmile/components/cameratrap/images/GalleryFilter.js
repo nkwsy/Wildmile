@@ -26,11 +26,14 @@ export function GalleryFilter({ onFilterChange, initialFilters = {} }) {
   const [filters, setFilters] = useState({});
   const [minimized, { toggle: toggleMinimized }] = useDisclosure(true);
 
-  // Tracks whether the selection useEffect has fired after initial mount.
-  // On the very first render, `selection` is [] (empty) because the context
-  // starts empty. We need to skip that first effect so we don't wipe out
-  // species that were restored from URL params.
-  const isInitialMount = useRef(true);
+  // How many selection-change effects to skip on startup:
+  //  - Always skip 1: the initial render where selection is [] (context default)
+  //  - If URL has species, skip 1 more: the seeding effect below sets selection
+  //    to stub objects, which triggers another selection change we should ignore
+  //    (the filters already have the right species from URL params).
+  const selectionEffectsToSkip = useRef(
+    initialFilters.species?.length > 0 ? 2 : 1
+  );
 
   /**
    * Called by AdvancedImageFilterControls whenever any filter changes.
@@ -73,15 +76,28 @@ export function GalleryFilter({ onFilterChange, initialFilters = {} }) {
     setFilters(validParams);
   };
 
+  // Seed the selection context from URL species on mount.
+  // Creates lightweight stub objects with just { name } — enough for
+  // SpeciesCard to show the visual highlight (it matches by name as
+  // a fallback when id is missing). When the user clicks a highlighted
+  // card, toggleSelection in SpeciesCard replaces the stub with the
+  // full iNaturalist object.
+  useEffect(() => {
+    if (initialFilters.species?.length > 0) {
+      setSelection(initialFilters.species.map((name) => ({ name })));
+    }
+  }, []);
+
   // Re-apply filters when the wildlife species selection changes.
-  // SKIPS the initial mount so URL-provided species aren't wiped out
-  // by the empty initial selection context.
-  // After initial mount, every selection change (including deselecting
-  // all species back to []) explicitly sets species from the selection,
+  // Skips the first N effects on startup (see selectionEffectsToSkip ref)
+  // so URL-provided species aren't wiped by the empty initial context
+  // or by the seeding effect above.
+  // After startup, every selection change (including deselecting all
+  // species back to []) explicitly sets species from the selection,
   // so the user's intent to clear is respected.
   useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
+    if (selectionEffectsToSkip.current > 0) {
+      selectionEffectsToSkip.current--;
       return;
     }
     // User changed species via WildlifeSearch — build updated filters
