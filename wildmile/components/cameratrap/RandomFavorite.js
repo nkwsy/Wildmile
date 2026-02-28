@@ -95,9 +95,11 @@ export function RandomFavorite() {
                   Captured on:{" "}
                   {new Date(favoriteImage.timestamp).toLocaleString()}
                 </Text>
-                <Text size="sm" c="dimmed" mt="md" flex="1">
-                  Favorite by: {favoriteImage.favoriteUsers[0].profile.name}
-                </Text>
+                {favoriteImage.favoriteUsers?.[0]?.profile?.name && (
+                  <Text size="sm" c="dimmed" mt="md" flex="1">
+                    Favorite by: {favoriteImage.favoriteUsers[0].profile.name}
+                  </Text>
+                )}
                 <Button
                   mt="md"
                   // flex="1"

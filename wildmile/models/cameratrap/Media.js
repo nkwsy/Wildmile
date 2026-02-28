@@ -126,6 +126,14 @@ const MediaSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    // Pre-generated random float used for O(log n) random document lookups.
+    // Replaces slow $sample-after-$match aggregations. Indexed so queries
+    // can seek directly to a random point in the B-tree.
+    randomSeed: {
+      type: Number,
+      default: () => Math.random(),
+      index: true,
+    },
   },
   { timestamps: true },
 );
@@ -155,6 +163,58 @@ MediaSchema.index({ flagged: 1, consensusStatus: 1, timestamp: -1 });
 MediaSchema.index({ "speciesConsensus.scientificName": 1, timestamp: -1 });
 // Review count queries (reviewed=true filter)
 MediaSchema.index({ flagged: 1, reviewCount: 1, timestamp: -1 });
+// Random image lookups via randomSeed (replaces slow $sample after $match)
+MediaSchema.index({ flagged: 1, randomSeed: 1 });
+MediaSchema.index({ flagged: 1, deploymentId: 1, randomSeed: 1 });
+MediaSchema.index({ favorite: 1, randomSeed: 1 });
+
+/**
+ * Find a single random document matching the query using the randomSeed field.
+ * Works by picking a random float and seeking to the nearest document in the
+ * B-tree index — O(log n) instead of the O(n) full-scan that $sample requires
+ * after a $match stage.
+ *
+ * Tries randomSeed >= rand first, then wraps around to < rand if nothing found
+ * (handles edge cases where rand is near 1.0).
+ */
+MediaSchema.statics.findOneRandom = async function (query = {}) {
+  const rand = Math.random();
+  let doc = await this.findOne({ ...query, randomSeed: { $gte: rand } })
+    .sort({ randomSeed: 1 });
+  if (!doc) {
+    doc = await this.findOne({ ...query, randomSeed: { $lt: rand } })
+      .sort({ randomSeed: -1 });
+  }
+  return doc;
+};
+
+/**
+ * Find multiple random documents matching the query using the randomSeed field.
+ * Picks a random starting point and grabs `limit` documents from there,
+ * wrapping around if needed. Documents are spread uniformly across the
+ * randomSeed space so results are well-distributed.
+ */
+MediaSchema.statics.findRandomSample = async function (query = {}, limit = 1) {
+  const rand = Math.random();
+
+  // Grab docs starting from a random point going forward
+  let docs = await this.find({ ...query, randomSeed: { $gte: rand } })
+    .sort({ randomSeed: 1 })
+    .limit(limit)
+    .lean();
+
+  // If we didn't get enough (rand was near 1.0), wrap around from the start
+  if (docs.length < limit) {
+    const remaining = limit - docs.length;
+    const moreDocs = await this.find({ ...query, randomSeed: { $lt: rand } })
+      .sort({ randomSeed: 1 })
+      .limit(remaining)
+      .lean();
+    docs = docs.concat(moreDocs);
+  }
+
+  return docs;
+};
 
 // Updated method to update observations and check for consensus
 MediaSchema.methods.updateObservationsAndCheckConsensus = async function () {

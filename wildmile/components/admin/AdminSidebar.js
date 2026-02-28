@@ -31,6 +31,12 @@ export function AdminSidebar() {
         href="/admin/filters"
         active={pathname === "/admin/filters"}
       />
+      <NavLink
+        label="Database Migrations"
+        component={Link}
+        href="/admin/migrations"
+        active={pathname === "/admin/migrations"}
+      />
     </div>
   );
 }

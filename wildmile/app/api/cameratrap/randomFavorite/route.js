@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import CameratrapMedia from "models/cameratrap/Media";
+// Import User so Mongoose registers the model — needed for populate().
+// The original $lookup bypassed Mongoose and hit the "users" collection
+// directly, but populate() resolves through Mongoose's model registry.
+import "models/User";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -9,30 +13,32 @@ export async function GET(request) {
   try {
     await dbConnect();
 
-    const randomFavorite = await CameratrapMedia.aggregate([
-      { $match: { favorite: true } },
-      { $sample: { size: 1 } },
-      {
-        $lookup: {
-          from: "users",
-          localField: "favorites",
-          foreignField: "_id",
-          as: "favoriteUsers",
-        },
-      },
-    ]).exec();
+    // Use the randomSeed index for O(log n) random lookup instead of
+    // the O(n) $sample-after-$match aggregation.
+    const randomFavorite = await CameratrapMedia.findOneRandom({
+      favorite: true,
+    });
 
-    if (!randomFavorite || randomFavorite.length === 0) {
+    if (!randomFavorite) {
       return NextResponse.json(
         { message: "No favorite images found" },
         { status: 404 }
       );
     }
 
+    // Populate the favorites field with full User documents.
+    await randomFavorite.populate("favorites");
+
+    // Convert to plain object so we can add the favoriteUsers field.
+    // Mongoose's toJSON() strips non-schema fields, so setting a property
+    // directly on the document would be lost during NextResponse.json().
+    const result = randomFavorite.toObject();
+    result.favoriteUsers = result.favorites;
+
     const { searchParams } = new URL(request.url);
     const refresh = searchParams.has("refresh");
 
-    return NextResponse.json(randomFavorite[0], {
+    return NextResponse.json(result, {
       headers: {
         "Cache-Control": refresh
           ? "no-cache"

@@ -144,10 +144,9 @@ export async function GET(request) {
         image = await CameratrapMedia.findOne(query).sort(sort).lean();
       }
     } else {
-      [image] = await CameratrapMedia.aggregate([
-        { $match: query },
-        { $sample: { size: 1 } },
-      ]);
+      // Use the randomSeed index for O(log n) random lookup instead of
+      // the O(n) $sample-after-$match aggregation.
+      image = await CameratrapMedia.findOneRandom(query);
     }
 
     if (image) {
