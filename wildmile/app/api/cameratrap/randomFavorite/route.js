@@ -9,30 +9,30 @@ export async function GET(request) {
   try {
     await dbConnect();
 
-    const randomFavorite = await CameratrapMedia.aggregate([
-      { $match: { favorite: true } },
-      { $sample: { size: 1 } },
-      {
-        $lookup: {
-          from: "users",
-          localField: "favorites",
-          foreignField: "_id",
-          as: "favoriteUsers",
-        },
-      },
-    ]).exec();
+    // Use the randomSeed index for O(log n) random lookup instead of
+    // the O(n) $sample-after-$match aggregation.
+    const randomFavorite = await CameratrapMedia.findOneRandom({
+      favorite: true,
+    });
 
-    if (!randomFavorite || randomFavorite.length === 0) {
+    if (!randomFavorite) {
       return NextResponse.json(
         { message: "No favorite images found" },
         { status: 404 }
       );
     }
 
+    // Populate the favoriteUsers field (replaces the $lookup stage)
+    await CameratrapMedia.populate(randomFavorite, {
+      path: "favorites",
+      model: "User",
+    });
+    randomFavorite.favoriteUsers = randomFavorite.favorites;
+
     const { searchParams } = new URL(request.url);
     const refresh = searchParams.has("refresh");
 
-    return NextResponse.json(randomFavorite[0], {
+    return NextResponse.json(randomFavorite, {
       headers: {
         "Cache-Control": refresh
           ? "no-cache"

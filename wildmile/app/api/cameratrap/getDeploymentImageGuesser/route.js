@@ -23,7 +23,7 @@ export async function GET(request) {
     if (!deployment) {
       return NextResponse.json(
         { message: "Deployment not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -55,7 +55,7 @@ export async function GET(request) {
     // Get unique values at the next level
     const allPaths = await CameratrapMedia.distinct(
       `relativePath.${pathDepth}`,
-      folderQuery
+      folderQuery,
     );
 
     // Filter out files (assuming files have extensions)
@@ -121,7 +121,7 @@ export async function GET(request) {
     console.error("Error in getMediaByPath:", error);
     return NextResponse.json(
       { message: "Error fetching media", error: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
