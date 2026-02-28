@@ -26,18 +26,19 @@ export async function GET(request) {
       );
     }
 
-    // Populate the favorites field with full User documents, then copy
-    // to favoriteUsers to match the shape the frontend expects
-    // (the original $lookup wrote to "favoriteUsers").
-    await CameratrapMedia.populate(randomFavorite, {
-      path: "favorites",
-    });
-    randomFavorite.favoriteUsers = randomFavorite.favorites;
+    // Populate the favorites field with full User documents.
+    await randomFavorite.populate("favorites");
+
+    // Convert to plain object so we can add the favoriteUsers field.
+    // Mongoose's toJSON() strips non-schema fields, so setting a property
+    // directly on the document would be lost during NextResponse.json().
+    const result = randomFavorite.toObject();
+    result.favoriteUsers = result.favorites;
 
     const { searchParams } = new URL(request.url);
     const refresh = searchParams.has("refresh");
 
-    return NextResponse.json(randomFavorite, {
+    return NextResponse.json(result, {
       headers: {
         "Cache-Control": refresh
           ? "no-cache"
