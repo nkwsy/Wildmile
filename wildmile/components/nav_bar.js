@@ -55,10 +55,6 @@ const nav_tabs = [
         label: "Species List",
         link: "/plants/species",
       },
-      {
-        label: "Add an Observation",
-        link: "/plants/observe",
-      },
     ],
   },
   // Subitems for projects need seeding somehow

@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import CameratrapMedia from "models/cameratrap/Media";
+// Import User so Mongoose registers the model — needed for populate().
+// The original $lookup bypassed Mongoose and hit the "users" collection
+// directly, but populate() resolves through Mongoose's model registry.
+import "models/User";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -22,10 +26,11 @@ export async function GET(request) {
       );
     }
 
-    // Populate the favoriteUsers field (replaces the $lookup stage)
+    // Populate the favorites field with full User documents, then copy
+    // to favoriteUsers to match the shape the frontend expects
+    // (the original $lookup wrote to "favoriteUsers").
     await CameratrapMedia.populate(randomFavorite, {
       path: "favorites",
-      model: "User",
     });
     randomFavorite.favoriteUsers = randomFavorite.favorites;
 
