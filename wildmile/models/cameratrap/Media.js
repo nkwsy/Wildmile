@@ -180,12 +180,10 @@ MediaSchema.index({ favorite: 1, randomSeed: 1 });
 MediaSchema.statics.findOneRandom = async function (query = {}) {
   const rand = Math.random();
   let doc = await this.findOne({ ...query, randomSeed: { $gte: rand } })
-    .sort({ randomSeed: 1 })
-    .lean();
+    .sort({ randomSeed: 1 });
   if (!doc) {
     doc = await this.findOne({ ...query, randomSeed: { $lt: rand } })
-      .sort({ randomSeed: -1 })
-      .lean();
+      .sort({ randomSeed: -1 });
   }
   return doc;
 };
