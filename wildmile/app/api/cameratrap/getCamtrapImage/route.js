@@ -23,12 +23,12 @@ export async function GET(request) {
   const direction = searchParams.get("direction");
   const currentImageId = searchParams.get("currentImageId");
   const selectedImageId = searchParams.get("selectedImageId");
-  
+
   const animalProbabilityParam = searchParams.get("animalProbability");
   let minAnimalConf, maxAnimalConf;
 
   if (animalProbabilityParam) {
-    const parts = animalProbabilityParam.split(',');
+    const parts = animalProbabilityParam.split(",");
     if (parts.length === 2) {
       minAnimalConf = parseFloat(parts[0]);
       maxAnimalConf = parseFloat(parts[1]);
@@ -113,7 +113,12 @@ export async function GET(request) {
     query.reviewCount = { $gt: 0 };
   }
 
-  if (typeof minAnimalConf === 'number' && typeof maxAnimalConf === 'number' && !isNaN(minAnimalConf) && !isNaN(maxAnimalConf)) {
+  if (
+    typeof minAnimalConf === "number" &&
+    typeof maxAnimalConf === "number" &&
+    !isNaN(minAnimalConf) &&
+    !isNaN(maxAnimalConf)
+  ) {
     query.aiResults = {
       $elemMatch: {
         confAnimal: {
@@ -122,7 +127,7 @@ export async function GET(request) {
         },
         confHuman: {
           $lte: 0.85,
-        }
+        },
       },
     };
   }
@@ -149,7 +154,7 @@ export async function GET(request) {
     } else if (direction && currentImageId) {
       const currentImage = await CameratrapMedia.findById(
         currentImageId,
-        "timestamp"
+        "timestamp",
       ).lean();
       if (currentImage) {
         const sort =
@@ -162,6 +167,8 @@ export async function GET(request) {
         query.timestamp = { ...query.timestamp, ...timeCondition };
         image = await CameratrapMedia.findOne(query).sort(sort).lean();
       }
+    } else if (selectedImageId) {
+      image = await CameratrapMedia.findById(selectedImageId);
     } else {
       image = await CameratrapMedia.findOneRandom(query);
     }
@@ -171,14 +178,14 @@ export async function GET(request) {
     } else {
       return NextResponse.json(
         { message: "No images found matching the criteria" },
-        { status: 404 }
+        { status: 404 },
       );
     }
   } catch (error) {
     console.error("Error in getCamtrapImage route:", error);
     return NextResponse.json(
       { message: "Error fetching camera trap image", error: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
