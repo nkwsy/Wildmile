@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import CameratrapMedia from "models/cameratrap/Media";
 import CameratrapDeployment from "models/cameratrap/Deployment";
+import { getSession } from "lib/getSession";
+import { headers } from "next/headers";
 
 export const maxDuration = 30;
 
@@ -17,6 +19,7 @@ export async function GET(request) {
   const endTime = searchParams.get("endTime");
   const reviewed = searchParams.get("reviewed");
   const reviewedByUser = searchParams.get("reviewedByUser");
+  const notReviewedByUser = searchParams.get("notReviewedByUser");
   const direction = searchParams.get("direction");
   const currentImageId = searchParams.get("currentImageId");
   const selectedImageId = searchParams.get("selectedImageId");
@@ -124,10 +127,26 @@ export async function GET(request) {
     };
   }
 
+  if (notReviewedByUser === "true") {
+    const session = await getSession({ headers });
+    if (session?._id) {
+      query.reviewers = { $nin: [session._id] };
+    }
+  } else if (reviewedByUser === "true") {
+    const session = await getSession({ headers });
+    if (session?._id) {
+      query.reviewers = session._id;
+    }
+  }
+
   try {
     let image;
 
-    if (direction && currentImageId) {
+    if (direction === "oldest") {
+      image = await CameratrapMedia.findOne(query)
+        .sort({ timestamp: 1 })
+        .lean();
+    } else if (direction && currentImageId) {
       const currentImage = await CameratrapMedia.findById(
         currentImageId,
         "timestamp"
@@ -140,12 +159,10 @@ export async function GET(request) {
             ? { $gt: currentImage.timestamp }
             : { $lt: currentImage.timestamp };
 
-        query.timestamp = timeCondition;
+        query.timestamp = { ...query.timestamp, ...timeCondition };
         image = await CameratrapMedia.findOne(query).sort(sort).lean();
       }
     } else {
-      // Use the randomSeed index for O(log n) random lookup instead of
-      // the O(n) $sample-after-$match aggregation.
       image = await CameratrapMedia.findOneRandom(query);
     }
 
