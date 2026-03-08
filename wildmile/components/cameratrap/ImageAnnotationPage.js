@@ -28,10 +28,11 @@ const clientSideDefaultFilters = {
   locationId: null,
   startDate: null,
   endDate: null,
-  startTime: "", // Match API and admin form
-  endTime: "",   // Match API and admin form
+  startTime: "",
+  endTime: "",
   reviewed: false,
   reviewedByUser: false,
+  notReviewedByUser: false,
   animalProbability: [0.75, 1.0],
 };
 
@@ -114,9 +115,10 @@ export const ImageAnnotationPage = ({ initialImageId }) => {
       processedParams.animalProbability = processedParams.animalProbability.join(',');
     }
 
+    const booleanKeys = ["reviewed", "reviewedByUser", "notReviewedByUser"];
     const validParams = Object.entries(processedParams).reduce((acc, [key, value]) => {
       if (value !== null && value !== undefined && value !== "") {
-        if (key === "reviewed" || key === "reviewedByUser") {
+        if (booleanKeys.includes(key)) {
           acc[key] = value.toString();
         } else {
           acc[key] = value;
@@ -144,6 +146,11 @@ export const ImageAnnotationPage = ({ initialImageId }) => {
   const handleApplyFilters = (filters) => {
     setAppliedFilters(filters);
     fetchCamtrapImage(filters);
+  };
+
+  const handleJumpToEarliest = (filters) => {
+    setAppliedFilters(filters);
+    fetchCamtrapImage({ ...filters, direction: "oldest" });
   };
 
   const handleNavigateImage = (direction) => {
@@ -212,8 +219,9 @@ export const ImageAnnotationPage = ({ initialImageId }) => {
               </Tooltip>
             </ButtonGroup>
             <ImageFilterControls
-              initialFilters={appliedFilters} // Pass the loaded (potentially default) filters
+              initialFilters={appliedFilters}
               onApplyFilters={handleApplyFilters}
+              onJumpToEarliest={handleJumpToEarliest}
               deployments={deployments}
             />
           </Group>

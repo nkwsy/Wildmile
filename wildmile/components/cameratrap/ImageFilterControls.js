@@ -16,6 +16,7 @@ import {
   IconX,
   IconAdjustmentsHorizontal,
   IconRefresh,
+  IconChevronsLeft,
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 
@@ -28,10 +29,11 @@ const blankFiltersState = {
   endTime: "",
   reviewed: false,
   reviewedByUser: false,
-  animalProbability: [0, 1], // Represents the full possible range, effectively "no filter"
+  notReviewedByUser: false,
+  animalProbability: [0, 1],
 };
 
-export function ImageFilterControls({ onApplyFilters, initialFilters }) {
+export function ImageFilterControls({ onApplyFilters, onJumpToEarliest, initialFilters }) {
   const [opened, { open, close }] = useDisclosure(false);
   // Initialize filters with initialFilters if provided, otherwise fallback to blank.
   // initialFilters will come from ImageAnnotationPage, potentially with server defaults.
@@ -126,6 +128,20 @@ export function ImageFilterControls({ onApplyFilters, initialFilters }) {
         >
           Get Images
         </Button>
+        {onJumpToEarliest && (
+          <Button
+            size="md"
+            onClick={() => {
+              onApplyFilters(filters);
+              onJumpToEarliest(filters);
+            }}
+            leftSection={<IconChevronsLeft size={16} />}
+            variant="light"
+            color="teal"
+          >
+            Earliest
+          </Button>
+        )}
         <Button
           onClick={open}
           leftSection={<IconAdjustmentsHorizontal size={16} />}
@@ -255,9 +271,27 @@ export function ImageFilterControls({ onApplyFilters, initialFilters }) {
           <Switch
             label="Show only images reviewed by me"
             checked={filters.reviewedByUser}
-            onChange={(event) =>
-              handleFilterChange("reviewedByUser", event.currentTarget.checked)
-            }
+            onChange={(event) => {
+              const checked = event.currentTarget.checked;
+              setFilters((prev) => ({
+                ...prev,
+                reviewedByUser: checked,
+                notReviewedByUser: checked ? false : prev.notReviewedByUser,
+              }));
+            }}
+          />
+
+          <Switch
+            label="Show only images NOT reviewed by me"
+            checked={filters.notReviewedByUser}
+            onChange={(event) => {
+              const checked = event.currentTarget.checked;
+              setFilters((prev) => ({
+                ...prev,
+                notReviewedByUser: checked,
+                reviewedByUser: checked ? false : prev.reviewedByUser,
+              }));
+            }}
           />
           <Group grow align="flex-start" mt="md">
             <NumberInput

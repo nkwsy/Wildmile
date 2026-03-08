@@ -47,7 +47,13 @@ export function SpeciesCards(results) {
 // only have a name property). The name fallback is a single string
 // comparison so there's no meaningful performance cost.
 function isSelectedSpecies(item, inatResult) {
-  return item.id === inatResult.id || item.name === inatResult.name;
+  if (item.id != null && inatResult.id != null && item.id === inatResult.id) {
+    return true;
+  }
+  if (item.name && inatResult.name && item.name === inatResult.name) {
+    return true;
+  }
+  return false;
 }
 
 export default function Species({ results }) {
