@@ -26,128 +26,103 @@ import {
 } from "@tabler/icons-react";
 import { BarChart, CompositeChart } from "@mantine/charts";
 
-function CalendarHeatmap({ data }) {
-  const { weeks, monthLabels, maxCount, dayLabels } = useMemo(() => {
-    const dates = Object.keys(data).sort();
-    if (!dates.length) return { weeks: [], monthLabels: [], maxCount: 1, dayLabels: [] };
+const MONTH_LABELS = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
 
-    const first = new Date(dates[0]);
-    const last = new Date(dates[dates.length - 1]);
-    const max = Math.max(...Object.values(data), 1);
+function YearMonthHeatmap({ data }) {
+  const { grid, years, maxCount } = useMemo(() => {
+    const buckets = {};
+    Object.entries(data).forEach(([date, count]) => {
+      const [y, m] = date.split("-");
+      const key = `${y}-${m}`;
+      buckets[key] = (buckets[key] || 0) + count;
+    });
 
-    const startDate = new Date(first);
-    startDate.setDate(startDate.getDate() - startDate.getDay());
+    const allYears = [
+      ...new Set(Object.keys(buckets).map((k) => k.split("-")[0])),
+    ].sort();
+    const max = Math.max(...Object.values(buckets), 1);
 
-    const endDate = new Date(last);
-    endDate.setDate(endDate.getDate() + (6 - endDate.getDay()));
+    const g = {};
+    allYears.forEach((yr) => {
+      g[yr] = Array.from({ length: 12 }, (_, i) => {
+        const m = String(i + 1).padStart(2, "0");
+        return buckets[`${yr}-${m}`] || 0;
+      });
+    });
 
-    const wks = [];
-    const mLabels = [];
-    let current = new Date(startDate);
-    let weekIdx = 0;
-    let lastMonth = -1;
-
-    while (current <= endDate) {
-      const week = [];
-      for (let d = 0; d < 7; d++) {
-        const dateStr = current.toISOString().split("T")[0];
-        const inRange = current >= first && current <= last;
-        week.push({
-          date: dateStr,
-          count: data[dateStr] || 0,
-          inRange,
-        });
-        if (d === 0 && current.getMonth() !== lastMonth) {
-          lastMonth = current.getMonth();
-          mLabels.push({
-            weekIdx,
-            label: current.toLocaleString("default", { month: "short" }),
-          });
-        }
-        current.setDate(current.getDate() + 1);
-      }
-      wks.push(week);
-      weekIdx++;
-    }
-
-    return {
-      weeks: wks,
-      monthLabels: mLabels,
-      maxCount: max,
-      dayLabels: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    };
+    return { grid: g, years: allYears, maxCount: max };
   }, [data]);
 
-  if (!weeks.length) return <Text c="dimmed">No calendar data</Text>;
+  if (!years.length) return <Text c="dimmed">No calendar data</Text>;
 
-  function getColor(count, inRange) {
-    if (!inRange) return "transparent";
+  function getColor(count) {
     if (count === 0) return "var(--mantine-color-gray-2)";
     const intensity = Math.min(count / maxCount, 1);
     const g = Math.round(120 + intensity * 135);
     return `rgb(30, ${g}, 90)`;
   }
 
-  const cellSize = 13;
-  const gap = 2;
-
   return (
     <Box>
-      <Group gap={0} mb={2} ml={28}>
-        {monthLabels.map((m, i) => (
+      <Group gap={2} mb={4} ml={38}>
+        {MONTH_LABELS.map((m) => (
           <Text
-            key={i}
+            key={m}
             size="xs"
             c="dimmed"
-            style={{
-              position: "relative",
-              left: m.weekIdx * (cellSize + gap),
-              whiteSpace: "nowrap",
-            }}
+            ta="center"
+            fw={500}
+            style={{ flex: 1, minWidth: 0 }}
           >
-            {i === 0 || monthLabels[i - 1]?.weekIdx < m.weekIdx - 2
-              ? m.label
-              : ""}
+            {m}
           </Text>
         ))}
       </Group>
-      <Group gap={0} align="flex-start" wrap="nowrap">
-        <Stack gap={gap} mr={4}>
-          {dayLabels.map((d, i) => (
-            <Text
-              key={d}
-              size="xs"
-              c="dimmed"
-              h={cellSize}
-              lh={`${cellSize}px`}
-              style={{ visibility: i % 2 === 1 ? "visible" : "hidden" }}
+      {years.map((yr) => (
+        <Group key={yr} gap={2} mb={2} wrap="nowrap">
+          <Text size="xs" c="dimmed" w={36} ta="right" fw={500} pr={2}>
+            {yr}
+          </Text>
+          {grid[yr].map((count, mi) => (
+            <Tooltip
+              key={mi}
+              label={`${MONTH_LABELS[mi]} ${yr}: ${count.toLocaleString()} observations`}
             >
-              {d}
-            </Text>
-          ))}
-        </Stack>
-        <Group gap={gap} align="flex-start" wrap="nowrap">
-          {weeks.map((week, wi) => (
-            <Stack key={wi} gap={gap}>
-              {week.map((day) => (
-                <Tooltip
-                  key={day.date}
-                  label={`${day.date}: ${day.count} observations`}
-                  disabled={!day.inRange}
-                >
-                  <Box
-                    w={cellSize}
-                    h={cellSize}
-                    style={{
-                      borderRadius: 2,
-                      backgroundColor: getColor(day.count, day.inRange),
-                    }}
-                  />
-                </Tooltip>
-              ))}
-            </Stack>
+              <Box
+                style={{
+                  flex: 1,
+                  minWidth: 0,
+                  height: 24,
+                  borderRadius: 3,
+                  backgroundColor: getColor(count),
+                  cursor: "pointer",
+                }}
+              />
+            </Tooltip>
           ))}
         </Group>
+      ))}
+      <Group gap="xs" mt="xs" justify="center">
+        {[
+          { color: "var(--mantine-color-gray-2)", label: "None" },
+          { color: "rgb(30, 160, 90)", label: "Low" },
+          { color: "rgb(30, 210, 90)", label: "Med" },
+          { color: "rgb(30, 255, 90)", label: "High" },
+        ].map((item) => (
+          <Group key={item.label} gap={4}>
+            <Box
+              w={10}
+              h={10}
+              style={{ borderRadius: 2, backgroundColor: item.color }}
+            />
+            <Text size="xs" c="dimmed">
+              {item.label}
+            </Text>
+          </Group>
+        ))}
       </Group>
     </Box>
   );
@@ -314,9 +289,7 @@ export default function OverviewTab({ filters }) {
             <Text fw={500} size="lg" mb="md">
               Observation Calendar
             </Text>
-            <ScrollArea w="100%" type="auto" scrollbars="x">
-              <CalendarHeatmap data={calendar} />
-            </ScrollArea>
+            <YearMonthHeatmap data={calendar} />
           </Card>
         </Grid.Col>
       </Grid>
