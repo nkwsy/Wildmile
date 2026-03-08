@@ -18,6 +18,10 @@ export default function AnalyticsSidebar() {
       label: "Volunteer Activity",
       href: "/cameratrap/analytics/volunteer-activity",
     },
+    {
+      label: "Wildlife Analytics",
+      href: "/cameratrap/wildlife",
+    },
   ];
   return (
     <div>
