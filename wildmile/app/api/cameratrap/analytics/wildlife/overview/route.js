@@ -3,6 +3,8 @@ import dbConnect from "lib/db/setup";
 import Observation from "models/cameratrap/Observation";
 import { enrichWithCommonNames } from "lib/wildlife/resolveCommonNames";
 
+export const maxDuration = 30;
+
 function buildMatchStage(searchParams) {
   const match = { observationType: "animal", scientificName: { $ne: null } };
   const startDate = searchParams.get("startDate");
@@ -60,7 +62,7 @@ export async function GET(request) {
               latestDate: 1,
             },
           },
-        ]),
+        ]).option({ allowDiskUse: true }),
 
         Observation.aggregate([
           { $match: match },
@@ -85,7 +87,7 @@ export async function GET(request) {
               lastSeen: 1,
             },
           },
-        ]),
+        ]).option({ allowDiskUse: true }),
 
         Observation.aggregate([
           { $match: match },
@@ -116,7 +118,7 @@ export async function GET(request) {
               mediaCount: { $size: "$uniqueMedia" },
             },
           },
-        ]),
+        ]).option({ allowDiskUse: true }),
 
         Observation.aggregate([
           { $match: match },
@@ -129,7 +131,7 @@ export async function GET(request) {
             },
           },
           { $project: { _id: 0, date: "$_id", count: 1 } },
-        ]),
+        ]).option({ allowDiskUse: true }),
       ]);
 
     const stats = statsResult[0] || {

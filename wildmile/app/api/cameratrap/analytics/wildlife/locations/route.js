@@ -5,6 +5,8 @@ import CameratrapDeployment from "models/cameratrap/Deployment";
 import DeploymentLocation from "models/cameratrap/DeploymentLocations";
 import resolveCommonNames from "lib/wildlife/resolveCommonNames";
 
+export const maxDuration = 30;
+
 function buildMatchStage(searchParams) {
   const match = { observationType: "animal", scientificName: { $ne: null } };
   const startDate = searchParams.get("startDate");
@@ -25,45 +27,36 @@ export async function GET(request) {
   try {
     const match = buildMatchStage(searchParams);
 
-    // Build deployment -> location mapping with populated location details
-    const deployments = await CameratrapDeployment.find(
-      {},
-      { _id: 1, locationName: 1, locationId: 1, location: 1 }
-    )
-      .populate({
-        path: "locationId",
-        select: "locationName zone projectArea location",
-      })
-      .lean();
-
-    const deploymentMap = {};
-    deployments.forEach((d) => {
-      const loc = d.locationId;
-      const isPopulated = loc && typeof loc === "object";
-      const name =
-        d.locationName ||
-        (isPopulated ? loc.locationName : null) ||
-        "Unknown";
-      const zone = isPopulated ? loc.zone || null : null;
-      const projectArea = isPopulated ? loc.projectArea || null : null;
-      const coordinates =
-        (isPopulated && loc.location?.coordinates) ||
-        d.location?.coordinates ||
-        null;
-      deploymentMap[d._id.toString()] = {
-        name,
-        zone,
-        projectArea,
-        coordinates,
-      };
-    });
-
-    // Try observations that have deploymentId directly
-    let perDeployment = await Observation.aggregate([
-      { $match: { ...match, deploymentId: { $ne: null } } },
+    // Single aggregation: group observations by deployment, resolving
+    // deployment through media when observation.deploymentId is null.
+    const perDeployment = await Observation.aggregate([
+      { $match: match },
+      {
+        $lookup: {
+          from: "cameratrapmedias",
+          localField: "mediaId",
+          foreignField: "mediaID",
+          as: "_media",
+          pipeline: [{ $project: { deploymentId: 1 } }],
+        },
+      },
+      {
+        $addFields: {
+          _resolvedDeploymentId: {
+            $ifNull: [
+              "$deploymentId",
+              { $arrayElemAt: ["$_media.deploymentId", 0] },
+            ],
+          },
+        },
+      },
+      { $match: { _resolvedDeploymentId: { $ne: null } } },
       {
         $group: {
-          _id: { deploymentId: "$deploymentId", species: "$scientificName" },
+          _id: {
+            deploymentId: "$_resolvedDeploymentId",
+            species: "$scientificName",
+          },
           count: { $sum: 1 },
         },
       },
@@ -76,101 +69,81 @@ export async function GET(request) {
         },
       },
       { $sort: { totalObservations: -1 } },
-    ]);
-
-    // If no direct deployment links, resolve through media
-    if (perDeployment.length === 0) {
-      perDeployment = await Observation.aggregate([
-        { $match: match },
-        {
-          $lookup: {
-            from: "cameratrapmedias",
-            localField: "mediaId",
-            foreignField: "mediaID",
-            as: "media",
-            pipeline: [{ $project: { deploymentId: 1, _id: 0 } }],
-          },
-        },
-        { $unwind: { path: "$media", preserveNullAndEmptyArrays: false } },
-        { $match: { "media.deploymentId": { $ne: null } } },
-        {
-          $group: {
-            _id: {
-              deploymentId: "$media.deploymentId",
-              species: "$scientificName",
-            },
-            count: { $sum: 1 },
-          },
-        },
-        {
-          $group: {
-            _id: "$_id.deploymentId",
-            species: { $push: { name: "$_id.species", count: "$count" } },
-            totalObservations: { $sum: "$count" },
-            speciesCount: { $sum: 1 },
-          },
-        },
-        { $sort: { totalObservations: -1 } },
-      ]);
-    }
+      { $limit: 100 },
+    ]).option({ allowDiskUse: true });
 
     if (perDeployment.length === 0) {
       return NextResponse.json({ locations: [] });
     }
 
-    const locations = perDeployment.map((d) => {
-      const depId = d._id.toString();
-      const locInfo = deploymentMap[depId] || {
-        name: "Unknown",
-        zone: null,
-        projectArea: null,
-      };
+    // Only fetch deployments that appear in results
+    const depIds = perDeployment.map((d) => d._id);
+    const deployments = await CameratrapDeployment.find(
+      { _id: { $in: depIds } },
+      { _id: 1, locationName: 1, locationId: 1, location: 1 }
+    ).lean();
 
-      let shannon = 0;
-      d.species.forEach((s) => {
-        const pi = s.count / d.totalObservations;
-        if (pi > 0) shannon -= pi * Math.log(pi);
-      });
+    // Batch-fetch referenced DeploymentLocations
+    const locationIds = [
+      ...new Set(
+        deployments
+          .map((d) => d.locationId?.toString())
+          .filter(Boolean)
+      ),
+    ];
+    const depLocations =
+      locationIds.length > 0
+        ? await DeploymentLocation.find(
+            { _id: { $in: locationIds } },
+            { locationName: 1, zone: 1, projectArea: 1, location: 1 }
+          ).lean()
+        : [];
 
-      const topSpecies = d.species
-        .sort((a, b) => b.count - a.count)
-        .slice(0, 5);
+    const locMap = {};
+    depLocations.forEach((l) => {
+      locMap[l._id.toString()] = l;
+    });
 
-      return {
-        deploymentId: depId,
-        locationName: locInfo.name,
-        zone: locInfo.zone,
-        projectArea: locInfo.projectArea,
-        coordinates: locInfo.coordinates,
-        totalObservations: d.totalObservations,
-        speciesCount: d.speciesCount,
-        shannonDiversity: +shannon.toFixed(3),
-        topSpecies,
+    const deploymentMap = {};
+    deployments.forEach((d) => {
+      const loc = d.locationId ? locMap[d.locationId.toString()] : null;
+      deploymentMap[d._id.toString()] = {
+        name: d.locationName || loc?.locationName || "Unknown",
+        zone: loc?.zone || null,
+        projectArea: loc?.projectArea || null,
+        coordinates:
+          loc?.location?.coordinates || d.location?.coordinates || null,
       };
     });
 
-    // Merge by location name
+    // Build location results and merge by name
     const merged = {};
-    locations.forEach((loc) => {
-      if (!merged[loc.locationName]) {
-        merged[loc.locationName] = {
-          locationName: loc.locationName,
-          zone: loc.zone,
-          projectArea: loc.projectArea,
-          coordinates: loc.coordinates,
+    perDeployment.forEach((d) => {
+      const depId = d._id.toString();
+      const info = deploymentMap[depId] || {
+        name: "Unknown",
+        zone: null,
+        projectArea: null,
+        coordinates: null,
+      };
+
+      if (!merged[info.name]) {
+        merged[info.name] = {
+          locationName: info.name,
+          zone: info.zone,
+          projectArea: info.projectArea,
+          coordinates: info.coordinates,
           totalObservations: 0,
           speciesSet: new Set(),
           speciesCounts: {},
-          deploymentIds: [],
         };
       }
-      const m = merged[loc.locationName];
-      m.totalObservations += loc.totalObservations;
-      m.deploymentIds.push(loc.deploymentId);
-      if (!m.zone && loc.zone) m.zone = loc.zone;
-      if (!m.projectArea && loc.projectArea) m.projectArea = loc.projectArea;
-      if (!m.coordinates && loc.coordinates) m.coordinates = loc.coordinates;
-      loc.topSpecies.forEach((s) => {
+      const m = merged[info.name];
+      m.totalObservations += d.totalObservations;
+      if (!m.zone && info.zone) m.zone = info.zone;
+      if (!m.projectArea && info.projectArea) m.projectArea = info.projectArea;
+      if (!m.coordinates && info.coordinates) m.coordinates = info.coordinates;
+      d.species.forEach((s) => {
         m.speciesSet.add(s.name);
         m.speciesCounts[s.name] = (m.speciesCounts[s.name] || 0) + s.count;
       });
@@ -206,12 +179,26 @@ export async function GET(request) {
       })
       .sort((a, b) => b.totalObservations - a.totalObservations);
 
+    // Resolve common names (only for top species already in DB -- skip iNat fetch)
     const allSpeciesNames = [
       ...new Set(
         mergedLocations.flatMap((l) => l.topSpecies.map((s) => s.name))
       ),
     ];
-    const nameMap = await resolveCommonNames(allSpeciesNames);
+
+    let nameMap = new Map();
+    try {
+      const Species = (await import("models/Species")).default;
+      const existing = await Species.find(
+        { name: { $in: allSpeciesNames } },
+        { name: 1, preferred_common_name: 1, common_name: 1 }
+      ).lean();
+      existing.forEach((s) => {
+        nameMap.set(s.name, s.preferred_common_name || s.common_name || null);
+      });
+    } catch {
+      // Species model not available, skip common names
+    }
 
     const enrichedLocations = mergedLocations.map((loc) => ({
       ...loc,

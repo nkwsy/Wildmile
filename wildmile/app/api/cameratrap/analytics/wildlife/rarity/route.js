@@ -3,6 +3,8 @@ import dbConnect from "lib/db/setup";
 import Observation from "models/cameratrap/Observation";
 import resolveCommonNames from "lib/wildlife/resolveCommonNames";
 
+export const maxDuration = 30;
+
 function buildMatchStage(searchParams) {
   const match = { observationType: "animal", scientificName: { $ne: null } };
   const startDate = searchParams.get("startDate");
@@ -54,7 +56,7 @@ export async function GET(request) {
           lastSeen: 1,
         },
       },
-    ]);
+    ]).option({ allowDiskUse: true });
 
     const totalObservations = speciesCounts.reduce(
       (sum, s) => sum + s.observationCount,
