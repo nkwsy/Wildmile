@@ -32,7 +32,7 @@ function LocationsMap({ locations }) {
   const [mapReady, setMapReady] = useState(false);
 
   const mappable = locations.filter(
-    (l) => l.coordinates && l.coordinates.length === 2
+    (l) => l.coordinates && l.coordinates.length === 2,
   );
   const maxObs = Math.max(...mappable.map((l) => l.totalObservations), 1);
 
@@ -185,7 +185,7 @@ export default function LocationsTab({ filters }) {
           params.set("endDate", filters.endDate.toISOString());
 
         const res = await fetch(
-          `/api/cameratrap/analytics/wildlife/locations?${params}`
+          `/api/cameratrap/analytics/wildlife/locations?${params}`,
         );
         if (res.ok) setData(await res.json());
       } catch (err) {
@@ -217,7 +217,8 @@ export default function LocationsTab({ filters }) {
           </Text>
           <Text c="dimmed" size="sm" ta="center" maw={400}>
             Location analytics require observations to be linked to deployments.
-            Make sure images are assigned to deployments that have locations set.
+            Make sure images are assigned to deployments that have locations
+            set.
           </Text>
         </Stack>
       </Center>
@@ -284,7 +285,7 @@ export default function LocationsTab({ filters }) {
           </Group>
           {(() => {
             const mostDiverse = [...locations].sort(
-              (a, b) => b.shannonDiversity - a.shannonDiversity
+              (a, b) => b.shannonDiversity - a.shannonDiversity,
             )[0];
             return (
               <>
@@ -368,12 +369,7 @@ export default function LocationsTab({ filters }) {
             <Paper key={loc.locationName} p="sm" withBorder radius="md">
               <Group justify="space-between" mb="xs">
                 <Group gap="xs">
-                  <ThemeIcon
-                    color="blue"
-                    variant="light"
-                    size="sm"
-                    radius="xl"
-                  >
+                  <ThemeIcon color="blue" variant="light" size="sm" radius="xl">
                     <IconMapPin size={12} />
                   </ThemeIcon>
                   <div>
