@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   Card,
   Text,
@@ -15,9 +15,160 @@ import {
   ScrollArea,
   Paper,
   Progress,
+  SegmentedControl,
 } from "@mantine/core";
 import { IconMapPin, IconPaw, IconChartBar } from "@tabler/icons-react";
 import { BarChart } from "@mantine/charts";
+import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+
+mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY;
+
+function LocationsMap({ locations }) {
+  const mapContainer = useRef(null);
+  const map = useRef(null);
+  const markersRef = useRef([]);
+  const [mapStyle, setMapStyle] = useState("outdoors-v12");
+  const [mapReady, setMapReady] = useState(false);
+
+  const mappable = locations.filter(
+    (l) => l.coordinates && l.coordinates.length === 2
+  );
+  const maxObs = Math.max(...mappable.map((l) => l.totalObservations), 1);
+
+  useEffect(() => {
+    if (!mapContainer.current || map.current) return;
+
+    const center =
+      mappable.length > 0 ? mappable[0].coordinates : [-87.65, 41.9];
+
+    const m = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: `mapbox://styles/mapbox/${mapStyle}`,
+      center,
+      zoom: 11,
+    });
+
+    m.on("load", () => {
+      map.current = m;
+      m.addControl(new mapboxgl.NavigationControl(), "top-right");
+      setMapReady(true);
+    });
+
+    return () => m.remove();
+  }, []);
+
+  useEffect(() => {
+    if (!map.current) return;
+    map.current.setStyle(`mapbox://styles/mapbox/${mapStyle}`);
+  }, [mapStyle]);
+
+  const addMarkers = useCallback(() => {
+    if (!mapReady || !map.current) return;
+
+    markersRef.current.forEach((m) => m.remove());
+    markersRef.current = [];
+
+    mappable.forEach((loc) => {
+      const ratio = loc.totalObservations / maxObs;
+      const size = Math.max(18, Math.round(14 + ratio * 30));
+      const g = Math.round(120 + ratio * 135);
+      const color = `rgb(30, ${g}, 90)`;
+
+      const el = document.createElement("div");
+      Object.assign(el.style, {
+        width: `${size}px`,
+        height: `${size}px`,
+        borderRadius: "50%",
+        backgroundColor: color,
+        border: "2px solid white",
+        boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: "10px",
+        fontWeight: "bold",
+        color: "white",
+      });
+      el.textContent = loc.speciesCount;
+
+      const topList = loc.topSpecies
+        .slice(0, 3)
+        .map((s) => `${s.commonName || s.name}: ${s.count}`)
+        .join("<br/>");
+
+      const popup = new mapboxgl.Popup({ offset: size / 2 + 4 }).setHTML(`
+        <div style="min-width:160px">
+          <strong>${loc.locationName}</strong>
+          ${loc.zone ? `<br/><span style="color:#666;font-size:12px">${loc.zone}${loc.projectArea ? ` — ${loc.projectArea}` : ""}</span>` : ""}
+          <br/><span style="font-size:12px">${loc.totalObservations.toLocaleString()} observations</span>
+          <br/><span style="font-size:12px">${loc.speciesCount} species · H' = ${loc.shannonDiversity}</span>
+          ${topList ? `<hr style="margin:4px 0"/><span style="font-size:11px">${topList}</span>` : ""}
+        </div>
+      `);
+
+      const marker = new mapboxgl.Marker(el)
+        .setLngLat(loc.coordinates)
+        .setPopup(popup)
+        .addTo(map.current);
+
+      markersRef.current.push(marker);
+    });
+
+    if (mappable.length > 1) {
+      const bounds = new mapboxgl.LngLatBounds();
+      mappable.forEach((l) => bounds.extend(l.coordinates));
+      map.current.fitBounds(bounds, { padding: 60, maxZoom: 14 });
+    }
+  }, [mappable, maxObs, mapReady]);
+
+  useEffect(() => {
+    addMarkers();
+  }, [addMarkers]);
+
+  // Re-add markers after style change
+  useEffect(() => {
+    if (!map.current) return;
+    const handler = () => addMarkers();
+    map.current.on("style.load", handler);
+    return () => map.current?.off("style.load", handler);
+  }, [addMarkers]);
+
+  if (!mappable.length) {
+    return (
+      <Card withBorder padding="lg" radius="md">
+        <Center py="md">
+          <Text c="dimmed">No locations with coordinates available</Text>
+        </Center>
+      </Card>
+    );
+  }
+
+  return (
+    <Card withBorder p={0} radius="md" style={{ position: "relative" }}>
+      <SegmentedControl
+        value={mapStyle}
+        onChange={setMapStyle}
+        size="xs"
+        data={[
+          { label: "Outdoors", value: "outdoors-v12" },
+          { label: "Streets", value: "streets-v12" },
+          { label: "Satellite", value: "satellite-streets-v12" },
+        ]}
+        style={{
+          position: "absolute",
+          top: 10,
+          left: 10,
+          zIndex: 1,
+          backgroundColor: "white",
+          boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+        }}
+      />
+      <div ref={mapContainer} style={{ height: 420, width: "100%" }} />
+    </Card>
+  );
+}
 
 export default function LocationsTab({ filters }) {
   const [data, setData] = useState(null);
@@ -57,7 +208,18 @@ export default function LocationsTab({ filters }) {
   if (!data?.locations?.length) {
     return (
       <Center py="xl">
-        <Text c="dimmed">No location data available</Text>
+        <Stack align="center" gap="xs">
+          <ThemeIcon color="gray" variant="light" size={48} radius="xl">
+            <IconMapPin size={24} />
+          </ThemeIcon>
+          <Text c="dimmed" size="lg">
+            No location data available
+          </Text>
+          <Text c="dimmed" size="sm" ta="center" maw={400}>
+            Location analytics require observations to be linked to deployments.
+            Make sure images are assigned to deployments that have locations set.
+          </Text>
+        </Stack>
       </Center>
     );
   }
@@ -109,6 +271,7 @@ export default function LocationsTab({ filters }) {
             {locations[0]?.locationName}
           </Text>
           <Text size="sm" c="dimmed">
+            {locations[0]?.zone ? `${locations[0].zone} — ` : ""}
             {locations[0]?.totalObservations.toLocaleString()} observations
           </Text>
         </Card>
@@ -129,6 +292,7 @@ export default function LocationsTab({ filters }) {
                   {mostDiverse?.locationName}
                 </Text>
                 <Text size="sm" c="dimmed">
+                  {mostDiverse?.zone ? `${mostDiverse.zone} — ` : ""}
                   Shannon H&apos; = {mostDiverse?.shannonDiversity}
                 </Text>
               </>
@@ -136,6 +300,8 @@ export default function LocationsTab({ filters }) {
           })()}
         </Card>
       </SimpleGrid>
+
+      <LocationsMap locations={locations} />
 
       <Grid>
         <Grid.Col span={{ base: 12, md: 6 }}>
@@ -210,7 +376,15 @@ export default function LocationsTab({ filters }) {
                   >
                     <IconMapPin size={12} />
                   </ThemeIcon>
-                  <Text fw={500}>{loc.locationName}</Text>
+                  <div>
+                    <Text fw={500}>{loc.locationName}</Text>
+                    {loc.zone && (
+                      <Text size="xs" c="dimmed">
+                        {loc.zone}
+                        {loc.projectArea ? ` — ${loc.projectArea}` : ""}
+                      </Text>
+                    )}
+                  </div>
                 </Group>
                 <Group gap="xs">
                   <Badge color="blue" variant="light" size="sm">
