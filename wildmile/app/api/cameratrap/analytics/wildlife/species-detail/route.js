@@ -3,6 +3,8 @@ import dbConnect from "lib/db/setup";
 import Observation from "models/cameratrap/Observation";
 import { enrichWithCommonNames } from "lib/wildlife/resolveCommonNames";
 
+export const maxDuration = 30;
+
 function buildMatchStage(searchParams) {
   const match = { observationType: "animal", scientificName: { $ne: null } };
   const startDate = searchParams.get("startDate");
@@ -58,7 +60,7 @@ export async function GET(request) {
                 avgCount: { $round: ["$avgCount", 1] },
               },
             },
-          ]),
+          ]).option({ allowDiskUse: true }),
 
           // Duration of stay distribution (eventEnd - eventStart in minutes)
           Observation.aggregate([
@@ -81,7 +83,7 @@ export async function GET(request) {
                 output: { count: { $sum: 1 } },
               },
             },
-          ]),
+          ]).option({ allowDiskUse: true }),
 
           // Life stage and sex breakdown
           Observation.aggregate([
@@ -106,7 +108,7 @@ export async function GET(request) {
                 ],
               },
             },
-          ]),
+          ]).option({ allowDiskUse: true }),
 
           // Monthly observation timeline
           Observation.aggregate([
@@ -136,7 +138,7 @@ export async function GET(request) {
                 individuals: 1,
               },
             },
-          ]),
+          ]).option({ allowDiskUse: true }),
         ]);
 
       const durationLabels = {
@@ -188,7 +190,7 @@ export async function GET(request) {
           individuals: 1,
         },
       },
-    ]);
+    ]).option({ allowDiskUse: true });
 
     const enrichedList = await enrichWithCommonNames(speciesList);
     return NextResponse.json({ speciesList: enrichedList });

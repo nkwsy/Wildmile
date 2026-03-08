@@ -3,6 +3,8 @@ import dbConnect from "lib/db/setup";
 import Observation from "models/cameratrap/Observation";
 import resolveCommonNames from "lib/wildlife/resolveCommonNames";
 
+export const maxDuration = 30;
+
 function buildMatchStage(searchParams) {
   const match = { observationType: "animal", scientificName: { $ne: null } };
   const startDate = searchParams.get("startDate");
@@ -55,7 +57,7 @@ export async function GET(request) {
             count: 1,
           },
         },
-      ]),
+      ]).option({ allowDiskUse: true }),
 
       // Seasonal (monthly) breakdown by species
       Observation.aggregate([
@@ -88,7 +90,7 @@ export async function GET(request) {
             total: 1,
           },
         },
-      ]),
+      ]).option({ allowDiskUse: true }),
 
       // Diel activity per species (top 8 species, hourly)
       Observation.aggregate([
@@ -121,7 +123,7 @@ export async function GET(request) {
             total: 1,
           },
         },
-      ]),
+      ]).option({ allowDiskUse: true }),
     ]);
 
     // Build hour x week-of-year matrix

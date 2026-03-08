@@ -3,6 +3,8 @@ import dbConnect from "lib/db/setup";
 import Observation from "models/cameratrap/Observation";
 import resolveCommonNames from "lib/wildlife/resolveCommonNames";
 
+export const maxDuration = 30;
+
 function buildMatchStage(searchParams) {
   const match = { observationType: "animal", scientificName: { $ne: null } };
   const startDate = searchParams.get("startDate");
@@ -39,7 +41,7 @@ export async function GET(request) {
         },
       },
       { $match: { "species.1": { $exists: true } } },
-    ]);
+    ]).option({ allowDiskUse: true });
 
     // Build co-occurrence counts and per-species media counts
     const pairCounts = {};
@@ -64,7 +66,7 @@ export async function GET(request) {
       { $match: match },
       { $group: { _id: "$scientificName", mediaIds: { $addToSet: "$mediaId" } } },
       { $project: { _id: 0, species: "$_id", mediaCount: { $size: "$mediaIds" } } },
-    ]);
+    ]).option({ allowDiskUse: true });
 
     const totalMediaMap = {};
     allSpeciesMedia.forEach((s) => {
