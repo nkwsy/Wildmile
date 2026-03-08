@@ -19,6 +19,7 @@ import {
   IconCameraPlus,
   IconZoomIn,
   IconMapPin,
+  IconPaw,
 } from "@tabler/icons-react";
 import { RandomFavorite } from "components/cameratrap/RandomFavorite";
 import InfoComponent from "components/cameratrap/InfoComponent";
@@ -41,10 +42,16 @@ const cameraTrapCards = [
     description: "Explore wildlife images which have been catagorized",
   },
   {
+    icon: IconPaw,
+    title: "Wildlife Analytics",
+    href: "/cameratrap/wildlife",
+    description: "Analyze species activity, temporal patterns, co-occurrence, and biodiversity",
+  },
+  {
     icon: IconAbacus,
-    title: "Analytics",
+    title: "Project Analytics",
     href: "/cameratrap/analytics/total-images",
-    description: "See analytics on the camera trap project",
+    description: "See analytics on images, observations, and volunteers",
   },
 ];
 
