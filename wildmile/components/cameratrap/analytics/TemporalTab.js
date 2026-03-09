@@ -30,8 +30,8 @@ function HourWeekGrid({ matrix }) {
   function getColor(count) {
     if (count === 0) return "var(--mantine-color-gray-2)";
     const intensity = Math.min(count / maxCount, 1);
-    const g = Math.round(120 + intensity * 135);
-    return `rgb(30, ${g}, 90)`;
+    const level = Math.min(9, Math.max(1, Math.ceil(intensity * 9)));
+    return `var(--mantine-color-green-${level})`;
   }
 
   // Build month markers for the header
@@ -53,7 +53,9 @@ function HourWeekGrid({ matrix }) {
       <Group gap={0} mb={2} ml={44} wrap="nowrap">
         {monthMarkers.map((m, i) => {
           const nextIdx =
-            i + 1 < monthMarkers.length ? monthMarkers[i + 1].index : weeks.length;
+            i + 1 < monthMarkers.length
+              ? monthMarkers[i + 1].index
+              : weeks.length;
           const span = nextIdx - m.index;
           return (
             <Text
@@ -82,9 +84,7 @@ function HourWeekGrid({ matrix }) {
             {hour % 3 === 0 ? `${String(hour).padStart(2, "0")}:00` : ""}
           </Text>
           {weeks.map((week) => {
-            const cell = matrix.find(
-              (c) => c.hour === hour && c.week === week
-            );
+            const cell = matrix.find((c) => c.hour === hour && c.week === week);
             const count = cell?.count || 0;
             return (
               <Tooltip
@@ -115,34 +115,51 @@ function HourWeekGrid({ matrix }) {
             h={12}
             style={{
               borderRadius: 2,
-              backgroundColor: "var(--mantine-color-gray-2)",
+              backgroundColor: "var(--mantine-color-green-0)",
             }}
           />
-          <Text size="xs" c="dimmed">None</Text>
+          <Text size="xs" c="dimmed">
+            None
+          </Text>
         </Group>
         <Group gap={4}>
           <Box
             w={12}
             h={12}
-            style={{ borderRadius: 2, backgroundColor: "rgb(30, 160, 90)" }}
+            style={{
+              borderRadius: 2,
+              backgroundColor: "var(--mantine-color-green-2)",
+            }}
           />
-          <Text size="xs" c="dimmed">Low</Text>
+          <Text size="xs" c="dimmed">
+            Low
+          </Text>
         </Group>
         <Group gap={4}>
           <Box
             w={12}
             h={12}
-            style={{ borderRadius: 2, backgroundColor: "rgb(30, 210, 90)" }}
+            style={{
+              borderRadius: 2,
+              backgroundColor: "var(--mantine-color-green-5)",
+            }}
           />
-          <Text size="xs" c="dimmed">Medium</Text>
+          <Text size="xs" c="dimmed">
+            Medium
+          </Text>
         </Group>
         <Group gap={4}>
           <Box
             w={12}
             h={12}
-            style={{ borderRadius: 2, backgroundColor: "rgb(30, 255, 90)" }}
+            style={{
+              borderRadius: 2,
+              backgroundColor: "var(--mantine-color-green-9)",
+            }}
           />
-          <Text size="xs" c="dimmed">High</Text>
+          <Text size="xs" c="dimmed">
+            High
+          </Text>
         </Group>
       </Group>
     </Box>
@@ -169,7 +186,7 @@ export default function TemporalTab({ filters }) {
           params.set("deploymentId", filters.deploymentId);
 
         const res = await fetch(
-          `/api/cameratrap/analytics/wildlife/temporal?${params}`
+          `/api/cameratrap/analytics/wildlife/temporal?${params}`,
         );
         if (res.ok) setData(await res.json());
       } catch (err) {
