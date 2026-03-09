@@ -27,8 +27,18 @@ import {
 import { BarChart, CompositeChart } from "@mantine/charts";
 
 const MONTH_LABELS = [
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
 
 function YearMonthHeatmap({ data }) {
@@ -61,8 +71,8 @@ function YearMonthHeatmap({ data }) {
   function getColor(count) {
     if (count === 0) return "var(--mantine-color-gray-2)";
     const intensity = Math.min(count / maxCount, 1);
-    const g = Math.round(120 + intensity * 135);
-    return `rgb(30, ${g}, 90)`;
+    const level = Math.min(9, Math.max(1, Math.ceil(intensity * 9)));
+    return `var(--mantine-color-green-${level})`;
   }
 
   return (
@@ -107,10 +117,10 @@ function YearMonthHeatmap({ data }) {
       ))}
       <Group gap="xs" mt="xs" justify="center">
         {[
-          { color: "var(--mantine-color-gray-2)", label: "None" },
-          { color: "rgb(30, 160, 90)", label: "Low" },
-          { color: "rgb(30, 210, 90)", label: "Med" },
-          { color: "rgb(30, 255, 90)", label: "High" },
+          { color: "var(--mantine-color-green-0)", label: "None" },
+          { color: "var(--mantine-color-green-2)", label: "Low" },
+          { color: "var(--mantine-color-green-5)", label: "Med" },
+          { color: "var(--mantine-color-green-9)", label: "High" },
         ].map((item) => (
           <Group key={item.label} gap={4}>
             <Box
@@ -170,7 +180,7 @@ export default function OverviewTab({ filters }) {
           params.set("deploymentId", filters.deploymentId);
 
         const res = await fetch(
-          `/api/cameratrap/analytics/wildlife/overview?${params}`
+          `/api/cameratrap/analytics/wildlife/overview?${params}`,
         );
         if (res.ok) setData(await res.json());
       } catch (err) {
@@ -208,9 +218,7 @@ export default function OverviewTab({ filters }) {
   const topSpeciesChart = topSpecies.map((s) => ({
     species: s.commonName || s.species?.split(" ").slice(-1)[0] || s.species,
     Observations: s.count,
-    fullName: s.commonName
-      ? `${s.commonName} (${s.species})`
-      : s.species,
+    fullName: s.commonName ? `${s.commonName} (${s.species})` : s.species,
   }));
 
   return (

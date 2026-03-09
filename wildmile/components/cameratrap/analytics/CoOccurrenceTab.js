@@ -27,13 +27,11 @@ function CoOccurrenceMatrix({ matrix, speciesOrder, commonNames = {} }) {
   const maxVal = Math.max(...allValues, 1);
 
   function getColor(val, isSelf) {
-    if (isSelf) return "var(--mantine-color-dark-4)";
-    if (val === 0) return "var(--mantine-color-dark-7)";
+    if (isSelf) return "var(--mantine-color-gray-4)";
+    if (val === 0) return "var(--mantine-color-green-0)";
     const intensity = Math.min(val / maxVal, 1);
-    const r = Math.round(30 + intensity * 20);
-    const g = Math.round(100 + intensity * 155);
-    const b = Math.round(180 + intensity * 75);
-    return `rgb(${r}, ${g}, ${b})`;
+    const level = Math.min(9, Math.max(1, Math.ceil(intensity * 9)));
+    return `var(--mantine-color-green-${level})`;
   }
 
   const displayName = (s) => commonNames[s] || s;
