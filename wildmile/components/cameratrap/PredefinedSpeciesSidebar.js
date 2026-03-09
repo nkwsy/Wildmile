@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Loader,
   SimpleGrid,
@@ -15,6 +15,7 @@ import { IconClock, IconRefresh } from "@tabler/icons-react";
 import { Fish, Turtle, Bird, Rabbit } from "lucide-react";
 import { FrogIcon } from "/styles/icons/Frog";
 import useSWR from "swr";
+import { useRecentSpecies } from "./ContextCamera";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -46,21 +47,37 @@ export default function PredefinedSpeciesSidebar({ onSpeciesSelect }) {
     revalidateOnFocus: false,
   });
 
-  const {
-    data: recentData,
-    error: recentError,
-    isLoading: recentLoading,
-    mutate: mutateRecent,
-  } = useSWR("/api/cameratrap/recent-species", fetcher, {
-    revalidateOnFocus: false,
-  });
+  const [recentSpecies, setRecentSpecies] = useRecentSpecies();
+  const [recentLoading, setRecentLoading] = useState(true);
 
-  const [selectedCategory, setSelectedCategory] = useState("Mammals");
-
-  const handleRefresh = () => {
-    if (selectedCategory === "recent") {
-      mutateRecent();
+  const loadRecent = useCallback(async () => {
+    try {
+      const res = await fetch("/api/cameratrap/recent-species");
+      if (!res.ok) throw new Error("Failed to fetch");
+      const data = await res.json();
+      setRecentSpecies(data);
+    } catch (error) {
+      console.error("Error fetching recent species:", error);
     }
+  }, [setRecentSpecies]);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      await loadRecent();
+      if (mounted) setRecentLoading(false);
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [loadRecent]);
+
+  const [selectedCategory, setSelectedCategory] = useState("recent");
+
+  const handleRefresh = async () => {
+    setRecentLoading(true);
+    await loadRecent();
+    setRecentLoading(false);
   };
 
   const categoryData = [
@@ -133,11 +150,9 @@ export default function PredefinedSpeciesSidebar({ onSpeciesSelect }) {
   if (predefinedError) {
     return <div>Error loading predefined species data.</div>;
   }
-  if (recentError) {
-    return <div>Error loading recent species data.</div>;
-  }
 
-  const isLoading = predefinedLoading || recentLoading;
+  const isLoading =
+    predefinedLoading || (selectedCategory === "recent" && recentLoading);
 
   if (isLoading) {
     return <Loader />;
@@ -152,7 +167,7 @@ export default function PredefinedSpeciesSidebar({ onSpeciesSelect }) {
           iconicTaxonNameToCategory(spec.iconic_taxon_name) === selectedCategory
       );
   } else if (selectedCategory === "recent") {
-    filteredResults = recentData;
+    filteredResults = recentSpecies;
   }
 
   return (

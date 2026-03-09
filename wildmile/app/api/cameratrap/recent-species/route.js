@@ -2,86 +2,32 @@ import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import Observation from "models/cameratrap/Observation";
 import Species from "models/Species";
+import { getSession } from "lib/getSession";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 30;
 
-export async function GET() {
+export async function GET(request) {
   try {
     await dbConnect();
+    const session = await getSession();
 
-    // Aggregate recent animal observations, grouped by species.
-    // Uses the { observationType: 1, scientificName: 1, createdAt: -1 } index.
-    const recentSpecies = await Observation.aggregate([
-      {
-        $match: {
-          observationType: "animal",
-          scientificName: { $exists: true, $ne: "" },
-        },
-      },
-      // Group first to avoid sorting the entire collection.
-      // $last with natural insertion order approximates recency
-      // without a full sort on millions of docs.
-      {
-        $group: {
-          _id: "$scientificName",
-          lastSeen: { $max: "$createdAt" },
-        },
-      },
-      { $sort: { lastSeen: -1 } },
-      { $limit: 12 },
-      {
-        $project: {
-          _id: 0,
-          species: "$_id",
-          lastSeen: 1,
-        },
-      },
-    ]);
+    let speciesNames;
 
-    // Batch-fetch all species from our DB in one query instead of 12 individual calls.
-    // Uses a case-insensitive match via $in with exact names (faster than RegExp).
-    const speciesNames = recentSpecies.map((r) => r.species);
-    const existingSpecies = await Species.find({
-      name: { $in: speciesNames },
-    }).lean();
-
-    // Build a lookup map: lowercase name -> species doc
-    const speciesMap = new Map(
-      existingSpecies.map((s) => [s.name.toLowerCase(), s])
-    );
-
-    // For any species not already in our DB, try fetching from iNaturalist.
-    // These external API calls run in parallel.
-    const missingNames = speciesNames.filter(
-      (name) => !speciesMap.has(name.toLowerCase())
-    );
-
-    if (missingNames.length > 0) {
-      const fetched = await Promise.all(
-        missingNames.map(async (name) => {
-          try {
-            return await Species.findOrFetchByName(name);
-          } catch (error) {
-            console.warn(`Could not fetch species details for ${name}:`, error);
-            return null;
-          }
-        })
-      );
-      fetched.filter(Boolean).forEach((s) => {
-        speciesMap.set(s.name.toLowerCase(), s);
-      });
+    if (session?._id) {
+      speciesNames = await getUserRecentSpecies(session._id);
     }
 
-    // Return species in the same order as the aggregation results
-    const formattedResults = speciesNames
-      .map((name) => speciesMap.get(name.toLowerCase()))
-      .filter(Boolean);
+    if (!speciesNames || speciesNames.length === 0) {
+      speciesNames = await getGlobalCommonSpecies();
+    }
 
-    // Cache for 5 minutes — recent species don't change moment to moment
-    return NextResponse.json(formattedResults, {
+    const speciesDocs = await resolveSpeciesDocs(speciesNames);
+
+    return NextResponse.json(speciesDocs, {
       headers: {
-        "Cache-Control": "public, s-maxage=300, stale-while-revalidate=60",
+        "Cache-Control": session?._id
+          ? "private, no-cache"
+          : "public, s-maxage=600, stale-while-revalidate=120",
       },
     });
   } catch (error) {
@@ -91,4 +37,77 @@ export async function GET() {
       { status: 500 }
     );
   }
+}
+
+async function getUserRecentSpecies(userId) {
+  const results = await Observation.aggregate([
+    {
+      $match: {
+        creator: userId,
+        observationType: "animal",
+        scientificName: { $exists: true, $ne: "" },
+      },
+    },
+    { $sort: { createdAt: -1 } },
+    {
+      $group: {
+        _id: "$scientificName",
+        lastUsed: { $first: "$createdAt" },
+      },
+    },
+    { $sort: { lastUsed: -1 } },
+    { $limit: 12 },
+  ]);
+
+  return results.map((r) => r._id);
+}
+
+async function getGlobalCommonSpecies() {
+  const results = await Observation.aggregate([
+    {
+      $match: {
+        observationType: "animal",
+        scientificName: { $exists: true, $ne: "" },
+      },
+    },
+    {
+      $group: {
+        _id: "$scientificName",
+        count: { $sum: 1 },
+      },
+    },
+    { $sort: { count: -1 } },
+    { $limit: 12 },
+  ]);
+
+  return results.map((r) => r._id);
+}
+
+async function resolveSpeciesDocs(speciesNames) {
+  if (!speciesNames.length) return [];
+
+  const existing = await Species.find({
+    name: { $in: speciesNames },
+  }).lean();
+
+  const speciesMap = new Map(existing.map((s) => [s.name.toLowerCase(), s]));
+
+  const missing = speciesNames.filter(
+    (name) => !speciesMap.has(name.toLowerCase())
+  );
+
+  if (missing.length > 0) {
+    const fetched = await Promise.allSettled(
+      missing.map((name) => Species.findOrFetchByName(name))
+    );
+    for (const result of fetched) {
+      if (result.status === "fulfilled" && result.value) {
+        speciesMap.set(result.value.name.toLowerCase(), result.value);
+      }
+    }
+  }
+
+  return speciesNames
+    .map((name) => speciesMap.get(name.toLowerCase()))
+    .filter(Boolean);
 }

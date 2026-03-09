@@ -23,16 +23,25 @@ function createCtx(defaultValue) {
 const [CounterProvider, useCounter] = createCtx(0);
 const [ImageProvider, useImage] = createCtx(null);
 const [SelectionProvider, useSelection] = createCtx([]);
+const [RecentSpeciesProvider, useRecentSpecies] = createCtx([]);
 
 // Combined provider
 function IdentificationProvider({ children }) {
   return (
     <CounterProvider>
       <ImageProvider>
-        <SelectionProvider>{children}</SelectionProvider>
+        <SelectionProvider>
+          <RecentSpeciesProvider>{children}</RecentSpeciesProvider>
+        </SelectionProvider>
       </ImageProvider>
     </CounterProvider>
   );
 }
 
-export { IdentificationProvider, useCounter, useImage, useSelection };
+export {
+  IdentificationProvider,
+  useCounter,
+  useImage,
+  useSelection,
+  useRecentSpecies,
+};

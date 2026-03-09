@@ -33,10 +33,19 @@ export async function POST(request) {
       );
     }
 
+    const savedSpecies = [
+      ...new Set(
+        savedObservations
+          .filter((o) => o.observationType === "animal" && o.scientificName)
+          .map((o) => o.scientificName)
+      ),
+    ];
+
     return NextResponse.json(
       {
         message: "Observations saved successfully and consensus updated",
         count: savedObservations.length,
+        savedSpecies,
       },
       { status: 201 }
     );

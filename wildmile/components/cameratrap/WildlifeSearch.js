@@ -13,7 +13,6 @@ import { useDisclosure } from "@mantine/hooks";
 import TaxaSearch from "./TaxaSearch";
 import PredefinedSpeciesSidebar from "./PredefinedSpeciesSidebar";
 import { IconSearch } from "@tabler/icons-react";
-import RecentSpecies from "./RecentSpecies";
 const WildlifeSearch = () => {
   const [selectedSpecies, setSelectedSpecies] = useState("");
   const [opened, { toggle }] = useDisclosure(false);
