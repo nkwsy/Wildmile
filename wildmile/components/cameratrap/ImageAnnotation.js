@@ -34,7 +34,7 @@ import {
   IconMoodWrrr,
 } from "@tabler/icons-react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { useImage, useSelection } from "./ContextCamera";
+import { useImage, useSelection, useRecentSpecies } from "./ContextCamera";
 import checkboxClasses from "styles/checkbox.module.css";
 import styles from "styles/animalSelection.module.css";
 import { ObservationHistoryPopover } from "./ObservationHistory";
@@ -43,6 +43,7 @@ import { SpeciesConsensusBadges } from "./SpeciesConsensusBadges";
 export function ImageAnnotation({ fetchNextImage, filters }) {
   const [currentImage, setCurrentImage] = useImage();
   const [selection, setSelection] = useSelection();
+  const [recentSpecies, setRecentSpecies] = useRecentSpecies();
   const [animalCounts, setAnimalCounts] = useState({});
   const [noAnimalsVisible, setNoAnimalsVisible] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -155,10 +156,27 @@ export function ImageAnnotation({ fetchNextImage, filters }) {
 
       fetchNextImage();
       if (response.ok) {
-        // Instead of fetchRandomImage, use fetchNextImage
-        // await fetchNextImage();
-        // setSelection([]);
-        // setAnimalCounts({});
+        const data = await response.json();
+        if (data.savedSpecies?.length) {
+          setRecentSpecies((prev) => {
+            const existingNames = new Set(
+              prev.map((s) => s.name?.toLowerCase())
+            );
+            const newEntries = selection
+              .filter(
+                (s) =>
+                  data.savedSpecies.includes(s.name) &&
+                  !existingNames.has(s.name?.toLowerCase())
+              )
+              .map((s) => ({
+                ...s,
+                name: s.name,
+                preferred_common_name: s.preferred_common_name,
+              }));
+            if (!newEntries.length) return prev;
+            return [...newEntries, ...prev].slice(0, 12);
+          });
+        }
         setNoAnimalsVisible(false);
       } else {
         alert("Failed to save observations. Make sure you're logged in");

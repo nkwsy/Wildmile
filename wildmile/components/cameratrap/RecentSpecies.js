@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { SimpleGrid, Skeleton, Button, Collapse, Group } from "@mantine/core";
 import {
@@ -8,63 +8,41 @@ import {
   IconRefresh,
 } from "@tabler/icons-react";
 import Species from "./SpeciesCard";
+import { useRecentSpecies } from "./ContextCamera";
 
-const RecentSpecies = ({ onSpeciesSelect }) => {
-  const [recentSpecies, setRecentSpecies] = useState([]);
-  const [speciesData, setSpeciesData] = useState([]);
+const RecentSpecies = () => {
+  const [speciesData, setSpeciesData] = useRecentSpecies();
   const [loading, setLoading] = useState(true);
   const [opened, { toggle }] = useDisclosure(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  // Fetch recent species from our database
-  const fetchRecentSpecies = async () => {
+  const loadSpecies = useCallback(async () => {
     try {
-      const response = await fetch(`/api/cameratrap/recent-species`, {
-        cache: "no-store",
-      });
+      const response = await fetch("/api/cameratrap/recent-species");
+      if (!response.ok) throw new Error("Failed to fetch");
       const data = await response.json();
-      return data.map((item) => item.species);
+      setSpeciesData(data);
     } catch (error) {
       console.error("Error fetching recent species:", error);
-      return [];
     }
-  };
+  }, [setSpeciesData]);
 
-  // Fetch species details from iNaturalist
-  const fetchSpeciesDetails = async (species) => {
-    try {
-      const response = await fetch(
-        `/api/species?species=${encodeURIComponent(species)}`,
-        { next: { tags: ["species"] } }
-      );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error fetching species details:", error);
-      return null;
-    }
-  };
-
-  const loadSpecies = async () => {
-    setLoading(true);
-    const species = await fetchRecentSpecies();
-    setRecentSpecies(species);
-
-    const detailsPromises = species.map(fetchSpeciesDetails);
-    const details = await Promise.all(detailsPromises);
-    setSpeciesData(details.filter((detail) => detail !== null));
-    setLoading(false);
-  };
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      await loadSpecies();
+      if (mounted) setLoading(false);
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [loadSpecies]);
 
   const handleRefresh = async () => {
     setRefreshing(true);
     await loadSpecies();
     setRefreshing(false);
   };
-
-  useEffect(() => {
-    loadSpecies();
-  }, []);
 
   if (loading) {
     return (
@@ -117,7 +95,11 @@ const RecentSpecies = ({ onSpeciesSelect }) => {
           onClick={toggle}
           variant="default"
           rightSection={
-            opened ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />
+            opened ? (
+              <IconChevronUp size={16} />
+            ) : (
+              <IconChevronDown size={16} />
+            )
           }
         >
           Recently Tagged Species
@@ -142,7 +124,7 @@ const RecentSpecies = ({ onSpeciesSelect }) => {
             { maxWidth: "48rem", cols: 1, spacing: "sm" },
           ]}
         >
-          <Species results={speciesData} onSpeciesSelect={onSpeciesSelect} />
+          <Species results={speciesData} />
         </SimpleGrid>
       </Collapse>
     </div>

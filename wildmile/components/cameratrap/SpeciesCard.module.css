@@ -26,17 +26,19 @@
   object-fit: cover;
 }
 
-.wikiButton {
+.infoButton {
   position: absolute;
   top: var(--mantine-spacing-xs);
   right: var(--mantine-spacing-xs);
   z-index: 2;
-  background-color: rgba(255, 255, 255, 0.8);
-}
+  color: var(--mantine-color-gray-1);
+  opacity: 0.6;
+  transition: opacity 150ms ease;
 
-.wikiIcon {
-  width: 70%;
-  height: 70%;
+  &:hover {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
 }
 
 .badge {
@@ -66,7 +68,7 @@
 }
 
 .title {
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 900;
 
   @media (max-width: 600px) {
@@ -79,7 +81,7 @@
 }
 
 .subtitle {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   font-weight: 300;
   font-style: italic;
   padding: 0 0;
