@@ -21,6 +21,7 @@ import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useUser } from "../lib/hooks";
 import { useRouter } from "next/navigation";
+import getAvatar from "../lib/avatar.js";
 import cx from "clsx";
 import classes from "/styles/nav.module.css";
 
@@ -69,15 +70,9 @@ async function DesktopHeaderMenu() {
   const { user, loading, mutate }  = useUser();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const router = useRouter();
-  let photoSrc = "https://api.multiavatar.com/noname.png";
-
-  if (user && user.profile) {
-    if (user.profile.picture) {
-      console.log(user.profile.picture);
-    } else {
-      photoSrc = "https://api.multiavatar.com/" + user.profile.name + ".png";
-    }
-  }
+  let photoSrc = `data:image/svg+xml;utf8,${encodeURIComponent(
+    getAvatar(user && user.profile ? user.profile.name : "default")
+  )}`;
 
   async function handleLogout() {
     await fetch("/api/logout");
