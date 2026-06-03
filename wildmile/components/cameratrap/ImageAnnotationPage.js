@@ -231,7 +231,13 @@ export const ImageAnnotationPage = ({ initialImageId }) => {
           </div>
         </GridCol>
 
-        <GridCol span={{ base: 12, md: 3, lg: 3 }} style={{ height: "calc(100vh - 100px)" }}>
+        <GridCol 
+        span={{ base: 12, md: 3, lg: 3 }} 
+        style={{
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+          }}>
           <ObservationTally fetchNextImage={fetchNextImage} />
         </GridCol>
 
