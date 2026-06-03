@@ -94,6 +94,20 @@ export const ImageAnnotationPage = ({ initialImageId }) => {
     // Adding initialImageId and fetchFilterDefaults to dependencies.
   }, [initialImageId, fetchFilterDefaults]); // Removed fetchDeployments from here as it's stable and not in useCallback
 
+  // Auto-start tutorial for first-time annotators. A successful save sets the
+  // "wildmile.hasAnnotated" flag in localStorage (see ObservationTally), so the
+  // tutorial only fires until the user completes one observation.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      if (!window.localStorage.getItem("wildmile.hasAnnotated")) {
+        setRunTutorial((prev) => prev + 1);
+      }
+    } catch (e) {
+      // localStorage may be unavailable (private mode); fail silently.
+    }
+  }, [setRunTutorial]);
+
   const fetchDeployments = async () => {
     try {
       const response = await fetch("/api/cameratrap/getDeployments");
@@ -188,11 +202,12 @@ export const ImageAnnotationPage = ({ initialImageId }) => {
         gutter="md"
       >
         <GridCol
-          span={{ base: 12, md: 5, lg: 5 }}
+          span={{ base: 12, md: 8, lg: 8 }}
           style={{
             height: "100%",
             display: "flex",
             flexDirection: "column",
+            minHeight: 0,
           }}
         >
           <Group id="main-navigation-bar" gap="xs" justify="center" mb="xs">
@@ -226,13 +241,12 @@ export const ImageAnnotationPage = ({ initialImageId }) => {
               deployments={deployments}
             />
           </Group>
-          <div style={{ flex: 1, minHeight: 0 }}>
-            <ImageAnnotation filters={appliedFilters} />
+          <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", gap: "var(--mantine-spacing-md)" }}>
+            <div style={{ flex: 1, minHeight: 0 }}>
+              <ImageAnnotation filters={appliedFilters} />
+            </div>
+            <ObservationTally fetchNextImage={fetchNextImage} />
           </div>
-        </GridCol>
-
-        <GridCol span={{ base: 12, md: 3, lg: 3 }} style={{ height: "calc(100vh - 100px)" }}>
-          <ObservationTally fetchNextImage={fetchNextImage} />
         </GridCol>
 
         <GridCol span={{ base: 12, md: 4, lg: 4 }} style={{ height: "calc(100vh - 100px)" }}>

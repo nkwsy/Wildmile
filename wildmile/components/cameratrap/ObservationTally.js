@@ -10,7 +10,6 @@ import {
   Checkbox,
   TextInput,
   ActionIcon,
-  ScrollArea,
   Flex,
   Paper,
 } from "@mantine/core";
@@ -185,6 +184,12 @@ export function ObservationTally({ fetchNextImage }) {
 
       if (response.ok) {
         const data = await response.json();
+        try {
+          // First successful save dismisses the auto-tutorial on future visits.
+          window.localStorage.setItem("wildmile.hasAnnotated", "true");
+        } catch (e) {
+          // localStorage may be unavailable; fail silently.
+        }
         if (data.savedSpecies?.length) {
           setRecentSpecies((prev) => {
             const existingNames = new Set(
@@ -268,10 +273,10 @@ export function ObservationTally({ fetchNextImage }) {
       p="md"
       withBorder
       radius="md"
-      h="100%"
       id="observation-tally-container"
+      style={{ display: "flex", flexDirection: "column", flexShrink: 0 }}
     >
-      <Stack gap="md" h="100%">
+      <Stack gap="md">
         <Group justify="space-between" align="center">
           <Text fw={700}>Observations</Text>
           <Button
@@ -286,11 +291,10 @@ export function ObservationTally({ fetchNextImage }) {
           </Button>
         </Group>
 
-        <ScrollArea style={{ flex: 1 }} offsetScrollbars>
-          <Stack gap="md">
-            {!noAnimalsVisible && selection.length > 0 && (
-              <Flex direction="column" gap="xs">
-                {selection.map((animal, index) => {
+        <Stack gap="md">
+          {!noAnimalsVisible && selection.length > 0 && (
+            <Flex direction="row" wrap="wrap" gap="xs">
+              {selection.map((animal, index) => {
                   const animalId = animal.taxonId || animal.id;
                   const bgColor =
                     SELECTION_COLORS[index % SELECTION_COLORS.length];
@@ -372,22 +376,21 @@ export function ObservationTally({ fetchNextImage }) {
               </Flex>
             )}
 
-            {comments.length > 0 && (
-              <Stack gap="xs">
-                <Text size="sm" fw={700}>
-                  Recent Comments
+          {comments.length > 0 && (
+            <Stack gap="xs">
+              <Text size="sm" fw={700}>
+                Recent Comments
+              </Text>
+              {comments.map((comment, index) => (
+                <Text key={index} size="sm">
+                  <strong>{comment.author.name}:</strong> {comment.text}
                 </Text>
-                {comments.map((comment, index) => (
-                  <Text key={index} size="sm">
-                    <strong>{comment.author.name}:</strong> {comment.text}
-                  </Text>
-                ))}
-              </Stack>
-            )}
-          </Stack>
-        </ScrollArea>
+              ))}
+            </Stack>
+          )}
+        </Stack>
 
-        <Stack gap="md" mt="auto">
+        <Stack gap="md">
           <Group grow wrap="nowrap" id="human-vehicle-checkboxes">
             <Checkbox
               classNames={checkboxClasses}
