@@ -14,7 +14,12 @@ import {
   Box,
   NumberInput,
 } from "@mantine/core";
-import { IconEye, IconHeart, IconLink } from "@tabler/icons-react";
+import {
+  IconEye,
+  IconHeart,
+  IconLink,
+  IconPlayerPlay,
+} from "@tabler/icons-react";
 import Link from "next/link";
 
 import { SpeciesConsensusBadges } from "../SpeciesConsensusBadges";
@@ -90,6 +95,7 @@ export function ImageGallery({
 
 export function ImageCard({ image, imageHeight }) {
   const [opened, setOpened] = useState(false);
+  const [videoOpened, setVideoOpened] = useState(false);
 
   return (
     <Paper p="xs" withBorder>
@@ -104,7 +110,7 @@ export function ImageCard({ image, imageHeight }) {
           style={{ cursor: "pointer" }}
           onClick={() => setOpened(true)}
         />
-        <ImageInfo image={image} />
+        <ImageInfo image={image} onVideoClick={() => setVideoOpened(true)} />
 
         <Modal
           opened={opened}
@@ -135,15 +141,32 @@ export function ImageCard({ image, imageHeight }) {
               Location:{" "}
               {image.deploymentId?.locationId?.locationName || "Unknown"}
             </Text>
-            <ImageInfo image={image} />
+            <ImageInfo image={image} onVideoClick={() => setVideoOpened(true)} />
           </Group>
+        </Modal>
+        <Modal
+          opened={videoOpened}
+          onClose={() => setVideoOpened(false)}
+          title="Attached Video"
+          size="lg"
+        >
+          {image?.videoUrl && (
+            <video
+              src={image.videoUrl}
+              controls
+              autoPlay
+              style={{ width: "100%", maxHeight: "80vh" }}
+            >
+              Your browser does not support the video tag.
+            </video>
+          )}
         </Modal>
       </Stack>
     </Paper>
   );
 }
 
-function ImageInfo({ image }) {
+function ImageInfo({ image, onVideoClick }) {
   return (
     <Stack justify="flex-start" gap={1}>
       <Group position="apart" wrap="nowrap">
@@ -172,17 +195,31 @@ function ImageInfo({ image }) {
             minute: "2-digit",
           })}
         </Text>
-        <Tooltip label="Go to image">
-          <ActionIcon
-            component={Link}
-            href={`/cameratrap/identify/${image.mediaID}`}
-            variant="subtle"
-            size="xs"
-            justify="flex-end"
-          >
-            <IconLink size={14} />
-          </ActionIcon>
-        </Tooltip>
+        <Group gap={4} wrap="nowrap">
+          {image?.videoUrl && (
+            <Tooltip label="Play Video">
+              <ActionIcon
+                onClick={onVideoClick}
+                variant="subtle"
+                size="xs"
+                color="teal"
+              >
+                <IconPlayerPlay size={14} />
+              </ActionIcon>
+            </Tooltip>
+          )}
+          <Tooltip label="Go to image">
+            <ActionIcon
+              component={Link}
+              href={`/cameratrap/identify/${image.mediaID}`}
+              variant="subtle"
+              size="xs"
+              justify="flex-end"
+            >
+              <IconLink size={14} />
+            </ActionIcon>
+          </Tooltip>
+        </Group>
       </Group>
     </Stack>
   );
