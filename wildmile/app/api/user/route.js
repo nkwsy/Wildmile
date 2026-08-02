@@ -12,7 +12,7 @@ export async function GET() {
       return NextResponse.json({});
     }
 
-    const { email, ranger, admin, profile, _id, roles } = user;
+    const { email, ranger, admin, profile, _id, roles, createdAt } = user;
     return NextResponse.json({
       user: {
         email,
@@ -21,6 +21,7 @@ export async function GET() {
         profile,
         roles,
         _id,
+        createdAt,
       },
     });
   } catch (error) {

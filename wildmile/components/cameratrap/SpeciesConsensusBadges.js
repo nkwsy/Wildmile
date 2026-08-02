@@ -41,8 +41,10 @@ export function SpeciesConsensusBadges({ speciesConsensus }) {
               label={speciesConsensus
                 .filter((species) => species.observationType === "animal")
                 .map(
-                  (species) =>
-                    `${species.scientificName} - Count: ${species.count} (${species.observationCount} observations)`
+                  (species) => {
+                    const displayName = species.preferred_common_name || species.scientificName;
+                    return `${displayName} - Count: ${species.count} (${species.observationCount} observations)`;
+                  }
                 )
                 .join("\n")}
             >

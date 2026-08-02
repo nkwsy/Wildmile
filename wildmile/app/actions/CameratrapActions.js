@@ -451,6 +451,7 @@ async function _getStatsFromDb() {
       topCreators,
       mostActive7DaysResult,
       mostBlanksResult,
+      totalVolunteerHoursResult,
     ] = await Promise.all([
       CameratrapMedia.countDocuments(),
       Observation.distinct("mediaId"),
@@ -519,10 +520,57 @@ async function _getStatsFromDb() {
           _id: 0
         } },
       ]),
+      Observation.aggregate([
+        { $sort: { creator: 1, createdAt: 1 } },
+        {
+          $group: {
+            _id: "$creator",
+            createdAtDates: { $push: "$createdAt" },
+          },
+        },
+        {
+          $addFields: {
+            timeDifferences: {
+              $map: {
+                input: { $range: [1, { $size: "$createdAtDates" }] },
+                as: "index",
+                in: {
+                  $subtract: [
+                    { $arrayElemAt: ["$createdAtDates", "$$index"] },
+                    {
+                      $arrayElemAt: [
+                        "$createdAtDates",
+                        { $subtract: ["$$index", 1] },
+                      ],
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
+        { $unwind: { path: "$timeDifferences" } },
+        {
+          $match: {
+            timeDifferences: { $lt: 3600000 }, // Less than 1 hour (3600000 ms)
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            totalHours: {
+              $sum: {
+                $divide: ["$timeDifferences", 3600000], // Convert ms to hours
+              },
+            },
+          },
+        },
+      ]),
     ]);
 
     const [mostActive7Days] = mostActive7DaysResult;
     const [mostBlanks] = mostBlanksResult;
+    const [totalVolunteerHours] = totalVolunteerHoursResult;
 
     return {
       totalImages,
@@ -530,7 +578,7 @@ async function _getStatsFromDb() {
       totalImagesWithObservations: uniqueMediaIdsWithObservations.length,
       totalValidatedImages: validatedObservations[0]?.count || 0,
       totalVolunteers: totalVolunteers.length,
-      totalObservationTime: 0,
+      totalObservationTime: totalVolunteerHours?.totalHours || 0,
       uniqueMediaIds: uniqueMediaIdsWithObservations.length,
       newImages30Days,
       topCreators: topCreators.map((creator) => ({

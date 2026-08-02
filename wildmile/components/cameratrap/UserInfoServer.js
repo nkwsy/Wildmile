@@ -76,7 +76,7 @@ export async function UserInfoServer({ user }) {
                 {stats.user.profile?.name || "Anonymous User"}
               </Title>
               <Group spacing="xs">
-                {stats.user.roles.map((role, index) => (
+                {stats.user.roles?.map((role, index) => (
                   <Badge key={index} size="sm" variant="light">
                     {role}
                   </Badge>

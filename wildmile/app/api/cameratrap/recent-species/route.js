@@ -14,10 +14,11 @@ export async function GET(request) {
     let speciesNames;
 
     if (session?._id) {
+      // For logged in users, ONLY return their own recent species.
+      // Do not fall back to global to avoid confusion for new accounts.
       speciesNames = await getUserRecentSpecies(session._id);
-    }
-
-    if (!speciesNames || speciesNames.length === 0) {
+    } else {
+      // For guests, return the most common species globally.
       speciesNames = await getGlobalCommonSpecies();
     }
 

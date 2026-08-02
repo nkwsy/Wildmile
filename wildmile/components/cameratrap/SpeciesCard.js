@@ -14,14 +14,22 @@ import {
   Anchor,
   Tabs,
   Divider,
+  HoverCard,
+  NumberInput,
 } from "@mantine/core";
 import classes from "./SpeciesCard.module.css";
 import {
   IconInfoCircle,
   IconBrandWikipedia,
   IconExternalLink,
+  IconPlus,
+  IconMinus,
+  IconX,
 } from "@tabler/icons-react";
-import { useSelection } from "components/cameratrap/ContextCamera";
+import {
+  useSelection,
+  useAnimalCounts,
+} from "components/cameratrap/ContextCamera";
 
 export function SpeciesCards(results) {
   const result_values = results.map((result) => ({
@@ -220,12 +228,17 @@ function SpeciesInfoModal({ result, opened, onClose }) {
 
 export function SpeciesList({ results, onSpeciesSelect }) {
   const [selection, setSelection] = useSelection();
+  const [animalCounts, setAnimalCounts] = useAnimalCounts();
   const [infoTarget, setInfoTarget] = useState(null);
 
   if (!results || results.length === 0) {
     return null;
   }
   const result_values = SpeciesCards(results);
+
+  const handleCountChange = (id, value) => {
+    setAnimalCounts((prev) => ({ ...prev, [id]: value }));
+  };
 
   const toggleSelection = (result) => {
     if (onSpeciesSelect) {
@@ -236,6 +249,8 @@ export function SpeciesList({ results, onSpeciesSelect }) {
         isSelectedSpecies(item, result.inat_result),
       );
       if (isSelected) {
+        // If already selected, maybe we don't want to toggle it off easily if they click the card?
+        // Or keep toggle behavior. The user said "putting a count when the animal is selected".
         return prev.filter(
           (item) => !isSelectedSpecies(item, result.inat_result),
         );
@@ -253,37 +268,112 @@ export function SpeciesList({ results, onSpeciesSelect }) {
   return (
     <>
       <Stack gap={4}>
-        {result_values.map((result, index) => (
-          <Paper
-            key={index}
-            onClick={() => toggleSelection(result)}
-            className={classes.listItem}
-            data-selected={
-              selection.some((item) =>
-                isSelectedSpecies(item, result.inat_result),
-              ) || undefined
-            }
-          >
-            <Image
-              src={result.image || "/No_plant_image.jpg"}
-              alt={result.title}
-              className={classes.listImage}
-            />
-            <div className={classes.listContent}>
-              <Text className={classes.listTitle}>{result.title}</Text>
-              <Text className={classes.listSubtitle}>{result.subtitle}</Text>
-            </div>
-            <ActionIcon
-              variant="subtle"
-              size="sm"
-              onClick={(e) => handleInfoClick(e, result)}
-              aria-label="Species info"
-              c="dimmed"
+        {result_values.map((result, index) => {
+          const isSelected = selection.some((item) =>
+            isSelectedSpecies(item, result.inat_result),
+          );
+          const animalId = result.id;
+
+          return (
+            <Paper
+              key={index}
+              onClick={() => toggleSelection(result)}
+              className={classes.listItem}
+              data-selected={isSelected || undefined}
             >
-              <IconInfoCircle size={16} stroke={1.5} />
-            </ActionIcon>
-          </Paper>
-        ))}
+            <HoverCard width={280} shadow="md" withArrow position="left" closeDelay={0}>
+                <HoverCard.Target>
+                  <Image
+                    src={result.image || "/No_plant_image.jpg"}
+                    alt={result.title}
+                    className={classes.listImage}
+                  />
+                </HoverCard.Target>
+                <HoverCard.Dropdown style={{ pointerEvents: 'none' }}>
+                  <Stack gap="xs">
+                    <Text fw={700} size="sm">{result.title}</Text>
+                    <Image
+                      src={result.image || "/No_plant_image.jpg"}
+                      alt={result.title}
+                      radius="md"
+                    />
+                  </Stack>
+                </HoverCard.Dropdown>
+              </HoverCard>
+              <div className={classes.listContent}>
+                <Group justify="space-between" wrap="nowrap">
+                  <Stack gap={0} style={{ flex: 1, minWidth: 0 }}>
+                    <Text className={classes.listTitle}>{result.title}</Text>
+                    <Text className={classes.listSubtitle}>{result.subtitle}</Text>
+                  </Stack>
+                  {isSelected && (
+                    <Group gap={4} onClick={(e) => e.stopPropagation()}>
+                      <ActionIcon
+                        size="lg"
+                        variant="subtle"
+                        onClick={() =>
+                          handleCountChange(
+                            animalId,
+                            Math.max(1, (animalCounts[animalId] || 1) - 1),
+                          )
+                        }
+                        disabled={(animalCounts[animalId] || 1) <= 1}
+                      >
+                        <IconMinus size={22} />
+                      </ActionIcon>
+                      <NumberInput
+                        size="xs"
+                        value={animalCounts[animalId] ?? 1}
+                        onChange={(value) => {
+                          if (value === "" || value === undefined) {
+                            handleCountChange(animalId, "");
+                          } else {
+                            handleCountChange(animalId, value);
+                          }
+                        }}
+                        hideControls
+                        min={1}
+                        max={99}
+                        style={{ width: 45 }}
+                        styles={{
+                          input: {
+                            textAlign: "center",
+                            fontWeight: 700,
+                            fontSize: 14,
+                            padding: 0,
+                            height: 30,
+                            minHeight: 30,
+                          },
+                        }}
+                      />
+                      <ActionIcon
+                        size="lg"
+                        variant="subtle"
+                        onClick={() =>
+                          handleCountChange(
+                            animalId,
+                            (animalCounts[animalId] || 1) + 1,
+                          )
+                        }
+                      >
+                        <IconPlus size={22} />
+                      </ActionIcon>
+                    </Group>
+                  )}
+                </Group>
+              </div>
+              <ActionIcon
+                variant="subtle"
+                size="md"
+                onClick={(e) => handleInfoClick(e, result)}
+                aria-label="Species info"
+                c="dimmed"
+              >
+                <IconInfoCircle size={24} stroke={1.5} />
+              </ActionIcon>
+            </Paper>
+          );
+        })}
       </Stack>
       {infoTarget && (
         <SpeciesInfoModal
@@ -296,7 +386,7 @@ export function SpeciesList({ results, onSpeciesSelect }) {
   );
 }
 
-export default function Species({ results, onSpeciesSelect }) {
+export default function Species({ results, onSpeciesSelect, compact }) {
   const [selection, setSelection] = useSelection();
   const [infoTarget, setInfoTarget] = useState(null);
 
@@ -334,7 +424,7 @@ export default function Species({ results, onSpeciesSelect }) {
         <Paper
           key={index}
           onClick={() => toggleSelection(result)}
-          className={classes.card}
+          className={compact ? classes.compactCard : classes.card}
           data-selected={
             selection.some((item) =>
               isSelectedSpecies(item, result.inat_result),

@@ -11,22 +11,20 @@ import {
   Paper,
   Progress,
   Tooltip,
-  Indicator,
 } from "@mantine/core";
 import {
   IconPaw,
-  IconTrophy,
   IconCamera,
   IconCalendarStats,
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
+
 export function UserAvatar({ userId, size = "sm" }) {
   const [userStats, setUserStats] = useState(null);
   const [loading, setLoading] = useState(false);
   const [opened, { close, open }] = useDisclosure(false);
 
   useEffect(() => {
-    console.log("userId", userId);
     if (userId) {
       fetchUserStats();
     }
@@ -42,7 +40,6 @@ export function UserAvatar({ userId, size = "sm" }) {
       );
       const data = await response.json();
       setUserStats(data);
-      console.log("userStats", data);
     } catch (error) {
       console.error("Error fetching user stats:", error);
     } finally {
@@ -67,42 +64,46 @@ export function UserAvatar({ userId, size = "sm" }) {
       shadow="md"
       opened={opened}
     >
-      <Avatar
-        size={size}
-        src={
-          userStats?.domainRanks?.CAMERATRAP?.currentRank?.badge ||
-          userStats?.user?.avatar ||
-          "💩"
-        }
-        radius="xl"
-        sx={{ cursor: "pointer" }}
-        onMouseEnter={open}
-        onMouseLeave={close}
-      ></Avatar>
-
       <Popover.Target>
-        <div onMouseEnter={open} onMouseLeave={close}>
-          <Text size="sm" weight={500}>
-            {userStats?.user?.profile?.name || "Anonymous"}
-          </Text>
-          <Text size="xs" color="dimmed">
-            Level {userStats?.level || 1}
-          </Text>
-        </div>
+        <Group
+          gap="xs"
+          wrap="nowrap"
+          style={{ cursor: "pointer", minWidth: 0, flex: 1 }}
+          onMouseEnter={open}
+          onMouseLeave={close}
+        >
+          <Avatar
+            size={size}
+            src={
+              userStats?.domainRanks?.CAMERATRAP?.currentRank?.badge ||
+              userStats?.user?.avatar ||
+              "💩"
+            }
+            radius="xl"
+          />
+          <div style={{ minWidth: 0, flex: 1 }}>
+            <Text size="sm" fw={500} truncate="end" maw={150}>
+              {userStats?.user?.profile?.name || "Anonymous"}
+            </Text>
+            <Text size="xs" c="dimmed">
+              Level {userStats?.level || 1}
+            </Text>
+          </div>
+        </Group>
       </Popover.Target>
       <Popover.Dropdown onMouseEnter={open} onMouseLeave={close}>
-        <Stack spacing="xs">
+        <Stack gap="xs">
           {/* User Header */}
-          <Group position="apart" align="center">
+          <Group justify="space-between" align="center">
             <Group>
               <Avatar size="md" src={userStats?.user?.avatar} radius="xl">
                 {userStats?.user?.profile?.name?.charAt(0) || "?"}
               </Avatar>
               <div>
-                <Text size="sm" weight={500}>
+                <Text size="sm" fw={500}>
                   {userStats?.user?.profile?.name || "Anonymous"}
                 </Text>
-                <Text size="xs" color="dimmed">
+                <Text size="xs" c="dimmed">
                   Level {userStats?.level || 1}
                 </Text>
               </div>
@@ -119,35 +120,35 @@ export function UserAvatar({ userId, size = "sm" }) {
           </Tooltip>
 
           {/* Quick Stats */}
-          <Group grow spacing="xs">
+          <Group grow gap="xs">
             <Paper withBorder p="xs" radius="md">
-              <Group spacing={4}>
+              <Group gap={4}>
                 <IconPaw size={16} />
                 <Text size="xs">
-                  {formatNumber(userStats?.stats?.animalsObserved || 0)}
+                  {formatNumber(userStats?.totalAnimalsObserved || userStats?.stats?.animalsObserved || 0)}
                 </Text>
               </Group>
-              <Text size="xs" color="dimmed">
+              <Text size="xs" c="dimmed">
                 Animals
               </Text>
             </Paper>
             <Paper withBorder p="xs" radius="md">
-              <Group spacing={4}>
+              <Group gap={4}>
                 <IconCamera size={16} />
                 <Text size="xs">
-                  {formatNumber(userStats?.stats?.imagesReviewed || 0)}
+                  {formatNumber(userStats?.totalImagesReviewed || userStats?.stats?.imagesReviewed || 0)}
                 </Text>
               </Group>
-              <Text size="xs" color="dimmed">
+              <Text size="xs" c="dimmed">
                 Reviewed
               </Text>
             </Paper>
             <Paper withBorder p="xs" radius="md">
-              <Group spacing={4}>
+              <Group gap={4}>
                 <IconCalendarStats size={16} />
                 <Text size="xs">{userStats?.streaks?.current || 0}</Text>
               </Group>
-              <Text size="xs" color="dimmed">
+              <Text size="xs" c="dimmed">
                 Streak
               </Text>
             </Paper>
@@ -155,29 +156,29 @@ export function UserAvatar({ userId, size = "sm" }) {
 
           {/* Recent Achievements */}
           {userStats?.achievements?.length > 0 && (
-            <Stack spacing={4}>
-              <Text size="xs" weight={500}>
+            <Stack gap={4}>
+              <Text size="xs" fw={500}>
                 Recent Achievements
               </Text>
-              <Group spacing={4}>
+              <Group gap={4}>
                 {userStats.achievements
                   .filter((a) => a.progress === 100)
                   .slice(0, 5)
                   .map((achievement) => {
                     return (
                       <Tooltip
-                        key={achievement._id}
-                        label={`${achievement.achievement.name}: ${achievement.achievement.description}`}
+                        key={achievement.id}
+                        label={`${achievement.name}: ${achievement.description}`}
                       >
                         <Avatar
                           size="sm"
                           src={
-                            achievement.achievement.icon ||
-                            achievement.achievement.badge ||
+                            achievement.badge ||
+                            achievement.icon ||
                             "💩"
                           }
                         >
-                          {achievement.achievement.points}
+                          {achievement.points}
                         </Avatar>
                       </Tooltip>
                     );
@@ -189,11 +190,11 @@ export function UserAvatar({ userId, size = "sm" }) {
           {/* Domain Ranks */}
           {userStats?.domainRanks &&
             Object.entries(userStats.domainRanks).length > 0 && (
-              <Stack spacing={4}>
-                <Text size="xs" weight={500}>
+              <Stack gap={4}>
+                <Text size="xs" fw={500}>
                   Domain Ranks
                 </Text>
-                <Group spacing={4}>
+                <Group gap={4}>
                   {Object.entries(userStats.domainRanks).map(
                     ([domain, rank]) => (
                       <Tooltip
@@ -211,7 +212,7 @@ export function UserAvatar({ userId, size = "sm" }) {
             )}
 
           {/* Last Active */}
-          <Text size="xs" color="dimmed" align="center">
+          <Text size="xs" c="dimmed" ta="center">
             Last active:{" "}
             {userStats?.lastActive
               ? new Date(userStats.lastActive).toLocaleDateString()

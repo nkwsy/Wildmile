@@ -72,20 +72,19 @@ export async function findUserByEmail(email) {
   return await User.findOne({ email: email.toLowerCase() }, [
     // "-_id",
     "-__v",
-    "-createdAt",
     "-updatedAt",
   ]);
 }
 
-export async function updateUserByEmail(req, email, update) {
-  await dbConnect()
+export async function updateUserByEmail(email, update) {
+  await dbConnect();
   // Updating requires the _id which we filter out of results in other places so lets
   const user = await User.findOne({ email: email.toLowerCase() });
 
   if (update.email && update.email.toLowerCase() != user.email) {
     user.email = update.email.toLowerCase();
   }
-  if (update.password && !(await user.comparePassword(password))) {
+  if (update.password && !(await user.comparePassword(update.password))) {
     user.password = update.password;
   }
   if (user) {

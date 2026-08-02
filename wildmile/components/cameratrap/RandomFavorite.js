@@ -13,11 +13,13 @@ import {
   Group,
   ActionIcon,
   Fieldset,
+  Tooltip,
 } from "@mantine/core";
 import {
   IconRefresh,
   IconMaximize,
   IconArrowsShuffle,
+  IconPlayerPlay,
 } from "@tabler/icons-react";
 import classes from "styles/CameraTrap.module.css";
 import useSWR from "swr";
@@ -31,6 +33,7 @@ const fetcher = async (url) => {
 export function RandomFavorite() {
   const [loading, setLoading] = useState(false);
   const [enlargedImage, setEnlargedImage] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
 
   const {
     data: favoriteImage,
@@ -84,7 +87,7 @@ export function RandomFavorite() {
                 style={{ objectFit: "contain" }}
               />
               <ActionIcon
-                style={{ position: "absolute", top: 10, right: 10 }}
+                style={{ position: "absolute", top: 10, right: 10, zIndex: 10 }}
                 onClick={() => setEnlargedImage(true)}
               >
                 <IconMaximize size={24} />
@@ -100,24 +103,60 @@ export function RandomFavorite() {
                     Favorite by: {favoriteImage.favoriteUsers[0].profile.name}
                   </Text>
                 )}
-                <Button
-                  mt="md"
-                  // flex="1"
-                  wrap="wrap"
-                  variant="light"
-                  color="blue"
-                  onClick={fetchRandomFavorite}
-                  loading={loading}
-                  leftSection={<IconArrowsShuffle />}
-                >
-                  New Image
-                </Button>
+                <Group gap="sm" mt="md" wrap="nowrap">
+                  <Tooltip
+                    label={
+                      favoriteImage.videoUrl
+                        ? "Play Video"
+                        : "No video available"
+                    }
+                  >
+                    <ActionIcon
+                      size="md"
+                      color="teal"
+                      variant="outline"
+                      onClick={() => setShowVideo(true)}
+                      disabled={!favoriteImage.videoUrl}
+                    >
+                      <IconPlayerPlay size={22} />
+                    </ActionIcon>
+                  </Tooltip>
+                  <Button
+                    flex="1"
+                    variant="light"
+                    color="blue"
+                    onClick={fetchRandomFavorite}
+                    loading={loading}
+                    leftSection={<IconArrowsShuffle />}
+                  >
+                    New Image
+                  </Button>
+                </Group>
               </Flex>
               {/* </Group> */}
             </>
           )}
         </div>
       </Fieldset>
+
+      <Modal
+        opened={showVideo}
+        onClose={() => setShowVideo(false)}
+        title="Attached Video"
+        size="lg"
+      >
+        {favoriteImage?.videoUrl && (
+          <video
+            src={favoriteImage.videoUrl}
+            controls
+            autoPlay
+            muted
+            style={{ width: "100%", maxHeight: "80vh" }}
+          >
+            Your browser does not support the video tag.
+          </video>
+        )}
+      </Modal>
 
       <Modal
         opened={enlargedImage}

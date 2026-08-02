@@ -1,7 +1,9 @@
 "use client";
+import React, { useState } from "react";
 import {
   Image,
   Group,
+  Stack,
   Button,
   Divider,
   Menu,
@@ -11,6 +13,7 @@ import {
   ScrollArea,
   Avatar,
   UnstyledButton,
+  NavLink,
   Text,
   Center,
   rem,
@@ -27,7 +30,6 @@ import { useUser } from "../lib/hooks";
 import { usePathname } from "next/navigation";
 import cx from "clsx";
 import classes from "styles/nav.module.css";
-import { useState } from "react";
 const nav_tabs = [
   {
     label: "Home",
@@ -37,27 +39,19 @@ const nav_tabs = [
     label: "Trash",
     link: "/trash",
     subitems: [
-      {
-        label: "New Log",
-        link: "/trash/log",
-      },
-      {
-        label: "History",
-        link: "/trash/history",
-      },
+      { label: "Overview", link: "/trash" },
+      { label: "New Log", link: "/trash/log" },
+      { label: "History", link: "/trash/history" },
     ],
   },
   {
     label: "Plants",
     link: "/plants",
     subitems: [
-      {
-        label: "Species List",
-        link: "/plants/species",
-      },
+      { label: "Overview", link: "/plants" },
+      { label: "Species List", link: "/plants/species" },
     ],
   },
-  // Subitems for projects need seeding somehow
   {
     label: "Projects",
     link: "/projects",
@@ -65,6 +59,13 @@ const nav_tabs = [
   {
     label: "Camera Traps",
     link: "/cameratrap",
+    subitems: [
+      { label: "Overview", link: "/cameratrap" },
+      { label: "Identify", link: "/cameratrap/identify" },
+      { label: "Explore", link: "/cameratrap/explore" },
+      { label: "Wildlife Data", link: "/cameratrap/wildlife" },
+      { label: "Project Data", link: "/cameratrap/analytics/total-images" },
+    ],
   },
 ];
 
@@ -86,31 +87,41 @@ export function HeaderNav({ children }) {
   }
 
   const items = nav_tabs.map((link) => {
-    const menuItems = link.subitems?.map((item) => (
-      <Menu.Item key={item.label}>
-        <Link href={item.link} className={classes.subLink}>
-          {item.label}
-        </Link>
-      </Menu.Item>
-    ));
-
-    if (menuItems) {
+    const hasSubitems = Array.isArray(link.subitems) && link.subitems.length > 0;
+    if (hasSubitems) {
       return (
         <Menu
           key={link.label}
           trigger="hover"
           transitionProps={{ exitDuration: 0 }}
           withinPortal
+          openDelay={100}
+          closeDelay={200}
         >
           <Menu.Target>
-            <Link href={link.link} className={classes.link}>
-              <Center>
+            <UnstyledButton className={classes.link}>
+              <Center inline>
                 <span className={classes.linkLabel}>{link.label}</span>
-                <IconChevronDown size={15} stroke={2.5} />
+                <IconChevronDown
+                  size={rem(14)}
+                  stroke={2.5}
+                  style={{ marginLeft: rem(5) }}
+                />
               </Center>
-            </Link>
+            </UnstyledButton>
           </Menu.Target>
-          <Menu.Dropdown>{menuItems}</Menu.Dropdown>
+          <Menu.Dropdown>
+            {link.subitems.map((item) => (
+              <Menu.Item
+                key={item.label}
+                component={Link}
+                href={item.link}
+                className={classes.subLink}
+              >
+                {item.label}
+              </Menu.Item>
+            ))}
+          </Menu.Dropdown>
         </Menu>
       );
     }
@@ -167,7 +178,7 @@ export function HeaderNav({ children }) {
               visibleFrom="sm"
               className={classes.hiddenMobile}
             >
-              {user && user ? items : null}
+              {items}
             </Group>
 
             <Group className={classes.hiddenMobile}>
@@ -251,6 +262,7 @@ export function HeaderNav({ children }) {
               opened={drawerOpened}
               onClick={toggleDrawer}
               className={classes.hiddenDesktop}
+              aria-label="Navigation"
             />
           </Group>
         </header>
@@ -267,19 +279,121 @@ export function HeaderNav({ children }) {
           <ScrollArea h={`calc(100vh - ${rem(60)})`} mx="-md">
             <Divider my="sm" color={"dark"} />
 
-            {user && user ? items : null}
+            {user ? (
+              <Box px="md" pb="md">
+                <Group>
+                  <Avatar src={photoSrc} radius="xl" size={40} />
+                  <div style={{ flex: 1 }}>
+                    <Text size="sm" fw={500}>
+                      {user.profile?.name || "Username"}
+                    </Text>
+                    <Text c="dimmed" size="xs">
+                      {user.email}
+                    </Text>
+                  </div>
+                </Group>
+
+                <Stack gap={0} mt="md">
+                  <NavLink
+                    label="Account settings"
+                    leftSection={<IconSettings size="1.2rem" stroke={1.5} />}
+                    component={Link}
+                    href="/profile"
+                    onClick={closeDrawer}
+                    styles={{ label: { fontSize: rem(16) } }}
+                  />
+                  <Divider color="dark.4" />
+                  {user.roles && user.roles.length > 0 && (
+                    <>
+                      <NavLink
+                        label="Admin"
+                        leftSection={<IconBriefcase size="1.2rem" stroke={1.5} />}
+                        component={Link}
+                        href="/admin"
+                        onClick={closeDrawer}
+                        styles={{ label: { fontSize: rem(16) } }}
+                      />
+                      <Divider color="dark.4" />
+                    </>
+                  )}
+                  <NavLink
+                    label="Logout"
+                    leftSection={<IconLogout size="1.2rem" stroke={1.5} />}
+                    onClick={() => {
+                      handleLogout();
+                      closeDrawer();
+                    }}
+                    styles={{ label: { fontSize: rem(16) } }}
+                  />
+                </Stack>
+              </Box>
+            ) : null}
 
             <Divider my="sm" color={"dark"} />
-            <Group position="center" grow pb="xl" px="md">
-              <Link href={getLoginUrl()}>
-                <Button variant="default" fullWidth>
-                  Log in
-                </Button>
-              </Link>
-              <Link href="/signup">
-                <Button fullWidth>Sign up</Button>
-              </Link>
-            </Group>
+
+            <Stack gap={0}>
+              {nav_tabs.map((tab, index) => {
+                const hasSubitems =
+                  Array.isArray(tab.subitems) && tab.subitems.length > 0;
+                return (
+                  <React.Fragment key={tab.label}>
+                    <NavLink
+                      label={tab.label}
+                      component={hasSubitems ? "button" : Link}
+                      href={hasSubitems ? undefined : tab.link}
+                      onClick={hasSubitems ? undefined : closeDrawer}
+                      childrenOffset={28}
+                      className={classes.navLink}
+                      styles={{
+                        label: {
+                          fontSize: rem(18),
+                          fontWeight: 600,
+                          padding: `${rem(8)} 0`,
+                        },
+                      }}
+                    >
+                      {hasSubitems &&
+                        tab.subitems.map((sub, subIndex) => (
+                          <React.Fragment key={sub.label}>
+                            <NavLink
+                              label={sub.label}
+                              component={Link}
+                              href={sub.link}
+                              onClick={closeDrawer}
+                              styles={{
+                                label: {
+                                  fontSize: rem(16),
+                                  padding: `${rem(4)} 0`,
+                                },
+                              }}
+                            />
+                            {subIndex < tab.subitems.length - 1 && (
+                              <Divider color="dark.4" variant="dotted" />
+                            )}
+                          </React.Fragment>
+                        ))}
+                    </NavLink>
+                    {index < nav_tabs.length - 1 && <Divider color="dark.4" />}
+                  </React.Fragment>
+                );
+              })}
+            </Stack>
+
+            <Divider my="sm" color={"dark"} />
+            {!user && (
+              <Group justify="center" grow pb="xl" px="md">
+                <Link href={getLoginUrl()} onClick={closeDrawer}>
+                  <Button variant="default" fullWidth size="md">
+                    Log in
+                  </Button>
+                </Link>
+                <Link href="/signup" onClick={closeDrawer}>
+                  <Button fullWidth size="md">
+                    Sign up
+                  </Button>
+                </Link>
+              </Group>
+            )}
           </ScrollArea>
         </Drawer>
       </Box>

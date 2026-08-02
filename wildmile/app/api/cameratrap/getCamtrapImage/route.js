@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import dbConnect from "lib/db/setup";
 import CameratrapMedia from "models/cameratrap/Media";
 import CameratrapDeployment from "models/cameratrap/Deployment";
+import Species from "models/Species";
 import { getSession } from "lib/getSession";
 import { headers } from "next/headers";
 
@@ -23,6 +24,7 @@ export async function GET(request) {
   const direction = searchParams.get("direction");
   const currentImageId = searchParams.get("currentImageId");
   const selectedImageId = searchParams.get("selectedImageId");
+  const reviewMode = searchParams.get("reviewMode");
 
   const animalProbabilityParam = searchParams.get("animalProbability");
   let minAnimalConf, maxAnimalConf;
@@ -35,26 +37,6 @@ export async function GET(request) {
     }
   }
 
-  if (selectedImageId) {
-    try {
-      const image = await CameratrapMedia.findOne({
-        mediaID: selectedImageId,
-      }).lean();
-      if (image) {
-        return NextResponse.json(image);
-      }
-      return NextResponse.json(
-        { message: "No images found matching the criteria" },
-        { status: 404 },
-      );
-    } catch (error) {
-      console.error("Error fetching selected image:", error);
-      return NextResponse.json(
-        { message: "Error fetching camera trap image", error: error.message },
-        { status: 500 },
-      );
-    }
-  }
 
   let query = {};
   let timeQuery = [];
@@ -127,8 +109,12 @@ export async function GET(request) {
     query.$expr = { $and: timeQuery };
   }
 
-  if (reviewed === "true") {
+  if (reviewed === "true" || reviewMode === "true") {
     query.reviewCount = { $gt: 0 };
+  }
+
+  if (reviewMode === "true") {
+    query.consensusStatus = { $ne: "ConsensusReached" };
   }
 
   if (
@@ -150,7 +136,7 @@ export async function GET(request) {
     };
   }
 
-  if (notReviewedByUser === "true") {
+  if (notReviewedByUser === "true" || reviewMode === "true") {
     const session = await getSession({ headers });
     if (session?._id) {
       query.reviewers = { $nin: [session._id] };
@@ -164,7 +150,11 @@ export async function GET(request) {
 
   try {
     let image;
-    if (direction === "oldest") {
+    if (selectedImageId) {
+      image = await CameratrapMedia.findOne({
+        mediaID: selectedImageId,
+      }).lean();
+    } else if (direction === "oldest") {
       image = await CameratrapMedia.findOne(query)
         .sort({ timestamp: 1 })
         .lean();
@@ -186,10 +176,70 @@ export async function GET(request) {
       }
     } else {
       image = await CameratrapMedia.findOneRandom(query);
+      if (image && typeof image.toObject === "function") {
+        image = image.toObject();
+      }
     }
 
     if (image) {
-      return NextResponse.json(image);
+      // Ensure image is a plain object
+      const plainImage = typeof image.toObject === "function" ? image.toObject() : image;
+
+      // Enhance speciesConsensus with preferred_common_name
+      if (plainImage.speciesConsensus && Array.isArray(plainImage.speciesConsensus)) {
+        const enrichedConsensus = await Promise.all(
+          plainImage.speciesConsensus.map(async (item) => {
+            try {
+              // Ensure item is a plain object
+              const plainItem = typeof item.toObject === "function" ? item.toObject() : item;
+
+              if (plainItem && plainItem.observationType === "animal") {
+                let species = null;
+                // Try searching by numeric taxonId if taxonID is a number or can be cast to one
+                const numericTaxonId = Number(plainItem.taxonID);
+                if (plainItem.taxonID && !isNaN(numericTaxonId)) {
+                  species = await Species.findOne({
+                    taxonId: numericTaxonId,
+                  }).lean();
+                }
+                // Fallback to searching by scientificName (which is often what taxonID holds in current data)
+                if (!species && plainItem.scientificName) {
+                  species = await Species.findOne({
+                    name: new RegExp(`^${plainItem.scientificName}$`, "i"),
+                  }).lean();
+                }
+                // Also try searching by taxonID as a string if it's not a number
+                if (!species && plainItem.taxonID && isNaN(numericTaxonId)) {
+                   species = await Species.findOne({
+                    name: new RegExp(`^${plainItem.taxonID}$`, "i"),
+                  }).lean();
+                }
+
+                if (species) {
+                  return {
+                    ...plainItem,
+                    name: species.name,
+                    preferred_common_name: species.preferred_common_name || plainItem.preferred_common_name,
+                    taxonID: species.taxonId || plainItem.taxonID,
+                    scientificName: species.name || plainItem.scientificName,
+                    default_photo: species.default_photo,
+                    rank: species.rank,
+                    iconic_taxon_name: species.iconic_taxon_name,
+                    wikipedia_url: species.wikipedia_url,
+                  };
+                }
+              }
+              return plainItem;
+            } catch (err) {
+              console.error("Error enriching consensus item:", err, item);
+              return item;
+            }
+          })
+        );
+        plainImage.speciesConsensus = enrichedConsensus;
+      }
+
+      return NextResponse.json(plainImage);
     } else {
       return NextResponse.json(
         { message: "No images found matching the criteria" },

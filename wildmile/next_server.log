@@ -1,0 +1,1680 @@
+   ▲ Next.js 15.1.11
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.0.2:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 3.9s
+ ○ Compiling /cameratrap/identify ...
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for Compilation/modules|javascript/auto|/app/wildmile/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/app/wildmile/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/app/wildmile/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[16].oneOf[5].use[1]!/app/wildmile/components/cameratrap/ImageAnnotationPage.js|app-pages-browser from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|react/jsx-dev-runtime from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|react from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|@mantine/core from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|./SpeciesCard from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|./ContextCamera from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|lib/hooks from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|./ImageAnnotation from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|./ObservationTally from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|./ImageFilterControls from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|./WildlifeSearch from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|./CameraTrapTutorial from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|./ReviewControls from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|@tabler/icons-react from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|styles/cameraTrapLayout.module.css from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for Compilation/modules|javascript/auto|/app/wildmile/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/app/wildmile/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/app/wildmile/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[16].oneOf[5].use[1]!/app/wildmile/components/cameratrap/ImageAnnotation.js|app-pages-browser from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for Compilation/modules|javascript/auto|/app/wildmile/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/app/wildmile/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/app/wildmile/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[16].oneOf[5].use[1]!/app/wildmile/components/cameratrap/ImageFilterControls.js|app-pages-browser from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|@mantine/hooks from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|react-zoom-pan-pinch from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|./ObservationHistory from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|./SpeciesConsensusBadges from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|@mantine/dates from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for Compilation/modules|javascript/auto|/app/wildmile/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/app/wildmile/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/app/wildmile/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[16].oneOf[5].use[1]!/app/wildmile/components/cameratrap/PredefinedSpeciesSidebar.js|app-pages-browser from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|lucide-react from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|/styles/icons/Frog from pack: Error: invalid block type
+<w> [webpack.cache.PackFileCacheStrategy] Restoring failed for ResolverCachePlugin|normal|default|alias=[|server-only$=|next/dist/compiled/server-only/index|client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/client-only$=|next/dist/compiled/client-only/index|next/dist/compiled/server-only=|next/dist/compiled/server-only/index|/app/wildmile/node_modules/next/head.js=|next/dist/client/components/noop-head|/app/wildmile/node_modules/next/image.js=|next/dist/api/image|/app/wildmile/node_modules/next/constants.js=|next/dist/api/constants|/app/wildmile/node_modules/next/router.js=|next/dist/api/router|/app/wildmile/node_modules/next/dynamic.js=|next/dist/api/app-dynamic|/app/wildmile/node_modules/next/script.js=|next/dist/api/script|/app/wildmile/node_modules/next/link.js=|next/dist/client/app-dir/link|/app/wildmile/node_modules/next/form.js=|next/dist/api/form|/app/wildmile/node_modules/next/navigation.js=|next/dist/api/navigation|/app/wildmile/node_modules/next/headers.js=|next/dist/api/headers|/app/wildmile/node_modules/next/og.js=|next/dist/api/og|/app/wildmile/node_modules/next/server.js=|next/dist/api/server|/app/wildmile/node_modules/next/document.js=|next/dist/api/document|/app/wildmile/node_modules/next/app.js=|next/dist/api/app|react$=|next/dist/compiled/react|react-dom$=|next/dist/compiled/react-dom|react/jsx-runtime$=|next/dist/compiled/react/jsx-runtime|react/jsx-dev-runtime$=|next/dist/compiled/react/jsx-dev-runtime|react/compiler-runtime$=|next/dist/compiled/react/compiler-runtime|react-dom/client$=|next/dist/compiled/react-dom/client|react-dom/server$=|next/dist/compiled/react-dom/server|react-dom/server.browser$=|next/dist/compiled/react-dom/server.browser|react-dom/static$=|next/dist/compiled/react-dom/static|react-dom/static.edge$=|next/dist/compiled/react-dom/static.edge|react-dom/static.browser$=|next/dist/compiled/react-dom/static.browser|react-dom/server.edge$=|next/dist/build/webpack/alias/react-dom-server-edge.js|react-server-dom-webpack/client$=|next/dist/compiled/react-server-dom-webpack/client|react-server-dom-webpack/client.edge$=|next/dist/compiled/react-server-dom-webpack/client.edge|react-server-dom-webpack/server.edge$=|next/dist/compiled/react-server-dom-webpack/server.edge|react-server-dom-webpack/server.node$=|next/dist/compiled/react-server-dom-webpack/server.node|react-server-dom-webpack/static.edge$=|next/dist/compiled/react-server-dom-webpack/static.edge|@vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts=|next/dist/client/dev/noop-turbopack-hmr|next=|/app/wildmile/node_modules/next|]|fullySpecified=|false|mainFields=[|0=|browser|1=|module|2=|main|]|fallback=[|assert=|/app/wildmile/node_modules/next/dist/compiled/assert/assert.js|buffer=|/app/wildmile/node_modules/next/dist/compiled/buffer/index.js|constants=|/app/wildmile/node_modules/next/dist/compiled/constants-browserify/constants.json|crypto=|/app/wildmile/node_modules/next/dist/compiled/crypto-browserify/index.js|domain=|/app/wildmile/node_modules/next/dist/compiled/domain-browser/index.js|http=|/app/wildmile/node_modules/next/dist/compiled/stream-http/index.js|https=|/app/wildmile/node_modules/next/dist/compiled/https-browserify/index.js|os=|/app/wildmile/node_modules/next/dist/compiled/os-browserify/browser.js|path=|/app/wildmile/node_modules/next/dist/compiled/path-browserify/index.js|punycode=|/app/wildmile/node_modules/next/dist/compiled/punycode/punycode.js|process=|/app/wildmile/node_modules/next/dist/build/polyfills/process.js|querystring=|/app/wildmile/node_modules/next/dist/compiled/querystring-es3/index.js|stream=|/app/wildmile/node_modules/next/dist/compiled/stream-browserify/index.js|string_decoder=|/app/wildmile/node_modules/next/dist/compiled/string_decoder/string_decoder.js|sys=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|timers=|/app/wildmile/node_modules/next/dist/compiled/timers-browserify/main.js|tty=|/app/wildmile/node_modules/next/dist/compiled/tty-browserify/index.js|util=|/app/wildmile/node_modules/next/dist/compiled/util/util.js|vm=|/app/wildmile/node_modules/next/dist/compiled/vm-browserify/index.js|zlib=|/app/wildmile/node_modules/next/dist/compiled/browserify-zlib/index.js|events=|/app/wildmile/node_modules/next/dist/compiled/events/events.js|setImmediate=|/app/wildmile/node_modules/next/dist/compiled/setimmediate/setImmediate.js|]|dependencyType=|esm|path=|/app/wildmile/components/cameratrap|request=|swr from pack: Error: invalid block type
+ ✓ Compiled /cameratrap/identify in 33.8s (3004 modules)
+ HEAD /cameratrap/identify 200 in 35026ms
+ GET /cameratrap/identify 200 in 175ms
+ ○ Compiling /api/cameratrap/user-labeled-species ...
+ ✓ Compiled /api/cameratrap/user-labeled-species in 5.9s (2976 modules)
+Session is invalid or incomplete
+ GET /api/user 200 in 7328ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+Error fetching recent species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching user labeled species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/cameratrap/getDeployments 500 in 17088ms
+ GET /api/cameratrap/getDeploymentLocations?onlyUsed=true 500 in 17090ms
+ GET /api/cameratrap/recent-species 500 in 17090ms
+ GET /api/cameratrap/user-labeled-species 500 in 17090ms
+ GET /api/species/predefined-species 500 in 17107ms
+ ○ Compiling /api/admin/filter-defaults ...
+ ✓ Compiled /api/admin/filter-defaults in 966ms (2979 modules)
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/admin/filter-defaults 500 in 11507ms
+ ○ Compiling /api/cameratrap/getCamtrapImage ...
+ ✓ Compiled /api/cameratrap/getCamtrapImage in 928ms (2981 modules)
+ GET /api/cameratrap/getCamtrapImage?reviewMode=false&reviewed=false&reviewedByUser=false&notReviewedByUser=false&animalProbability=0.75%2C1 200 in 2393ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/cameratrap/getCamtrapImage/route.js:12:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/cameratrap/getCamtrapImage/route.js:12:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /cameratrap/identify 200 in 762ms
+Session is invalid or incomplete
+ GET /api/user 200 in 303ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+Error fetching recent species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching user labeled species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/cameratrap/getDeploymentLocations?onlyUsed=true 500 in 10419ms
+ GET /api/cameratrap/getDeployments 500 in 10417ms
+ GET /api/cameratrap/recent-species 500 in 10418ms
+ GET /api/cameratrap/user-labeled-species 500 in 10418ms
+ GET /api/species/predefined-species 500 in 10434ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/admin/filter-defaults 500 in 10265ms
+ GET /cameratrap/identify 200 in 114ms
+Session is invalid or incomplete
+ GET /api/user 200 in 58ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+Error fetching user labeled species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching recent species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/cameratrap/getCamtrapImage?reviewMode=false&reviewed=false&reviewedByUser=false&notReviewedByUser=false&animalProbability=0.75%2C1 500 in 10036ms
+ GET /api/cameratrap/getDeployments 500 in 6485ms
+ GET /api/cameratrap/getDeploymentLocations?onlyUsed=true 500 in 6500ms
+ GET /api/cameratrap/user-labeled-species 500 in 6485ms
+ GET /api/cameratrap/recent-species 500 in 6500ms
+ GET /api/species/predefined-species 500 in 6513ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/admin/filter-defaults 500 in 10192ms
+ GET /api/cameratrap/getCamtrapImage?reviewMode=false&reviewed=false&reviewedByUser=false&notReviewedByUser=false&animalProbability=0.75%2C1 200 in 1622ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/cameratrap/getCamtrapImage/route.js:12:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/cameratrap/getCamtrapImage/route.js:12:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ✓ Compiled in 4.8s (2898 modules)
+ GET /cameratrap/identify 200 in 590ms
+ ○ Compiling /api/cameratrap/getDeployments ...
+ ✓ Compiled /api/cameratrap/getDeployments in 845ms (1725 modules)
+ ✓ Compiled (1752 modules)
+Session is invalid or incomplete
+ GET /api/user 200 in 1532ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+Error fetching recent species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching user labeled species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/cameratrap/getDeploymentLocations?onlyUsed=true 500 in 11400ms
+ GET /api/cameratrap/getDeployments 500 in 11391ms
+ GET /api/cameratrap/recent-species 500 in 11400ms
+ GET /api/cameratrap/user-labeled-species 500 in 11400ms
+ GET /api/species/predefined-species 500 in 11410ms
+ ✓ Compiled /api/admin/filter-defaults in 380ms (1755 modules)
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/admin/filter-defaults 500 in 10612ms
+ ○ Compiling /api/cameratrap/getCamtrapImage ...
+ ✓ Compiled /api/cameratrap/getCamtrapImage in 748ms (1757 modules)
+ GET /cameratrap/identify 200 in 457ms
+Session is invalid or incomplete
+ GET /api/user 200 in 64ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+Error fetching user labeled species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching recent species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/cameratrap/getCamtrapImage?reviewMode=false&reviewed=false&reviewedByUser=false&notReviewedByUser=false&animalProbability=0.75%2C1 500 in 10841ms
+ GET /api/cameratrap/getDeploymentLocations?onlyUsed=true 500 in 7143ms
+ GET /api/cameratrap/getDeployments 500 in 7136ms
+ GET /api/cameratrap/user-labeled-species 500 in 7139ms
+ GET /api/cameratrap/recent-species 500 in 7141ms
+ GET /api/species/predefined-species 500 in 7149ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/admin/filter-defaults 500 in 10213ms
+ GET /api/cameratrap/getCamtrapImage?reviewMode=false&reviewed=false&reviewedByUser=false&notReviewedByUser=false&animalProbability=0.75%2C1 200 in 1602ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/cameratrap/getCamtrapImage/route.js:12:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/cameratrap/getCamtrapImage/route.js:12:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /cameratrap/identify 200 in 177ms
+Session is invalid or incomplete
+ GET /api/user 200 in 110ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+Error fetching recent species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching user labeled species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/cameratrap/getDeploymentLocations?onlyUsed=true 500 in 10132ms
+ GET /api/cameratrap/getDeployments 500 in 10122ms
+ GET /api/cameratrap/recent-species 500 in 10131ms
+ GET /api/cameratrap/user-labeled-species 500 in 10131ms
+ GET /api/species/predefined-species 500 in 10151ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/admin/filter-defaults 500 in 10267ms
+ GET /cameratrap/identify 200 in 96ms
+Session is invalid or incomplete
+ GET /api/user 200 in 51ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+Error fetching recent species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching user labeled species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/cameratrap/getCamtrapImage?reviewMode=false&reviewed=false&reviewedByUser=false&notReviewedByUser=false&animalProbability=0.75%2C1 500 in 10027ms
+ GET /api/cameratrap/getDeploymentLocations?onlyUsed=true 500 in 6767ms
+ GET /api/cameratrap/getDeployments 500 in 6756ms
+ GET /api/cameratrap/recent-species 500 in 6761ms
+ GET /api/cameratrap/user-labeled-species 500 in 6761ms
+ GET /api/species/predefined-species 500 in 6775ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/admin/filter-defaults 500 in 10281ms
+ GET /api/cameratrap/getCamtrapImage?reviewMode=false&reviewed=false&reviewedByUser=false&notReviewedByUser=false&animalProbability=0.75%2C1 200 in 1516ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/cameratrap/getCamtrapImage/route.js:12:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/cameratrap/getCamtrapImage/route.js:12:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /cameratrap/identify 200 in 110ms
+Session is invalid or incomplete
+ GET /api/user 200 in 63ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+Error fetching recent species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching user labeled species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/cameratrap/getDeploymentLocations?onlyUsed=true 500 in 10087ms
+ GET /api/cameratrap/getDeployments 500 in 10076ms
+ GET /api/cameratrap/recent-species 500 in 10083ms
+ GET /api/cameratrap/user-labeled-species 500 in 10082ms
+ GET /api/species/predefined-species 500 in 10090ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/admin/filter-defaults 500 in 10227ms
+ GET /cameratrap/identify 200 in 168ms
+Session is invalid or incomplete
+ GET /api/user 200 in 58ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+Error fetching recent species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching user labeled species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/cameratrap/getCamtrapImage?reviewMode=false&reviewed=false&reviewedByUser=false&notReviewedByUser=false&animalProbability=0.75%2C1 500 in 10022ms
+ GET /api/cameratrap/getDeploymentLocations?onlyUsed=true 500 in 2792ms
+ GET /api/cameratrap/getDeployments 500 in 2784ms
+ GET /api/cameratrap/recent-species 500 in 2786ms
+ GET /api/cameratrap/user-labeled-species 500 in 2786ms
+ GET /api/species/predefined-species 500 in 2795ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/admin/filter-defaults 500 in 10181ms
+ GET /api/cameratrap/getCamtrapImage?reviewMode=false&reviewed=false&reviewedByUser=false&notReviewedByUser=false&animalProbability=0.75%2C1 200 in 2295ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/cameratrap/getCamtrapImage/route.js:12:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/cameratrap/getCamtrapImage/route.js:12:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ✓ Compiled in 2.9s (2898 modules)
+ GET /cameratrap/identify 200 in 646ms
+ ○ Compiling /api/cameratrap/getDeployments ...
+ ✓ Compiled /api/cameratrap/getDeployments in 1172ms (1725 modules)
+ ✓ Compiled (1752 modules)
+Session is invalid or incomplete
+ GET /api/user 200 in 1872ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+Error fetching recent species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching user labeled species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/cameratrap/getDeploymentLocations?onlyUsed=true 500 in 11756ms
+ GET /api/cameratrap/getDeployments 500 in 11754ms
+ GET /api/cameratrap/recent-species 500 in 11757ms
+ GET /api/cameratrap/user-labeled-species 500 in 11757ms
+ GET /api/species/predefined-species 500 in 11781ms
+ ✓ Compiled /api/admin/filter-defaults in 382ms (1755 modules)
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/admin/filter-defaults 500 in 10623ms
+ ○ Compiling /api/cameratrap/getCamtrapImage ...
+ ✓ Compiled /api/cameratrap/getCamtrapImage in 755ms (1757 modules)
+ GET /cameratrap/identify 200 in 466ms
+Session is invalid or incomplete
+ GET /api/user 200 in 77ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+Error fetching recent species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching user labeled species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/cameratrap/getCamtrapImage?reviewMode=false&reviewed=false&reviewedByUser=false&notReviewedByUser=false&animalProbability=0.75%2C1 500 in 10848ms
+ GET /api/cameratrap/getDeploymentLocations?onlyUsed=true 500 in 3947ms
+ GET /api/cameratrap/getDeployments 500 in 3934ms
+ GET /api/cameratrap/recent-species 500 in 3946ms
+ GET /api/cameratrap/user-labeled-species 500 in 3937ms
+ GET /api/species/predefined-species 500 in 3952ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/admin/filter-defaults 500 in 10171ms
+ GET /api/cameratrap/getCamtrapImage?reviewMode=false&reviewed=false&reviewedByUser=false&notReviewedByUser=false&animalProbability=0.75%2C1 200 in 2246ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/cameratrap/getCamtrapImage/route.js:12:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/cameratrap/getCamtrapImage/route.js:12:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ✓ Compiled in 4.2s (2898 modules)
+ ✓ Compiled in 652ms (2898 modules)
+ ✓ Compiled in 1682ms (2898 modules)
+ ✓ Compiled in 854ms (2898 modules)
+ ✓ Compiled in 4.2s (2898 modules)
+ ✓ Compiled in 632ms (2898 modules)
+ ✓ Compiled in 599ms (2898 modules)
+ GET /cameratrap/identify 200 in 853ms
+ ○ Compiling /api/cameratrap/getDeployments ...
+ ✓ Compiled /api/cameratrap/getDeployments in 1733ms (1725 modules)
+ ✓ Compiled (1752 modules)
+Session is invalid or incomplete
+ GET /api/user 200 in 2619ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+Error fetching recent species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching user labeled species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/cameratrap/getDeploymentLocations?onlyUsed=true 500 in 12505ms
+ GET /api/cameratrap/getDeployments 500 in 12501ms
+ GET /api/cameratrap/recent-species 500 in 12505ms
+ GET /api/cameratrap/user-labeled-species 500 in 12503ms
+ GET /api/species/predefined-species 500 in 12515ms
+ ✓ Compiled /api/admin/filter-defaults in 384ms (1755 modules)
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/admin/filter-defaults 500 in 10681ms
+ ○ Compiling /api/cameratrap/getCamtrapImage ...
+ ✓ Compiled /api/cameratrap/getCamtrapImage in 2.1s (1757 modules)
+ GET /api/cameratrap/getCamtrapImage?reviewMode=false&reviewed=false&reviewedByUser=false&notReviewedByUser=false&animalProbability=0.75%2C1 200 in 9357ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/cameratrap/getCamtrapImage/route.js:12:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/cameratrap/getCamtrapImage/route.js:12:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /cameratrap/identify 200 in 536ms
+Session is invalid or incomplete
+ GET /api/user 200 in 76ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+Error fetching user labeled species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching recent species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+Error fetching species: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017) {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ GET /api/cameratrap/getDeploymentLocations?onlyUsed=true 500 in 10110ms
+ GET /api/cameratrap/getDeployments 500 in 10106ms
+ GET /api/cameratrap/user-labeled-species 500 in 10107ms
+ GET /api/cameratrap/recent-species 500 in 10108ms
+ GET /api/species/predefined-species 500 in 10118ms
+ GET /api/admin/filter-defaults 200 in 4585ms
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ⨯ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async GET (app/api/admin/filter-defaults/route.js:24:2)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ○ Compiling /cameratrap ...
+ ✓ Compiled /cameratrap in 7.3s (3160 modules)
+Session is invalid or incomplete
+MongoDB disconnected — clearing connection cache
+MongoDB connection failed: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+Error fetching stats: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async dbConnect (lib/db/setup.js:65:16)
+    at async _getStatsFromDb (app/actions/CameratrapActions.js:437:4)
+    at async Page (app/cameratrap/page.js:77:24)
+  63 |     });
+  64 |
+> 65 |   cached.conn = await cached.promise;
+     |                ^
+  66 |   return cached.conn;
+  67 | }
+  68 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+MongoDB connection error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+ ⨯ Error: Error fetching statistics
+    at _getStatsFromDb (app/actions/CameratrapActions.js:602:10)
+    at async Page (app/cameratrap/page.js:77:24)
+  600 |   } catch (error) {
+  601 |     console.error("Error fetching stats:", error);
+> 602 |     throw new Error("Error fetching statistics");
+      |          ^
+  603 |   }
+  604 | }
+  605 | {
+  digest: '1182065220'
+}
+ GET /cameratrap 500 in 18105ms

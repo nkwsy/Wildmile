@@ -17,6 +17,25 @@
   }
 }
 
+.compactCard {
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  height: 120px;
+  border: 0.2rem solid var(--mantine-dark-5);
+  background-color: var(--mantine-dark-6);
+  padding: var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-md);
+
+  &[data-selected] {
+    border: 0.3rem solid var(--mantine-color-blue-6);
+  }
+
+  &:hover {
+    background-color: var(--mantine-gray-0);
+  }
+}
+
 .image {
   position: absolute;
   top: 0;
@@ -120,8 +139,8 @@
 }
 
 .listImage {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: var(--mantine-radius-xs);
   object-fit: cover;
   flex-shrink: 0;

@@ -1,54 +1,45 @@
-"use server";
 import React, { Suspense } from "react";
 import {
-  Title,
   Text,
   Container,
   Grid,
   GridCol,
   Fieldset,
   Loader,
+  Stack,
+  Title,
 } from "@mantine/core";
-import { IconCardGrid } from "/components/icon_card_grid";
-import classes from "/styles/card.module.css";
-import {
-  IconAbacus,
-  IconUsers,
-  IconPokeball,
-  IconCameraSearch,
-  IconCameraPlus,
-  IconZoomIn,
-  IconMapPin,
-  IconPaw,
-} from "@tabler/icons-react";
+import { IconCardTiles } from "/components/cameratrap/IconCardTiles";
 import { RandomFavorite } from "components/cameratrap/RandomFavorite";
-import InfoComponent from "components/cameratrap/InfoComponent";
-import { UserInfoServer } from "components/cameratrap/UserInfoServer";
+import { Leaderboard } from "components/cameratrap/Leaderboard";
+import { StatsScorecards } from "components/cameratrap/StatsScorecards";
+import { getStats } from "app/actions/CameratrapActions";
 import { getSession } from "lib/getSession";
 import { headers } from "next/headers";
 
 const cameraTrapCards = [
   {
-    icon: IconPokeball,
+    icon: "IconPokeball",
     title: "Identify wildlife",
     href: "/cameratrap/identify",
     description:
       "Find and catagorize wildlife captured around the Chicago River",
+    borderColor: "blue",
   },
   {
-    icon: IconZoomIn,
+    icon: "IconZoomIn",
     title: "Explore Data",
     href: "/cameratrap/explore",
     description: "Explore wildlife images which have been catagorized",
   },
   {
-    icon: IconPaw,
+    icon: "IconPaw",
     title: "Wildlife Analytics",
     href: "/cameratrap/wildlife",
     description: "Analyze species activity, temporal patterns, co-occurrence, and biodiversity",
   },
   {
-    icon: IconAbacus,
+    icon: "IconAbacus",
     title: "Project Analytics",
     href: "/cameratrap/analytics/total-images",
     description: "See analytics on images, observations, and volunteers",
@@ -57,25 +48,25 @@ const cameraTrapCards = [
 
 const mgmtCards = [
   {
-    icon: IconCameraPlus,
+    icon: "IconCameraPlus",
     title: "New Camera",
     href: "/cameratrap/camera/new",
     description: "Add a new camera device",
   },
   {
-    icon: IconCameraSearch,
+    icon: "IconCameraSearch",
     title: "Cameras",
     href: "/cameratrap/camera",
     description: "Manage the camera inventory",
   },
   {
-    icon: IconUsers,
+    icon: "IconUsers",
     title: "Deployments",
     href: "/cameratrap/deployment",
     description: "Manage the deployments",
   },
   {
-    icon: IconMapPin,
+    icon: "IconMapPin",
     title: "Locations",
     href: "/cameratrap/locations",
     description: "Manage the deployment locations",
@@ -83,40 +74,49 @@ const mgmtCards = [
 ];
 
 export default async function Page() {
-  const user = await getSession({ headers });
+  const [user, stats] = await Promise.all([
+    getSession({ headers }),
+    getStats(),
+  ]);
 
   return (
-    <>
-      <Container maw="85%" my="5rem">
-        <Grid mt="xl">
-          <GridCol span={{ base: 12, md: 7 }}>
-            <Title order={2} className={classes.title} ta="center" mt="sm">
-              Camera Trap Resources
-            </Title>
-            <Text c="dimmed" ta="center" mt="md">
-              Collecting and sharing data about Urban River's projects.
-            </Text>
-            <IconCardGrid cards={cameraTrapCards} />
-            {user && (
-              <Fieldset legend="Management Tools">
-                <IconCardGrid cards={mgmtCards} />
-              </Fieldset>
-            )}
+    <Container maw="95%" mt="xl" my="5rem">
+      <Stack gap="md">
+        <Title order={2}>Welcome Camera Crew!</Title>
+        <StatsScorecards stats={stats} />
+
+        <Grid gutter="md">
+          {/* Pane 1: Resources & Management */}
+          <GridCol span={{ base: 12, md: 4 }}>
+            <Fieldset legend="Resources">
+              <Text c="dimmed" ta="center" mb="md" size="sm">
+                Collecting and sharing data about Urban River's projects.
+              </Text>
+              <IconCardTiles cards={cameraTrapCards} />
+              {user && (
+                <Fieldset legend="Management Tools" mt="xl">
+                  <IconCardTiles cards={mgmtCards} />
+                </Fieldset>
+              )}
+            </Fieldset>
           </GridCol>
-          <GridCol span={{ base: 12, md: 5 }}>
+
+          {/* Pane 2: Leaderboard */}
+          <GridCol span={{ base: 12, md: 4 }}>
+            <Leaderboard stats={stats} />
+            <Text c="dimmed" ta="center" mb="md" size="sm">
+                Looking for your stats? Check the new account settings page! (top right)
+            </Text>
+          </GridCol>
+
+          {/* Pane 3: Favorite Image */}
+          <GridCol span={{ base: 12, md: 4 }}>
             <Suspense fallback={<Loader size="sm" />}>
               <RandomFavorite />
             </Suspense>
-            <Suspense fallback={<Loader size="sm" />}>
-              <InfoComponent />
-            </Suspense>
-            <Suspense fallback={<Loader size="sm" />}>
-              <UserInfoServer user={user} />
-            </Suspense>
           </GridCol>
-          <GridCol span={5}></GridCol>
         </Grid>
-      </Container>
-    </>
+      </Stack>
+    </Container>
   );
 }

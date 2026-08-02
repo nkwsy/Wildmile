@@ -6,6 +6,7 @@
 @media (min-width: 48em) {
   .fullViewport {
     height: 100vh;
+    max-height: 100vh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
