@@ -37,7 +37,6 @@ import PlantSelectCards from "./PlantSelectCard";
 import PlantSelectTable from "./PlantSelectTable";
 import ClientContext, { useClient, useClientState } from "./context_mod_map";
 import { KonvaGrid } from "./ModuleTemplate";
-import { use } from "passport";
 // import { PlantCardFromId } from "components/plants/PlantCard";
 import PlantInfoBox from "./PlantInfoBox";
 import { PlantMenu } from "./PlantMenu";

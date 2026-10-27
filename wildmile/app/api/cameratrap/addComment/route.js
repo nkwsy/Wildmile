@@ -14,10 +14,11 @@ export async function POST(request) {
 
   try {
     const { mediaId, comment } = await request.json();
-
-    const media = await CameratrapMedia.findOne({ mediaID: mediaId });
-    if (!media) {
-      return NextResponse.json({ message: "Media not found" }, { status: 404 });
+    if (typeof mediaId !== "string" || typeof comment !== "string" || !comment.trim()) {
+      return NextResponse.json(
+        { message: "mediaId and a non-empty comment are required" },
+        { status: 400 }
+      );
     }
 
     const newComment = {
@@ -26,8 +27,16 @@ export async function POST(request) {
       timestamp: new Date(),
     };
 
-    media.mediaComments.push(newComment);
-    await media.save();
+    // Atomic push. The previous findOne → push → save() re-wrote the whole
+    // document (including schema defaults for any missing fields), which could
+    // clobber a concurrent consensus update from saveObservations.
+    const result = await CameratrapMedia.updateOne(
+      { mediaID: mediaId },
+      { $push: { mediaComments: newComment } }
+    );
+    if (result.matchedCount === 0) {
+      return NextResponse.json({ message: "Media not found" }, { status: 404 });
+    }
 
     return NextResponse.json(newComment, { status: 201 });
   } catch (error) {

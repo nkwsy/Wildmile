@@ -187,13 +187,15 @@ MediaSchema.index({ favorite: 1, randomSeed: 1 });
  * Tries randomSeed >= rand first, then wraps around to < rand if nothing found
  * (handles edge cases where rand is near 1.0).
  */
-MediaSchema.statics.findOneRandom = async function (query = {}) {
+MediaSchema.statics.findOneRandom = async function (query = {}, { lean = false } = {}) {
   const rand = Math.random();
-  let doc = await this.findOne({ ...query, randomSeed: { $gte: rand } })
-    .sort({ randomSeed: 1 });
+  let q = this.findOne({ ...query, randomSeed: { $gte: rand } }).sort({ randomSeed: 1 });
+  if (lean) q = q.lean();
+  let doc = await q;
   if (!doc) {
-    doc = await this.findOne({ ...query, randomSeed: { $lt: rand } })
-      .sort({ randomSeed: -1 });
+    q = this.findOne({ ...query, randomSeed: { $lt: rand } }).sort({ randomSeed: -1 });
+    if (lean) q = q.lean();
+    doc = await q;
   }
   return doc;
 };
@@ -329,6 +331,108 @@ MediaSchema.statics.addObservationAndUpdateConsensusForMedia = async function (
     await media.addObservationAndUpdateConsensus(observation);
   }
 };
+
+/**
+ * Pure helper: derive the speciesConsensus array from a list of observations.
+ * Same grouping rules as updateObservationsAndCheckConsensus above: agreement
+ * is counted per (observationType, scientificName, count); 3+ agreeing
+ * observations mark an entry as accepted.
+ */
+function buildSpeciesConsensus(observations) {
+  const byType = new Map();
+  for (const obs of observations) {
+    const type = obs.observationType;
+    if (!byType.has(type)) byType.set(type, new Map());
+    const counts = byType.get(type);
+    const identifier = type === "animal" ? obs.scientificName : null;
+    const observedCount =
+      type === "animal" ? obs.count : obs.count || 1;
+    // Key on a tuple instead of a "name-count" string so hyphenated names
+    // can't be split incorrectly.
+    const key = JSON.stringify([identifier, observedCount]);
+    const entry = counts.get(key) || { identifier, observedCount, n: 0 };
+    entry.n += 1;
+    counts.set(key, entry);
+  }
+
+  const result = [];
+  for (const [observationType, counts] of byType) {
+    for (const { identifier, observedCount, n } of counts.values()) {
+      if (observationType === "animal") {
+        result.push({
+          observationType,
+          taxonID: identifier,
+          scientificName: identifier,
+          count: parseInt(observedCount) || 0,
+          accepted: n >= 3,
+          observationCount: n,
+        });
+      } else {
+        result.push({
+          observationType,
+          taxonID: null,
+          scientificName: null,
+          count: parseInt(observedCount) || 1,
+          accepted: n >= 3,
+          observationCount: n,
+        });
+      }
+    }
+  }
+  return result;
+}
+
+/**
+ * Recompute a media document's observation summary from scratch using every
+ * Observation that references it. One findOne-free read + one updateOne, no
+ * matter how many observations were just added — this replaces the old
+ * per-observation load → populate → save loop on the save path, and is
+ * idempotent (safe to re-run; never duplicates ids in `observations`).
+ */
+MediaSchema.statics.recomputeConsensusForMedia = async function (mediaId) {
+  if (!mediaId) return false;
+  const Observation = mongoose.model("Observation");
+  const observations = await Observation.find(
+    { mediaId },
+    { observationType: 1, scientificName: 1, count: 1, creator: 1 },
+  ).lean();
+
+  const reviewers = [
+    ...new Set(
+      observations.filter((o) => o.creator).map((o) => o.creator.toString()),
+    ),
+  ];
+  const speciesConsensus = buildSpeciesConsensus(observations);
+
+  let consensusStatus = "Pending";
+  if (speciesConsensus.length > 0) {
+    if (speciesConsensus.every((c) => c.accepted)) {
+      consensusStatus = "ConsensusReached";
+    } else if (speciesConsensus.some((c) => c.accepted)) {
+      consensusStatus = "MoreAnnotationsNeeded";
+    }
+  }
+
+  const result = await this.updateOne(
+    { mediaID: mediaId },
+    {
+      $set: {
+        observations: observations.map((o) => o._id),
+        reviewers,
+        reviewCount: reviewers.length,
+        speciesConsensus,
+        consensusStatus,
+        lastObservation: new Date(),
+      },
+    },
+  );
+  return result.matchedCount > 0;
+};
+
+// The Observation model's save/remove/update hooks call this name; it was never
+// defined before, so those hooks would have thrown. Alias it to the recompute.
+MediaSchema.statics.updateObservationsForMedia =
+  MediaSchema.statics.recomputeConsensusForMedia;
 
 // Check if the model already exists before compiling
 const CameratrapMedia =

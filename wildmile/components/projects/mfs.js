@@ -27,7 +27,6 @@ import { useParams, useRouter, useFetch, usePathname } from "next/navigation";
 import ClientProvider from "components/projects/context_mod_map";
 import { IconTrash } from "@tabler/icons-react";
 import { ModuleGen } from "components/projects/mod_util";
-import { use } from "passport";
 import { Stage, Layer, Rect } from "react-konva";
 
 export default function MultiModuleForm({ returnSelectedCells }) {

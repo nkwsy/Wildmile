@@ -5,7 +5,6 @@ import { Paper, Group, Chip, Select, Button } from "@mantine/core";
 import { getPlantingTemplate } from "app/actions/ResourceActions";
 import { useClient } from "./context_mod_map";
 import ColorSelectionButtons from "./ColorSelectionButtons";
-import { use } from "passport";
 const selectionColors = {
   1: { color: "blue", id: 1 },
   2: { color: "yellow", id: 2 },

@@ -66,10 +66,12 @@ export async function GET(request) {
   }
 
   if (locationId) {
-    // Find all deployments with this locationId
-    const deployments = await CameratrapDeployment.find({
-      locationId: locationId,
-    });
+    // Find all deployments with this locationId (ids only — no need to hydrate
+    // full deployment documents just to build an $in list)
+    const deployments = await CameratrapDeployment.find(
+      { locationId: locationId },
+      { _id: 1 },
+    ).lean();
     const deploymentIds = deployments.map((d) => d._id);
     query.deploymentId = { $in: deploymentIds };
   } else if (deploymentId) {
@@ -185,7 +187,8 @@ export async function GET(request) {
         image = await CameratrapMedia.findOne(query).sort(sort).lean();
       }
     } else {
-      image = await CameratrapMedia.findOneRandom(query);
+      // Plain object is all we need to serialize; skip Mongoose hydration.
+      image = await CameratrapMedia.findOneRandom(query, { lean: true });
     }
 
     if (image) {

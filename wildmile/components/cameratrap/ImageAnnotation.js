@@ -28,6 +28,15 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { useImage } from "./ContextCamera";
 import { ObservationHistoryPopover } from "./ObservationHistory";
 import { SpeciesConsensusBadges } from "./SpeciesConsensusBadges";
+import {
+  IMAGE_SIZES,
+  resizedImageSrcSet,
+  resizedImageUrl,
+} from "./imageUrls";
+
+// Zoom factor above which the in-card view switches from the resized rendition
+// to the full-resolution original.
+const HI_RES_ZOOM_THRESHOLD = 1.25;
 
 export function ImageAnnotation({ filters }) {
   const [currentImage, setCurrentImage] = useImage();
@@ -38,14 +47,56 @@ export function ImageAnnotation({ filters }) {
   const [flagged, setFlagged] = useState(false);
   const [showAIBoxes, setShowAIBoxes] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
+  // Both of these are keyed by mediaID (not plain booleans) so they are correct
+  // on the very first render of a new image, before any effect has run.
+  //
+  // fallbackMediaID: the resized endpoint failed for this image (e.g. legacy
+  // media whose publicURL isn't on our S3 bucket) → use the original S3 URL.
+  const [fallbackMediaID, setFallbackMediaID] = useState(null);
+  // hiResMediaID: the user zoomed into this image → swap in the 16 MP original
+  // so the in-card zoom stays sharp (react-zoom-pan-pinch scales with a CSS
+  // transform, which never re-selects a larger srcSet candidate). The resized
+  // image stays on screen until the original has decoded.
+  const [hiResMediaID, setHiResMediaID] = useState(null);
+  const transformRef = React.useRef(null);
+
+  const mediaID = currentImage?.mediaID;
+  const useOriginalImage = Boolean(mediaID) && fallbackMediaID === mediaID;
+  const hiRes = Boolean(mediaID) && hiResMediaID === mediaID;
+  const setUseOriginalImage = (value) =>
+    setFallbackMediaID(value ? mediaID : null);
 
   useEffect(() => {
     if (currentImage) {
       setIsFavorite(currentImage.favorite || false);
       setNeedsReview(currentImage.needsReview || false);
       setFlagged(currentImage.flagged || false);
+      // The zoom level persists across images; if the user is already zoomed
+      // in, the new image needs the original straight away.
+      const scale = transformRef.current?.instance?.transformState?.scale ?? 1;
+      if (scale > HI_RES_ZOOM_THRESHOLD && currentImage.mediaID) {
+        setHiResMediaID(currentImage.mediaID);
+      }
     }
   }, [currentImage]);
+
+  const handleTransformed = (ref, state) => {
+    const scale = state?.scale ?? ref?.state?.scale ?? 1;
+    if (scale > HI_RES_ZOOM_THRESHOLD && mediaID && hiResMediaID !== mediaID) {
+      setHiResMediaID(mediaID);
+    }
+  };
+
+  const canUseResized = Boolean(mediaID) && !useOriginalImage;
+  const displaySrc =
+    canUseResized && !hiRes
+      ? resizedImageUrl(mediaID)
+      : currentImage?.publicURL;
+  const displaySrcSet =
+    canUseResized && !hiRes ? resizedImageSrcSet(mediaID) : undefined;
+  const hasObservations =
+    (currentImage?.observations?.length ?? 0) > 0 ||
+    (currentImage?.reviewCount ?? 0) > 0;
 
   const handleToggleFavorite = async () => {
     try {
@@ -131,9 +182,11 @@ export function ImageAnnotation({ filters }) {
           }}
         >
           <TransformWrapper
+            ref={transformRef}
             defaultScale={1}
             wheel={{ step: 0.4 }}
             pinch={{ step: 0.2 }}
+            onTransformed={handleTransformed}
           >
             <TransformComponent
               wrapperStyle={{ width: "100%", height: "100%" }}
@@ -154,7 +207,14 @@ export function ImageAnnotation({ filters }) {
                 }}
               >
                 <img
-                  src={currentImage.publicURL}
+                  src={displaySrc}
+                  srcSet={displaySrcSet}
+                  sizes={displaySrcSet ? IMAGE_SIZES : undefined}
+                  onError={() => {
+                    if (canUseResized) setUseOriginalImage(true);
+                  }}
+                  decoding="async"
+                  fetchPriority="high"
                   style={{
                     display: "block",
                     maxHeight: "100%",
@@ -304,7 +364,10 @@ export function ImageAnnotation({ filters }) {
             <SpeciesConsensusBadges
               speciesConsensus={currentImage.speciesConsensus}
             />
-            <ObservationHistoryPopover mediaID={currentImage.mediaID} />
+            <ObservationHistoryPopover
+              mediaID={currentImage.mediaID}
+              hasObservations={hasObservations}
+            />
           </Group>
         </Stack>
         </Stack>
