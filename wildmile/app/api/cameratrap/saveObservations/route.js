@@ -15,6 +15,12 @@ export async function POST(request) {
     }
 
     const observations = await request.json();
+    if (!Array.isArray(observations) || observations.length === 0) {
+      return NextResponse.json(
+        { message: "Expected a non-empty array of observations" },
+        { status: 400 }
+      );
+    }
 
     const observationsWithCreator = observations.map((obs) => ({
       ...obs,
@@ -25,13 +31,16 @@ export async function POST(request) {
       observationsWithCreator
     );
 
-    // Update consensus for each media
-    for (const observation of savedObservations) {
-      await CameratrapMedia.addObservationAndUpdateConsensusForMedia(
-        observation.mediaId,
-        { _id: observation._id, creator: observation.creator }
-      );
-    }
+    // Recompute the summary once per media (normally exactly one), instead of
+    // reloading + re-saving the full media document once per observation.
+    const mediaIds = [
+      ...new Set(savedObservations.map((o) => o.mediaId).filter(Boolean)),
+    ];
+    await Promise.all(
+      mediaIds.map((mediaId) =>
+        CameratrapMedia.recomputeConsensusForMedia(mediaId)
+      )
+    );
 
     const savedSpecies = [
       ...new Set(
