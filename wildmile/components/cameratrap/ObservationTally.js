@@ -88,23 +88,29 @@ export function ObservationTally({ fetchNextImage }) {
 
     setIsSaving(true);
 
-    // Add comment if exists
-    if (comment.trim()) {
-      try {
-        const response = await fetch("/api/cameratrap/addComment", {
+    // The comment (if any) is independent of the observations, so post it
+    // concurrently with the save instead of serially ahead of it.
+    const commentText = comment.trim();
+    const commentRequest = commentText
+      ? fetch("/api/cameratrap/addComment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ mediaId: currentImage.mediaID, comment }),
-        });
-        if (response.ok) {
-          const newComment = await response.json();
-          setComments(prev => [...prev, newComment]);
-          setObsState(prev => ({ ...prev, comment: "" }));
-        }
-      } catch (e) {
-        console.error("Error adding comment", e);
-      }
-    }
+          body: JSON.stringify({
+            mediaId: currentImage.mediaID,
+            comment: commentText,
+          }),
+        })
+          .then(async (response) => {
+            if (response.ok) {
+              const newComment = await response.json();
+              setComments((prev) => [...prev, newComment]);
+              setObsState((prev) => ({ ...prev, comment: "" }));
+            }
+          })
+          .catch((e) => {
+            console.error("Error adding comment", e);
+          })
+      : Promise.resolve();
 
     let observations = [];
 
@@ -176,11 +182,14 @@ export function ObservationTally({ fetchNextImage }) {
     }
 
     try {
-      const response = await fetch("/api/cameratrap/saveObservations", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(observations),
-      });
+      const [response] = await Promise.all([
+        fetch("/api/cameratrap/saveObservations", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(observations),
+        }),
+        commentRequest,
+      ]);
 
       if (response.ok) {
         const data = await response.json();
@@ -190,6 +199,11 @@ export function ObservationTally({ fetchNextImage }) {
         } catch (e) {
           // localStorage may be unavailable; fail silently.
         }
+
+        // Show the next image first. It is normally already prefetched by
+        // ImageAnnotationPage, so this resolves without a network round trip.
+        await fetchNextImage();
+
         if (data.savedSpecies?.length) {
           setRecentSpecies((prev) => {
             const existingNames = new Set(
@@ -210,8 +224,9 @@ export function ObservationTally({ fetchNextImage }) {
             return [...newEntries, ...prev].slice(0, 12);
           });
         }
-        await loadUserLabeled();
-        fetchNextImage();
+        // Refresh the "My Animals" tab in the background; it's a ~0.5 s
+        // aggregate and nothing about the next image depends on it.
+        loadUserLabeled();
       } else {
         alert("Failed to save observations.");
       }

@@ -96,39 +96,110 @@ export function ObservationHistory({ previousObservations }) {
   );
 }
 
-export function ObservationHistoryPopover({ mediaID }) {
-  const [previousObservations, setPreviousObservations] = useState([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    setLoading(true);
-    const fetchObservations = async () => {
-      if (mediaID) {
-        // Fetch previous observations
-        const response = await fetch(
-          `/api/cameratrap/getObservations?mediaId=${mediaID}`
-        );
-        const data = await response.json();
-        setPreviousObservations(data);
-      }
-      setLoading(false);
-    };
-    fetchObservations();
-  }, [mediaID]);
+/**
+ * "View Observation History" button + popover.
+ *
+ * When the parent already knows whether observations exist (the identify page
+ * passes `hasObservations` from the media document), the history is fetched
+ * lazily the first time the popover is opened — saving a ~400 ms
+ * `getObservations` round trip on every image change. When `hasObservations`
+ * is not supplied (e.g. the gallery), it falls back to the original behaviour:
+ * fetch on mount and only render the button if there is history to show.
+ */
+async function fetchObservationHistory(mediaID) {
+  try {
+    const response = await fetch(
+      `/api/cameratrap/getObservations?mediaId=${encodeURIComponent(mediaID)}`
+    );
+    const data = response.ok ? await response.json() : [];
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("Error fetching observation history:", error);
+    return [];
+  }
+}
 
-  if (previousObservations.length === 0 || loading) {
+export function ObservationHistoryPopover({ mediaID, hasObservations }) {
+  // null = not loaded yet for this mediaID
+  const [previousObservations, setPreviousObservations] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [opened, setOpened] = useState(false);
+  const knowsHasObservations = typeof hasObservations === "boolean";
+  // The image a response must belong to in order to be applied. Guards against
+  // a request started for image A resolving after image B is already shown.
+  const activeMediaIdRef = React.useRef(mediaID);
+
+  // Reset whenever the image changes so stale history is never shown. In
+  // legacy mode (no hint from the parent) also fetch eagerly, as before, so we
+  // can decide whether to render the button at all.
+  useEffect(() => {
+    activeMediaIdRef.current = mediaID;
+    setPreviousObservations(null);
+    setOpened(false);
+    setLoading(false);
+    if (knowsHasObservations || !mediaID) return undefined;
+
+    let cancelled = false;
+    setLoading(true);
+    fetchObservationHistory(mediaID).then((data) => {
+      if (cancelled) return;
+      setPreviousObservations(data);
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [mediaID, knowsHasObservations]);
+
+  // Lazy mode: fetch the first time the popover is opened. A response is only
+  // applied if the image it was requested for is still the one being shown.
+  const loadHistory = async () => {
+    if (!mediaID || previousObservations !== null || loading) return;
+    const requestedFor = mediaID;
+    setLoading(true);
+    const data = await fetchObservationHistory(requestedFor);
+    if (activeMediaIdRef.current !== requestedFor) return;
+    setPreviousObservations(data);
+    setLoading(false);
+  };
+
+  if (!mediaID) {
+    return <></>;
+  }
+  if (knowsHasObservations && !hasObservations) {
+    return <></>;
+  }
+  if (
+    !knowsHasObservations &&
+    (previousObservations === null || previousObservations.length === 0)
+  ) {
     return <></>;
   }
 
   return (
     <>
-      <Popover>
+      <Popover opened={opened} onChange={setOpened}>
         <Popover.Target>
-          <Button variant="outline" size="xs">
+          <Button
+            variant="outline"
+            size="xs"
+            loading={loading}
+            onClick={() => {
+              setOpened((o) => !o);
+              loadHistory();
+            }}
+          >
             View Observation History
           </Button>
         </Popover.Target>
         <Popover.Dropdown>
-          <ObservationHistory previousObservations={previousObservations} />
+          {previousObservations === null ? (
+            <Text size="sm" c="dimmed">
+              Loading…
+            </Text>
+          ) : (
+            <ObservationHistory previousObservations={previousObservations} />
+          )}
         </Popover.Dropdown>
       </Popover>
     </>

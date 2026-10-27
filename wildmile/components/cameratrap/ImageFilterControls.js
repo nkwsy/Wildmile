@@ -133,10 +133,9 @@ export function ImageFilterControls({ onApplyFilters, onJumpToEarliest, initialF
           <Button
             id="earliest-button"
             size="md"
-            onClick={() => {
-              onApplyFilters(filters);
-              onJumpToEarliest(filters);
-            }}
+            // onJumpToEarliest applies the filters itself; calling
+            // onApplyFilters too issued a second (random) image request.
+            onClick={() => onJumpToEarliest(filters)}
             leftSection={<IconChevronsLeft size={16} />}
             variant="light"
             color="teal"
