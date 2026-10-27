@@ -17,14 +17,9 @@ export async function getSession() {
   };
   const session = await getIronSession(await cookies(), sessionOptions);
   if (!session || !session.passport || !session.passport.user) {
-    console.log("Session is invalid or incomplete");
     return null;
   }
-  if (session.passport.user) {
-    const user = await findUserByEmail(session.passport.user);
-    console.log("User:", user);
-    return user;
-  }
-  console.log("Session:", session);
-  return session;
+  // Note: never log the user document here — it contains the bcrypt password
+  // hash and reset tokens, and this runs on every authenticated API request.
+  return await findUserByEmail(session.passport.user);
 }
